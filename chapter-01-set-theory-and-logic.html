@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1 — Set Theory &amp; Logic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Set Theory &amp; Logic</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="index.html">&#10094; All Chapters</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Learn the Foundations</h2>
+    <p>Set theory and logic form the ground floor of all mathematics.</p>
+    <p>Every field — calculus, algebra, geometry — is ultimately built from these eleven layers.</p>
+    <p>Each layer uses only what came before it, all the way down to the empty set.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\forall x\, \exists y\; (x \in y)\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Logic</a><a href="#L2">L2 Predicates</a><a href="#L3">L3 Sets</a>
+  <a href="#L4">L4 ZFC Axioms</a><a href="#L5">L5 Operations</a><a href="#L6">L6 Relations</a>
+  <a href="#L7">L7 Functions</a><a href="#L8">L8 Numbers</a><a href="#L9">L9 Infinity</a>
+  <a href="#L10">L10 Choice</a><a href="#L11">L11 Limits</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Ground floor</span>
+  <h2 class="ltitle">Propositional Logic</h2>
+  <p class="ldesc">Statements, and the rules for combining them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Proposition</b> — a statement that is either true (T) or false (F), never both.
+      <div class="ex"><div><p>"It is raining" is a proposition. "Close the door!" is not — it can't be true or false.</p></div></div></li>
+    <li><b>Negation</b> \(\neg p\) — "not p".
+      <div class="ex"><div><p>p = "I'm hungry" → \(\neg p\) = "I'm not hungry."</p></div></div></li>
+    <li><b>Conjunction</b> \(p \land q\) — "p and q".
+      <div class="ex"><div><p>"It's cold and wet" — true only if <em>both</em> parts are true.</p></div></div></li>
+    <li><b>Disjunction</b> \(p \lor q\) — "p or q" (inclusive).
+      <div class="ex"><div><p>"I'll have tea or coffee" — true if you have either one, or both.</p></div></div></li>
+    <li><b>Implication</b> \(p \to q\) — "if p then q".
+      <div class="ex"><div><p>"If it rains, the ground gets wet." Only false in one case: it rains, but the ground stays dry.</p></div></div></li>
+    <li><b>Biconditional</b> \(p \leftrightarrow q\) — "p if and only if q" (<em>iff</em>).
+      <div class="ex"><div><p>"You pass iff you score ≥ 50." Both happen together, or neither does.</p></div></div></li>
+    <li><b>Truth table</b> — a table listing truth values for every combination of inputs.
+      <div class="ex"><div><p>For \(p \land q\): TT→T, TF→F, FT→F, FF→F. Four rows, no case forgotten.</p></div></div></li>
+    <li><b>Tautology</b> — always true.
+      <div class="ex"><div><p>"Tomorrow it will rain or it won't." Guaranteed true — and tells you nothing.</p></div></div></li>
+    <li><b>Contradiction</b> — always false.
+      <div class="ex"><div><p>"I'm taller than you and you're taller than me." Can't both hold.</p></div></div></li>
+    <li><b>Logical equivalence</b> \(p \equiv q\) — same truth value in every case.
+      <div class="ex"><div><p>"It's not the case that it's not raining" ≡ "It's raining." Different words, same claim.</p></div></div></li>
+    <li><b>Converse &amp; contrapositive</b> — of \(p \to q\): converse is \(q \to p\), contrapositive is \(\neg q \to \neg p\).
+      <div class="ex"><div><p>"If it's a dog, it's an animal." Converse: "if animal, then dog" — false! Contrapositive: "if not an animal, not a dog" — true, always.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms</h3>
+  <ul>
+    <li><b>A1:</b> \(p \to (q \to p)\) — a truth stays true, whatever else you assume.
+      <div class="ex"><div><p>"2 + 2 = 4" is true. So "if pigs fly, then 2 + 2 = 4" is also true — adding assumptions can't break a truth.</p></div></div></li>
+    <li><b>A2:</b> \((p \to (q \to r)) \to ((p \to q) \to (p \to r))\) — lets you re-wire chained if-thens.
+      <div class="ex"><div><p>The bookkeeping rule for nested "if…then"s: it lets a proof distribute one assumption across a whole chain.</p></div></div></li>
+    <li><b>A3:</b> \((\neg q \to \neg p) \to (p \to q)\) — contrapositive reasoning is legal.
+      <div class="ex"><div><p>Prove "no smoke → no fire", and you've proven "fire → smoke."</p></div></div></li>
+  </ul>
+
+  <h3>The One Inference Rule</h3>
+  <ul>
+    <li><b>Modus ponens</b> — from \(p\) and \(p \to q\), conclude \(q\).
+      <div class="ex"><div><p>"If it rains, streets get wet. It's raining. Therefore: streets are wet."</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — The Laws of Logic</h3>
+  <ul>
+    <li><b>Double negation:</b> \(\neg\neg p \equiv p\).
+      <div class="ex"><div><p>"I'm not <em>not</em> going" = "I'm going."</p></div></div></li>
+    <li><b>De Morgan's laws:</b> \(\neg(p \land q) \equiv \neg p \lor \neg q\) and \(\neg(p \lor q) \equiv \neg p \land \neg q\).
+      <div class="ex"><div><p>"He's not rich-and-famous" = "he's not rich, <em>or</em> not famous (or neither)."</p></div></div></li>
+    <li><b>Contrapositive law:</b> \((p \to q) \equiv (\neg q \to \neg p)\).
+      <div class="ex"><div><p>"Dog → animal" says exactly the same as "not animal → not dog."</p></div></div></li>
+    <li><b>Implication as disjunction:</b> \((p \to q) \equiv (\neg p \lor q)\).
+      <div class="ex"><div><p>"If it rains, I stay home" = "It doesn't rain, or I stay home."</p></div></div></li>
+    <li><b>Commutativity:</b> \(p \land q \equiv q \land p\); same for \(\lor\).
+      <div class="ex"><div><p>"Cold and wet" = "wet and cold."</p></div></div></li>
+    <li><b>Associativity:</b> \((p \land q) \land r \equiv p \land (q \land r)\).
+      <div class="ex"><div><p>"(Cold and wet) and windy" = "cold and (wet and windy)" — grouping doesn't matter.</p></div></div></li>
+    <li><b>Distributivity:</b> \(p \land (q \lor r) \equiv (p \land q) \lor (p \land r)\).
+      <div class="ex"><div><p>"Coffee, with cake or pie" = "coffee-and-cake, or coffee-and-pie."</p></div></div></li>
+    <li><b>Idempotence:</b> \(p \land p \equiv p\).
+      <div class="ex"><div><p>"It's raining and it's raining" — saying it twice adds nothing.</p></div></div></li>
+    <li><b>Absorption:</b> \(p \lor (p \land q) \equiv p\).
+      <div class="ex"><div><p>"It's raining, or it's raining-and-cold" boils down to just "it's raining."</p></div></div></li>
+    <li><b>Excluded middle:</b> \(p \lor \neg p\) is a tautology.
+      <div class="ex"><div><p>"The light is on, or it isn't." No third option.</p></div></div></li>
+    <li><b>Non-contradiction:</b> \(\neg(p \land \neg p)\) is a tautology.
+      <div class="ex"><div><p>The light can't be on and off at the same moment.</p></div></div></li>
+  </ul>
+
+  <h3>Derived Inference Rules</h3>
+  <ul>
+    <li><b>Modus tollens</b> — from \(p \to q\) and \(\neg q\), conclude \(\neg p\).
+      <div class="ex"><div><p>"If it rained, the ground would be wet. The ground is dry. So it didn't rain."</p></div></div></li>
+    <li><b>Hypothetical syllogism</b> — from \(p \to q\) and \(q \to r\), conclude \(p \to r\).
+      <div class="ex"><div><p>"Rain → wet roads. Wet roads → slippery. Therefore rain → slippery."</p></div></div></li>
+    <li><b>Disjunctive syllogism</b> — from \(p \lor q\) and \(\neg p\), conclude \(q\).
+      <div class="ex"><div><p>"My keys are in my coat or my bag. Not in the coat. So: in the bag."</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Truth-table method</b> — mechanically check any equivalence (\(2^n\) rows for \(n\) variables).
+      <div class="ex"><div><p>To verify \(p \to q \equiv \neg p \lor q\), write out all 4 rows — both columns match. Done, no cleverness needed.</p></div></div></li>
+    <li><b>Algebraic simplification</b> — rewrite using the laws above.
+      <div class="ex"><div><p>Like school algebra, but with sentences: simplify \(\neg(\neg p \land \neg q)\) to \(p \lor q\) via De Morgan.</p></div></div></li>
+    <li><b>Direct proof</b> — assume p, march to q.
+      <div class="ex"><div><p>Even + even is even: \(2a + 2b = 2(a+b)\). Straight line, done.</p></div></div></li>
+    <li><b>Proof by contrapositive</b> — prove \(\neg q \to \neg p\) instead.
+      <div class="ex"><div><p>To show "\(n^2\) odd → \(n\) odd", it's easier to prove "\(n\) even → \(n^2\) even."</p></div></div></li>
+    <li><b>Proof by contradiction</b> — assume the opposite, derive an absurdity.
+      <div class="ex"><div><p>\(\sqrt{2}\) irrational: assume it's a fraction \(a/b\) in lowest terms → both \(a\) and \(b\) turn out even → contradiction.</p></div></div></li>
+    <li><b>Proof by cases</b> — split into scenarios, prove each.
+      <div class="ex"><div><p>\(|x| \ge 0\): check the case \(x \ge 0\), then the case \(x &lt; 0\). Together they cover everything.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Adding variables</span>
+  <h2 class="ltitle">Predicate (First-Order) Logic</h2>
+  <p class="ldesc">Statements about "all" and "some" things.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Predicate</b> \(P(x)\) — a statement whose truth depends on \(x\).
+      <div class="ex"><div><p>"\(x &gt; 3\)": true for \(x = 5\), false for \(x = 1\). Not true or false until \(x\) is filled in.</p></div></div></li>
+    <li><b>Domain</b> — the universe of allowed values for the variables.
+      <div class="ex"><div><p>"Someone is a doctor" may be false in this room but true across all humans. Domain changes truth.</p></div></div></li>
+    <li><b>Universal quantifier</b> \(\forall x\, P(x)\) — "for all x".
+      <div class="ex"><div><p>"All swans are white." One black swan makes it false.</p></div></div></li>
+    <li><b>Existential quantifier</b> \(\exists x\, P(x)\) — "there exists an x".
+      <div class="ex"><div><p>"Someone in the room is left-handed." One person is enough.</p></div></div></li>
+    <li><b>Unique existence</b> \(\exists! x\, P(x)\) — "exactly one x".
+      <div class="ex"><div><p>There is exactly one number that adds nothing: 0.</p></div></div></li>
+    <li><b>Free vs. bound variable</b> — bound = captured by a quantifier.
+      <div class="ex"><div><p>In \(\exists x\,(x + y = 3)\): \(x\) is bound (spoken for), \(y\) is free — the truth depends on what \(y\) is.</p></div></div></li>
+    <li><b>Sentence</b> — a formula with no free variables.
+      <div class="ex"><div><p>"\(\forall x,\ x \ge 0\)" over the naturals: nothing left to fill in — it's simply true.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — Quantifier Laws</h3>
+  <ul>
+    <li><b>Negating \(\forall\):</b> \(\neg\forall x\, P(x) \equiv \exists x\, \neg P(x)\).
+      <div class="ex"><div><p>"Not all swans are white" = "some swan is not white."</p></div></div></li>
+    <li><b>Negating \(\exists\):</b> \(\neg\exists x\, P(x) \equiv \forall x\, \neg P(x)\).
+      <div class="ex"><div><p>"No one called" = "everyone didn't call."</p></div></div></li>
+    <li><b>Order matters across types:</b> \(\exists y\,\forall x\, P(x,y) \to \forall x\,\exists y\, P(x,y)\), but not the reverse.
+      <div class="ex"><div><p>"Everyone has a mother" (\(\forall\) person \(\exists\) mother) is true. "There's one mother of everyone" (\(\exists\) mother \(\forall\) person) is not.</p></div></div></li>
+    <li><b>Same-type quantifiers commute:</b> \(\forall x\,\forall y \equiv \forall y\,\forall x\).
+      <div class="ex"><div><p>"Every person likes every food" — either order of saying it, same claim.</p></div></div></li>
+  </ul>
+
+  <h3>Inference Rules</h3>
+  <ul>
+    <li><b>Universal instantiation</b> — from \(\forall x\, P(x)\), conclude \(P(c)\) for any specific \(c\).
+      <div class="ex"><div><p>"All humans are mortal" → "Socrates is mortal."</p></div></div></li>
+    <li><b>Universal generalization</b> — proven for an <em>arbitrary</em> \(c\) → true for all.
+      <div class="ex"><div><p>Prove the angle sum is 180° for a completely generic triangle — you never used its size — so it's true for all triangles.</p></div></div></li>
+    <li><b>Existential instantiation</b> — from \(\exists x\, P(x)\), name a witness.
+      <div class="ex"><div><p>"Someone stole the cookie. Call that person T, and reason about T."</p></div></div></li>
+    <li><b>Existential generalization</b> — from \(P(c)\), conclude \(\exists x\, P(x)\).
+      <div class="ex"><div><p>"7 is prime, therefore primes exist."</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Proving \(\forall\)</b> — take an arbitrary \(x\), prove \(P(x)\).
+      <div class="ex"><div><p>"Every even number squared is even": take a generic even \(2k\), then \((2k)^2 = 4k^2 = 2(2k^2)\). ✓</p></div></div></li>
+    <li><b>Proving \(\exists\)</b> — exhibit one concrete witness.
+      <div class="ex"><div><p>"There is a prime above 100": here's 101. Done.</p></div></div></li>
+    <li><b>Counterexample</b> — one failure kills a \(\forall\) claim.
+      <div class="ex"><div><p>"All primes are odd" — meet 2.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · First objects</span>
+  <h2 class="ltitle">Sets — Basic Notions</h2>
+  <p class="ldesc">Collections, membership, and containment.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Set &amp; element</b> — a collection of distinct objects; \(x \in A\) means \(x\) belongs to \(A\).
+      <div class="ex"><div><p>\(\{2,3,5\}\) is a set; \(3 \in \{2,3,5\}\), but \(4 \notin \{2,3,5\}\). Order and repeats don't matter.</p></div></div></li>
+    <li><b>Roster vs. set-builder notation</b> — list the members, or state their rule: \(\{x : P(x)\}\).
+      <div class="ex"><div><p>\(\{2, 4, 6, \dots\}\) and \(\{x : x \text{ is even}\}\) describe the same set.</p></div></div></li>
+    <li><b>Empty set</b> \(\varnothing\) — the set with nothing in it.
+      <div class="ex"><div><p>The set of unicorns you own.</p></div></div></li>
+    <li><b>Set equality</b> — same elements ⇒ same set.
+      <div class="ex"><div><p>\(\{1,2\} = \{2,1\} = \{1,1,2\}\). Only membership counts.</p></div></div></li>
+    <li><b>Subset</b> \(A \subseteq B\) — every element of \(A\) is in \(B\).
+      <div class="ex"><div><p>Cats ⊆ animals: every cat is an animal.</p></div></div></li>
+    <li><b>Proper subset</b> \(A \subsetneq B\) — subset, but not everything.
+      <div class="ex"><div><p>Cats ⊊ animals: dogs exist, so "animals" has more.</p></div></div></li>
+    <li><b>Power set</b> \(\mathcal{P}(A)\) — the set of all subsets of \(A\).
+      <div class="ex"><div><p>\(\mathcal{P}(\{a,b\}) = \{\varnothing, \{a\}, \{b\}, \{a,b\}\}\) — every possible "selection", including picking nothing.</p></div></div></li>
+    <li><b>Cardinality</b> \(|A|\) — the number of elements (finite case).
+      <div class="ex"><div><p>\(|\{\text{red},\text{green},\text{blue}\}| = 3\).</p></div></div></li>
+    <li><b>Disjoint sets</b> — \(A \cap B = \varnothing\).
+      <div class="ex"><div><p>Dogs and cats: no animal is both.</p></div></div></li>
+    <li><b>Number sets:</b> \(\mathbb{N} \subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{R} \subseteq \mathbb{C}\).
+      <div class="ex"><div><p>Counting numbers → add negatives → add fractions → add all decimals (like \(\pi\)) → add imaginary numbers.</p></div></div></li>
+  </ul>
+
+  <h3>Propositions</h3>
+  <ul>
+    <li><b>\(\varnothing \subseteq A\)</b> for every set \(A\).
+      <div class="ex"><div><p>"Every unicorn I own is also in your set" — true for free, since I own none. (Vacuous truth.)</p></div></div></li>
+    <li><b>Reflexivity:</b> \(A \subseteq A\).
+      <div class="ex"><div><p>Every cat is a cat.</p></div></div></li>
+    <li><b>Transitivity:</b> \(A \subseteq B \subseteq C \implies A \subseteq C\).
+      <div class="ex"><div><p>Cats ⊆ mammals ⊆ animals, so cats ⊆ animals.</p></div></div></li>
+    <li><b>Equality via double inclusion:</b> \(A = B \iff A \subseteq B \text{ and } B \subseteq A\).
+      <div class="ex"><div><p>Two clubs are identical exactly when each member of one belongs to the other — checked in both directions.</p></div></div></li>
+    <li><b>\(\varnothing\) is unique.</b>
+      <div class="ex"><div><p>Two empty boxes hold exactly the same contents (nothing) — so as sets, they're one and the same.</p></div></div></li>
+  </ul>
+
+  <h3>Theorem</h3>
+  <ul>
+    <li><b>Power set size:</b> if \(|A| = n\), then \(|\mathcal{P}(A)| = 2^n\).
+      <div class="ex"><div><p>3 pizza toppings → \(2^3 = 8\) possible pizzas (each topping is a yes/no, including the plain one).</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The rulebook</span>
+  <h2 class="ltitle">The ZFC Axioms</h2>
+  <p class="ldesc">Nine-ish rules that make set theory paradox-free. All of modern math fits inside them.</p>
+
+  <h3>Axioms</h3>
+  <ul>
+    <li><b>Extensionality</b> — sets with the same elements are equal.
+      <div class="ex"><div><p>Two shopping lists with exactly the same items are the same list, whatever paper they're on.</p></div></div></li>
+    <li><b>Empty set</b> — \(\varnothing\) exists.
+      <div class="ex"><div><p>There is an empty box. Math needs at least that to start.</p></div></div></li>
+    <li><b>Pairing</b> — for any \(a, b\), the set \(\{a, b\}\) exists.
+      <div class="ex"><div><p>Given any two things, you may put them in one box together.</p></div></div></li>
+    <li><b>Union</b> — for any set of sets, their union exists.
+      <div class="ex"><div><p>A box of boxes: you may dump all inner contents into one big box.</p></div></div></li>
+    <li><b>Power set</b> — \(\mathcal{P}(A)\) exists.
+      <div class="ex"><div><p>Given a menu, the set of all possible orders from it exists.</p></div></div></li>
+    <li><b>Infinity</b> — an infinite set exists.
+      <div class="ex"><div><p>The counting numbers 0, 1, 2, … never stop — this axiom guarantees the whole endless collection is a legal set.</p></div></div></li>
+    <li><b>Separation</b> — from set \(A\) and property \(P\), the subset \(\{x \in A : P(x)\}\) exists. Only from an <em>existing</em> set!
+      <div class="ex"><div><p>From "all animals" you may carve out "animals that fly". You may not conjure "all things that fly" from thin air — that restriction is what blocks the paradoxes.</p></div></div></li>
+    <li><b>Replacement</b> — the image of a set under a definable rule is a set.
+      <div class="ex"><div><p>Apply "double it" to \(\{1,2,3\}\): the result \(\{2,4,6\}\) is guaranteed to be a set.</p></div></div></li>
+    <li><b>Foundation</b> — no set contains itself; no infinite downward \(\in\)-chains.
+      <div class="ex"><div><p>No box may contain itself, and Russian dolls can't nest downward forever.</p></div></div></li>
+    <li><b>Choice (AC)</b> — from any family of nonempty sets, you can pick one element from each.
+      <div class="ex"><div><p>Infinitely many pairs of identical socks: no rule tells you which sock to take — Choice says a full selection exists anyway.</p></div></div></li>
+  </ul>
+
+  <h3>Theorem — The Crisis Behind the Rules</h3>
+  <ul>
+    <li><b>Russell's paradox</b> — \(R = \{x : x \notin x\}\) cannot be a set.
+      <div class="ex"><div><p>The barber shaves exactly those who don't shave themselves. Who shaves the barber? Either answer contradicts itself — so no such "set" can exist.</p></div></div></li>
+    <li><b>Corollary</b> — there is no set of all sets.
+      <div class="ex"><div><p>A "set of everything" would let you carve out Russell's monster with Separation. So the universe of sets is not itself a set.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · The toolkit</span>
+  <h2 class="ltitle">Set Operations &amp; Their Algebra</h2>
+  <p class="ldesc">Combining sets — a perfect mirror of Layer 1's logic.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Union</b> \(A \cup B\) — in \(A\) or \(B\) (or both).
+      <div class="ex"><div><p>Tea-likers ∪ coffee-likers = everyone who likes at least one.</p></div></div></li>
+    <li><b>Intersection</b> \(A \cap B\) — in both.
+      <div class="ex"><div><p>People who like both tea and coffee.</p></div></div></li>
+    <li><b>Difference</b> \(A \setminus B\) — in \(A\), not in \(B\).
+      <div class="ex"><div><p>Tea-likers \ coffee-likers = the tea-only crowd.</p></div></div></li>
+    <li><b>Complement</b> \(A^{c} = U \setminus A\) — everything else.
+      <div class="ex"><div><p>Within the office (the universe \(U\)), the complement of tea-likers is everyone who doesn't like tea.</p></div></div></li>
+    <li><b>Symmetric difference</b> \(A \,\triangle\, B\) — in exactly one of the two.
+      <div class="ex"><div><p>People who like tea or coffee, but not both.</p></div></div></li>
+    <li><b>Indexed families</b> \(\bigcup_i A_i,\ \bigcap_i A_i\) — union/intersection over many sets at once.
+      <div class="ex"><div><p>Union over all days of "who visited the gym that day" = everyone who came at least once. Intersection = the every-single-day regulars.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — The Algebra of Sets</h3>
+  <ul>
+    <li><b>Commutative:</b> \(A \cup B = B \cup A\).
+      <div class="ex"><div><p>"Tea or coffee people" = "coffee or tea people."</p></div></div></li>
+    <li><b>Associative:</b> \((A \cup B) \cup C = A \cup (B \cup C)\).
+      <div class="ex"><div><p>Merging three guest lists: merge in any grouping, same crowd shows up.</p></div></div></li>
+    <li><b>Distributive:</b> \(A \cap (B \cup C) = (A \cap B) \cup (A \cap C)\).
+      <div class="ex"><div><p>"Students who also play (piano or violin)" = "students-who-play-piano, plus students-who-play-violin."</p></div></div></li>
+    <li><b>De Morgan (sets):</b> \((A \cup B)^{c} = A^{c} \cap B^{c}\).
+      <div class="ex"><div><p>"Likes neither tea nor coffee" = "doesn't like tea AND doesn't like coffee."</p></div></div></li>
+    <li><b>Identity:</b> \(A \cup \varnothing = A\); \(A \cap U = A\).
+      <div class="ex"><div><p>Adding an empty guest list changes nothing; intersecting with "everyone" changes nothing.</p></div></div></li>
+    <li><b>Complement laws:</b> \(A \cup A^{c} = U\); \(A \cap A^{c} = \varnothing\); \((A^{c})^{c} = A\).
+      <div class="ex"><div><p>Tea-likers plus non-tea-likers = everyone; nobody is in both camps; "not not tea-liker" = tea-liker.</p></div></div></li>
+    <li><b>Absorption:</b> \(A \cup (A \cap B) = A\).
+      <div class="ex"><div><p>Tea-likers, plus the both-drinks people — but they were already tea-likers. Nothing new.</p></div></div></li>
+    <li><b>Generalized De Morgan:</b> \(\left(\bigcup_i A_i\right)^{c} = \bigcap_i A_i^{c}\).
+      <div class="ex"><div><p>"Missed every meeting" = "not (attended at least one)".</p></div></div></li>
+  </ul>
+
+  <h3>Theorem — Counting</h3>
+  <ul>
+    <li><b>Inclusion–Exclusion:</b> \(|A \cup B| = |A| + |B| - |A \cap B|\).
+      <div class="ex"><div><p>30 like tea, 20 like coffee, 10 like both → \(30 + 20 - 10 = 40\) people, not 50. The overlap was counted twice.</p></div></div></li>
+    <li><b>Corollary (3 sets):</b> add singles, subtract pairs, add back the triple.
+      <div class="ex"><div><p>Counting students in football, chess, or drama: overlaps get double-counted, the triple-overlap gets over-corrected — the formula fixes both.</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Element-chasing</b> — prove \(A = B\) by showing \(x \in A \iff x \in B\).
+      <div class="ex"><div><p>Take a generic member \(x\) of the left side, use logic to show it must be in the right side — and back.</p></div></div></li>
+    <li><b>Double inclusion</b> — prove \(A \subseteq B\), then \(B \subseteq A\).
+      <div class="ex"><div><p>Two half-proofs, one equality. The standard exam move.</p></div></div></li>
+    <li><b>Venn diagrams</b> — intuition, not proof.
+      <div class="ex"><div><p>Sketch three overlapping circles to <em>see</em> De Morgan — then prove it properly with elements.</p></div></div></li>
+    <li><b>Algebraic manipulation</b> — rewrite with the laws.
+      <div class="ex"><div><p>Simplify \((A \cup B) \cap A = A\) by absorption, no diagram needed.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 6 ============ -->
+<section class="layer" id="L6">
+  <span class="chapter">Layer 6 · Structure appears</span>
+  <h2 class="ltitle">Ordered Pairs, Products &amp; Relations</h2>
+  <p class="ldesc">Order, connections between things, and ways of comparing.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Ordered pair</b> \((a, b)\) — order matters.
+      <div class="ex"><div><p>Map coordinates: \((3, 5)\) and \((5, 3)\) are different places — unlike the set \(\{3, 5\}\).</p></div></div></li>
+    <li><b>Kuratowski's trick:</b> \((a,b) = \{\{a\},\{a,b\}\}\).
+      <div class="ex"><div><p>A clever way to fake "order" using only orderless sets: the element appearing in both inner sets is the first one.</p></div></div></li>
+    <li><b>Cartesian product</b> \(A \times B\) — all pairs.
+      <div class="ex"><div><p>\(\{S, M, L\} \times \{\text{red}, \text{blue}\}\) = the 6 possible t-shirts.</p></div></div></li>
+    <li><b>Relation</b> — any set of pairs \(R \subseteq A \times B\).
+      <div class="ex"><div><p>"Is a friend of" is just the set of all (person, person) pairs where friendship holds.</p></div></div></li>
+    <li><b>Reflexive:</b> \(\forall a,\ aRa\).
+      <div class="ex"><div><p>"≤": every number is ≤ itself. "Is taller than" is not reflexive.</p></div></div></li>
+    <li><b>Symmetric:</b> \(aRb \to bRa\).
+      <div class="ex"><div><p>"Is a sibling of" — goes both ways. "Is a parent of" — doesn't.</p></div></div></li>
+    <li><b>Antisymmetric:</b> \(aRb \land bRa \to a = b\).
+      <div class="ex"><div><p>If \(x \le y\) and \(y \le x\), they're the same number.</p></div></div></li>
+    <li><b>Transitive:</b> \(aRb \land bRc \to aRc\).
+      <div class="ex"><div><p>Ali is taller than Ben, Ben taller than Cy → Ali is taller than Cy.</p></div></div></li>
+    <li><b>Equivalence relation</b> — reflexive + symmetric + transitive.
+      <div class="ex"><div><p>"Has the same birthday as." Everyone matches themselves, matching is mutual, and it chains.</p></div></div></li>
+    <li><b>Equivalence class</b> \([a]\) — everything related to \(a\).
+      <div class="ex"><div><p>[you] = the set of all people sharing your birthday.</p></div></div></li>
+    <li><b>Partition</b> — nonempty, disjoint pieces covering all of \(A\).
+      <div class="ex"><div><p>366 birthday-groups slice up all of humanity: everyone in exactly one group.</p></div></div></li>
+    <li><b>Quotient set</b> \(A/R\) — the set of the classes themselves.
+      <div class="ex"><div><p>Zoom out: treat each birthday-group as a single object. That collection of 366 groups is the quotient.</p></div></div></li>
+    <li><b>Partial order</b> — reflexive + antisymmetric + transitive; some pairs incomparable.
+      <div class="ex"><div><p>Folders under "contains": your Photos and Music folders — neither contains the other.</p></div></div></li>
+    <li><b>Total order</b> — a partial order where everything is comparable.
+      <div class="ex"><div><p>≤ on numbers: pick any two, one is smaller (or equal). No "incomparable" ties.</p></div></div></li>
+  </ul>
+
+  <h3>Propositions</h3>
+  <ul>
+    <li><b>Pair equality:</b> \((a,b) = (c,d) \iff a = c \land b = d\).
+      <div class="ex"><div><p>Two map points coincide exactly when both coordinates match, slot by slot — proving Kuratowski's trick really works.</p></div></div></li>
+    <li><b>Product size:</b> \(|A \times B| = |A| \cdot |B|\).
+      <div class="ex"><div><p>3 sizes × 2 colors = 6 shirts.</p></div></div></li>
+  </ul>
+
+  <h3>Theorem</h3>
+  <ul>
+    <li><b>Equivalence relations ⟺ partitions</b> — two views of the same thing.
+      <div class="ex"><div><p>"Same birthday" (a way of relating people) and "the 366 birthday groups" (a way of slicing people) carry identical information.</p></div></div></li>
+    <li><b>Corollary</b> — classes are identical or disjoint, and they cover everything.
+      <div class="ex"><div><p>Nobody belongs to two birthday groups, and nobody belongs to none.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 7 ============ -->
+<section class="layer" id="L7">
+  <span class="chapter">Layer 7 · The workhorse</span>
+  <h2 class="ltitle">Functions</h2>
+  <p class="ldesc">Reliable input → output machines.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Function</b> \(f : A \to B\) — every input gets exactly one output.
+      <div class="ex"><div><p>"Person → their birthday" is a function. "Person → their sibling" is not: some have none, some have three.</p></div></div></li>
+    <li><b>Domain, codomain, range</b> — inputs, allowed outputs, outputs actually hit.
+      <div class="ex"><div><p>People → months: domain = people, codomain = 12 months, range = the months someone was actually born in.</p></div></div></li>
+    <li><b>Image &amp; preimage:</b> \(f(S)\) and \(f^{-1}(T)\).
+      <div class="ex"><div><p>\(f^{-1}(\text{May})\) = everyone born in May — "who lands there?"</p></div></div></li>
+    <li><b>Injective</b> (one-to-one) — different inputs, different outputs.
+      <div class="ex"><div><p>Fingerprint → person: no two people share one.</p></div></div></li>
+    <li><b>Surjective</b> (onto) — every output is hit.
+      <div class="ex"><div><p>In a big crowd, every month is somebody's birth month.</p></div></div></li>
+    <li><b>Bijective</b> — a perfect one-to-one matching.
+      <div class="ex"><div><p>A sold-out show: each seat ↔ exactly one ticket-holder.</p></div></div></li>
+    <li><b>Composition:</b> \((g \circ f)(x) = g(f(x))\).
+      <div class="ex"><div><p>"Mother of" after "father of" = paternal grandmother.</p></div></div></li>
+    <li><b>Identity:</b> \(\mathrm{id}(x) = x\).
+      <div class="ex"><div><p>The do-nothing machine: whatever goes in comes straight out.</p></div></div></li>
+    <li><b>Inverse</b> \(f^{-1}\) — undoes \(f\); exists iff \(f\) is a bijection.
+      <div class="ex"><div><p>Encrypt ↔ decrypt: each message locks to one unique cipher, so it can be unlocked.</p></div></div></li>
+  </ul>
+
+  <h3>Propositions &amp; Lemmas</h3>
+  <ul>
+    <li><b>Composition is associative:</b> \(h \circ (g \circ f) = (h \circ g) \circ f\).
+      <div class="ex"><div><p>Do \(f\), then \(g\), then \(h\). However you mentally group the steps, the assembly line is the same.</p></div></div></li>
+    <li><b>Composition preserves inj / surj / bij.</b>
+      <div class="ex"><div><p>Two lossless steps in a row → lossless overall. Chain two perfect matchings → a perfect matching.</p></div></div></li>
+    <li><b>Inverse ⟺ bijection</b>, and the inverse is unique.
+      <div class="ex"><div><p>Only a perfect pairing can be undone: if two inputs shared an output, "undo" wouldn't know which to return.</p></div></div></li>
+    <li><b>Preimages behave better than images</b> — \(f^{-1}\) preserves \(\cup\), \(\cap\), complements.
+      <div class="ex"><div><p>"Born in May or June" = "born in May" ∪ "born in June" — preimages split cleanly along set operations. Images sometimes don't.</p></div></div></li>
+    <li><b>Pigeonhole principle:</b> \(|A| &gt; |B|\) ⟹ no injection \(A \to B\).
+      <div class="ex"><div><p>13 people, 12 months: two must share a birth month.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 8 ============ -->
+<section class="layer" id="L8">
+  <span class="chapter">Layer 8 · Numbers are born</span>
+  <h2 class="ltitle">Natural Numbers &amp; Induction</h2>
+  <p class="ldesc">\(\mathbb{N}\) built out of pure sets — and the domino principle.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Von Neumann naturals:</b> \(0 = \varnothing,\ 1 = \{0\},\ 2 = \{0,1\}, \dots\)
+      <div class="ex"><div><p>Each number <em>is</em> the set of all smaller ones: \(3 = \{0, 1, 2\}\). Numbers are made of nothing but nested emptiness.</p></div></div></li>
+    <li><b>Successor:</b> \(S(n) = n \cup \{n\}\).
+      <div class="ex"><div><p>"+1" = toss the number itself into its own bag: \(2 \cup \{2\} = \{0,1,2\} = 3\).</p></div></div></li>
+  </ul>
+
+  <h3>Axioms — Peano (derivable inside ZFC)</h3>
+  <ul>
+    <li><b>The five rules:</b> 0 exists; every \(n\) has a successor; 0 is no one's successor; successors of different numbers differ; induction holds.
+      <div class="ex"><div><p>The setup rules for an infinite domino line: there's a first domino, each has a next, no loops, no merges.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems &amp; Principles</h3>
+  <ul>
+    <li><b>Mathematical induction:</b> \(P(0)\), and \(P(n) \to P(n+1)\), gives \(\forall n\, P(n)\).
+      <div class="ex"><div><p>Dominoes: the first falls, and each falling domino knocks the next → all infinitely many fall.</p></div></div></li>
+    <li><b>Strong induction</b> — the step may lean on <em>all</em> earlier cases.
+      <div class="ex"><div><p>To knock down domino \(n\), you may use the combined weight of every domino before it — handy for facts like "every number ≥ 2 factors into primes."</p></div></div></li>
+    <li><b>Well-ordering principle</b> — every nonempty set of naturals has a least element.
+      <div class="ex"><div><p>Any bag of counting numbers has a smallest one. (Any bag of fractions doesn't: what's the smallest positive fraction?)</p></div></div></li>
+    <li><b>All three are equivalent.</b>
+      <div class="ex"><div><p>Induction, strong induction, well-ordering: three costumes, one actor. Prove any one, get the others free.</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Proof by induction</b> — base case + inductive step.
+      <div class="ex"><div><p>\(1 + 2 + \dots + n = \frac{n(n+1)}{2}\): check \(n = 1\) ✓; then assume it for \(n\) and add \(n+1\) to both sides ✓.</p></div></div></li>
+    <li><b>Recursive definition</b> — define \(f(0)\), then \(f(n+1)\) from \(f(n)\).
+      <div class="ex"><div><p>Factorial: \(0! = 1\), and \((n+1)! = (n+1) \cdot n!\). The definition climbs the same ladder induction does.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 9 ============ -->
+<section class="layer" id="L9">
+  <span class="chapter">Layer 9 · Sizes of infinity</span>
+  <h2 class="ltitle">Cardinality</h2>
+  <p class="ldesc">Comparing sets — including infinite ones — without counting.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Equinumerous</b> \(A \approx B\) — a bijection exists.
+      <div class="ex"><div><p>Are there as many chairs as guests? Don't count — seat everyone. If no one stands and no chair is empty, the sets match.</p></div></div></li>
+    <li><b>\(|A| \le |B|\)</b> — an injection \(A \to B\) exists.
+      <div class="ex"><div><p>Everyone finds a chair, maybe with chairs left over.</p></div></div></li>
+    <li><b>Finite vs. infinite</b> — finite = matches \(\{0, \dots, n-1\}\) for some \(n\).
+      <div class="ex"><div><p>Your fingers: match them to \(\{0,\dots,9\}\) and you're done. \(\mathbb{N}\) never runs out of matching to do.</p></div></div></li>
+    <li><b>Countably infinite</b> \((\aleph_0)\) — matches \(\mathbb{N}\).
+      <div class="ex"><div><p>You can list the members: 1st, 2nd, 3rd, … Every member eventually gets a position.</p></div></div></li>
+    <li><b>Countable / uncountable</b> — listable, or too big to list.
+      <div class="ex"><div><p>The evens: listable (2, 4, 6, …). The reals: provably not — see the diagonal below.</p></div></div></li>
+    <li><b>Continuum:</b> \(|\mathbb{R}| = \mathfrak{c} = 2^{\aleph_0}\).
+      <div class="ex"><div><p>The size of the number line — a strictly bigger infinity than the counting numbers.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Cantor–Schröder–Bernstein:</b> injections both ways ⟹ a bijection exists.
+      <div class="ex"><div><p>Every guest fits a chair, and every chair fits a guest → a perfect seating must exist, even if neither of your two fittings was it.</p></div></div></li>
+    <li><b>\(\mathbb{Z}\) and \(\mathbb{Q}\) are countable.</b>
+      <div class="ex"><div><p>List \(\mathbb{Z}\) as 0, 1, −1, 2, −2, … For fractions, zigzag through a grid of numerators and denominators — every fraction gets a turn.</p></div></div></li>
+    <li><b>Countable union of countable sets is countable.</b>
+      <div class="ex"><div><p>Infinitely many buses arrive, each with infinitely many passengers — Hilbert's hotel still checks in everyone with a numbered room.</p></div></div></li>
+    <li><b>Cantor's theorem:</b> \(|A| &lt; |\mathcal{P}(A)|\) — always strictly bigger.
+      <div class="ex"><div><p>The collection of all subsets outgrows the set — even when the set is already infinite.</p></div></div></li>
+    <li><b>Corollary:</b> infinitely many sizes of infinity.
+      <div class="ex"><div><p>\(\mathbb{N}\), then its power set, then <em>its</em> power set, … Each strictly bigger. The ladder never tops out.</p></div></div></li>
+    <li><b>Diagonal argument:</b> \(\mathbb{R}\) is uncountable.
+      <div class="ex"><div><p>Suppose you listed every decimal. Build a new number differing from list-entry \(n\) at digit \(n\). It disagrees with every entry — your "complete" list missed one. No list can work.</p></div></div></li>
+    <li><b>Corollary:</b> irrationals are uncountable.
+      <div class="ex"><div><p>Rationals are listable, reals aren't — so the overflow must come from the irrationals. "Most" numbers are irrational.</p></div></div></li>
+  </ul>
+
+  <h3>Method</h3>
+  <ul>
+    <li><b>Diagonalization</b> — build an object that dodges every item on a list.
+      <div class="ex"><div><p>The same trick later proves Gödel's theorems and that no program can decide whether all programs halt.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 10 ============ -->
+<section class="layer" id="L10">
+  <span class="chapter">Layer 10 · The controversial axiom</span>
+  <h2 class="ltitle">The Axiom of Choice &amp; Friends</h2>
+  <p class="ldesc">One axiom, three famous faces.</p>
+
+  <h3>Theorem — Equivalences (provable from each other)</h3>
+  <ul>
+    <li><b>Axiom of Choice</b> — every family of nonempty sets has a choice function.
+      <div class="ex"><div><p>Infinitely many pairs of <em>shoes</em>: easy, "always take the left." Infinitely many pairs of identical <em>socks</em>: no describable rule exists — AC says a full selection exists anyway.</p></div></div></li>
+    <li><b>Zorn's lemma</b> — if every chain has an upper bound, a maximal element exists.
+      <div class="ex"><div><p>A mountain range where every upward path has a top → there must be at least one peak with nothing above it.</p></div></div></li>
+    <li><b>Well-ordering theorem</b> — every set can be well-ordered.
+      <div class="ex"><div><p>Even \(\mathbb{R}\) can be rearranged so every subset has a "first element" — though provably no one can write that arrangement down.</p></div></div></li>
+    <li><b>Corollaries across math</b> — every vector space has a basis; Tychonoff's theorem; maximal ideals exist.
+      <div class="ex"><div><p>Deep "something exists" facts all over algebra and analysis secretly run on this one axiom.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 11 ============ -->
+<section class="layer" id="L11">
+  <span class="chapter">Layer 11 · The ceiling</span>
+  <h2 class="ltitle">Limits of the System</h2>
+  <p class="ldesc">What the tower provably cannot do.</p>
+
+  <h3>Theorems — Metamathematics</h3>
+  <ul>
+    <li><b>Gödel's 1st incompleteness theorem</b> — any consistent system containing arithmetic has true statements it cannot prove.
+      <div class="ex"><div><p>A sentence engineered to say "I am not provable in this system." If false, the system proves a falsehood; so it's true — and unprovable.</p></div></div></li>
+    <li><b>Gödel's 2nd incompleteness theorem</b> — such a system cannot prove its own consistency.
+      <div class="ex"><div><p>A witness vouching "I never lie" proves nothing. Math can't certify its own sanity from the inside.</p></div></div></li>
+    <li><b>Continuum Hypothesis is independent of ZFC</b> (Gödel 1940 + Cohen 1963).
+      <div class="ex"><div><p>"Is there a size of infinity strictly between \(\mathbb{N}\) and \(\mathbb{R}\)?" ZFC shrugs: assuming yes is consistent; assuming no is consistent. The axioms simply don't decide.</p></div></div></li>
+    <li><b>Corollary</b> — multiple consistent mathematical universes exist.
+      <div class="ex"><div><p>Like geometry after the parallel postulate: change the undecided axiom, get a different — equally legal — mathematical world.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Truth tables</td><td>L1</td><td>Verify logical equivalences mechanically</td></tr>
+    <tr><td>Direct / contrapositive / contradiction / cases</td><td>L1</td><td>Prove any statement</td></tr>
+    <tr><td>Counterexample</td><td>L2</td><td>Kill a "for all" claim with one failure</td></tr>
+    <tr><td>Element-chasing, double inclusion</td><td>L5</td><td>Prove set equalities</td></tr>
+    <tr><td>Venn diagrams</td><td>L5</td><td>Build intuition (not proof)</td></tr>
+    <tr><td>Equivalence-class construction</td><td>L6</td><td>Build new objects (\(\mathbb{Z}\), \(\mathbb{Q}\), clock arithmetic)</td></tr>
+    <tr><td>Induction &amp; recursion</td><td>L8</td><td>Prove and define over all of \(\mathbb{N}\)</td></tr>
+    <tr><td>Bijection-building</td><td>L9</td><td>Show two sets are the same size</td></tr>
+    <tr><td>Diagonalization</td><td>L9</td><td>Show a set is too big to list</td></tr>
+    <tr><td>Zorn's lemma</td><td>L10</td><td>Conjure maximal objects into existence</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Set Theory &amp; Logic · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

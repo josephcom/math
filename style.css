@@ -1,0 +1,142 @@
+/* ============================================================
+   MATH BOOK — SHARED STYLESHEET
+   W3Schools-inspired look: white page, green accent, mint panels.
+   Base font size is 24px (150% of browser default); all type is
+   in rem so everything scales from the html rule below.
+   ============================================================ */
+
+:root{
+  --green:#04AA6D;
+  --green-dark:#059862;
+  --mint:#D9EEE1;
+  --mint-soft:#E7F3EC;
+  --ink:#000000;
+  --text:#282A35;
+  --muted:#616264;
+  --border:#E4E4E4;
+  --hover:#F1F1F1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:24px}   /* 150% of the 16px default */
+body{
+  font-family:"Source Sans 3","Segoe UI",Verdana,sans-serif;
+  color:var(--text);background:#fff;
+  font-size:1rem;line-height:1.6;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px 80px}
+
+/* ---------- header ---------- */
+header{padding:44px 0 8px}
+h1{font-size:clamp(1.9rem,5.5vw,2.6rem);font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.topnav{display:flex;justify-content:space-between;align-items:center;margin:22px 0 28px;gap:12px}
+.btn{
+  display:inline-block;font-weight:700;font-size:.9rem;text-decoration:none;
+  padding:11px 24px;border-radius:6px;cursor:pointer;transition:background .2s;
+}
+.btn-outline{border:1px solid var(--ink);color:var(--ink);background:#fff}
+.btn-outline:hover{background:var(--hover)}
+.btn-green{background:var(--green);color:#fff;border:1px solid var(--green)}
+.btn-green:hover{background:var(--green-dark)}
+
+/* ---------- intro two-panel card ---------- */
+.intro{
+  display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;margin-bottom:36px;
+}
+.intro .pane{padding:36px 38px}
+.intro .pane.mint{background:var(--mint-soft)}
+.intro h2{font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:14px}
+.intro p{margin-bottom:14px}
+@media (max-width:900px){.intro{grid-template-columns:1fr}}
+
+/* ---------- chapter chip nav ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:40px}
+.chips a{
+  font-size:.78rem;font-weight:700;color:var(--green);text-decoration:none;
+  border:1px solid var(--green);border-radius:24px;padding:6px 16px;transition:.2s;
+}
+.chips a:hover{background:var(--green);color:#fff}
+
+/* ---------- layer / section cards ---------- */
+.layer{
+  border:1px solid var(--border);border-radius:8px;
+  padding:32px 36px 28px;margin-bottom:32px;background:#fff;
+}
+.chapter{
+  display:inline-block;background:var(--mint);color:var(--green-dark);
+  font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:4px;padding:4px 13px;margin-bottom:13px;
+}
+h2.ltitle{font-size:1.55rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.ldesc{color:var(--muted);font-style:italic;margin-bottom:6px}
+
+h3{
+  font-size:1.08rem;font-weight:700;color:var(--ink);
+  margin:30px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--mint);
+}
+
+/* ---------- clickable list items ---------- */
+ul{list-style:none}
+li{
+  position:relative;padding:10px 14px 10px 36px;border-radius:6px;
+  transition:background .2s;cursor:pointer;
+}
+li::before{
+  content:"+";position:absolute;left:10px;top:9px;
+  font-weight:700;color:var(--green);font-size:1.05rem;
+  transition:transform .3s;
+}
+li.on::before{transform:rotate(45deg)}
+li:hover{background:var(--hover)}
+li.on{background:var(--mint-soft)}
+b{font-weight:700;color:var(--ink)}
+
+/* ---------- sliding example boxes ---------- */
+.ex{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1),opacity .35s,margin .4s;
+  margin-top:0;
+}
+li.on .ex{grid-template-rows:1fr;opacity:1;margin-top:11px}
+.ex>div{overflow:hidden}
+.ex p{
+  border:2px dashed var(--green);border-radius:8px;background:var(--mint);
+  padding:13px 18px;font-size:.9rem;color:var(--text);cursor:default;
+}
+.ex p::before{
+  content:"Example";display:block;font-weight:700;color:var(--green-dark);
+  font-size:.82rem;margin-bottom:3px;
+}
+
+/* ---------- summary table ---------- */
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:16px}
+th,td{border:1px solid var(--border);padding:10px 13px;text-align:left;vertical-align:top}
+th{background:var(--green);color:#fff;font-weight:700}
+tr:nth-child(even) td{background:var(--mint-soft)}
+td:first-child{font-weight:700;color:var(--ink)}
+
+/* ---------- chapter index cards (index.html) ---------- */
+.chlist{display:grid;gap:18px;margin:22px 0 40px}
+.ch{
+  display:block;position:relative;text-decoration:none;color:inherit;
+  border:1px solid var(--border);border-radius:8px;background:#fff;
+  padding:26px 30px 24px;transition:border-color .2s,background .2s;
+}
+.ch:hover{border-color:var(--green);background:var(--mint-soft)}
+.ch h2{font-size:1.3rem;font-weight:700;color:var(--ink);margin:3px 0 6px}
+.ch p{color:var(--muted);font-size:.88rem;margin-bottom:13px}
+.ch .go{font-weight:700;font-size:.85rem;color:var(--green)}
+.chnote{
+  position:absolute;right:30px;top:28px;
+  color:var(--muted);font-size:.75rem;font-weight:700;
+}
+.ch.soon{opacity:.55;cursor:default}
+.ch.soon:hover{border-color:var(--border);background:#fff}
+.ch.soon .go{color:var(--muted)}
+@media (max-width:600px){.chnote{display:none}}
+
+footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:54px}
+footer .btn{margin-bottom:20px}
+
+.katex{font-size:1.05em}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

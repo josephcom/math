@@ -1,0 +1,9 @@
+# Private working folder — never publish
+internal-not to be used by Claude/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+~$*
