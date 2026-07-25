@@ -49,7 +49,28 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Do not change this nesting: `.ex > div > p` (the outer grid + inner overflow wrapper make
   the slide animation work).
 
-## 4. Math Notation
+## 4. The Proof System (companion to the examples)
+
+- **Every item stating a provable result — theorems, propositions, lemmas, corollaries,
+  derived inference rules — gets a second hidden box with its formal proof/derivation**,
+  placed immediately after the example box. Definitions, axioms, primitive inference
+  rules, and methods get none.
+- Proofs are formal but compact: real derivations in KaTeX, a few lines each, ending
+  with \(\blacksquare\). Cite earlier layers by name ("Layer 1's De Morgan", "Extensionality").
+- Results whose full proofs are beyond the book's scope (Zorn, Gödel, CH, CSB…) get an
+  honest **proof sketch** — start the text with "Sketch:".
+- Exact required markup (CSS auto-inserts the bold "Proof" label; both boxes slide open
+  together on the same click — the shared CSS/JS already handle it):
+
+```html
+<li><b>Term</b> — one-line description.
+  <div class="ex"><div><p>Short everyday example.</p></div></div>
+  <div class="proof"><div><p>Formal derivation. \(\blacksquare\)</p></div></div></li>
+```
+
+- Same nesting rule as `.ex`: `.proof > div > p`, `.proof` directly after `.ex`.
+
+## 5. Math Notation
 
 - **All math is LaTeX rendered by KaTeX.** Inline: `\( ... \)`. Display: `\[ ... \]`.
 - Never use raw Unicode math where a LaTeX macro exists: `\forall, \exists, \neg, \land,
@@ -62,7 +83,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Keep the exact KaTeX CDN block from Chapter 1's `<head>` (stylesheet + katex.min.js +
   auto-render with `\(`/`\[` delimiters).
 
-## 5. Files & Page Skeleton
+## 6. Files & Page Skeleton
 
 - Three shared files, **do not duplicate their contents inline**:
   - `style.css` — all styling. Link it. Do not edit unless the reader asks.
@@ -82,7 +103,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   5. Recap `<section class="layer" id="SUM">` with the methods `<table>`.
   6. `<footer>`: green Back-to-Top button + one-line tagline.
 
-## 6. Design Rules (already encoded in style.css — just don't fight them)
+## 7. Design Rules (already encoded in style.css — just don't fight them)
 
 - W3Schools-inspired: white page, green `#04AA6D` accent, mint panels, bordered rounded
   cards, Source Sans 3.
@@ -90,11 +111,13 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   rem; never hardcode smaller pixel fonts.
 - Example boxes: mint background, **2px dashed green border**, bold "Example" label
   (auto-inserted by CSS `::before`) — sliding open/closed via the grid-rows transition.
+- Proof boxes: white background, **2px solid green border**, bold "Proof" label
+  (auto-inserted) — same slide, opens together with the example on the same click.
 - Interaction contract (already in script.js): click opens; clicking another item swaps;
   clicking elsewhere closes; clicking inside an open example keeps it open.
 - Respect `prefers-reduced-motion` (handled in CSS).
 
-## 7. Content Quality Bar
+## 8. Content Quality Bar
 
 - **Completeness over brevity of coverage**: list all standard definitions, axioms,
   propositions, lemmas, theorems, corollaries, and methods for the topic — but each entry
@@ -105,12 +128,13 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Accuracy is non-negotiable; when a result depends on the Axiom of Choice or is
   independent of ZFC, say so.
 
-## 8. Delivery
+## 9. Delivery
 
 - Deliver the chapter as an HTML file that works by dropping it into the same folder as
   `style.css` and `script.js`. If the reader asks for a bundle, zip all files together.
 - CDN note: KaTeX and Google Fonts load from the internet; keep that head block intact.
 
 **Checklist before delivering:** every li has an example ✅ · exact `.ex` markup ✅ ·
+every theorem/proposition/lemma/corollary has a `.proof` box right after its `.ex` ✅ ·
 all math in KaTeX ✅ · chips match layer ids ✅ · toolbox table present ✅ ·
 external css/js linked, nothing inlined ✅

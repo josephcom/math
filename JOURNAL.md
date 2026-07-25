@@ -29,3 +29,27 @@ what changed, and anything a future Claude would be surprised by.
 **Live at:** https://josephcom.github.io/math/
 
 **Open items:** none. Chapter 2's topic is undecided.
+
+---
+
+## 2026-07-25 (later) — Proof boxes added
+
+Joseph asked for a second sliding box, right after each example box, holding the
+**formal proof/derivation** of any item that needs one (theorems, propositions,
+lemmas, corollaries, derived inference rules — not definitions, axioms, or methods).
+
+**Done this session:**
+- New `.proof` component in `style.css`: white background, 2px **solid** green
+  border (vs. the example's dashed), auto-inserted bold "Proof" label, same
+  grid-rows slide. Opens together with the example on the same click.
+- One-word change in `script.js`: clicks inside `.proof` no longer close the item.
+- Added ~64 proof boxes across all 11 layers of Chapter 1. Short formal
+  derivations in KaTeX ending with \(\blacksquare\); deep results (CSB, Zorn,
+  Gödel, CH) got honest sketches starting with "Sketch:".
+- Chapter 1's "How to Use This Page" pane now mentions the proof box.
+- STYLE-GUIDE.md: new §4 "The Proof System" (markup, scope, sketch rule);
+  later sections renumbered 5–9; design rules + checklist updated.
+- CLAUDE.md standing preferences updated.
+
+**Surprise for future Claude:** nothing extra to wire per chapter — the same
+`li.on` class drives both boxes; just emit `.proof` markup after `.ex`.

@@ -108,6 +108,23 @@ li.on .ex{grid-template-rows:1fr;opacity:1;margin-top:11px}
   font-size:.82rem;margin-bottom:3px;
 }
 
+/* ---------- sliding proof boxes (theorems etc.; sits right after .ex) ---------- */
+.proof{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1),opacity .35s,margin .4s;
+  margin-top:0;
+}
+li.on .proof{grid-template-rows:1fr;opacity:1;margin-top:9px}
+.proof>div{overflow:hidden}
+.proof p{
+  border:2px solid var(--green);border-radius:8px;background:#fff;
+  padding:13px 18px;font-size:.9rem;color:var(--text);cursor:default;
+}
+.proof p::before{
+  content:"Proof";display:block;font-weight:700;color:var(--green-dark);
+  font-size:.82rem;margin-bottom:3px;
+}
+
 /* ---------- summary table ---------- */
 table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:16px}
 th,td{border:1px solid var(--border);padding:10px 13px;text-align:left;vertical-align:top}

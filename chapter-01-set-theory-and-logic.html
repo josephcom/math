@@ -38,6 +38,7 @@
     <h2>How to Use This Page</h2>
     <p>Every list item hides a short, plain-language example.</p>
     <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
     <p>Math is rendered in proper book notation, e.g. \(\forall x\, \exists y\; (x \in y)\).</p>
   </div>
 </div>
@@ -100,37 +101,51 @@
   <h3>Theorems — The Laws of Logic</h3>
   <ul>
     <li><b>Double negation:</b> \(\neg\neg p \equiv p\).
-      <div class="ex"><div><p>"I'm not <em>not</em> going" = "I'm going."</p></div></div></li>
+      <div class="ex"><div><p>"I'm not <em>not</em> going" = "I'm going."</p></div></div>
+      <div class="proof"><div><p>Truth table: if \(p\) is T, then \(\neg p\) is F, so \(\neg\neg p\) is T; if \(p\) is F, then \(\neg\neg p\) is F. The columns for \(p\) and \(\neg\neg p\) agree in both rows, so \(\neg\neg p \equiv p\). \(\blacksquare\)</p></div></div></li>
     <li><b>De Morgan's laws:</b> \(\neg(p \land q) \equiv \neg p \lor \neg q\) and \(\neg(p \lor q) \equiv \neg p \land \neg q\).
-      <div class="ex"><div><p>"He's not rich-and-famous" = "he's not rich, <em>or</em> not famous (or neither)."</p></div></div></li>
+      <div class="ex"><div><p>"He's not rich-and-famous" = "he's not rich, <em>or</em> not famous (or neither)."</p></div></div>
+      <div class="proof"><div><p>\(\neg(p \land q)\) is F exactly when \(p \land q\) is T, i.e. when \(p\) and \(q\) are both T. And \(\neg p \lor \neg q\) is F exactly when \(\neg p\) and \(\neg q\) are both F — again when \(p\) and \(q\) are both T. Same single F-row out of four, so the columns agree. The second law follows by applying the first to \(\neg p, \neg q\) and cancelling double negations. \(\blacksquare\)</p></div></div></li>
     <li><b>Contrapositive law:</b> \((p \to q) \equiv (\neg q \to \neg p)\).
-      <div class="ex"><div><p>"Dog → animal" says exactly the same as "not animal → not dog."</p></div></div></li>
+      <div class="ex"><div><p>"Dog → animal" says exactly the same as "not animal → not dog."</p></div></div>
+      <div class="proof"><div><p>\(p \to q\) is F only in the row \(p = \text{T},\ q = \text{F}\). And \(\neg q \to \neg p\) is F only when \(\neg q\) is T and \(\neg p\) is F — the very same row. One shared failing row, agreement everywhere else: identical columns. \(\blacksquare\)</p></div></div></li>
     <li><b>Implication as disjunction:</b> \((p \to q) \equiv (\neg p \lor q)\).
-      <div class="ex"><div><p>"If it rains, I stay home" = "It doesn't rain, or I stay home."</p></div></div></li>
+      <div class="ex"><div><p>"If it rains, I stay home" = "It doesn't rain, or I stay home."</p></div></div>
+      <div class="proof"><div><p>Both sides are F in exactly one of the four rows: \(p \to q\) fails only at \(p = \text{T},\ q = \text{F}\); and \(\neg p \lor q\) fails only when \(\neg p\) and \(q\) are both F — i.e. the same row. Columns match. \(\blacksquare\)</p></div></div></li>
     <li><b>Commutativity:</b> \(p \land q \equiv q \land p\); same for \(\lor\).
-      <div class="ex"><div><p>"Cold and wet" = "wet and cold."</p></div></div></li>
+      <div class="ex"><div><p>"Cold and wet" = "wet and cold."</p></div></div>
+      <div class="proof"><div><p>\(p \land q\) is T exactly when both \(p\) and \(q\) are T — a condition symmetric in the two letters — so its column equals that of \(q \land p\) in every row. Likewise \(p \lor q\) ("at least one is T") is symmetric. \(\blacksquare\)</p></div></div></li>
     <li><b>Associativity:</b> \((p \land q) \land r \equiv p \land (q \land r)\).
-      <div class="ex"><div><p>"(Cold and wet) and windy" = "cold and (wet and windy)" — grouping doesn't matter.</p></div></div></li>
+      <div class="ex"><div><p>"(Cold and wet) and windy" = "cold and (wet and windy)" — grouping doesn't matter.</p></div></div>
+      <div class="proof"><div><p>Each side is T exactly when all three of \(p, q, r\) are T, and F otherwise — the grouping never enters that condition. (Dually for \(\lor\): T iff at least one is T.) The 8 truth-table rows confirm it mechanically. \(\blacksquare\)</p></div></div></li>
     <li><b>Distributivity:</b> \(p \land (q \lor r) \equiv (p \land q) \lor (p \land r)\).
-      <div class="ex"><div><p>"Coffee, with cake or pie" = "coffee-and-cake, or coffee-and-pie."</p></div></div></li>
+      <div class="ex"><div><p>"Coffee, with cake or pie" = "coffee-and-cake, or coffee-and-pie."</p></div></div>
+      <div class="proof"><div><p>The left side is T iff \(p\) is T and at least one of \(q, r\) is T. The right side is T iff \(p\) is T together with \(q\), or \(p\) is T together with \(r\) — the same condition. All 8 rows agree. \(\blacksquare\)</p></div></div></li>
     <li><b>Idempotence:</b> \(p \land p \equiv p\).
-      <div class="ex"><div><p>"It's raining and it's raining" — saying it twice adds nothing.</p></div></div></li>
+      <div class="ex"><div><p>"It's raining and it's raining" — saying it twice adds nothing.</p></div></div>
+      <div class="proof"><div><p>Row check: \(p = \text{T}\) gives \(p \land p = \text{T}\); \(p = \text{F}\) gives F. The column is identical to \(p\)'s. (Same two rows for \(p \lor p\).) \(\blacksquare\)</p></div></div></li>
     <li><b>Absorption:</b> \(p \lor (p \land q) \equiv p\).
-      <div class="ex"><div><p>"It's raining, or it's raining-and-cold" boils down to just "it's raining."</p></div></div></li>
+      <div class="ex"><div><p>"It's raining, or it's raining-and-cold" boils down to just "it's raining."</p></div></div>
+      <div class="proof"><div><p>If \(p\) is T, the first disjunct makes the left side T — matching \(p\). If \(p\) is F, then \(p \land q\) is F too, so \(p \lor (p \land q)\) is F — again matching \(p\). \(\blacksquare\)</p></div></div></li>
     <li><b>Excluded middle:</b> \(p \lor \neg p\) is a tautology.
-      <div class="ex"><div><p>"The light is on, or it isn't." No third option.</p></div></div></li>
+      <div class="ex"><div><p>"The light is on, or it isn't." No third option.</p></div></div>
+      <div class="proof"><div><p>Only two rows exist: \(p = \text{T}\) makes the first disjunct T; \(p = \text{F}\) makes \(\neg p\) T. Either way \(p \lor \neg p\) is T — a tautology. \(\blacksquare\)</p></div></div></li>
     <li><b>Non-contradiction:</b> \(\neg(p \land \neg p)\) is a tautology.
-      <div class="ex"><div><p>The light can't be on and off at the same moment.</p></div></div></li>
+      <div class="ex"><div><p>The light can't be on and off at the same moment.</p></div></div>
+      <div class="proof"><div><p>In both rows one of the conjuncts \(p, \neg p\) is F, so \(p \land \neg p\) is always F. Its negation is therefore T in every row — a tautology. \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Derived Inference Rules</h3>
   <ul>
     <li><b>Modus tollens</b> — from \(p \to q\) and \(\neg q\), conclude \(\neg p\).
-      <div class="ex"><div><p>"If it rained, the ground would be wet. The ground is dry. So it didn't rain."</p></div></div></li>
+      <div class="ex"><div><p>"If it rained, the ground would be wet. The ground is dry. So it didn't rain."</p></div></div>
+      <div class="proof"><div><p>By the contrapositive law, \(p \to q \equiv \neg q \to \neg p\). From \(\neg q\) and \(\neg q \to \neg p\), modus ponens gives \(\neg p\). \(\blacksquare\)</p></div></div></li>
     <li><b>Hypothetical syllogism</b> — from \(p \to q\) and \(q \to r\), conclude \(p \to r\).
-      <div class="ex"><div><p>"Rain → wet roads. Wet roads → slippery. Therefore rain → slippery."</p></div></div></li>
+      <div class="ex"><div><p>"Rain → wet roads. Wet roads → slippery. Therefore rain → slippery."</p></div></div>
+      <div class="proof"><div><p>Assume \(p\). Modus ponens with \(p \to q\) gives \(q\); modus ponens again with \(q \to r\) gives \(r\). So assuming \(p\) always yields \(r\): \(p \to r\). \(\blacksquare\)</p></div></div></li>
     <li><b>Disjunctive syllogism</b> — from \(p \lor q\) and \(\neg p\), conclude \(q\).
-      <div class="ex"><div><p>"My keys are in my coat or my bag. Not in the coat. So: in the bag."</p></div></div></li>
+      <div class="ex"><div><p>"My keys are in my coat or my bag. Not in the coat. So: in the bag."</p></div></div>
+      <div class="proof"><div><p>By implication-as-disjunction (read right-to-left, with double negation), \(p \lor q \equiv \neg p \to q\). From \(\neg p\) and \(\neg p \to q\), modus ponens gives \(q\). \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Methods</h3>
@@ -177,13 +192,17 @@
   <h3>Theorems — Quantifier Laws</h3>
   <ul>
     <li><b>Negating \(\forall\):</b> \(\neg\forall x\, P(x) \equiv \exists x\, \neg P(x)\).
-      <div class="ex"><div><p>"Not all swans are white" = "some swan is not white."</p></div></div></li>
+      <div class="ex"><div><p>"Not all swans are white" = "some swan is not white."</p></div></div>
+      <div class="proof"><div><p>(\(\Rightarrow\)) Suppose \(\neg\forall x\,P(x)\), and suppose for contradiction no \(x\) satisfied \(\neg P\). Then every \(x\) would satisfy \(P\) — contradicting the supposition. So \(\exists x\,\neg P(x)\). (\(\Leftarrow\)) A witness with \(\neg P(x)\) directly refutes \(\forall x\,P(x)\). \(\blacksquare\)</p></div></div></li>
     <li><b>Negating \(\exists\):</b> \(\neg\exists x\, P(x) \equiv \forall x\, \neg P(x)\).
-      <div class="ex"><div><p>"No one called" = "everyone didn't call."</p></div></div></li>
+      <div class="ex"><div><p>"No one called" = "everyone didn't call."</p></div></div>
+      <div class="proof"><div><p>Apply the previous law to the predicate \(\neg P\): \(\neg\forall x\,\neg P(x) \equiv \exists x\,\neg\neg P(x) \equiv \exists x\,P(x)\). Negate both sides and cancel the double negation on the left: \(\forall x\,\neg P(x) \equiv \neg\exists x\,P(x)\). \(\blacksquare\)</p></div></div></li>
     <li><b>Order matters across types:</b> \(\exists y\,\forall x\, P(x,y) \to \forall x\,\exists y\, P(x,y)\), but not the reverse.
-      <div class="ex"><div><p>"Everyone has a mother" (\(\forall\) person \(\exists\) mother) is true. "There's one mother of everyone" (\(\exists\) mother \(\forall\) person) is not.</p></div></div></li>
+      <div class="ex"><div><p>"Everyone has a mother" (\(\forall\) person \(\exists\) mother) is true. "There's one mother of everyone" (\(\exists\) mother \(\forall\) person) is not.</p></div></div>
+      <div class="proof"><div><p>Assume \(\exists y\,\forall x\,P(x,y)\); name a witness \(b\), so \(\forall x\,P(x,b)\). Given any \(x\), the choice \(y = b\) shows \(\exists y\,P(x,y)\); as \(x\) was arbitrary, \(\forall x\,\exists y\,P(x,y)\). The converse fails: over \(\mathbb{N}\) let \(P(x,y)\) be "\(y = x\)" — \(\forall x\,\exists y\) is true, \(\exists y\,\forall x\) is false. \(\blacksquare\)</p></div></div></li>
     <li><b>Same-type quantifiers commute:</b> \(\forall x\,\forall y \equiv \forall y\,\forall x\).
-      <div class="ex"><div><p>"Every person likes every food" — either order of saying it, same claim.</p></div></div></li>
+      <div class="ex"><div><p>"Every person likes every food" — either order of saying it, same claim.</p></div></div>
+      <div class="proof"><div><p>Each side asserts exactly that \(P(x,y)\) holds for every pair of values \((x,y)\) from the domain — the order of announcing the two \(\forall\)'s doesn't change which pairs are covered. (Dually, \(\exists x\,\exists y \equiv \exists y\,\exists x\): some pair works.) \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Inference Rules</h3>
@@ -242,21 +261,27 @@
   <h3>Propositions</h3>
   <ul>
     <li><b>\(\varnothing \subseteq A\)</b> for every set \(A\).
-      <div class="ex"><div><p>"Every unicorn I own is also in your set" — true for free, since I own none. (Vacuous truth.)</p></div></div></li>
+      <div class="ex"><div><p>"Every unicorn I own is also in your set" — true for free, since I own none. (Vacuous truth.)</p></div></div>
+      <div class="proof"><div><p>We must show \(\forall x\,(x \in \varnothing \to x \in A)\). The antecedent \(x \in \varnothing\) is false for every \(x\), and an implication with a false antecedent is true. So the claim holds vacuously. \(\blacksquare\)</p></div></div></li>
     <li><b>Reflexivity:</b> \(A \subseteq A\).
-      <div class="ex"><div><p>Every cat is a cat.</p></div></div></li>
+      <div class="ex"><div><p>Every cat is a cat.</p></div></div>
+      <div class="proof"><div><p>\(x \in A \to x \in A\) is an instance of the tautology \(p \to p\), true for every \(x\). That is the definition of \(A \subseteq A\). \(\blacksquare\)</p></div></div></li>
     <li><b>Transitivity:</b> \(A \subseteq B \subseteq C \implies A \subseteq C\).
-      <div class="ex"><div><p>Cats ⊆ mammals ⊆ animals, so cats ⊆ animals.</p></div></div></li>
+      <div class="ex"><div><p>Cats ⊆ mammals ⊆ animals, so cats ⊆ animals.</p></div></div>
+      <div class="proof"><div><p>Take any \(x \in A\). Since \(A \subseteq B\), \(x \in B\); since \(B \subseteq C\), \(x \in C\). (Hypothetical syllogism applied to the two membership implications.) As \(x\) was arbitrary, \(A \subseteq C\). \(\blacksquare\)</p></div></div></li>
     <li><b>Equality via double inclusion:</b> \(A = B \iff A \subseteq B \text{ and } B \subseteq A\).
-      <div class="ex"><div><p>Two clubs are identical exactly when each member of one belongs to the other — checked in both directions.</p></div></div></li>
+      <div class="ex"><div><p>Two clubs are identical exactly when each member of one belongs to the other — checked in both directions.</p></div></div>
+      <div class="proof"><div><p>By Extensionality (Layer 4), \(A = B \iff \forall x\,(x \in A \leftrightarrow x \in B)\). A biconditional is exactly two implications, \(x \in A \to x \in B\) and \(x \in B \to x \in A\) — which say precisely \(A \subseteq B\) and \(B \subseteq A\). \(\blacksquare\)</p></div></div></li>
     <li><b>\(\varnothing\) is unique.</b>
-      <div class="ex"><div><p>Two empty boxes hold exactly the same contents (nothing) — so as sets, they're one and the same.</p></div></div></li>
+      <div class="ex"><div><p>Two empty boxes hold exactly the same contents (nothing) — so as sets, they're one and the same.</p></div></div>
+      <div class="proof"><div><p>Suppose \(\varnothing_1\) and \(\varnothing_2\) are both empty. Then \(\varnothing_1 \subseteq \varnothing_2\) and \(\varnothing_2 \subseteq \varnothing_1\), both vacuously (the previous proposition). By double inclusion, \(\varnothing_1 = \varnothing_2\). \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Theorem</h3>
   <ul>
     <li><b>Power set size:</b> if \(|A| = n\), then \(|\mathcal{P}(A)| = 2^n\).
-      <div class="ex"><div><p>3 pizza toppings → \(2^3 = 8\) possible pizzas (each topping is a yes/no, including the plain one).</p></div></div></li>
+      <div class="ex"><div><p>3 pizza toppings → \(2^3 = 8\) possible pizzas (each topping is a yes/no, including the plain one).</p></div></div>
+      <div class="proof"><div><p>Induction on \(n\). Base: \(|A| = 0\) means \(A = \varnothing\), whose only subset is \(\varnothing\) itself: \(2^0 = 1\). ✓ Step: let \(|A| = n + 1\) and pick \(a \in A\). Every subset either omits \(a\) — a subset of \(A \setminus \{a\}\), and by hypothesis there are \(2^n\) of those — or contains \(a\) — one of those same \(2^n\) with \(a\) added. Total: \(2^n + 2^n = 2^{n+1}\). \(\blacksquare\)</p></div></div></li>
   </ul>
 </section>
 
@@ -293,9 +318,11 @@
   <h3>Theorem — The Crisis Behind the Rules</h3>
   <ul>
     <li><b>Russell's paradox</b> — \(R = \{x : x \notin x\}\) cannot be a set.
-      <div class="ex"><div><p>The barber shaves exactly those who don't shave themselves. Who shaves the barber? Either answer contradicts itself — so no such "set" can exist.</p></div></div></li>
+      <div class="ex"><div><p>The barber shaves exactly those who don't shave themselves. Who shaves the barber? Either answer contradicts itself — so no such "set" can exist.</p></div></div>
+      <div class="proof"><div><p>Suppose \(R\) were a set, and ask whether \(R \in R\). By \(R\)'s defining condition, \(R \in R \iff R \notin R\) — a contradiction either way. So no set satisfies the description. (ZFC's Separation only builds \(\{x \in A : x \notin x\}\) from an existing \(A\); the same argument then merely shows that set lies outside \(A\) — no paradox.) \(\blacksquare\)</p></div></div></li>
     <li><b>Corollary</b> — there is no set of all sets.
-      <div class="ex"><div><p>A "set of everything" would let you carve out Russell's monster with Separation. So the universe of sets is not itself a set.</p></div></div></li>
+      <div class="ex"><div><p>A "set of everything" would let you carve out Russell's monster with Separation. So the universe of sets is not itself a set.</p></div></div>
+      <div class="proof"><div><p>Suppose a set \(V\) contained every set. Separation would then legally form \(R = \{x \in V : x \notin x\}\). Since every set is in \(V\), this \(R\) is exactly Russell's \(R\) — which we just proved cannot exist. Contradiction; no such \(V\). \(\blacksquare\)</p></div></div></li>
   </ul>
 </section>
 
@@ -324,29 +351,39 @@
   <h3>Theorems — The Algebra of Sets</h3>
   <ul>
     <li><b>Commutative:</b> \(A \cup B = B \cup A\).
-      <div class="ex"><div><p>"Tea or coffee people" = "coffee or tea people."</p></div></div></li>
+      <div class="ex"><div><p>"Tea or coffee people" = "coffee or tea people."</p></div></div>
+      <div class="proof"><div><p>Element-chasing: \(x \in A \cup B \iff x \in A \lor x \in B \iff x \in B \lor x \in A \iff x \in B \cup A\), using commutativity of \(\lor\) (Layer 1). Extensionality turns "same members" into equality. Same for \(\cap\) with \(\land\). \(\blacksquare\)</p></div></div></li>
     <li><b>Associative:</b> \((A \cup B) \cup C = A \cup (B \cup C)\).
-      <div class="ex"><div><p>Merging three guest lists: merge in any grouping, same crowd shows up.</p></div></div></li>
+      <div class="ex"><div><p>Merging three guest lists: merge in any grouping, same crowd shows up.</p></div></div>
+      <div class="proof"><div><p>An \(x\) belongs to either side iff \(x \in A \lor x \in B \lor x \in C\); by associativity of \(\lor\) (Layer 1) the grouping is irrelevant. Extensionality finishes. (Dually for \(\cap\).) \(\blacksquare\)</p></div></div></li>
     <li><b>Distributive:</b> \(A \cap (B \cup C) = (A \cap B) \cup (A \cap C)\).
-      <div class="ex"><div><p>"Students who also play (piano or violin)" = "students-who-play-piano, plus students-who-play-violin."</p></div></div></li>
+      <div class="ex"><div><p>"Students who also play (piano or violin)" = "students-who-play-piano, plus students-who-play-violin."</p></div></div>
+      <div class="proof"><div><p>\(x \in A \cap (B \cup C) \iff x \in A \land (x \in B \lor x \in C)\). By Layer 1's distributive law this is \((x \in A \land x \in B) \lor (x \in A \land x \in C)\), i.e. \(x \in (A \cap B) \cup (A \cap C)\). Extensionality. \(\blacksquare\)</p></div></div></li>
     <li><b>De Morgan (sets):</b> \((A \cup B)^{c} = A^{c} \cap B^{c}\).
-      <div class="ex"><div><p>"Likes neither tea nor coffee" = "doesn't like tea AND doesn't like coffee."</p></div></div></li>
+      <div class="ex"><div><p>"Likes neither tea nor coffee" = "doesn't like tea AND doesn't like coffee."</p></div></div>
+      <div class="proof"><div><p>\(x \in (A \cup B)^c \iff \neg(x \in A \lor x \in B) \iff \neg(x \in A) \land \neg(x \in B)\) — Layer 1's De Morgan — \(\iff x \in A^c \cap B^c\). The dual law \((A \cap B)^c = A^c \cup B^c\) is the same chase with the other De Morgan law. \(\blacksquare\)</p></div></div></li>
     <li><b>Identity:</b> \(A \cup \varnothing = A\); \(A \cap U = A\).
-      <div class="ex"><div><p>Adding an empty guest list changes nothing; intersecting with "everyone" changes nothing.</p></div></div></li>
+      <div class="ex"><div><p>Adding an empty guest list changes nothing; intersecting with "everyone" changes nothing.</p></div></div>
+      <div class="proof"><div><p>\(x \in A \cup \varnothing \iff x \in A \lor \text{F} \iff x \in A\) (a false disjunct drops out). \(x \in A \cap U \iff x \in A \land \text{T} \iff x \in A\) (a true conjunct drops out). \(\blacksquare\)</p></div></div></li>
     <li><b>Complement laws:</b> \(A \cup A^{c} = U\); \(A \cap A^{c} = \varnothing\); \((A^{c})^{c} = A\).
-      <div class="ex"><div><p>Tea-likers plus non-tea-likers = everyone; nobody is in both camps; "not not tea-liker" = tea-liker.</p></div></div></li>
+      <div class="ex"><div><p>Tea-likers plus non-tea-likers = everyone; nobody is in both camps; "not not tea-liker" = tea-liker.</p></div></div>
+      <div class="proof"><div><p>For any \(x \in U\): excluded middle gives \(x \in A \lor x \notin A\), so \(A \cup A^c = U\). Non-contradiction forbids both at once, so \(A \cap A^c = \varnothing\). And \(x \in (A^c)^c \iff \neg\neg(x \in A) \iff x \in A\) by double negation. \(\blacksquare\)</p></div></div></li>
     <li><b>Absorption:</b> \(A \cup (A \cap B) = A\).
-      <div class="ex"><div><p>Tea-likers, plus the both-drinks people — but they were already tea-likers. Nothing new.</p></div></div></li>
+      <div class="ex"><div><p>Tea-likers, plus the both-drinks people — but they were already tea-likers. Nothing new.</p></div></div>
+      <div class="proof"><div><p>\(x \in A \cup (A \cap B) \iff (x \in A) \lor (x \in A \land x \in B)\), which by Layer 1's absorption law is just \(x \in A\). Extensionality. \(\blacksquare\)</p></div></div></li>
     <li><b>Generalized De Morgan:</b> \(\left(\bigcup_i A_i\right)^{c} = \bigcap_i A_i^{c}\).
-      <div class="ex"><div><p>"Missed every meeting" = "not (attended at least one)".</p></div></div></li>
+      <div class="ex"><div><p>"Missed every meeting" = "not (attended at least one)".</p></div></div>
+      <div class="proof"><div><p>\(x \in \left(\bigcup_i A_i\right)^c \iff \neg\exists i\,(x \in A_i) \iff \forall i\,(x \notin A_i)\) — the quantifier negation law from Layer 2 — \(\iff x \in \bigcap_i A_i^c\). \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Theorem — Counting</h3>
   <ul>
     <li><b>Inclusion–Exclusion:</b> \(|A \cup B| = |A| + |B| - |A \cap B|\).
-      <div class="ex"><div><p>30 like tea, 20 like coffee, 10 like both → \(30 + 20 - 10 = 40\) people, not 50. The overlap was counted twice.</p></div></div></li>
+      <div class="ex"><div><p>30 like tea, 20 like coffee, 10 like both → \(30 + 20 - 10 = 40\) people, not 50. The overlap was counted twice.</p></div></div>
+      <div class="proof"><div><p>\(A \cup B\) splits into three disjoint pieces: \(A \setminus B\), \(A \cap B\), \(B \setminus A\), so \(|A \cup B|\) is the sum of their sizes. Also \(|A| = |A \setminus B| + |A \cap B|\) and \(|B| = |B \setminus A| + |A \cap B|\). Then \(|A| + |B| - |A \cap B| = |A \setminus B| + |A \cap B| + |B \setminus A|\) — the same three-piece sum. \(\blacksquare\)</p></div></div></li>
     <li><b>Corollary (3 sets):</b> add singles, subtract pairs, add back the triple.
-      <div class="ex"><div><p>Counting students in football, chess, or drama: overlaps get double-counted, the triple-overlap gets over-corrected — the formula fixes both.</p></div></div></li>
+      <div class="ex"><div><p>Counting students in football, chess, or drama: overlaps get double-counted, the triple-overlap gets over-corrected — the formula fixes both.</p></div></div>
+      <div class="proof"><div><p>Apply the two-set formula twice: \(|A \cup B \cup C| = |A \cup B| + |C| - |(A \cup B) \cap C|\). Expand \(|A \cup B|\) by the formula, distribute \((A \cup B) \cap C = (A \cap C) \cup (B \cap C)\), and apply the formula once more to that union (its overlap is \(A \cap B \cap C\)). Collecting terms: singles − pairs + the triple. \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Methods</h3>
@@ -403,17 +440,21 @@
   <h3>Propositions</h3>
   <ul>
     <li><b>Pair equality:</b> \((a,b) = (c,d) \iff a = c \land b = d\).
-      <div class="ex"><div><p>Two map points coincide exactly when both coordinates match, slot by slot — proving Kuratowski's trick really works.</p></div></div></li>
+      <div class="ex"><div><p>Two map points coincide exactly when both coordinates match, slot by slot — proving Kuratowski's trick really works.</p></div></div>
+      <div class="proof"><div><p>(\(\Leftarrow\)) Immediate. (\(\Rightarrow\)) Let \(\{\{a\},\{a,b\}\} = \{\{c\},\{c,d\}\}\). Case \(a = b\): the left side is \(\{\{a\}\}\), forcing \(\{c\} = \{c,d\} = \{a\}\), so \(c = d = a\), giving \(a = c\) and \(b = d\). Case \(a \neq b\): the singleton \(\{a\}\) can only equal the singleton \(\{c\}\), so \(a = c\); then \(\{a,b\} = \{c,d\}\) with \(b \neq a = c\) forces \(b = d\). \(\blacksquare\)</p></div></div></li>
     <li><b>Product size:</b> \(|A \times B| = |A| \cdot |B|\).
-      <div class="ex"><div><p>3 sizes × 2 colors = 6 shirts.</p></div></div></li>
+      <div class="ex"><div><p>3 sizes × 2 colors = 6 shirts.</p></div></div>
+      <div class="proof"><div><p>For each fixed \(a \in A\), the pairs with first coordinate \(a\) are \((a,b)\) for \(b \in B\): exactly \(|B|\) of them. Distinct first coordinates give disjoint groups (pair equality), and there are \(|A|\) groups — so \(|A| \cdot |B|\) pairs in all. \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Theorem</h3>
   <ul>
     <li><b>Equivalence relations ⟺ partitions</b> — two views of the same thing.
-      <div class="ex"><div><p>"Same birthday" (a way of relating people) and "the 366 birthday groups" (a way of slicing people) carry identical information.</p></div></div></li>
+      <div class="ex"><div><p>"Same birthday" (a way of relating people) and "the 366 birthday groups" (a way of slicing people) carry identical information.</p></div></div>
+      <div class="proof"><div><p>Equivalence → partition: reflexivity puts \(a \in [a]\), so classes cover \(A\); and if some \(x \in [a] \cap [b]\), then for any \(y \sim a\), symmetry and transitivity chain \(y \sim a \sim x \sim b\), so \([a] = [b]\) — classes are identical or disjoint. Partition → equivalence: define \(a \sim b\) iff \(a, b\) share a piece; this is reflexive (own piece), symmetric (sharing is mutual), transitive (pieces are disjoint, so a shared piece is the <em>same</em> piece). The two constructions undo each other. \(\blacksquare\)</p></div></div></li>
     <li><b>Corollary</b> — classes are identical or disjoint, and they cover everything.
-      <div class="ex"><div><p>Nobody belongs to two birthday groups, and nobody belongs to none.</p></div></div></li>
+      <div class="ex"><div><p>Nobody belongs to two birthday groups, and nobody belongs to none.</p></div></div>
+      <div class="proof"><div><p>Both halves sit inside the theorem's proof: \(a \in [a]\) (reflexivity) shows every element is covered, and the argument that a common member forces \([a] = [b]\) shows two classes are identical or disjoint. \(\blacksquare\)</p></div></div></li>
   </ul>
 </section>
 
@@ -448,15 +489,20 @@
   <h3>Propositions &amp; Lemmas</h3>
   <ul>
     <li><b>Composition is associative:</b> \(h \circ (g \circ f) = (h \circ g) \circ f\).
-      <div class="ex"><div><p>Do \(f\), then \(g\), then \(h\). However you mentally group the steps, the assembly line is the same.</p></div></div></li>
+      <div class="ex"><div><p>Do \(f\), then \(g\), then \(h\). However you mentally group the steps, the assembly line is the same.</p></div></div>
+      <div class="proof"><div><p>Both sides are functions on the same domain. Feed either one an \(x\): each computes \(h(g(f(x)))\). Two functions with the same domain and identical outputs at every input are equal (functions are sets of pairs — Extensionality). \(\blacksquare\)</p></div></div></li>
     <li><b>Composition preserves inj / surj / bij.</b>
-      <div class="ex"><div><p>Two lossless steps in a row → lossless overall. Chain two perfect matchings → a perfect matching.</p></div></div></li>
+      <div class="ex"><div><p>Two lossless steps in a row → lossless overall. Chain two perfect matchings → a perfect matching.</p></div></div>
+      <div class="proof"><div><p>Injective: if \(g(f(x)) = g(f(y))\), injectivity of \(g\) gives \(f(x) = f(y)\), then injectivity of \(f\) gives \(x = y\). Surjective: given \(z\), surjectivity of \(g\) yields \(y\) with \(g(y) = z\), then surjectivity of \(f\) yields \(x\) with \(f(x) = y\), so \(g(f(x)) = z\). Bijective = both at once. \(\blacksquare\)</p></div></div></li>
     <li><b>Inverse ⟺ bijection</b>, and the inverse is unique.
-      <div class="ex"><div><p>Only a perfect pairing can be undone: if two inputs shared an output, "undo" wouldn't know which to return.</p></div></div></li>
+      <div class="ex"><div><p>Only a perfect pairing can be undone: if two inputs shared an output, "undo" wouldn't know which to return.</p></div></div>
+      <div class="proof"><div><p>If \(f\) is a bijection, each \(b \in B\) has exactly one preimage (at least one by surjectivity, at most one by injectivity) — define \(f^{-1}(b)\) to be it; both compositions are then identities. Conversely, if \(g\) undoes \(f\) both ways: \(f(x) = f(y) \implies x = g(f(x)) = g(f(y)) = y\) (injective), and every \(b = f(g(b))\) is hit (surjective). Uniqueness: if \(h\) also works, \(g = g \circ \mathrm{id} = g \circ (f \circ h) = (g \circ f) \circ h = \mathrm{id} \circ h = h\). \(\blacksquare\)</p></div></div></li>
     <li><b>Preimages behave better than images</b> — \(f^{-1}\) preserves \(\cup\), \(\cap\), complements.
-      <div class="ex"><div><p>"Born in May or June" = "born in May" ∪ "born in June" — preimages split cleanly along set operations. Images sometimes don't.</p></div></div></li>
+      <div class="ex"><div><p>"Born in May or June" = "born in May" ∪ "born in June" — preimages split cleanly along set operations. Images sometimes don't.</p></div></div>
+      <div class="proof"><div><p>\(x \in f^{-1}(S \cup T) \iff f(x) \in S \cup T \iff f(x) \in S \lor f(x) \in T \iff x \in f^{-1}(S) \cup f^{-1}(T)\). The \(\cap\) and complement cases are the same chase with \(\land\) and \(\neg\): preimage membership is a single condition on \(f(x)\), so it distributes over every connective. (Images fail for \(\cap\): \(f(S \cap T) \subseteq f(S) \cap f(T)\) can be strict when \(f\) merges points.) \(\blacksquare\)</p></div></div></li>
     <li><b>Pigeonhole principle:</b> \(|A| &gt; |B|\) ⟹ no injection \(A \to B\).
-      <div class="ex"><div><p>13 people, 12 months: two must share a birth month.</p></div></div></li>
+      <div class="ex"><div><p>13 people, 12 months: two must share a birth month.</p></div></div>
+      <div class="proof"><div><p>An injection sends distinct inputs to distinct outputs, so its range contains \(|A|\) distinct elements sitting inside \(B\) — forcing \(|A| \le |B|\). Contrapositive: if \(|A| &gt; |B|\), no injection exists, i.e. some two inputs collide. \(\blacksquare\)</p></div></div></li>
   </ul>
 </section>
 
@@ -483,13 +529,17 @@
   <h3>Theorems &amp; Principles</h3>
   <ul>
     <li><b>Mathematical induction:</b> \(P(0)\), and \(P(n) \to P(n+1)\), gives \(\forall n\, P(n)\).
-      <div class="ex"><div><p>Dominoes: the first falls, and each falling domino knocks the next → all infinitely many fall.</p></div></div></li>
+      <div class="ex"><div><p>Dominoes: the first falls, and each falling domino knocks the next → all infinitely many fall.</p></div></div>
+      <div class="proof"><div><p>In ZFC, \(\mathbb{N}\) is defined as the <em>smallest</em> set containing 0 and closed under successor (the intersection of all such sets, which exist by Infinity). Let \(S = \{n \in \mathbb{N} : P(n)\}\). The hypotheses say exactly that \(S\) contains 0 and is closed under successor — so \(\mathbb{N} \subseteq S\) by minimality: \(P\) holds for every natural. \(\blacksquare\)</p></div></div></li>
     <li><b>Strong induction</b> — the step may lean on <em>all</em> earlier cases.
-      <div class="ex"><div><p>To knock down domino \(n\), you may use the combined weight of every domino before it — handy for facts like "every number ≥ 2 factors into primes."</p></div></div></li>
+      <div class="ex"><div><p>To knock down domino \(n\), you may use the combined weight of every domino before it — handy for facts like "every number ≥ 2 factors into primes."</p></div></div>
+      <div class="proof"><div><p>Let \(Q(n)\) = "\(P(k)\) holds for all \(k \le n\)". Then \(Q(0)\) is just \(P(0)\), and \(Q(n) \to Q(n+1)\) is exactly the strong-induction step. Ordinary induction gives \(\forall n\,Q(n)\), and \(Q(n)\) contains \(P(n)\). \(\blacksquare\)</p></div></div></li>
     <li><b>Well-ordering principle</b> — every nonempty set of naturals has a least element.
-      <div class="ex"><div><p>Any bag of counting numbers has a smallest one. (Any bag of fractions doesn't: what's the smallest positive fraction?)</p></div></div></li>
+      <div class="ex"><div><p>Any bag of counting numbers has a smallest one. (Any bag of fractions doesn't: what's the smallest positive fraction?)</p></div></div>
+      <div class="proof"><div><p>Suppose \(S \subseteq \mathbb{N}\) has no least element; we show \(S\) is empty. By strong induction: assume every \(k &lt; n\) lies outside \(S\). If \(n\) were in \(S\), it would be its least element — impossible — so \(n \notin S\) too. Hence no natural is in \(S\). Contrapositive: nonempty \(\Rightarrow\) least element exists. \(\blacksquare\)</p></div></div></li>
     <li><b>All three are equivalent.</b>
-      <div class="ex"><div><p>Induction, strong induction, well-ordering: three costumes, one actor. Prove any one, get the others free.</p></div></div></li>
+      <div class="ex"><div><p>Induction, strong induction, well-ordering: three costumes, one actor. Prove any one, get the others free.</p></div></div>
+      <div class="proof"><div><p>The proofs above already chain: induction ⟹ strong induction ⟹ well-ordering. Close the cycle (well-ordering ⟹ induction): given \(P(0)\) and \(P(n) \to P(n+1)\), suppose some natural failed \(P\); the set of failures would have a least element \(m\). Then \(m \neq 0\) (since \(P(0)\)), and \(P(m-1)\) holds (below the least failure), so the step forces \(P(m)\) — contradiction. A cycle of implications makes all three equivalent. \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Methods</h3>
@@ -526,19 +576,26 @@
   <h3>Theorems</h3>
   <ul>
     <li><b>Cantor–Schröder–Bernstein:</b> injections both ways ⟹ a bijection exists.
-      <div class="ex"><div><p>Every guest fits a chair, and every chair fits a guest → a perfect seating must exist, even if neither of your two fittings was it.</p></div></div></li>
+      <div class="ex"><div><p>Every guest fits a chair, and every chair fits a guest → a perfect seating must exist, even if neither of your two fittings was it.</p></div></div>
+      <div class="proof"><div><p>Sketch: given injections \(f : A \to B\) and \(g : B \to A\), trace each element's ancestry backwards (\(g^{-1}\), then \(f^{-1}\), then \(g^{-1}\), …). Every element falls into one of three kinds: the trail dies out in \(A\), dies out in \(B\), or runs forever. Define \(h = f\) on the first and third kinds and \(h = g^{-1}\) on the second. On each kind \(h\) matches perfectly, and the kinds partition both sets — so \(h : A \to B\) is a bijection. \(\blacksquare\)</p></div></div></li>
     <li><b>\(\mathbb{Z}\) and \(\mathbb{Q}\) are countable.</b>
-      <div class="ex"><div><p>List \(\mathbb{Z}\) as 0, 1, −1, 2, −2, … For fractions, zigzag through a grid of numerators and denominators — every fraction gets a turn.</p></div></div></li>
+      <div class="ex"><div><p>List \(\mathbb{Z}\) as 0, 1, −1, 2, −2, … For fractions, zigzag through a grid of numerators and denominators — every fraction gets a turn.</p></div></div>
+      <div class="proof"><div><p>\(\mathbb{Z}\): the list 0, 1, −1, 2, −2, … is a bijection with \(\mathbb{N}\) — evens map to \(0, -1, -2, \dots\) and odds to \(1, 2, 3, \dots\), every integer appearing exactly once. \(\mathbb{Q}\): put \(p/q\) (lowest terms) in a grid by numerator and denominator, walk the diagonals, skip repeats — an injection \(\mathbb{Q} \to \mathbb{N}\). With the obvious injection \(\mathbb{N} \to \mathbb{Q}\), Cantor–Schröder–Bernstein gives a bijection. \(\blacksquare\)</p></div></div></li>
     <li><b>Countable union of countable sets is countable.</b>
-      <div class="ex"><div><p>Infinitely many buses arrive, each with infinitely many passengers — Hilbert's hotel still checks in everyone with a numbered room.</p></div></div></li>
+      <div class="ex"><div><p>Infinitely many buses arrive, each with infinitely many passengers — Hilbert's hotel still checks in everyone with a numbered room.</p></div></div>
+      <div class="proof"><div><p>List the \(i\)-th set's elements as \(a_{i0}, a_{i1}, a_{i2}, \dots\) (picking one enumeration per set uses countable Choice). Walk the grid \(a_{ij}\) diagonal by diagonal (\(i + j = 0, 1, 2, \dots\)): every element receives a finite position, skipping any already seen. That is an enumeration of the union. \(\blacksquare\)</p></div></div></li>
     <li><b>Cantor's theorem:</b> \(|A| &lt; |\mathcal{P}(A)|\) — always strictly bigger.
-      <div class="ex"><div><p>The collection of all subsets outgrows the set — even when the set is already infinite.</p></div></div></li>
+      <div class="ex"><div><p>The collection of all subsets outgrows the set — even when the set is already infinite.</p></div></div>
+      <div class="proof"><div><p>The map \(x \mapsto \{x\}\) injects \(A\) into \(\mathcal{P}(A)\), so \(|A| \le |\mathcal{P}(A)|\). No \(f : A \to \mathcal{P}(A)\) is onto: let \(D = \{x \in A : x \notin f(x)\}\) (legal by Separation). If \(f(d) = D\) for some \(d\), then \(d \in D \iff d \notin f(d) = D\) — contradiction. So \(D\) is missed by \(f\), and the inequality is strict. \(\blacksquare\)</p></div></div></li>
     <li><b>Corollary:</b> infinitely many sizes of infinity.
-      <div class="ex"><div><p>\(\mathbb{N}\), then its power set, then <em>its</em> power set, … Each strictly bigger. The ladder never tops out.</p></div></div></li>
+      <div class="ex"><div><p>\(\mathbb{N}\), then its power set, then <em>its</em> power set, … Each strictly bigger. The ladder never tops out.</p></div></div>
+      <div class="proof"><div><p>Iterate Cantor's theorem: \(|\mathbb{N}| &lt; |\mathcal{P}(\mathbb{N})| &lt; |\mathcal{P}(\mathcal{P}(\mathbb{N}))| &lt; \cdots\). Each step is strict, and \(&lt;\) chains transitively (compose the injections; a bijection between distant rungs would contradict some step's strictness). So the sizes are pairwise distinct: infinitely many infinities. \(\blacksquare\)</p></div></div></li>
     <li><b>Diagonal argument:</b> \(\mathbb{R}\) is uncountable.
-      <div class="ex"><div><p>Suppose you listed every decimal. Build a new number differing from list-entry \(n\) at digit \(n\). It disagrees with every entry — your "complete" list missed one. No list can work.</p></div></div></li>
+      <div class="ex"><div><p>Suppose you listed every decimal. Build a new number differing from list-entry \(n\) at digit \(n\). It disagrees with every entry — your "complete" list missed one. No list can work.</p></div></div>
+      <div class="proof"><div><p>Suppose \(r_1, r_2, r_3, \dots\) listed every real in \((0,1)\). Build \(x\): let its \(n\)-th decimal digit be 5 if \(r_n\)'s \(n\)-th digit isn't 5, else 6 (avoiding 0 and 9 dodges double representations like \(0.4999\ldots = 0.5\)). Then \(x \in (0,1)\) but \(x\) differs from each \(r_n\) at digit \(n\), so \(x\) is not on the list — contradicting completeness. No list of \((0,1)\) exists, so \(\mathbb{R}\) is uncountable. \(\blacksquare\)</p></div></div></li>
     <li><b>Corollary:</b> irrationals are uncountable.
-      <div class="ex"><div><p>Rationals are listable, reals aren't — so the overflow must come from the irrationals. "Most" numbers are irrational.</p></div></div></li>
+      <div class="ex"><div><p>Rationals are listable, reals aren't — so the overflow must come from the irrationals. "Most" numbers are irrational.</p></div></div>
+      <div class="proof"><div><p>Suppose the irrationals were countable. Then \(\mathbb{R} = \mathbb{Q} \cup (\mathbb{R} \setminus \mathbb{Q})\) would be a union of two countable sets — countable by the union theorem — contradicting the diagonal argument. \(\blacksquare\)</p></div></div></li>
   </ul>
 
   <h3>Method</h3>
@@ -557,13 +614,17 @@
   <h3>Theorem — Equivalences (provable from each other)</h3>
   <ul>
     <li><b>Axiom of Choice</b> — every family of nonempty sets has a choice function.
-      <div class="ex"><div><p>Infinitely many pairs of <em>shoes</em>: easy, "always take the left." Infinitely many pairs of identical <em>socks</em>: no describable rule exists — AC says a full selection exists anyway.</p></div></div></li>
+      <div class="ex"><div><p>Infinitely many pairs of <em>shoes</em>: easy, "always take the left." Infinitely many pairs of identical <em>socks</em>: no describable rule exists — AC says a full selection exists anyway.</p></div></div>
+      <div class="proof"><div><p>Here: Well-ordering ⟹ AC (closing the cycle below). Well-order the union \(\bigcup_i A_i\); define the choice function by sending each nonempty \(A_i\) to its least element under that order — a fully explicit rule once the order exists. \(\blacksquare\)</p></div></div></li>
     <li><b>Zorn's lemma</b> — if every chain has an upper bound, a maximal element exists.
-      <div class="ex"><div><p>A mountain range where every upward path has a top → there must be at least one peak with nothing above it.</p></div></div></li>
+      <div class="ex"><div><p>A mountain range where every upward path has a top → there must be at least one peak with nothing above it.</p></div></div>
+      <div class="proof"><div><p>Sketch (AC ⟹ Zorn): suppose every chain has an upper bound but no maximal element exists. Then every element has something strictly above it; a choice function picks one such "next step" for each. Starting anywhere, keep stepping upward — at limit stages, continue from an upper bound of the chain built so far. Transfinite recursion then builds a strictly increasing chain longer than any set can be — contradiction. \(\blacksquare\)</p></div></div></li>
     <li><b>Well-ordering theorem</b> — every set can be well-ordered.
-      <div class="ex"><div><p>Even \(\mathbb{R}\) can be rearranged so every subset has a "first element" — though provably no one can write that arrangement down.</p></div></div></li>
+      <div class="ex"><div><p>Even \(\mathbb{R}\) can be rearranged so every subset has a "first element" — though provably no one can write that arrangement down.</p></div></div>
+      <div class="proof"><div><p>Sketch (Zorn ⟹ WO): partially order the well-orderings of subsets of \(A\) by "is an initial segment of". A chain's union is again a well-ordering — an upper bound — so Zorn provides a maximal one. If it missed some \(a \in A\), placing \(a\) on top would extend it, contradicting maximality. So the maximal well-ordering covers all of \(A\). (With the AC ⟹ Zorn and WO ⟹ AC arguments, the cycle closes: all three are equivalent.) \(\blacksquare\)</p></div></div></li>
     <li><b>Corollaries across math</b> — every vector space has a basis; Tychonoff's theorem; maximal ideals exist.
-      <div class="ex"><div><p>Deep "something exists" facts all over algebra and analysis secretly run on this one axiom.</p></div></div></li>
+      <div class="ex"><div><p>Deep "something exists" facts all over algebra and analysis secretly run on this one axiom.</p></div></div>
+      <div class="proof"><div><p>Sample (every vector space has a basis): order the linearly independent subsets by inclusion. A chain's union is independent — any finite combination already lives in one link of the chain — so every chain is bounded, and Zorn yields a maximal independent set \(B\). If some vector \(v\) escaped \(\mathrm{span}(B)\), then \(B \cup \{v\}\) would be independent and strictly bigger — contradiction. So \(B\) spans: a basis. The other corollaries follow the same Zorn pattern. \(\blacksquare\)</p></div></div></li>
   </ul>
 </section>
 
@@ -576,13 +637,17 @@
   <h3>Theorems — Metamathematics</h3>
   <ul>
     <li><b>Gödel's 1st incompleteness theorem</b> — any consistent system containing arithmetic has true statements it cannot prove.
-      <div class="ex"><div><p>A sentence engineered to say "I am not provable in this system." If false, the system proves a falsehood; so it's true — and unprovable.</p></div></div></li>
+      <div class="ex"><div><p>A sentence engineered to say "I am not provable in this system." If false, the system proves a falsehood; so it's true — and unprovable.</p></div></div>
+      <div class="proof"><div><p>Sketch: assign every formula and proof a number (Gödel numbering), so "is provable" becomes an arithmetic predicate the system itself can express. The fixed-point (diagonal) lemma then produces a sentence \(G\) provably equivalent to "\(G\) is not provable". If the system proved \(G\), it would prove a false arithmetic statement — breaking consistency. So \(G\) is unprovable — which is exactly what \(G\) asserts: \(G\) is true but unprovable. \(\blacksquare\)</p></div></div></li>
     <li><b>Gödel's 2nd incompleteness theorem</b> — such a system cannot prove its own consistency.
-      <div class="ex"><div><p>A witness vouching "I never lie" proves nothing. Math can't certify its own sanity from the inside.</p></div></div></li>
+      <div class="ex"><div><p>A witness vouching "I never lie" proves nothing. Math can't certify its own sanity from the inside.</p></div></div>
+      <div class="proof"><div><p>Sketch: the entire argument of the 1st theorem can be formalized <em>inside</em> the system, yielding a proof of "\(\mathrm{Con} \to G\)" (consistency implies the Gödel sentence). If the system also proved \(\mathrm{Con}\), modus ponens would prove \(G\) — which the 1st theorem forbids. So \(\mathrm{Con}\) is unprovable. \(\blacksquare\)</p></div></div></li>
     <li><b>Continuum Hypothesis is independent of ZFC</b> (Gödel 1940 + Cohen 1963).
-      <div class="ex"><div><p>"Is there a size of infinity strictly between \(\mathbb{N}\) and \(\mathbb{R}\)?" ZFC shrugs: assuming yes is consistent; assuming no is consistent. The axioms simply don't decide.</p></div></div></li>
+      <div class="ex"><div><p>"Is there a size of infinity strictly between \(\mathbb{N}\) and \(\mathbb{R}\)?" ZFC shrugs: assuming yes is consistent; assuming no is consistent. The axioms simply don't decide.</p></div></div>
+      <div class="proof"><div><p>Sketch: Gödel (1940) built the constructible universe \(L\) — a minimal inner model satisfying all of ZFC in which CH is <em>true</em> — so ZFC cannot refute CH. Cohen (1963) invented forcing, enlarging a model with carefully controlled new reals until CH is <em>false</em> — so ZFC cannot prove CH either. Both halves assume only that ZFC itself is consistent. \(\blacksquare\)</p></div></div></li>
     <li><b>Corollary</b> — multiple consistent mathematical universes exist.
-      <div class="ex"><div><p>Like geometry after the parallel postulate: change the undecided axiom, get a different — equally legal — mathematical world.</p></div></div></li>
+      <div class="ex"><div><p>Like geometry after the parallel postulate: change the undecided axiom, get a different — equally legal — mathematical world.</p></div></div>
+      <div class="proof"><div><p>Immediate from independence: starting from any model of ZFC, Gödel's construction yields a model where CH holds and Cohen's yields one where it fails. Both satisfy every ZFC axiom, yet they disagree on CH — two equally legal mathematical universes. \(\blacksquare\)</p></div></div></li>
   </ul>
 </section>
 

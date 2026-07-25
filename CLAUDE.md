@@ -61,3 +61,6 @@ already excludes it, keep it that way.
   new component needs it (the `.ch*` block for the index was such a case).
 - Simple layman language, sharp and short, but complete and accurate.
 - All math in KaTeX (`\( \)` inline, `\[ \]` display), never raw Unicode.
+- Every theorem/proposition/lemma/corollary item carries a **second hidden `.proof`
+  box** (formal derivation, ends with \(\blacksquare\)) immediately after its `.ex`
+  box. See STYLE-GUIDE.md §4. Definitions, axioms, and methods get none.

@@ -1,7 +1,7 @@
 /* ============================================================
    MATH BOOK — SHARED INTERACTION SCRIPT
    Behavior:
-   - Click a list item  -> its example slides open
+   - Click a list item  -> its example (and proof, if any) slides open
    - Click another item -> the open one closes, new one opens
    - Click anywhere else on the page -> the open example closes
    - Clicking inside an open example keeps it open (readable)
@@ -14,7 +14,7 @@
   document.querySelectorAll('.layer ul li').forEach(function (li) {
     li.addEventListener('click', function (e) {
       e.stopPropagation();
-      if (e.target.closest('.ex')) return;            // reading an example shouldn't close it
+      if (e.target.closest('.ex, .proof')) return;    // reading an example/proof shouldn't close it
       if (openLi && openLi !== li) openLi.classList.remove('on');
       li.classList.toggle('on');
       openLi = li.classList.contains('on') ? li : null;
