@@ -70,7 +70,27 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 
 - Same nesting rule as `.ex`: `.proof > div > p`, `.proof` directly after `.ex`.
 
-## 5. Math Notation
+## 5. The Notes System (automatic — nothing to write)
+
+- Every heading (`h1`, `h2.ltitle`, `h3`) and every list item also carries a **third
+  box: the reader's own note**, built at runtime by `notes.js`. There is **no markup
+  to author** — do not hand-write note boxes, and do not add ids for them.
+- It is amber (the book's one warm accent) so a note is never mistaken for the text.
+  A pencil `✎` sits at the right of every heading and item; filled = a note exists.
+- The raw text is Markdown + LaTeX, so a Claude answer can be pasted in unchanged.
+  Edit mode shows the raw text, view mode the render. Notes live in the reader's
+  `localStorage`, keyed per page and per anchor — never in the repo.
+- Anchor ids are derived from the wording (`i:L3:power-set`, `h:L4:the-zfc-axioms`).
+  **Rewording a term or a heading orphans its note.** When editing an existing
+  chapter, prefer leaving `<b>` terms and `<h3>` headings alone.
+- The one thing a chapter must do is keep both scripts in the head, in this order:
+
+```html
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+```
+
+## 6. Math Notation
 
 - **All math is LaTeX rendered by KaTeX.** Inline: `\( ... \)`. Display: `\[ ... \]`.
 - Never use raw Unicode math where a LaTeX macro exists: `\forall, \exists, \neg, \land,
@@ -83,11 +103,12 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Keep the exact KaTeX CDN block from Chapter 1's `<head>` (stylesheet + katex.min.js +
   auto-render with `\(`/`\[` delimiters).
 
-## 6. Files & Page Skeleton
+## 7. Files & Page Skeleton
 
-- Three shared files, **do not duplicate their contents inline**:
+- Shared files, **do not duplicate their contents inline**:
   - `style.css` — all styling. Link it. Do not edit unless the reader asks.
   - `script.js` — the click-to-reveal behavior. Link it with `defer`.
+  - `notes.js` — the reader's note boxes (§5). Link it with `defer`, after `script.js`.
   - Each chapter: `chapter-NN-topic-name.html`.
 - Page skeleton (copy from Chapter 1):
   1. `<header>`: `<h1>` chapter title + `.topnav` with an outlined back-button
@@ -95,7 +116,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
      `Start Learning ❯` button linking to `#L1`.
   2. `.intro` two-panel card: left white pane = what this chapter is and why it matters
      (3 short paragraphs + green button); right `.mint` pane = "How to Use This Page"
-     (keep the tap-to-reveal explanation).
+     (keep the tap-to-reveal explanation, and the line about the ✎ note box).
   3. `.chips` nav: one pill per layer (`#L1`, `#L2`, ...) + `#SUM` Toolbox.
   4. One `<section class="layer" id="LN">` per layer, each containing:
      `<span class="chapter">Layer N · short nickname</span>`, `<h2 class="ltitle">`,
@@ -103,7 +124,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   5. Recap `<section class="layer" id="SUM">` with the methods `<table>`.
   6. `<footer>`: green Back-to-Top button + one-line tagline.
 
-## 7. Design Rules (already encoded in style.css — just don't fight them)
+## 8. Design Rules (already encoded in style.css — just don't fight them)
 
 - W3Schools-inspired: white page, green `#04AA6D` accent, mint panels, bordered rounded
   cards, Source Sans 3.
@@ -113,11 +134,13 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   (auto-inserted by CSS `::before`) — sliding open/closed via the grid-rows transition.
 - Proof boxes: white background, **2px solid green border**, bold "Proof" label
   (auto-inserted) — same slide, opens together with the example on the same click.
+- Note boxes: warm `--note-bg` amber, **2px solid amber border**, "Note" label — same
+  slide, but its own open state (a note never closes by itself; you'd lose typing).
 - Interaction contract (already in script.js): click opens; clicking another item swaps;
   clicking elsewhere closes; clicking inside an open example keeps it open.
 - Respect `prefers-reduced-motion` (handled in CSS).
 
-## 8. Content Quality Bar
+## 9. Content Quality Bar
 
 - **Completeness over brevity of coverage**: list all standard definitions, axioms,
   propositions, lemmas, theorems, corollaries, and methods for the topic — but each entry
@@ -128,13 +151,15 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Accuracy is non-negotiable; when a result depends on the Axiom of Choice or is
   independent of ZFC, say so.
 
-## 9. Delivery
+## 10. Delivery
 
 - Deliver the chapter as an HTML file that works by dropping it into the same folder as
-  `style.css` and `script.js`. If the reader asks for a bundle, zip all files together.
+  `style.css`, `script.js` and `notes.js`. If the reader asks for a bundle, zip all
+  files together.
 - CDN note: KaTeX and Google Fonts load from the internet; keep that head block intact.
 
 **Checklist before delivering:** every li has an example ✅ · exact `.ex` markup ✅ ·
 every theorem/proposition/lemma/corollary has a `.proof` box right after its `.ex` ✅ ·
 all math in KaTeX ✅ · chips match layer ids ✅ · toolbox table present ✅ ·
-external css/js linked, nothing inlined ✅
+external css/js linked, nothing inlined ✅ · `script.js` **and** `notes.js` both
+linked with `defer`, in that order ✅ · no hand-written note markup ✅

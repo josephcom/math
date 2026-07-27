@@ -29,6 +29,7 @@ The reader is Joseph. Audience: himself and anyone he shares the link with.
 | `chapter-NN-topic-name.html` | One lesson per file. |
 | `style.css` | All styling, shared by every page. |
 | `script.js` | Click-to-reveal example behavior, shared by chapter pages. |
+| `notes.js` | Joseph's own note boxes: Markdown + LaTeX, saved in his browser. Automatic — no per-chapter markup. |
 | `STYLE-GUIDE.md` | The full spec for writing a chapter. Non-negotiable. |
 | `JOURNAL.md` | Session-by-session log. Append to it, newest last. |
 | `internal-not to be used by Claude/` | Off-limits. Git-ignored. Do not read or commit. |
@@ -64,3 +65,7 @@ already excludes it, keep it that way.
 - Every theorem/proposition/lemma/corollary item carries a **second hidden `.proof`
   box** (formal derivation, ends with \(\blacksquare\)) immediately after its `.ex`
   box. See STYLE-GUIDE.md §4. Definitions, axioms, and methods get none.
+- The **third box is Joseph's own note** (`notes.js`, STYLE-GUIDE.md §5) — built at
+  runtime for every heading and item. Never hand-write it. Its anchor is derived from
+  the wording, so **rewording an existing `<b>` term or `<h3>` heading orphans the
+  note attached to it** — leave them alone unless asked.

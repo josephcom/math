@@ -15,6 +15,11 @@
   --muted:#616264;
   --border:#E4E4E4;
   --hover:#F1F1F1;
+  /* the reader's own notes — the one warm accent in the book, so a
+     note is never mistaken for the book's text */
+  --note-bg:#FFFBEA;
+  --note-line:#DDB240;
+  --note-ink:#7A5B00;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:24px}   /* 150% of the 16px default */
@@ -78,7 +83,7 @@ h3{
 /* ---------- clickable list items ---------- */
 ul{list-style:none}
 li{
-  position:relative;padding:10px 14px 10px 36px;border-radius:6px;
+  position:relative;padding:10px 46px 10px 36px;border-radius:6px;   /* right gap = room for the note pencil */
   transition:background .2s;cursor:pointer;
 }
 li::before{
@@ -124,6 +129,105 @@ li.on .proof{grid-template-rows:1fr;opacity:1;margin-top:9px}
   content:"Proof";display:block;font-weight:700;color:var(--green-dark);
   font-size:.82rem;margin-bottom:3px;
 }
+
+/* ============================================================
+   FREE NOTES — the reader's own box, on every heading and item.
+   Same slide mechanics as .ex / .proof, but its own open state:
+   a note stays open until you close it, so an accidental click
+   elsewhere can't swallow what you were typing. Built by notes.js.
+   ============================================================ */
+
+/* --- the pencil trigger --- */
+.notebtn{
+  font:inherit;font-size:.6rem;font-weight:700;line-height:1;
+  border:1px solid var(--note-line);background:#fff;color:var(--note-ink);
+  border-radius:5px;padding:6px 8px;cursor:pointer;
+  opacity:.28;transition:opacity .2s,background .2s,color .2s;
+}
+li>.notebtn{position:absolute;right:9px;top:9px}
+h1>.notebtn{float:right;margin:.15em 0 0 14px}
+h2>.notebtn,h3>.notebtn{float:right;margin:.15em 9px 0 14px}   /* 9px = same column as the item pencils */
+li:hover>.notebtn,h1:hover>.notebtn,h2:hover>.notebtn,h3:hover>.notebtn{opacity:1}
+.notebtn:hover,.notebtn:focus-visible{opacity:1;background:var(--note-line);color:#fff}
+.notebtn.has{opacity:1;background:var(--note-line);border-color:var(--note-line);color:#fff}
+
+/* --- the sliding panel --- */
+.note{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1),opacity .35s,margin .4s;
+  margin:0;
+}
+.note.open{grid-template-rows:1fr;opacity:1;margin:11px 0}
+.note>div{overflow:hidden}
+.nbox{
+  border:2px solid var(--note-line);border-radius:8px;background:var(--note-bg);
+  padding:11px 17px 14px;cursor:default;
+}
+.nhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
+.nlabel{font-weight:700;color:var(--note-ink);font-size:.82rem}
+.nacts{display:flex;gap:7px;flex-shrink:0}
+.nbtn{
+  font:inherit;font-size:.68rem;font-weight:700;line-height:1;
+  border:1px solid var(--note-line);background:#fff;color:var(--note-ink);
+  border-radius:5px;padding:7px 13px;cursor:pointer;transition:background .2s,color .2s;
+}
+.nbtn:hover{background:var(--note-line);color:#fff}
+
+/* --- edit mode vs view mode --- */
+.nedit,.nbox.editing .nview,.nbox.editing .n-edit,.nbox.editing .n-del{display:none}
+.nbox.editing .nedit{display:block}
+.n-save,.n-cancel{display:none}
+.nbox.editing .n-save,.nbox.editing .n-cancel{display:block}
+.nedit{
+  width:100%;min-height:8rem;resize:vertical;
+  font-family:ui-monospace,"Cascadia Mono",Consolas,"Courier New",monospace;
+  font-size:.7rem;line-height:1.6;color:var(--text);
+  background:#fff;border:1px solid var(--note-line);border-radius:6px;padding:11px 13px;
+}
+.nedit:focus{outline:2px solid var(--note-line);outline-offset:1px}
+
+/* --- rendered note: undo the book's list/heading styling inside it --- */
+.nview{font-size:.86rem;line-height:1.62;overflow-wrap:anywhere}   /* a pasted URL can't push the page sideways */
+.nview>:first-child{margin-top:0}
+.nview>:last-child{margin-bottom:0}
+.nview p{margin:0 0 .55em}
+.nview h1,.nview h2,.nview h3,.nview h4,.nview h5,.nview h6{
+  font-size:.95rem;font-weight:700;color:var(--ink);
+  margin:.95em 0 .35em;padding:0;border:0;
+}
+.nview h1{font-size:1.1rem}
+.nview h2{font-size:1rem}
+.nview ul,.nview ol{margin:.3em 0 .6em 1.4em}
+.nview ul{list-style:disc}
+.nview ol{list-style:decimal}
+.nview li{
+  position:static;padding:0;margin:.18em 0;border-radius:0;
+  background:none;cursor:default;transition:none;
+}
+.nview li::before{content:none;display:none}
+.nview li:hover{background:none}
+.nview input[type=checkbox]{margin-right:.4em;accent-color:var(--note-line)}
+.nview code{
+  font-family:ui-monospace,"Cascadia Mono",Consolas,"Courier New",monospace;
+  font-size:.76rem;background:#fff;border:1px solid var(--note-line);
+  border-radius:4px;padding:1px 5px;
+}
+.nview pre{
+  background:#fff;border:1px solid var(--note-line);border-radius:6px;
+  padding:11px 13px;margin:.55em 0;overflow-x:auto;
+}
+.nview pre code{border:0;background:none;padding:0;font-size:.74rem;line-height:1.55}
+.nview blockquote{
+  border-left:3px solid var(--note-line);padding-left:13px;
+  margin:.55em 0;color:var(--muted);
+}
+.nview hr{border:0;border-top:1px solid var(--note-line);margin:.8em 0}
+.nview a{color:var(--green-dark)}
+.nview table{font-size:.78rem;margin:.55em 0;background:#fff}
+.nview tr:nth-child(even) td{background:var(--note-bg)}
+.nview img{max-width:100%;height:auto}
+.nview .katex-display{margin:.55em 0}
+.nview .nbad{border-color:#C33;color:#C33}
 
 /* ---------- summary table ---------- */
 table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:16px}
