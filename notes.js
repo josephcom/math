@@ -3,7 +3,11 @@
    A third sliding box — this one is the reader's own. It hangs off
    every heading (h1, layer title, block heading) and every list item.
 
-   - Click the small pencil to open the note; click it again to close.
+   - It slides exactly like the example and proof boxes: one click on the
+     item reveals all three, clicking elsewhere closes them. A heading is
+     clickable the same way once it holds a note. The pencil is how you
+     write: it reveals the note, and drops into edit mode if it is empty
+     or already open. While a note is being edited its item stays put.
    - Edit mode shows the RAW text; view mode shows it rendered.
    - The raw text may mix Markdown and LaTeX, so a Claude answer can
      be pasted in unchanged. Supported: # headings, **bold**, *italic*,
@@ -16,10 +20,6 @@
      between the local file and the published site. Backup helpers:
        mathNotes.export()      -> JSON string of this page's notes
        mathNotes.import(json)  -> merge that JSON back in
-   - Independent of the example/proof boxes: opening a note does not
-     open the example, and a click elsewhere on the page will not
-     close a note (you'd lose what you were typing).
-
    No dependencies beyond the KaTeX the page already loads.
    ============================================================ */
 
@@ -364,19 +364,31 @@ function panelFor(btn) {
 
   function paint() {
     view.innerHTML = render(getNote(id));
+    panel._painted = true;
+  }
+
+  /* `filled` = there is something to reveal, so the box rides along with
+     its item's .on class. `editing` on the panel keeps an unsaved note
+     visible and tells script.js to leave the item alone meanwhile. */
+  function mark() {
+    var has = !!getNote(id);
+    panel.classList.toggle('filled', has);
+    btn.classList.toggle('has', has);
+    btn.title = has ? 'Your note' : 'Add a note';
+    if (kind === 'h') host.classList.toggle('hasnote', has);
   }
   function edit() {
+    if (!panel._painted) paint();
     ta.value = getNote(id);
     box.classList.add('editing');
     box.classList.remove('dirty');
+    panel.classList.add('editing');
     autosize(ta);
     ta.focus();
   }
   function stopEdit() {
     box.classList.remove('editing', 'dirty');
-  }
-  function mark() {
-    if (getNote(id)) btn.classList.add('has'); else btn.classList.remove('has');
+    panel.classList.remove('editing');
   }
 
   panel.addEventListener('click', function (e) { e.stopPropagation(); });
@@ -388,17 +400,17 @@ function panelFor(btn) {
     var txt = ta.value.replace(/\s+$/, '');
     if (!txt.trim()) { delNote(id); } else { setNote(id, txt); }
     paint(); mark(); stopEdit();
-    if (!getNote(id)) close();
+    if (kind === 'h' && !getNote(id)) hide();
   });
 
   panel.querySelector('.n-cancel').addEventListener('click', function () {
     stopEdit();
-    if (!getNote(id)) close();
+    if (kind === 'h' && !getNote(id)) hide();
   });
 
   panel.querySelector('.n-del').addEventListener('click', function () {
     if (!confirm('Delete this note?')) return;
-    delNote(id); paint(); mark(); stopEdit(); close();
+    delNote(id); paint(); mark(); stopEdit(); hide();
   });
 
   ta.addEventListener('input', function () {
@@ -411,50 +423,90 @@ function panelFor(btn) {
     else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); panel.querySelector('.n-save').click(); }
   });
 
-  function open() {
-    if (!panel._painted) { paint(); panel._painted = true; }
-    panel.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-    if (!getNote(id)) edit();
+  /* headings own their open state; items borrow their item's */
+  function shown() {
+    return kind === 'h' ? panel.classList.contains('open') : host.classList.contains('on');
   }
-  function close() {
-    panel.classList.remove('open');
+  function show() {
+    if (!panel._painted) paint();
+    document.querySelectorAll('.note.open').forEach(function (p) {   // one heading note at a time
+      if (p !== panel && !p.classList.contains('editing')) p.classList.remove('open');
+    });
+    if (kind === 'h') panel.classList.add('open');
+    else if (typeof revealItem === 'function') revealItem(host);
+    else host.classList.add('on');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function hide() {
+    if (kind === 'h') panel.classList.remove('open');
     btn.setAttribute('aria-expanded', 'false');
   }
 
+  mark();
+  panel._btn = btn;
   btn._panel = panel;
-  btn._open = open;
-  btn._close = close;
-  btn._isOpen = function () { return panel.classList.contains('open'); };
+  btn._show = show;
+  btn._hide = hide;
+  btn._edit = edit;
+  btn._shown = shown;
+  btn._empty = function () { return !getNote(id); };
   return panel;
 }
 
 function attach(host, kind) {
   var id = anchorId(host, kind);
+  var had = !!getNote(id);
 
   var btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = 'notebtn' + (getNote(id) ? ' has' : '');
+  btn.className = 'notebtn' + (had ? ' has' : '');
   btn.setAttribute('data-nid', id);
   btn.setAttribute('aria-expanded', 'false');
   btn.setAttribute('aria-label', 'Note');
-  btn.title = getNote(id) ? 'Your note' : 'Add a note';
+  btn.title = had ? 'Your note' : 'Add a note';
   btn.innerHTML = '&#9998;';
   btn._host = host;
   btn._kind = kind;
+  if (had && kind === 'h') host.classList.add('hasnote');
 
+  /* The pencil reveals the note, and writes in it: empty -> straight into
+     edit mode; already revealed -> edit mode; otherwise just show it. */
   btn.addEventListener('click', function (e) {
     e.stopPropagation();
     e.preventDefault();
     panelFor(btn);
-    if (btn._isOpen()) btn._close(); else btn._open();
+    var wasShown = btn._shown();
+    btn._show();
+    if (btn._empty() || wasShown) btn._edit();
   });
+
+  /* A heading has no reveal of its own, so clicking it toggles its note —
+     the same gesture that opens an item's example. */
+  if (kind === 'h') {
+    host.addEventListener('click', function (e) {
+      if (e.target.closest('.note, .notebtn')) return;
+      if (!getNote(id)) return;                       // nothing to reveal yet; use the pencil
+      e.stopPropagation();
+      panelFor(btn);
+      if (btn._shown()) btn._hide(); else btn._show();
+    });
+  }
 
   host.appendChild(btn);
 }
 
 document.querySelectorAll('header h1, .layer h2.ltitle, .layer h3').forEach(function (el) { attach(el, 'h'); });
 document.querySelectorAll('.layer ul > li').forEach(function (el) { attach(el, 'i'); });
+
+/* a click elsewhere closes an open heading note, unless it is being edited
+   (script.js applies the same rule to the items) */
+document.addEventListener('click', function () {
+  document.querySelectorAll('.note.open').forEach(function (p) {
+    if (p.classList.contains('editing')) return;
+    p.classList.remove('open');
+    if (p._btn) p._btn.setAttribute('aria-expanded', 'false');
+  });
+});
 
 /* don't lose half-typed notes to a stray reload */
 window.addEventListener('beforeunload', function (e) {

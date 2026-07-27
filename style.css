@@ -145,6 +145,7 @@ li.on .proof{grid-template-rows:1fr;opacity:1;margin-top:9px}
   opacity:.28;transition:opacity .2s,background .2s,color .2s;
 }
 li>.notebtn{position:absolute;right:9px;top:9px}
+h1.hasnote,h2.hasnote,h3.hasnote{cursor:pointer}   /* a heading holding a note toggles it, like an item */
 h1>.notebtn{float:right;margin:.15em 0 0 14px}
 h2>.notebtn,h3>.notebtn{float:right;margin:.15em 9px 0 14px}   /* 9px = same column as the item pencils */
 li:hover>.notebtn,h1:hover>.notebtn,h2:hover>.notebtn,h3:hover>.notebtn{opacity:1}
@@ -157,6 +158,10 @@ li:hover>.notebtn,h1:hover>.notebtn,h2:hover>.notebtn,h3:hover>.notebtn{opacity:
   transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1),opacity .35s,margin .4s;
   margin:0;
 }
+/* on a list item the note opens with the item, exactly like .ex and .proof;
+   .editing keeps a brand-new note visible before it has been saved */
+li.on .note.filled,li.on .note.editing{grid-template-rows:1fr;opacity:1;margin-top:9px}
+/* a heading has no .on state of its own, so its note carries the flag */
 .note.open{grid-template-rows:1fr;opacity:1;margin:11px 0}
 .note>div{overflow:hidden}
 .nbox{

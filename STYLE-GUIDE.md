@@ -77,6 +77,11 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   to author** — do not hand-write note boxes, and do not add ids for them.
 - It is amber (the book's one warm accent) so a note is never mistaken for the text.
   A pencil `✎` sits at the right of every heading and item; filled = a note exists.
+- It **slides with the example and the proof**: one click on the item reveals all
+  three, clicking elsewhere closes all three. A heading holding a note is clickable
+  the same way. The pencil is the *write* affordance — it reveals the note and drops
+  into edit mode when the note is empty or already open. The single exception to the
+  reveal contract: while a note is being edited, its item will not close.
 - The raw text is Markdown + LaTeX, so a Claude answer can be pasted in unchanged.
   Edit mode shows the raw text, view mode the render. Notes live in the reader's
   `localStorage`, keyed per page and per anchor — never in the repo.
@@ -135,9 +140,10 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Proof boxes: white background, **2px solid green border**, bold "Proof" label
   (auto-inserted) — same slide, opens together with the example on the same click.
 - Note boxes: warm `--note-bg` amber, **2px solid amber border**, "Note" label — same
-  slide, but its own open state (a note never closes by itself; you'd lose typing).
+  slide, opening with the example and the proof on the same click.
 - Interaction contract (already in script.js): click opens; clicking another item swaps;
-  clicking elsewhere closes; clicking inside an open example keeps it open.
+  clicking elsewhere closes; clicking inside an open box keeps it open; an item whose
+  note is being edited does not close.
 - Respect `prefers-reduced-motion` (handled in CSS).
 
 ## 9. Content Quality Bar

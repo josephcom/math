@@ -103,3 +103,27 @@ raw: edit mode shows the raw text, view mode the render.
 
 **Open items:** no export/import **UI** — it's console-only. If notes ever need to
 travel between machines or be backed up, that's the next thing to build.
+
+---
+
+## 2026-07-28 (later) — Notes now slide with the example and the proof
+
+Joseph's one correction after trying it: he expected the note to slide **exactly** like
+the example and proof boxes. It had its own open state, deliberately, to protect
+in-progress typing. Wrong call — reversed.
+
+**Done this session:**
+- A note with content is `.note.filled` and opens from `li.on`, same as `.ex`/`.proof`:
+  one click on an item reveals all three, another item swaps, a click elsewhere closes
+  all three. Verified `1/1/1 -> 0/0/0 -> 1/1/1` with the transitions settled.
+- The typing protection survives as a narrow exception instead of a different model:
+  `script.js` now refuses to close an item that contains a `.note.editing`, so a stray
+  click can't yank the editor away. That is the only deviation from the reveal contract.
+- The pencil became the *write* affordance: it reveals the note and drops into edit mode
+  when the note is empty or already open. Empty notes never show a box on reveal, so 210
+  blank boxes don't appear — `.filled` is what earns a slide.
+- Headings have no `.on` of their own, so their note keeps the `.note.open` flag; a
+  heading that holds a note now gets `.hasnote` (cursor pointer) and toggles on click,
+  and a click elsewhere closes it. One heading note open at a time.
+- `script.js` exports `window.revealItem(li)` so notes.js can open an item through the
+  same one-at-a-time bookkeeping rather than setting `.on` behind its back.
