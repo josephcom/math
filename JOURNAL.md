@@ -161,6 +161,9 @@ automatic sync**.
   `runOnce` re-reads local state *after* the pull. There is a regression test for this.
 - `sync()` used to return early while another run was in flight, so its promise resolved
   before anything had happened — "Sync now" looked like a no-op. Runs are now queued.
+- Found while live: the debounce handle was never cleared once it fired, so after the
+  first save the `beforeunload` guard believed a push was pending forever and **every**
+  navigation away raised a "Leave site?" dialog. The timeout now nulls its own handle.
 
 **Surprises for future Claude:**
 - Sync needs http(s). Opened from the disk (`file://`) GitHub refuses the request; the

@@ -189,7 +189,10 @@ function later() {
   if (!cfg.token || offline) return;
   setState('busy');
   clearTimeout(timer);
-  timer = setTimeout(sync, PUSH_DELAY);
+  /* clear the handle as it fires — a stale one would make the beforeunload
+     guard below think a push is pending forever, and every navigation away
+     would raise a "Leave site?" dialog */
+  timer = setTimeout(function () { timer = null; sync(); }, PUSH_DELAY);
 }
 
 notes.onChange(later);
