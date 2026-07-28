@@ -234,6 +234,42 @@ li.on .note.filled,li.on .note.editing{grid-template-rows:1fr;opacity:1;margin-t
 .nview .katex-display{margin:.55em 0}
 .nview .nbad{border-color:#C33;color:#C33}
 
+/* ============================================================
+   NOTE SYNC CHIP — bottom-right, built by sync.js.
+   ============================================================ */
+.syncwrap{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+.syncchip{
+  font:inherit;font-size:.62rem;font-weight:700;line-height:1;
+  border:1px solid var(--border);background:#fff;color:var(--muted);
+  border-radius:20px;padding:8px 15px;cursor:pointer;
+  box-shadow:0 1px 4px rgba(0,0,0,.09);transition:opacity .2s,border-color .2s,color .2s;
+  opacity:.55;
+}
+.syncwrap:hover .syncchip,.syncwrap.open .syncchip{opacity:1}
+.syncchip.s-ok{border-color:var(--green);color:var(--green-dark)}
+.syncchip.s-busy{border-color:var(--note-line);color:var(--note-ink)}
+.syncchip.s-err{border-color:#C33;color:#C33;opacity:1}
+
+.syncpop{
+  display:none;width:min(21rem,calc(100vw - 40px));
+  border:1px solid var(--border);border-radius:8px;background:#fff;
+  padding:16px 18px;box-shadow:0 4px 18px rgba(0,0,0,.13);cursor:default;
+}
+.syncwrap.open .syncpop{display:block}
+.synctitle{font-weight:700;color:var(--ink);font-size:.86rem;margin-bottom:7px}
+.syncnote{font-size:.7rem;line-height:1.55;color:var(--muted);margin-bottom:9px}
+.syncnote b{color:var(--ink)}
+.syncnote a{color:var(--green-dark);font-weight:700}
+.syncrow{display:flex;gap:8px;align-items:center}
+.synctoken{
+  flex:1;min-width:0;font:inherit;font-size:.7rem;color:var(--text);
+  border:1px solid var(--border);border-radius:5px;padding:8px 10px;background:#fff;
+}
+.synctoken:focus{outline:2px solid var(--green);outline-offset:1px}
+.syncrow .nbtn{border-color:var(--green);color:var(--green-dark);flex-shrink:0}
+.syncrow .nbtn:hover{background:var(--green);color:#fff}
+@media (max-width:600px){.syncwrap{right:10px;bottom:10px}}
+
 /* ---------- summary table ---------- */
 table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:16px}
 th,td{border:1px solid var(--border);padding:10px 13px;text-align:left;vertical-align:top}

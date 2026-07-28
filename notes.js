@@ -30,15 +30,18 @@
    1. STORAGE
    ----------------------------------------------------------------- */
 
+var PREFIX = 'mathnotes.v1.';
 var PAGE = location.pathname.split('/').pop() || 'index.html';
-var KEY  = 'mathnotes.v1.' + PAGE;
-var DB   = {};
+var KEY  = PREFIX + PAGE;
+var TOMB = 90 * 24 * 3600 * 1000;          // keep a delete marker this long
 var warned = false;
+var watchers = [];
 
-try { DB = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { DB = {}; }
-
-function persist() {
-  try { localStorage.setItem(KEY, JSON.stringify(DB)); return true; }
+function readKey(k) {
+  try { return JSON.parse(localStorage.getItem(k) || '{}') || {}; } catch (e) { return {}; }
+}
+function writeKey(k, obj) {
+  try { localStorage.setItem(k, JSON.stringify(obj)); return true; }
   catch (e) {
     if (!warned) {
       warned = true;
@@ -48,9 +51,26 @@ function persist() {
     return false;
   }
 }
-function getNote(id) { return DB[id] ? DB[id].t : ''; }
-function setNote(id, txt) { DB[id] = { t: txt, u: Date.now() }; persist(); }
-function delNote(id) { delete DB[id]; persist(); }
+
+/* A deleted note leaves a tombstone {d:1,u:...} rather than vanishing, so the
+   delete travels to the other browsers instead of being undone by them. */
+function sweep(db) {
+  var now = Date.now();
+  Object.keys(db).forEach(function (k) {
+    var e = db[k];
+    if (!e || (e.d && now - (e.u || 0) > TOMB)) delete db[k];
+  });
+  return db;
+}
+
+var DB = sweep(readKey(KEY));
+
+function persist() { return writeKey(KEY, DB); }
+function announce() { watchers.forEach(function (f) { try { f(); } catch (e) {} }); }
+
+function getNote(id) { var e = DB[id]; return e && !e.d ? e.t : ''; }
+function setNote(id, txt) { DB[id] = { t: txt, u: Date.now() }; persist(); announce(); }
+function delNote(id) { DB[id] = { d: 1, u: Date.now() }; persist(); announce(); }
 
 /* -----------------------------------------------------------------
    2. MARKDOWN + LATEX  ->  HTML
@@ -442,6 +462,13 @@ function panelFor(btn) {
     btn.setAttribute('aria-expanded', 'false');
   }
 
+  /* called after a pull brings newer text down from the gist */
+  btn._repaint = function () {
+    if (box.classList.contains('editing')) { mark(); return; }   // never clobber a live editor
+    if (panel._painted) paint();
+    mark();
+  };
+
   mark();
   panel._btn = btn;
   btn._panel = panel;
@@ -514,17 +541,76 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 /* -----------------------------------------------------------------
-   5. BACKUP HELPERS (console)
+   5. PUBLIC API
+   Storage I/O for sync.js (which owns the merge), plus console helpers.
+   `all()` / `replaceAll()` speak the whole book: { page: { id: entry } }.
    ----------------------------------------------------------------- */
+
+function pages() {
+  var out = [];
+  for (var i = 0; i < localStorage.length; i++) {
+    var k = localStorage.key(i);
+    if (k && k.indexOf(PREFIX) === 0) out.push(k.slice(PREFIX.length));
+  }
+  if (out.indexOf(PAGE) < 0) out.push(PAGE);
+  return out;
+}
 
 window.mathNotes = {
   page: PAGE,
-  export: function () { return JSON.stringify(DB, null, 2); },
+
+  all: function () {
+    var out = {};
+    pages().forEach(function (p) { out[p] = p === PAGE ? DB : sweep(readKey(PREFIX + p)); });
+    return out;
+  },
+
+  /* Take a snapshot in, then bring this page's boxes up to date.
+     Deliberately NOT a replace: an incoming entry never overwrites a newer
+     local one, so a note saved while a sync was in flight survives the
+     round trip instead of being reverted by the older snapshot. */
+  absorb: function (data) {
+    Object.keys(data).forEach(function (p) {
+      var cur = p === PAGE ? DB : readKey(PREFIX + p);
+      var inc = data[p] || {};
+      Object.keys(inc).forEach(function (k) {           // same rule as sync.js's merge
+        var mine = cur[k], theirs = inc[k];
+        if (!mine) { cur[k] = theirs; return; }
+        var gap = (theirs.u || 0) - (mine.u || 0);
+        if (gap > 0 || (gap === 0 && mine.d && !theirs.d)) cur[k] = theirs;
+      });
+      if (p === PAGE) persist(); else writeKey(PREFIX + p, cur);
+    });
+    window.mathNotes.refresh();
+  },
+
+  /* re-read every pencil and every built panel from the current DB */
+  refresh: function () {
+    document.querySelectorAll('.notebtn').forEach(function (btn) {
+      if (btn._repaint) { btn._repaint(); return; }
+      var has = !!getNote(btn.getAttribute('data-nid'));
+      btn.classList.toggle('has', has);
+      btn.title = has ? 'Your note' : 'Add a note';
+      if (btn._kind === 'h') btn._host.classList.toggle('hasnote', has);
+    });
+  },
+
+  onChange: function (fn) { watchers.push(fn); },
+  editing: function () { return !!document.querySelector('.nbox.editing.dirty'); },
+
+  export: function () { return JSON.stringify(window.mathNotes.all(), null, 2); },
   import: function (json) {
     var incoming = typeof json === 'string' ? JSON.parse(json) : json;
+    if (incoming[PAGE] || incoming[Object.keys(incoming)[0]] &&
+        typeof incoming[Object.keys(incoming)[0]] === 'object' &&
+        !('t' in incoming[Object.keys(incoming)[0]]) &&
+        !('d' in incoming[Object.keys(incoming)[0]])) {
+      window.mathNotes.absorb(incoming);                     // whole-book shape
+      return 'Imported ' + Object.keys(incoming).length + ' page(s).';
+    }
     Object.keys(incoming).forEach(function (k) { DB[k] = incoming[k]; });
-    persist();
-    return 'Imported ' + Object.keys(incoming).length + ' note(s). Reload to see them.';
+    persist(); announce(); window.mathNotes.refresh();       // single-page shape
+    return 'Imported ' + Object.keys(incoming).length + ' note(s).';
   },
   render: render
 };

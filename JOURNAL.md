@@ -127,3 +127,48 @@ in-progress typing. Wrong call — reversed.
   and a click elsewhere closes it. One heading note open at a time.
 - `script.js` exports `window.revealItem(li)` so notes.js can open an item through the
   same one-at-a-time bookkeeping rather than setting `.on` behind its back.
+
+---
+
+## 2026-07-28 (later still) — Notes sync through a secret gist
+
+Joseph hit the obvious wall: `localStorage` is per browser and per origin, so notes
+didn't follow him to another browser or another PC. He'd already used the gist route on
+another Pages project ("stack"), and chose it again: **secret gist, auto-discovered,
+automatic sync**.
+
+**Done this session:**
+- New file `sync.js`. One gist file, `math-notes.json`, holds the **whole book**:
+  `{ "<page.html>": { "<anchor-id>": {t,u} | {d:1,u} } }`. On first connect the page
+  looks through the reader's gists for that filename and adopts it, else creates a
+  secret gist — so a new browser needs the token and nothing else, no gist id to carry.
+- Merge is **per note, newest `u` wins**, so two browsers can't clobber each other.
+  Deletes travel as tombstones (`{d:1,u}`, swept after 90 days) instead of being undone
+  by the other side. On an exact `u` tie, text beats a tombstone — losing writing is
+  worse than a resurrected note. The identical rule lives in `notes.js`'s `absorb()`.
+- Pull on load and on window focus (throttled to 60s), push ~1.2s after a save. Runs are
+  serialized on one promise chain. `localStorage` stays the source of truth for reading;
+  if GitHub is unreachable the notes keep working and the chip goes red.
+- `notes.js` gained the storage API sync needs — `all()`, `absorb()`, `refresh()`,
+  `onChange()` — and now writes tombstones instead of deleting keys.
+- Sync chip, bottom right, built by `sync.js`: state at a glance, and the popover holds
+  the token field, a link that pre-selects the `gist` scope, Sync now and Disconnect.
+
+**Two real bugs the tests caught, worth remembering:**
+- `replaceAll()` (as it was) blindly overwrote the page's notes with the snapshot the
+  sync had started with. A note saved *during* a round trip was silently reverted. It is
+  now `absorb()`, which never lets an incoming entry overwrite a newer local one, and
+  `runOnce` re-reads local state *after* the pull. There is a regression test for this.
+- `sync()` used to return early while another run was in flight, so its promise resolved
+  before anything had happened — "Sync now" looked like a no-op. Runs are now queued.
+
+**Surprises for future Claude:**
+- Sync needs http(s). Opened from the disk (`file://`) GitHub refuses the request; the
+  chip says so and notes still save locally.
+- Timestamp merges trust the clock. A PC whose clock runs ahead will win conflicts for
+  as long as it is ahead. Inherent to last-write-wins; not worth more machinery.
+- **Never put a token in a file, never commit one, never ask for it in chat.** The repo
+  is public. The token is typed into the chip and lives only in that browser.
+- Tested with a stubbed GitHub API (15 assertions: create, pull, push, older/newer
+  remote, tombstones, tie-break, cross-page delivery, mid-flight edit, idempotence) plus
+  the real 401 path. The harness lives in the scratchpad, not the repo.

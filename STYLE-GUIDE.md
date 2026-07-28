@@ -85,14 +85,20 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - The raw text is Markdown + LaTeX, so a Claude answer can be pasted in unchanged.
   Edit mode shows the raw text, view mode the render. Notes live in the reader's
   `localStorage`, keyed per page and per anchor — never in the repo.
+- `sync.js` carries them between browsers and machines through one **secret gist**
+  (`math-notes.json`, the whole book in one file), merging per note by timestamp.
+  The chip at the bottom right shows the state. The token is entered there by the
+  reader and stays in that browser: **never write a token into a file, and never
+  commit one** — this repo is public.
 - Anchor ids are derived from the wording (`i:L3:power-set`, `h:L4:the-zfc-axioms`).
   **Rewording a term or a heading orphans its note.** When editing an existing
   chapter, prefer leaving `<b>` terms and `<h3>` headings alone.
-- The one thing a chapter must do is keep both scripts in the head, in this order:
+- The one thing a chapter must do is keep the three scripts in the head, in this order:
 
 ```html
 <script defer src="script.js"></script>
 <script defer src="notes.js"></script>
+<script defer src="sync.js"></script>
 ```
 
 ## 6. Math Notation
@@ -114,6 +120,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   - `style.css` — all styling. Link it. Do not edit unless the reader asks.
   - `script.js` — the click-to-reveal behavior. Link it with `defer`.
   - `notes.js` — the reader's note boxes (§5). Link it with `defer`, after `script.js`.
+  - `sync.js` — gist sync for those notes (§5). Link it with `defer`, after `notes.js`.
   - Each chapter: `chapter-NN-topic-name.html`.
 - Page skeleton (copy from Chapter 1):
   1. `<header>`: `<h1>` chapter title + `.topnav` with an outlined back-button
@@ -167,5 +174,6 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 **Checklist before delivering:** every li has an example ✅ · exact `.ex` markup ✅ ·
 every theorem/proposition/lemma/corollary has a `.proof` box right after its `.ex` ✅ ·
 all math in KaTeX ✅ · chips match layer ids ✅ · toolbox table present ✅ ·
-external css/js linked, nothing inlined ✅ · `script.js` **and** `notes.js` both
-linked with `defer`, in that order ✅ · no hand-written note markup ✅
+external css/js linked, nothing inlined ✅ · `script.js`, `notes.js` and `sync.js` all
+linked with `defer`, in that order ✅ · no hand-written note markup ✅ ·
+no token anywhere in the repo ✅
