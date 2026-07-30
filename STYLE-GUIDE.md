@@ -93,15 +93,32 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Anchor ids are derived from the wording (`i:L3:power-set`, `h:L4:the-zfc-axioms`).
   **Rewording a term or a heading orphans its note.** When editing an existing
   chapter, prefer leaving `<b>` terms and `<h3>` headings alone.
-- The one thing a chapter must do is keep the three scripts in the head, in this order:
+## 6. The Bookmark (automatic — nothing to write)
+
+- Beside every pencil sits a **⚑ flag**: "this is where I left off". Built at runtime
+  by `bookmark.js` — again **no markup to author**, no ids.
+- **One per page, by construction.** The store holds a single reserved key, so flagging
+  a new spot is what clears the old one; flagging the marked spot again removes it.
+  It can sit on any heading or any list item — the same anchors the notes use.
+- The mark is a **red ribbon** down the left edge (inset on an item, in the gutter on a
+  heading, whose underline also turns red). Red is the book's third and last accent and
+  is used for nothing else, so it is never read as a note or as the book's own text.
+- A red **"⚑ Resume" pill** joins the front of the `.chips` nav whenever the page holds a
+  mark; it scrolls to the spot and flashes it. No mark, no pill.
+- It is saved like a note and in the same place — `{"@bookmark": {t:"<anchor-id>", u}}`
+  in that page's entry — so `sync.js` carries it between browsers with no extra work,
+  newest wins, and clearing it travels as a tombstone. Same orphan rule as the notes:
+  **rewording a term or heading loses the mark pinned to it.**
+- The one thing a chapter must do is keep the four scripts in the head, in this order:
 
 ```html
 <script defer src="script.js"></script>
 <script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
 <script defer src="sync.js"></script>
 ```
 
-## 6. Math Notation
+## 7. Math Notation
 
 - **All math is LaTeX rendered by KaTeX.** Inline: `\( ... \)`. Display: `\[ ... \]`.
 - Never use raw Unicode math where a LaTeX macro exists: `\forall, \exists, \neg, \land,
@@ -114,13 +131,14 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Keep the exact KaTeX CDN block from Chapter 1's `<head>` (stylesheet + katex.min.js +
   auto-render with `\(`/`\[` delimiters).
 
-## 7. Files & Page Skeleton
+## 8. Files & Page Skeleton
 
 - Shared files, **do not duplicate their contents inline**:
   - `style.css` — all styling. Link it. Do not edit unless the reader asks.
   - `script.js` — the click-to-reveal behavior. Link it with `defer`.
   - `notes.js` — the reader's note boxes (§5). Link it with `defer`, after `script.js`.
-  - `sync.js` — gist sync for those notes (§5). Link it with `defer`, after `notes.js`.
+  - `bookmark.js` — the ⚑ where-I-left-off flag (§6). Link it with `defer`, after `notes.js`.
+  - `sync.js` — gist sync for both (§5, §6). Link it with `defer`, last.
   - Each chapter: `chapter-NN-topic-name.html`.
 - Page skeleton (copy from Chapter 1):
   1. `<header>`: `<h1>` chapter title + `.topnav` with an outlined back-button
@@ -128,7 +146,8 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
      `Start Learning ❯` button linking to `#L1`.
   2. `.intro` two-panel card: left white pane = what this chapter is and why it matters
      (3 short paragraphs + green button); right `.mint` pane = "How to Use This Page"
-     (keep the tap-to-reveal explanation, and the line about the ✎ note box).
+     (keep the tap-to-reveal explanation, the line about the ✎ note box, and the
+     line about the ⚑ flag and the Resume pill).
   3. `.chips` nav: one pill per layer (`#L1`, `#L2`, ...) + `#SUM` Toolbox.
   4. One `<section class="layer" id="LN">` per layer, each containing:
      `<span class="chapter">Layer N · short nickname</span>`, `<h2 class="ltitle">`,
@@ -136,7 +155,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   5. Recap `<section class="layer" id="SUM">` with the methods `<table>`.
   6. `<footer>`: green Back-to-Top button + one-line tagline.
 
-## 8. Design Rules (already encoded in style.css — just don't fight them)
+## 9. Design Rules (already encoded in style.css — just don't fight them)
 
 - W3Schools-inspired: white page, green `#04AA6D` accent, mint panels, bordered rounded
   cards, Source Sans 3.
@@ -148,12 +167,15 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   (auto-inserted) — same slide, opens together with the example on the same click.
 - Note boxes: warm `--note-bg` amber, **2px solid amber border**, "Note" label — same
   slide, opening with the example and the proof on the same click.
+- Bookmark: `--mark` red, and nothing else in the book is red. Quiet outlined flag until
+  hovered, solid when it holds the mark; the marked item wears a 4px red ribbon that
+  never shifts the text (inset shadow on an item, gutter bar on a heading).
 - Interaction contract (already in script.js): click opens; clicking another item swaps;
   clicking elsewhere closes; clicking inside an open box keeps it open; an item whose
   note is being edited does not close.
 - Respect `prefers-reduced-motion` (handled in CSS).
 
-## 9. Content Quality Bar
+## 10. Content Quality Bar
 
 - **Completeness over brevity of coverage**: list all standard definitions, axioms,
   propositions, lemmas, theorems, corollaries, and methods for the topic — but each entry
@@ -164,16 +186,16 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 - Accuracy is non-negotiable; when a result depends on the Axiom of Choice or is
   independent of ZFC, say so.
 
-## 10. Delivery
+## 11. Delivery
 
 - Deliver the chapter as an HTML file that works by dropping it into the same folder as
-  `style.css`, `script.js` and `notes.js`. If the reader asks for a bundle, zip all
-  files together.
+  `style.css`, `script.js`, `notes.js` and `bookmark.js`. If the reader asks for a
+  bundle, zip all files together.
 - CDN note: KaTeX and Google Fonts load from the internet; keep that head block intact.
 
 **Checklist before delivering:** every li has an example ✅ · exact `.ex` markup ✅ ·
 every theorem/proposition/lemma/corollary has a `.proof` box right after its `.ex` ✅ ·
 all math in KaTeX ✅ · chips match layer ids ✅ · toolbox table present ✅ ·
-external css/js linked, nothing inlined ✅ · `script.js`, `notes.js` and `sync.js` all
-linked with `defer`, in that order ✅ · no hand-written note markup ✅ ·
-no token anywhere in the repo ✅
+external css/js linked, nothing inlined ✅ · `script.js`, `notes.js`, `bookmark.js` and
+`sync.js` all linked with `defer`, in that order ✅ · no hand-written note or flag
+markup ✅ · no token anywhere in the repo ✅

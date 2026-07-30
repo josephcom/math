@@ -35,7 +35,7 @@ var PAGE = location.pathname.split('/').pop() || 'index.html';
 var KEY  = PREFIX + PAGE;
 var TOMB = 90 * 24 * 3600 * 1000;          // keep a delete marker this long
 var warned = false;
-var watchers = [];
+var watchers = [], refreshers = [];
 
 function readKey(k) {
   try { return JSON.parse(localStorage.getItem(k) || '{}') || {}; } catch (e) { return {}; }
@@ -63,6 +63,8 @@ function sweep(db) {
   return db;
 }
 
+/* This page's entries, keyed by anchor id. bookmark.js parks its own
+   reserved key ("@bookmark") in here too, so it syncs with the notes. */
 var DB = sweep(readKey(KEY));
 
 function persist() { return writeKey(KEY, DB); }
@@ -511,7 +513,7 @@ function attach(host, kind) {
      the same gesture that opens an item's example. */
   if (kind === 'h') {
     host.addEventListener('click', function (e) {
-      if (e.target.closest('.note, .notebtn')) return;
+      if (e.target.closest('.note, .notebtn, .markbtn')) return;
       if (!getNote(id)) return;                       // nothing to reveal yet; use the pencil
       e.stopPropagation();
       panelFor(btn);
@@ -559,6 +561,12 @@ function pages() {
 window.mathNotes = {
   page: PAGE,
 
+  /* The store is shared: notes.js owns the anchor-id entries, bookmark.js
+     owns its own reserved key. Both ride the same sync. */
+  get: function (id) { return getNote(id); },
+  set: function (id, txt) { setNote(id, txt); },
+  del: function (id) { delNote(id); },
+
   all: function () {
     var out = {};
     pages().forEach(function (p) { out[p] = p === PAGE ? DB : sweep(readKey(PREFIX + p)); });
@@ -593,9 +601,13 @@ window.mathNotes = {
       btn.title = has ? 'Your note' : 'Add a note';
       if (btn._kind === 'h') btn._host.classList.toggle('hasnote', has);
     });
+    refreshers.forEach(function (f) { try { f(); } catch (e) {} });
   },
 
   onChange: function (fn) { watchers.push(fn); },
+  /* onChange fires on a local write — sync.js pushes on it. onRefresh fires
+     once a pull has landed and the page was repainted from the store. */
+  onRefresh: function (fn) { refreshers.push(fn); },
   editing: function () { return !!document.querySelector('.nbox.editing.dirty'); },
 
   export: function () { return JSON.stringify(window.mathNotes.all(), null, 2); },

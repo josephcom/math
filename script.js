@@ -25,7 +25,7 @@
   document.querySelectorAll('.layer ul li').forEach(function (li) {
     li.addEventListener('click', function (e) {
       e.stopPropagation();
-      if (e.target.closest('.ex, .proof, .note, .notebtn')) return;   // reading a box shouldn't toggle the item
+      if (e.target.closest('.ex, .proof, .note, .notebtn, .markbtn')) return;   // reading a box, or flagging it, shouldn't toggle the item
       if (editing(li)) return;
       if (openLi && openLi !== li) close(openLi);
       li.classList.toggle('on');

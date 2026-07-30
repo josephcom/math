@@ -20,6 +20,10 @@
   --note-bg:#FFFBEA;
   --note-line:#DDB240;
   --note-ink:#7A5B00;
+  /* where the reader left off — the only red in the book, so the ribbon
+     is never confused with the green text or the amber notes */
+  --mark:#C93F3F;
+  --mark-soft:#FBEAEA;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:24px}   /* 150% of the 16px default */
@@ -83,7 +87,7 @@ h3{
 /* ---------- clickable list items ---------- */
 ul{list-style:none}
 li{
-  position:relative;padding:10px 46px 10px 36px;border-radius:6px;   /* right gap = room for the note pencil */
+  position:relative;padding:10px 82px 10px 36px;border-radius:6px;   /* right gap = room for the flag + the note pencil */
   transition:background .2s;cursor:pointer;
 }
 li::before{
@@ -233,6 +237,55 @@ li.on .note.filled,li.on .note.editing{grid-template-rows:1fr;opacity:1;margin-t
 .nview img{max-width:100%;height:auto}
 .nview .katex-display{margin:.55em 0}
 .nview .nbad{border-color:#C33;color:#C33}
+
+/* ============================================================
+   BOOKMARK — one per page, "where I left off". Built by bookmark.js.
+   The flag sits to the left of the note pencil, on every heading and
+   every item; the mark itself is a red ribbon down the left edge.
+   ============================================================ */
+
+/* --- the flag trigger, quiet until hovered, like the pencil --- */
+.markbtn{
+  font:inherit;font-size:.6rem;font-weight:700;line-height:1;
+  border:1px solid var(--mark);background:#fff;color:var(--mark);
+  border-radius:5px;padding:6px 8px;cursor:pointer;
+  opacity:.28;transition:opacity .2s,background .2s,color .2s;
+}
+li>.markbtn{position:absolute;right:48px;top:9px}                  /* clear of the pencil, which is 32px wide */
+h1>.markbtn,h2>.markbtn,h3>.markbtn{float:right;margin:.15em 0 0 14px}
+li:hover>.markbtn,h1:hover>.markbtn,h2:hover>.markbtn,h3:hover>.markbtn{opacity:1}
+.markbtn:hover,.markbtn:focus-visible{opacity:1;background:var(--mark);color:#fff}
+.markbtn.on{opacity:1;background:var(--mark);border-color:var(--mark);color:#fff}
+
+/* --- the ribbon: inset on an item (which already owns its ::before),
+       a floating bar in the gutter on a heading. Neither shifts the text. --- */
+li.marked{box-shadow:inset 4px 0 0 var(--mark)}
+h1.marked,h2.marked,h3.marked{position:relative}
+h1.marked::before,h2.marked::before,h3.marked::before{
+  content:"";position:absolute;left:-16px;top:.1em;bottom:.24em;
+  width:4px;border-radius:2px;background:var(--mark);
+}
+h3.marked{border-bottom-color:var(--mark)}
+
+/* --- the flash after a Resume jump --- */
+@keyframes markflash{0%,100%{background:transparent}28%{background:var(--mark-soft)}}
+.markflash{animation:markflash 1.3s ease}
+
+/* --- Resume: first pill in the layer nav, only while a mark exists --- */
+.chips .resume{
+  font:inherit;font-size:.78rem;font-weight:700;color:var(--mark);
+  background:#fff;border:1px solid var(--mark);border-radius:24px;
+  padding:6px 16px;cursor:pointer;transition:.2s;
+}
+.chips .resume:hover{background:var(--mark);color:#fff}
+
+/* the two buttons cost 32px of the line on a phone — take it back from
+   the card's own padding rather than from the reading column */
+@media (max-width:600px){
+  .layer{padding:26px 18px 22px}
+  li{padding-left:30px}
+  li::before{left:6px}
+}
 
 /* ============================================================
    NOTE SYNC CHIP — bottom-right, built by sync.js.

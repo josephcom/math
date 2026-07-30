@@ -175,3 +175,44 @@ automatic sync**.
 - Tested with a stubbed GitHub API (15 assertions: create, pull, push, older/newer
   remote, tombstones, tie-break, cross-page delivery, mid-flight edit, idempotence) plus
   the real 401 path. The harness lives in the scratchpad, not the repo.
+
+---
+
+## 2026-07-30 — A bookmark: where I left off
+
+Joseph asked for a simple visual way to mark where he stopped reading, one per lesson,
+saved the way his notes are saved.
+
+**Done this session:**
+- New file `bookmark.js`. A ⚑ flag sits beside every ✎ pencil — same 210 anchors, on
+  every heading and every list item. Click it to mark the spot, click the marked one to
+  clear it.
+- **One per page falls out of the storage shape** rather than being policed: the page
+  holds a single reserved key `@bookmark`, so marking a new spot *is* what unmarks the
+  old one. Nothing has to be hunted down and cleared, and two flags can't both be lit.
+- It lives in the notes' own per-page store — `{"@bookmark": {t:"<anchor-id>", u}}` —
+  so `sync.js` carries it to the other browsers with **no changes at all**: newest wins,
+  clearing it travels as a tombstone. Verified by feeding a newer remote entry through
+  `absorb()`: the old ribbon went out, the new one lit, the pill relabelled.
+- The mark is red, the book's third and last accent: a 4px ribbon down the left edge
+  (inset shadow on an item, a gutter bar on a heading, whose underline also turns red),
+  and the flag goes solid. Neither shifts the text by a pixel.
+- A red **⚑ Resume** pill joins the front of the chips nav whenever a mark exists —
+  scrolls the spot to the middle of the screen and flashes it. No mark, no pill.
+- `notes.js` grew the small API this needed: `get/set/del` on the shared store, and
+  `onRefresh()` — the counterpart to `onChange()`, firing after a *pull* has landed
+  rather than after a local write, so the flag repaints without `absorb()` having to
+  announce a change and trigger a needless push.
+- `script.js` and `notes.js` now also ignore `.markbtn` in their click guards. Belt and
+  braces: the flag's own handler already stops propagation.
+
+**Notes for future Claude:**
+- `bookmark.js` reads each host's anchor id off the pencil's `data-nid` instead of
+  deriving its own. One vocabulary, and it cannot drift from notes.js's numbering of
+  repeated wording. It must therefore load **after** notes.js and does nothing without it.
+- Two buttons need a wider right gutter on an item (46px → 82px). To keep the reading
+  column from paying for it on a phone, `.layer` padding drops to 18px under 600px —
+  which nets 6px *wider* than before. That is the only place the new CSS touches the
+  old layout.
+- The bookmark is per page. The index page doesn't load these scripts, so it can't yet
+  say "you're mid-way through Chapter 1" — the obvious next thing if it's wanted.
