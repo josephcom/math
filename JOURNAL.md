@@ -270,3 +270,20 @@ for induction in all its forms.
   name, and `chapter-01-set-theory-and-logic.html` no longer exists. Anything Joseph had
   written there is still in the gist under the old key, recoverable by hand, but nothing
   will display it.
+
+---
+
+## 2026-08-01 — The "How to Use This Page" pane is gone
+
+Joseph asked for it removed from every chapter. Stripped from all 19 files (~940 bytes
+each); `index.html` keeps its own "How to Use This Book" pane — it is the landing page,
+not a chapter.
+
+- The `.intro` card is now a **single** pane on a chapter. `style.css` gained one line,
+  `.intro:has(> .pane:only-child){grid-template-columns:1fr}`, so the surviving pane takes
+  the full column instead of sitting in the left half of a two-column grid. The index's
+  two-pane card is untouched by that rule.
+- Nothing was orphaned: notes.js anchors only `header h1`, `.layer h2.ltitle`, `.layer h3`
+  and `.layer ul > li`, and the removed pane's `<h2>` had no `.ltitle`. The verify sweep
+  still reports 1,921 items / 1,921 examples / 738 proofs — unchanged.
+- STYLE-GUIDE.md §8 updated so a future chapter does not reintroduce the pane.

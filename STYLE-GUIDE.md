@@ -149,10 +149,11 @@ appends its ⇧ button to it so the two can never overlap.
   1. `<header>`: `<h1>` chapter title + `.topnav` with an outlined back-button
      (`❮ Previous Chapter` linking to the previous chapter file) and a green
      `Start Learning ❯` button linking to `#L1`.
-  2. `.intro` two-panel card: left white pane = what this chapter is and why it matters
-     (3 short paragraphs + green button); right `.mint` pane = "How to Use This Page"
-     (keep the tap-to-reveal explanation, the line about the ✎ note box, and the
-     line about the ⚑ flag and the Resume pill).
+  2. `.intro` card with a **single** white `.pane`: what this chapter is, why it matters and
+     what it assumes (3 short paragraphs + green button). Chapters carried a second `.mint`
+     "How to Use This Page" pane until 2026-08-01; Joseph had them removed. Do not put it
+     back. `style.css` widens a one-pane `.intro` to the full column; `index.html` keeps its
+     own two-pane card.
   3. `.chips` nav: one pill per layer (`#L1`, `#L2`, ...) + `#SUM` Toolbox.
   4. One `<section class="layer" id="LN">` per layer, each containing:
      `<span class="chapter">Layer N · short nickname</span>`, `<h2 class="ltitle">`,
