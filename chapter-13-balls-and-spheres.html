@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 13 — Balls &amp; Spheres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Balls &amp; Spheres</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-12-integration.html">&#10094; Chapter 12 — Integration</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>The Payoff</h2>
+    <p>Twelve chapters of machinery, aimed at one concrete question: <b>how much space does a ball in \(n\) dimensions occupy, and how much skin does it have?</b></p>
+    <p>The answers involve \(\pi\) and the Gamma function, and they behave in ways nobody expects. The unit ball's volume peaks at \(n=5\) and then collapses towards zero.</p>
+    <p>The last two layers explain why high-dimensional space is so counterintuitive — and why that matters for statistics, data and physics.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(V_n = \dfrac{\pi^{n/2}}{\Gamma(\frac n2+1)}\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 The Gamma Function</a><a href="#L2">L2 Volume &amp; Surface</a><a href="#L3">L3 High Dimensions</a>
+  <a href="#L4">L4 Concentration</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · The tool</span>
+  <h2 class="ltitle">The Gamma Function</h2>
+  <p class="ldesc">Factorials for numbers that aren't whole.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Gamma function</b> \(\Gamma(s) = \int_0^{\infty}t^{s-1}e^{-t}\,dt\), for \(s &gt; 0\).
+      <div class="ex"><div><p>A single integral that interpolates the factorials — and it appears the moment you ask for the volume of a ball.</p></div></div></li>
+    <li><b>Beta function</b> \(B(a,b) = \int_0^{1}t^{a-1}(1-t)^{b-1}dt\).
+      <div class="ex"><div><p>Gamma's companion. It computes the slices of a ball.</p></div></div></li>
+    <li><b>Double factorial</b> \(n!! = n(n-2)(n-4)\cdots\).
+      <div class="ex"><div><p>Skips every other term. The odd-dimensional ball formulas are cleanest written this way.</p></div></div></li>
+    <li><b>Stirling's approximation</b> \(n! \sim \sqrt{2\pi n}\,(n/e)^{n}\).
+      <div class="ex"><div><p>Factorials grow faster than any exponential. It is what makes the ball's volume collapse.</p></div></div></li>
+    <li><b>Asymptotic equivalence</b> \(f\sim g\) — the ratio tends to 1.
+      <div class="ex"><div><p>"Eventually the same size", even if the difference grows without bound.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Convergence:</b> the Gamma integral converges for every \(s &gt; 0\).
+      <div class="ex"><div><p>The two ends behave differently: \(t^{s-1}\) controls the origin, \(e^{-t}\) controls infinity.</p></div></div>
+      <div class="proof"><div><p>Near 0, \(t^{s-1}e^{-t}\le t^{s-1}\), integrable there exactly when \(s &gt; 0\). Near \(\infty\), \(t^{s-1}e^{-t}\le C_se^{-t/2}\), which is integrable. Splitting the integral at 1 and adding gives convergence. \(\blacksquare\)</p></div></div></li>
+    <li><b>Functional equation:</b> \(\Gamma(s+1) = s\,\Gamma(s)\).
+      <div class="ex"><div><p>The recurrence that makes \(\Gamma\) a factorial in disguise.</p></div></div>
+      <div class="proof"><div><p>Integrate by parts: \(\Gamma(s+1) = \int_0^{\infty}t^{s}e^{-t}dt = \bigl[-t^{s}e^{-t}\bigr]_0^{\infty} + s\int_0^{\infty}t^{s-1}e^{-t}dt\). The boundary term vanishes at both ends for \(s &gt; 0\), leaving \(s\Gamma(s)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\Gamma(n) = (n-1)!\)</b> for positive integers.
+      <div class="ex"><div><p>\(\Gamma(1)=1\), \(\Gamma(2)=1\), \(\Gamma(3)=2\), \(\Gamma(4)=6\). The factorials, shifted by one.</p></div></div>
+      <div class="proof"><div><p>\(\Gamma(1) = \int_0^{\infty}e^{-t}dt = 1\), and induction with the functional equation gives \(\Gamma(n+1) = n\Gamma(n) = n\cdot(n-1)! = n!\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\Gamma(\tfrac12) = \sqrt\pi\)</b>, and \(\Gamma\bigl(n+\tfrac12\bigr) = \frac{(2n)!}{4^{n}n!}\sqrt\pi\).
+      <div class="ex"><div><p>The \(\sqrt\pi\) is the Gaussian integral in disguise — which is exactly why \(\pi\) appears in every ball volume.</p></div></div>
+      <div class="proof"><div><p>Substitute \(t = u^{2}\): \(\Gamma(\tfrac12) = \int_0^{\infty}t^{-1/2}e^{-t}dt = 2\int_0^{\infty}e^{-u^{2}}du = \sqrt\pi\) by the Gaussian integral (Chapter 12, Layer 4). The half-integer values then follow by repeated use of the functional equation. \(\blacksquare\)</p></div></div></li>
+    <li><b>Beta–Gamma relation:</b> \(B(a,b) = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}\).
+      <div class="ex"><div><p>Two integrals collapse into one identity — proved by a change of variables in the plane.</p></div></div>
+      <div class="proof"><div><p>By Tonelli, \(\Gamma(a)\Gamma(b) = \int_0^{\infty}\!\!\int_0^{\infty}x^{a-1}y^{b-1}e^{-(x+y)}dx\,dy\). Substitute \(x = st\), \(y = s(1-t)\) with \(s &gt; 0\), \(t\in(0,1)\); the Jacobian is \(s\), and the integral factorises into \(\int_0^{\infty}s^{a+b-1}e^{-s}ds \cdot \int_0^{1}t^{a-1}(1-t)^{b-1}dt = \Gamma(a+b)B(a,b)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Stirling's formula:</b> \(\Gamma(s+1)\sim\sqrt{2\pi s}\,(s/e)^{s}\).
+      <div class="ex"><div><p>Everything about high-dimensional volume follows from how fast this grows.</p></div></div>
+      <div class="proof"><div><p>Sketch (Laplace's method): write \(\Gamma(s+1) = \int_0^{\infty}e^{s\ln t - t}dt\). The exponent \(\varphi(t) = s\ln t - t\) is maximised at \(t = s\), with \(\varphi(s) = s\ln s - s\) and \(\varphi''(s) = -1/s\). Substituting \(t = s+u\sqrt s\) and expanding to second order gives \(\Gamma(s+1)\approx e^{s\ln s - s}\sqrt s\int_{-\infty}^{\infty}e^{-u^{2}/2}du = \sqrt{2\pi s}\,(s/e)^{s}\), and dominated convergence justifies the limit. \(\blacksquare\)</p></div></div></li>
+    <li><b>Log-convexity (Bohr–Mollerup):</b> \(\Gamma\) is the unique log-convex function with \(\Gamma(1)=1\) satisfying \(\Gamma(s+1)=s\Gamma(s)\).
+      <div class="ex"><div><p>Not just <em>an</em> extension of the factorial — the only sensible one.</p></div></div>
+      <div class="proof"><div><p>Log-convexity follows from Hölder's inequality applied to the integral. For uniqueness, the functional equation determines \(f\) on \((0,1]\) from its values elsewhere; log-convexity sandwiches \(\ln f(s)\) between the linear interpolations at consecutive integers, and letting the integer tend to infinity squeezes \(f\) to \(\Gamma\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Use the functional equation to shift arguments</b> into a range you know.
+      <div class="ex"><div><p>Every half-integer value reduces to \(\Gamma(\tfrac12)=\sqrt\pi\).</p></div></div></li>
+    <li><b>Recognise a Beta integral</b> — \(\int_0^{1}t^{a-1}(1-t)^{b-1}\).
+      <div class="ex"><div><p>It appears whenever you slice a ball perpendicular to an axis.</p></div></div></li>
+    <li><b>Stirling for asymptotics</b> — replace factorials by their growth rate.
+      <div class="ex"><div><p>The only practical way to see what a formula does as \(n\to\infty\).</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The formulas</span>
+  <h2 class="ltitle">Volume of the Ball, Area of the Sphere</h2>
+  <p class="ldesc">Two closed forms, and the relation between them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Unit ball</b> \(B^{n} = \{x\in\mathbb{R}^{n} : \|x\|\le1\}\), of volume \(V_n\).
+      <div class="ex"><div><p>\(V_1 = 2\), \(V_2 = \pi\), \(V_3 = \frac43\pi\). Then it starts to misbehave.</p></div></div></li>
+    <li><b>Unit sphere</b> \(S^{n-1} = \{x : \|x\|=1\}\), of \((n-1)\)-dimensional area \(S_{n-1}\).
+      <div class="ex"><div><p>The skin of the ball. In \(\mathbb{R}^{3}\) it is the familiar \(4\pi\).</p></div></div></li>
+    <li><b>Radius scaling</b> — \(\operatorname{vol}(rB^{n}) = r^{n}V_n\).
+      <div class="ex"><div><p>Chapter 11's scaling law. The exponent <em>is</em> the dimension — the idea Chapter 18 generalises.</p></div></div></li>
+    <li><b>Surface measure</b> \(\sigma\) on \(S^{n-1}\).
+      <div class="ex"><div><p>Defined by Chapter 12's spherical coordinates; Chapter 14 constructs it from first principles.</p></div></div></li>
+    <li><b>Solid angle</b> — the fraction of \(S^{n-1}\) subtended by a cone.
+      <div class="ex"><div><p>The \(n\)-dimensional version of "how wide does it look from here".</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Volume of the unit ball:</b> \(V_n = \dfrac{\pi^{n/2}}{\Gamma\bigl(\frac n2+1\bigr)}\).
+      <div class="ex"><div><p>\(V_4 = \pi^{2}/2 \approx 4.93\), \(V_5\approx5.26\), \(V_6\approx5.17\). The peak is at \(n=5\).</p></div></div>
+      <div class="proof"><div><p>Compute \(I = \int_{\mathbb{R}^{n}}e^{-\|x\|^{2}}dx\) in two ways. Cartesian: \(I = \pi^{n/2}\) (Chapter 12, Layer 4). Radially: by the layer-cake or spherical coordinates, \(I = \int_0^{\infty}e^{-r^{2}}\,d\bigl(V_nr^{n}\bigr) = V_n\!\int_0^{\infty}nr^{n-1}e^{-r^{2}}dr\). Substituting \(t = r^{2}\) turns the last integral into \(\tfrac n2\Gamma(\tfrac n2) = \Gamma(\tfrac n2+1)\). Equating gives the formula. \(\blacksquare\)</p></div></div></li>
+    <li><b>Surface area of the unit sphere:</b> \(S_{n-1} = \dfrac{2\pi^{n/2}}{\Gamma\bigl(\frac n2\bigr)} = n\,V_n\).
+      <div class="ex"><div><p>\(n=3\): \(S_2 = 3\cdot\frac43\pi = 4\pi\). The familiar answer, from the general formula.</p></div></div>
+      <div class="proof"><div><p>Differentiate the volume of the ball of radius \(r\): \(\frac{d}{dr}\bigl(V_nr^{n}\bigr) = nV_nr^{n-1}\), which is the surface area of the sphere of radius \(r\) — a thin shell of thickness \(dr\) has volume (area)\(\times dr\). At \(r=1\) this gives \(S_{n-1} = nV_n\), and substituting the volume formula with \(\Gamma(\tfrac n2+1) = \tfrac n2\Gamma(\tfrac n2)\) yields the closed form. \(\blacksquare\)</p></div></div></li>
+    <li><b>Recursion:</b> \(V_n = \dfrac{2\pi}{n}V_{n-2}\), with \(V_1 = 2\), \(V_2 = \pi\).
+      <div class="ex"><div><p>Each two extra dimensions multiply the volume by \(2\pi/n\) — a factor that drops below 1 once \(n &gt; 6\).</p></div></div>
+      <div class="proof"><div><p>Immediate from the closed form: \(\frac{V_n}{V_{n-2}} = \pi\cdot\frac{\Gamma(\frac n2)}{\Gamma(\frac n2+1)} = \frac{\pi}{n/2} = \frac{2\pi}{n}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Slicing recursion:</b> \(V_n = V_{n-1}\displaystyle\int_{-1}^{1}(1-t^{2})^{\frac{n-1}{2}}dt\).
+      <div class="ex"><div><p>Cut the ball into parallel discs. The cross-section at height \(t\) is a ball of radius \(\sqrt{1-t^{2}}\).</p></div></div>
+      <div class="proof"><div><p>By Fubini (Chapter 12, Layer 3), \(V_n = \int_{-1}^{1}\operatorname{vol}_{n-1}\bigl(\sqrt{1-t^{2}}\,B^{n-1}\bigr)dt = V_{n-1}\int_{-1}^{1}(1-t^{2})^{(n-1)/2}dt\), using the scaling law. Substituting \(u = t^{2}\) turns the integral into a Beta function, which reproduces the closed form via Layer 1. \(\blacksquare\)</p></div></div></li>
+    <li><b>Explicit forms:</b> \(V_{2m} = \dfrac{\pi^{m}}{m!}\) and \(V_{2m+1} = \dfrac{2^{m+1}\pi^{m}}{(2m+1)!!}\).
+      <div class="ex"><div><p>Even dimensions are the clean case: \(V_4 = \pi^{2}/2\), \(V_6 = \pi^{3}/6\).</p></div></div>
+      <div class="proof"><div><p>Put \(n = 2m\) in the closed form: \(\Gamma(m+1) = m!\), giving \(\pi^{m}/m!\). Put \(n = 2m+1\): \(\Gamma(m+\tfrac32) = \frac{(2m+1)!!}{2^{m+1}}\sqrt\pi\) by repeated use of the functional equation from \(\Gamma(\tfrac12)=\sqrt\pi\), and the \(\sqrt\pi\) cancels one factor of \(\pi^{1/2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Volume of a ball of radius \(r\):</b> \(V_n r^{n}\); surface \(S_{n-1}r^{n-1}\).
+      <div class="ex"><div><p>Double the radius in 10 dimensions and the volume grows by a factor of 1024.</p></div></div>
+      <div class="proof"><div><p>Chapter 11, Layer 3's scaling law \(\lambda(cE) = |c|^{n}\lambda(E)\), applied with \(c=r\); differentiating in \(r\) gives the surface statement as above. \(\blacksquare\)</p></div></div></li>
+    <li><b>Asymptotics:</b> \(V_n \sim \dfrac{1}{\sqrt{n\pi}}\Bigl(\dfrac{2\pi e}{n}\Bigr)^{n/2} \to 0\) rapidly.
+      <div class="ex"><div><p>\(V_{20}\approx0.026\); \(V_{100}\approx 10^{-40}\). The unit ball essentially vanishes inside its own bounding cube.</p></div></div>
+      <div class="proof"><div><p>Apply Stirling to \(\Gamma(\tfrac n2+1)\sim\sqrt{\pi n}\bigl(\tfrac{n}{2e}\bigr)^{n/2}\) and substitute into \(V_n = \pi^{n/2}/\Gamma(\tfrac n2+1)\). The ratio \((2\pi e/n)^{n/2}\) tends to 0 super-exponentially once \(n &gt; 2\pi e \approx 17\). \(\blacksquare\)</p></div></div></li>
+    <li><b>The peak:</b> \(V_n\) increases up to \(n=5\) and decreases thereafter; \(S_{n-1}\) peaks at \(n=7\).
+      <div class="ex"><div><p>There is a "best" dimension for a unit ball to live in, and it is five. Nothing in the geometry suggests it in advance.</p></div></div>
+      <div class="proof"><div><p>From the recursion, \(V_n &gt; V_{n-2}\) exactly when \(2\pi/n &gt; 1\), i.e. \(n &lt; 2\pi \approx 6.28\). Checking the two interleaved sequences (odd and even \(n\)) against the explicit values \(V_4\approx4.93\), \(V_5\approx5.26\), \(V_6\approx5.17\) identifies \(n=5\) as the maximum. The same computation for \(S_{n-1} = nV_n\) shifts the peak to \(n=7\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>The Gaussian trick</b> — compute a radial integral two ways to extract \(V_n\).
+      <div class="ex"><div><p>The cleanest derivation, and it generalises to other radial weights.</p></div></div></li>
+    <li><b>Slice with Fubini</b> — reduce dimension \(n\) to dimension \(n-1\).
+      <div class="ex"><div><p>Archimedes' method, with the bookkeeping made rigorous.</p></div></div></li>
+    <li><b>Differentiate volume to get surface</b> — \(S = dV/dr\).
+      <div class="ex"><div><p>One-line derivations of \(4\pi r^{2}\) from \(\frac43\pi r^{3}\), in any dimension.</p></div></div></li>
+    <li><b>Apply Stirling</b> — to see what a formula does for large \(n\).
+      <div class="ex"><div><p>Closed forms hide their behaviour; asymptotics reveal it.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Where intuition breaks</span>
+  <h2 class="ltitle">High-Dimensional Geometry</h2>
+  <p class="ldesc">Six facts that are false in three dimensions and true in three hundred.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Unit cube</b> \([-1,1]^{n}\), of volume \(2^{n}\).
+      <div class="ex"><div><p>The natural container for the unit ball. Their ratio is what goes wrong.</p></div></div></li>
+    <li><b>Diagonal of the cube</b> — length \(2\sqrt n\).
+      <div class="ex"><div><p>The corners run away from the centre while the faces stay put.</p></div></div></li>
+    <li><b>Annulus (shell)</b> \(\{1-\varepsilon \le \|x\|\le1\}\).
+      <div class="ex"><div><p>The skin of the ball. In high dimensions the skin is almost the whole fruit.</p></div></div></li>
+    <li><b>Equatorial band</b> \(\{|x_1|\le t\}\cap S^{n-1}\).
+      <div class="ex"><div><p>A strip around the equator. It contains nearly all the sphere's area for tiny \(t\).</p></div></div></li>
+    <li><b>Curse of dimensionality</b> — sample size requirements grow exponentially with \(n\).
+      <div class="ex"><div><p>Ten points cover an interval decently. Covering a 10-dimensional cube to the same resolution takes \(10^{10}\).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The ball vanishes inside its cube:</b> \(V_n/2^{n}\to0\) faster than exponentially.
+      <div class="ex"><div><p>In 20 dimensions the inscribed ball occupies about \(2\times10^{-8}\) of the cube. Essentially all of the cube is in the corners.</p></div></div>
+      <div class="proof"><div><p>By Layer 2's asymptotics, \(V_n/2^{n} \sim \frac{1}{\sqrt{n\pi}}\bigl(\frac{\pi e}{2n}\bigr)^{n/2}\), which tends to 0 super-exponentially. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corner escape:</b> the cube's diagonal has length \(2\sqrt n\) while the inscribed ball has radius 1.
+      <div class="ex"><div><p>In 100 dimensions the corners are 10 times further from the centre than the faces are.</p></div></div>
+      <div class="proof"><div><p>The corner \((\pm1,\dots,\pm1)\) has norm \(\sqrt{\sum_i1} = \sqrt n\), while the face centre \((1,0,\dots,0)\) has norm 1. The full diagonal is twice the corner distance. \(\blacksquare\)</p></div></div></li>
+    <li><b>Thin shell:</b> for fixed \(\varepsilon &gt; 0\), the fraction of the ball within radius \(1-\varepsilon\) is \((1-\varepsilon)^{n}\to0\).
+      <div class="ex"><div><p>99% of a 1000-dimensional ball's volume lies in the outer 0.5% of its radius. A high-dimensional orange is all peel.</p></div></div>
+      <div class="proof"><div><p>The inner ball has volume \((1-\varepsilon)^{n}V_n\) by the scaling law, so the ratio is \((1-\varepsilon)^{n}\), which tends to 0 geometrically for any fixed \(\varepsilon &gt; 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Equatorial concentration:</b> for fixed \(t &gt; 0\), the fraction of \(S^{n-1}\) with \(|x_1| &gt; t\) is at most \(2e^{-nt^{2}/2}\).
+      <div class="ex"><div><p>Almost all of a high-dimensional sphere lies within a hair's breadth of any chosen equator — and of every other equator simultaneously.</p></div></div>
+      <div class="proof"><div><p>Sketch: the density of the first coordinate of a uniform point on \(S^{n-1}\) is proportional to \((1-s^{2})^{(n-3)/2}\) (Layer 2's slicing). Then \(\Pr(|x_1|&gt;t) = \frac{2\int_t^{1}(1-s^{2})^{(n-3)/2}ds}{\int_{-1}^{1}(1-s^{2})^{(n-3)/2}ds}\), and the bound \((1-s^{2})^{(n-3)/2}\le e^{-(n-3)s^{2}/2}\) with a comparison of the two Gaussian-type integrals gives the stated exponential estimate. \(\blacksquare\)</p></div></div></li>
+    <li><b>Near-orthogonality:</b> two independent uniform points on \(S^{n-1}\) have \(\langle x,y\rangle\) of typical size \(1/\sqrt n\).
+      <div class="ex"><div><p>Random directions in high dimensions are almost always nearly perpendicular. This is why random projections preserve so much structure.</p></div></div>
+      <div class="proof"><div><p>By rotational invariance, fix \(y = e_1\); then \(\langle x,y\rangle = x_1\), whose distribution is the one above, with mean 0 and variance \(1/n\) (the coordinates are exchangeable and \(\sum_ix_i^{2}=1\), so \(\mathbb{E}[x_i^{2}]=1/n\)). Chebyshev then bounds deviations beyond a few multiples of \(1/\sqrt n\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Volume of the intersection with a half-space:</b> a slab of fixed width around the centre contains almost all of the ball.
+      <div class="ex"><div><p>Project a high-dimensional ball onto any line and nearly everything lands near 0 — even though the ball has radius 1.</p></div></div>
+      <div class="proof"><div><p>The marginal density of \(x_1\) for a uniform point in \(B^{n}\) is proportional to \((1-s^{2})^{(n-1)/2}\), which concentrates at 0 with standard deviation of order \(1/\sqrt n\) by the same estimate as above. So \(\Pr(|x_1| &gt; t)\) decays like \(e^{-nt^{2}/2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Nearest-neighbour collapse:</b> in a uniform sample from a high-dimensional cube, the ratio of farthest to nearest distance tends to 1.
+      <div class="ex"><div><p>"Nearest neighbour" stops meaning anything. This is the practical face of the curse of dimensionality.</p></div></div>
+      <div class="proof"><div><p>Sketch: \(\|x-y\|^{2} = \sum_i(x_i-y_i)^{2}\) is a sum of \(n\) independent bounded terms, so by the law of large numbers it concentrates around \(n\mathbb{E}[(x_1-y_1)^{2}]\) with fluctuations of order \(\sqrt n\). Hence all pairwise distances are \(\sqrt n\bigl(c + O(n^{-1/2})\bigr)\), and their ratio tends to 1. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compute the ratio, not the quantity</b> — volumes alone say little; fractions say everything.
+      <div class="ex"><div><p>\(V_n\to0\) sounds dramatic until you notice \(2^{n}\to\infty\); the ratio is the real story.</p></div></div></li>
+    <li><b>Look at one coordinate</b> — rotational symmetry makes the first coordinate representative.
+      <div class="ex"><div><p>Turns an \(n\)-dimensional question into a one-dimensional density.</p></div></div></li>
+    <li><b>Use \((1-\varepsilon)^{n}\)</b> — the standard high-dimensional decay factor.
+      <div class="ex"><div><p>Anything short of the full radius is negligible once \(n\) is large.</p></div></div></li>
+    <li><b>Test your intuition against \(n=100\)</b>, not \(n=3\).
+      <div class="ex"><div><p>Three-dimensional pictures are actively misleading here.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The general principle</span>
+  <h2 class="ltitle">Concentration of Measure</h2>
+  <p class="ldesc">In high dimensions, well-behaved functions are almost constant.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Concentration of measure</b> — a Lipschitz function on a high-dimensional sphere is close to its median with overwhelming probability.
+      <div class="ex"><div><p>Measure any reasonable quantity on a random high-dimensional point and you nearly always get the same answer.</p></div></div></li>
+    <li><b>Median</b> \(M_f\) — a value with \(\sigma(f \le M_f)\ge\tfrac12\) and \(\sigma(f\ge M_f)\ge\tfrac12\).
+      <div class="ex"><div><p>Used instead of the mean because it behaves better under the isoperimetric argument.</p></div></div></li>
+    <li><b>\(\varepsilon\)-neighbourhood</b> \(A_\varepsilon = \{x : d(x,A)\le\varepsilon\}\).
+      <div class="ex"><div><p>Fatten the set slightly. On a high-dimensional sphere, fattening a half is enough to capture almost everything.</p></div></div></li>
+    <li><b>Spherical isoperimetric inequality</b> — among sets of given measure, caps have the smallest neighbourhoods.
+      <div class="ex"><div><p>Caps are extremal, exactly as balls are in Euclidean space (Chapter 19).</p></div></div></li>
+    <li><b>Johnson–Lindenstrauss projection</b> — a random linear map to \(O(\varepsilon^{-2}\log m)\) dimensions preserving all pairwise distances.
+      <div class="ex"><div><p>You can squash a million points from a million dimensions into a few hundred and barely disturb their distances.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Lévy's concentration inequality:</b> for 1-Lipschitz \(f\) on \(S^{n-1}\), \(\sigma\bigl(|f - M_f| &gt; t\bigr) \le 2e^{-nt^{2}/2}\).
+      <div class="ex"><div><p>Any measurement that doesn't amplify small changes is essentially constant on a high-dimensional sphere.</p></div></div>
+      <div class="proof"><div><p>Sketch: let \(A = \{f\le M_f\}\), so \(\sigma(A)\ge\tfrac12\). The spherical isoperimetric inequality says its \(t\)-neighbourhood is at least as large as that of a half-sphere, which by the equatorial estimate of Layer 3 has measure at least \(1 - e^{-nt^{2}/2}\). Since \(f\) is 1-Lipschitz, \(f \le M_f + t\) on \(A_t\), giving \(\sigma(f &gt; M_f+t)\le e^{-nt^{2}/2}\); applying the same to \(-f\) gives the other tail. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — sharp equatorial concentration:</b> the coordinate function \(x\mapsto x_1\) is 1-Lipschitz, recovering Layer 3's estimate.
+      <div class="ex"><div><p>The specific fact is a special case of the general principle.</p></div></div>
+      <div class="proof"><div><p>\(|x_1 - y_1| \le \|x-y\|\), so \(f(x)=x_1\) is 1-Lipschitz, and its median is 0 by symmetry. Lévy's inequality gives \(\sigma(|x_1|&gt;t)\le2e^{-nt^{2}/2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gaussian concentration:</b> for 1-Lipschitz \(f\) and a standard Gaussian vector \(X\) in \(\mathbb{R}^{n}\), \(\Pr(|f(X)-\mathbb{E}f|&gt;t)\le2e^{-t^{2}/2}\) — with no \(n\) in the bound.
+      <div class="ex"><div><p>Dimension-free. This is why Gaussian models are so well behaved in high dimensions.</p></div></div>
+      <div class="proof"><div><p>Sketch: the Gaussian measure satisfies a logarithmic Sobolev inequality, from which the Herbst argument bounds the moment generating function \(\mathbb{E}e^{s(f-\mathbb{E}f)}\le e^{s^{2}/2}\). Markov's inequality applied to that exponential, optimised over \(s\), yields the stated tail. \(\blacksquare\)</p></div></div></li>
+    <li><b>Norm concentration:</b> a standard Gaussian vector in \(\mathbb{R}^{n}\) has \(\|X\|\approx\sqrt n\), with fluctuations of order 1.
+      <div class="ex"><div><p>High-dimensional Gaussian noise lives on a thin spherical shell of radius \(\sqrt n\), not near the origin where the density is highest.</p></div></div>
+      <div class="proof"><div><p>\(\mathbb{E}\|X\|^{2} = n\), and \(x\mapsto\|x\|\) is 1-Lipschitz, so Gaussian concentration gives \(\Pr(|\|X\| - \mathbb{E}\|X\||&gt;t)\le2e^{-t^{2}/2}\) with \(\mathbb{E}\|X\| = \sqrt n(1+O(1/n))\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Johnson–Lindenstrauss lemma:</b> \(m\) points in \(\mathbb{R}^{N}\) can be mapped linearly into \(\mathbb{R}^{k}\), \(k = O(\varepsilon^{-2}\log m)\), distorting all pairwise distances by at most \(1\pm\varepsilon\).
+      <div class="ex"><div><p>The target dimension doesn't depend on the original one at all — only on how many points there are.</p></div></div>
+      <div class="proof"><div><p>Sketch: take \(P\) a random \(k\times N\) Gaussian matrix scaled by \(1/\sqrt k\). For a fixed vector \(v\), \(\|Pv\|^{2}\) concentrates around \(\|v\|^{2}\) with failure probability \(\le2e^{-ck\varepsilon^{2}}\), by norm concentration. Applying this to the \(\binom m2\) difference vectors and taking a union bound, the failure probability is under 1 as soon as \(k &gt; C\varepsilon^{-2}\log m\), so some \(P\) works. \(\blacksquare\)</p></div></div></li>
+    <li><b>Dvoretzky's theorem</b> (stated): every high-dimensional convex body has nearly spherical sections of dimension \(c\log n\).
+      <div class="ex"><div><p>Slice any convex body the right way and it looks like a ball. Concentration, at its most striking.</p></div></div>
+      <div class="proof"><div><p>Sketch: the norm \(x\mapsto\|x\|_K\) is Lipschitz on the Euclidean sphere, so by Lévy it is nearly constant on most of \(S^{n-1}\). A net argument shows a random subspace of dimension \(c\varepsilon^{2}\log n\) has the whole of its unit sphere in that near-constant region, making the section nearly Euclidean. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check the Lipschitz constant</b> — then quote concentration.
+      <div class="ex"><div><p>Almost every natural quantity (norms, distances, coordinates) is 1-Lipschitz.</p></div></div></li>
+    <li><b>Union bound over a net</b> — to upgrade a pointwise estimate to a uniform one.
+      <div class="ex"><div><p>Exponential tails beat polynomially many events, which is what makes the argument work.</p></div></div></li>
+    <li><b>Project randomly</b> — reduce dimension while preserving geometry.
+      <div class="ex"><div><p>The practical use of everything in this chapter.</p></div></div></li>
+    <li><b>Expect near-constancy</b> — in high dimensions, ask for the typical value, not the range.
+      <div class="ex"><div><p>The range is huge; the typical value is sharp.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Functional equation \(\Gamma(s+1)=s\Gamma(s)\)</td><td>L1</td><td>Reduce any Gamma value to a known one</td></tr>
+    <tr><td>Recognise a Beta integral</td><td>L1</td><td>Evaluate slice integrals in closed form</td></tr>
+    <tr><td>Stirling's formula</td><td>L1</td><td>Extract large-\(n\) behaviour</td></tr>
+    <tr><td>Gaussian two-ways trick</td><td>L2</td><td>Derive \(V_n\)</td></tr>
+    <tr><td>Slice with Fubini</td><td>L2</td><td>Set up a dimension recursion</td></tr>
+    <tr><td>\(S = dV/dr\)</td><td>L2</td><td>Get surface area from volume</td></tr>
+    <tr><td>Scaling \(r^{n}\)</td><td>L2</td><td>Rescale any volume</td></tr>
+    <tr><td>Compute ratios</td><td>L3</td><td>See what high dimension really does</td></tr>
+    <tr><td>Look at one coordinate</td><td>L3</td><td>Use rotational symmetry to drop to 1D</td></tr>
+    <tr><td>\((1-\varepsilon)^{n}\) decay</td><td>L3</td><td>Show the interior is negligible</td></tr>
+    <tr><td>Lipschitz + Lévy</td><td>L4</td><td>Show a quantity is essentially constant</td></tr>
+    <tr><td>Union bound over a net</td><td>L4</td><td>Make a pointwise bound uniform</td></tr>
+    <tr><td>Random projection</td><td>L4</td><td>Reduce dimension while keeping distances</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Balls &amp; Spheres · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

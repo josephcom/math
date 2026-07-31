@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8 — Topology of R^n</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Topology of \(\mathbb{R}^{n}\)</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-07-metric-spaces.html">&#10094; Chapter 7 — Metric Spaces</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Shape Without Distance</h2>
+    <p>Chapter 7 kept the distance. This chapter keeps only which sets are <b>open</b> — and finds that almost every theorem survives.</p>
+    <p>Two properties do the heavy lifting: <b>compactness</b> (nothing escapes) and <b>connectedness</b> (nothing is torn). Between them they prove the extreme value theorem, the intermediate value theorem, and uniform continuity.</p>
+    <p>These are also the properties Chapters 11–18 need before they can talk about volume, surface and dimension.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\overline{A} = A \cup \partial A\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Open &amp; Closed</a><a href="#L2">L2 Topological Spaces</a><a href="#L3">L3 Compactness</a>
+  <a href="#L4">L4 Connectedness</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Inside and edge</span>
+  <h2 class="ltitle">Open &amp; Closed Sets</h2>
+  <p class="ldesc">The vocabulary of position, built from balls.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Open set</b> — every point has a ball around it inside the set.
+      <div class="ex"><div><p>A field with no fence: from anywhere inside, you can still step in any direction.</p></div></div></li>
+    <li><b>Closed set</b> — the complement is open; equivalently, it contains all its limit points.
+      <div class="ex"><div><p>\([0,1]\) is closed, \((0,1)\) is open, \([0,1)\) is neither. "Closed" is not "not open".</p></div></div></li>
+    <li><b>Clopen set</b> — both open and closed.
+      <div class="ex"><div><p>In \(\mathbb{R}^{n}\) only \(\varnothing\) and the whole space. That fact <em>is</em> connectedness.</p></div></div></li>
+    <li><b>Neighbourhood</b> of \(x\) — any set containing an open set containing \(x\).
+      <div class="ex"><div><p>"Somewhere around here", with the edges left vague on purpose.</p></div></div></li>
+    <li><b>Interior</b> \(A^{\circ}\) — the largest open set inside \(A\).
+      <div class="ex"><div><p>The field without its fence.</p></div></div></li>
+    <li><b>Closure</b> \(\overline{A}\) — the smallest closed set containing \(A\).
+      <div class="ex"><div><p>The field with its fence added back.</p></div></div></li>
+    <li><b>Boundary</b> \(\partial A = \overline{A}\setminus A^{\circ}\).
+      <div class="ex"><div><p>The fence itself. \(\partial\mathbb{Q} = \mathbb{R}\) — a warning that boundaries can be enormous.</p></div></div></li>
+    <li><b>Limit point &amp; isolated point</b>.
+      <div class="ex"><div><p>Approached by the set from outside; or standing alone with elbow room.</p></div></div></li>
+    <li><b>Dense set</b> — closure is everything.
+      <div class="ex"><div><p>\(\mathbb{Q}^{n}\) in \(\mathbb{R}^{n}\): countably many points, yet nowhere to hide from them.</p></div></div></li>
+    <li><b>Nowhere dense set</b> — closure has empty interior.
+      <div class="ex"><div><p>A line in the plane, or the Cantor set on the line.</p></div></div></li>
+    <li><b>Box (rectangle)</b> \([a_1,b_1]\times\cdots\times[a_n,b_n]\).
+      <div class="ex"><div><p>The basic brick of \(\mathbb{R}^{n}\). Chapter 11 defines volume by chopping everything into these.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Unions and finite intersections of open sets are open;</b> intersections and finite unions of closed sets are closed.
+      <div class="ex"><div><p>\(\bigcap_n(-1/n,1/n) = \{0\}\) — infinitely many open sets can intersect in a closed one, which is why "finite" is not decorative.</p></div></div>
+      <div class="proof"><div><p>If \(x \in \bigcup_iU_i\) it lies in some \(U_i\), which supplies a ball. If \(x\in\bigcap_{i=1}^{k}U_i\), take the smallest of the \(k\) radii; that ball works for all of them. The closed statements follow by De Morgan (Chapter 2, Layer 3). \(\blacksquare\)</p></div></div></li>
+    <li><b>Interior and closure characterised:</b> \(A^{\circ}\) is the union of all open subsets of \(A\); \(\overline A\) is the intersection of all closed supersets.
+      <div class="ex"><div><p>Squeeze from inside and from outside; both are well defined by the previous theorem.</p></div></div>
+      <div class="proof"><div><p>The union of open subsets of \(A\) is open and contained in \(A\), and it contains every such set — so it is the largest. Dually, the intersection of closed supersets is closed, contains \(A\), and is contained in every closed superset. \(\blacksquare\)</p></div></div></li>
+    <li><b>Duality:</b> \(\overline{A^{c}} = (A^{\circ})^{c}\) and \((\overline A)^{c} = (A^{c})^{\circ}\).
+      <div class="ex"><div><p>Inside and outside swap when you take complements. Every fact here comes in a pair.</p></div></div>
+      <div class="proof"><div><p>\(x \notin A^{\circ}\) means no ball around \(x\) fits inside \(A\), i.e. every ball meets \(A^{c}\), i.e. \(x \in \overline{A^{c}}\). The second identity is this one applied to \(A^{c}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(A\) is closed iff \(A = \overline A\)</b>, and open iff \(A = A^{\circ}\).
+      <div class="ex"><div><p>Closed means "already contains its fence"; open means "contains none of it".</p></div></div>
+      <div class="proof"><div><p>\(\overline A\) is closed and contains \(A\), so if \(A = \overline A\) then \(A\) is closed; conversely a closed \(A\) is one of the sets being intersected, so \(\overline A \subseteq A\). The open statement is dual. \(\blacksquare\)</p></div></div></li>
+    <li><b>Sequential closure:</b> \(x \in \overline A\) iff some sequence in \(A\) tends to \(x\).
+      <div class="ex"><div><p>Metric spaces let you replace every topological statement by a statement about sequences.</p></div></div>
+      <div class="proof"><div><p>Chapter 7, Layer 2 — the argument used only the metric, so it applies verbatim in \(\mathbb{R}^{n}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Open sets in \(\mathbb{R}^{n}\) are countable unions of boxes</b>, and in \(\mathbb{R}\) countable disjoint unions of intervals.
+      <div class="ex"><div><p>Any open region can be tiled by dyadic cubes — the fact Chapter 11 needs to define measure.</p></div></div>
+      <div class="proof"><div><p>For each \(x\) in the open set \(U\), choose a dyadic cube (side \(2^{-k}\), corners at multiples of \(2^{-k}\)) containing \(x\) and contained in \(U\); there are only countably many dyadic cubes, so the union of those selected is a countable union equal to \(U\). In \(\mathbb{R}\), take maximal intervals inside \(U\); these are disjoint, each contains a rational, so there are countably many. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{R}^{n}\) is separable:</b> \(\mathbb{Q}^{n}\) is a countable dense subset.
+      <div class="ex"><div><p>Every point in space is approximable by points with fractional coordinates — the reason computers can do geometry.</p></div></div>
+      <div class="proof"><div><p>\(\mathbb{Q}^{n}\) is countable as a finite product of countable sets (Chapter 2, Layer 7). Given \(x\) and \(\varepsilon\), density of \(\mathbb{Q}\) in \(\mathbb{R}\) (Chapter 3, Layer 2) supplies rationals within \(\varepsilon/\sqrt n\) of each coordinate, giving a rational point within \(\varepsilon\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Prove openness by producing a radius</b> — given \(x\), exhibit \(r\).
+      <div class="ex"><div><p>The radius almost always comes from the slack in a strict inequality.</p></div></div></li>
+    <li><b>Prove closedness via sequences or complements</b>.
+      <div class="ex"><div><p>"Take a convergent sequence in \(A\) and show the limit is in \(A\)" is usually the shortest route.</p></div></div></li>
+    <li><b>Use preimages</b> — \(\{x : f(x) &lt; c\}\) is open when \(f\) is continuous.
+      <div class="ex"><div><p>A one-line proof that most sets you meet are open or closed.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The abstraction</span>
+  <h2 class="ltitle">Topological Spaces</h2>
+  <p class="ldesc">Forget the metric; keep the open sets.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Topology</b> — a family of "open" subsets closed under arbitrary unions and finite intersections, containing \(\varnothing\) and \(X\).
+      <div class="ex"><div><p>The two rules of Layer 1, promoted to the definition.</p></div></div></li>
+    <li><b>Metrisable space</b> — one whose topology comes from a metric.
+      <div class="ex"><div><p>Not all are. But everything in this book is.</p></div></div></li>
+    <li><b>Base</b> — a family whose unions give all open sets.
+      <div class="ex"><div><p>The balls form a base for \(\mathbb{R}^{n}\); so do the boxes with rational corners.</p></div></div></li>
+    <li><b>Subbase</b> — a family whose finite intersections form a base.
+      <div class="ex"><div><p>The half-lines \((a,\infty)\) and \((-\infty,b)\) generate the whole topology of \(\mathbb{R}\).</p></div></div></li>
+    <li><b>Subspace topology</b> — open sets of \(A\) are \(A \cap U\) for \(U\) open in \(X\).
+      <div class="ex"><div><p>\([0,1)\) is open <em>in</em> \([0,2]\), though not in \(\mathbb{R}\). Openness is always relative to a container.</p></div></div></li>
+    <li><b>Product topology</b> — generated by the boxes \(U_1\times\cdots\times U_n\).
+      <div class="ex"><div><p>Exactly the usual topology on \(\mathbb{R}^{n}\), assembled from \(n\) copies of \(\mathbb{R}\).</p></div></div></li>
+    <li><b>Quotient topology</b> — the finest topology making the quotient map continuous.
+      <div class="ex"><div><p>Glue the ends of an interval and get a circle; the topology comes along for free.</p></div></div></li>
+    <li><b>Hausdorff space</b> — distinct points have disjoint neighbourhoods.
+      <div class="ex"><div><p>Every metric space is Hausdorff (Chapter 7). Without it, limits need not be unique.</p></div></div></li>
+    <li><b>Second countable</b> — has a countable base.
+      <div class="ex"><div><p>\(\mathbb{R}^{n}\) does: boxes with rational corners. This is what makes Lindelöf's theorem work.</p></div></div></li>
+    <li><b>Homeomorphism</b> — a bijection, continuous both ways.
+      <div class="ex"><div><p>A coffee mug and a doughnut. Topological properties are exactly those preserved by these.</p></div></div></li>
+    <li><b>Topological property</b> — one preserved by homeomorphism.
+      <div class="ex"><div><p>Compactness and connectedness are; being bounded, or having a certain diameter, are not.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Metric topologies satisfy the axioms</b>, and equivalent metrics give the same topology.
+      <div class="ex"><div><p>Everything Chapter 7 proved about open sets was really about topology.</p></div></div>
+      <div class="proof"><div><p>Layer 1's first theorem is exactly the closure under unions and finite intersections, and \(\varnothing, X\) are trivially open. Equivalent metrics have mutually nested balls (Chapter 7, Layer 2), so they generate the same unions. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuity = open preimages</b>, and compositions of continuous maps are continuous.
+      <div class="ex"><div><p>The definition that needs neither distance nor sequences.</p></div></div>
+      <div class="proof"><div><p>In a metric space this is equivalent to the \(\varepsilon\)–\(\delta\) definition (Chapter 7, Layer 2), so adopting it loses nothing. Composition: \((g\circ f)^{-1}(W) = f^{-1}(g^{-1}(W))\), open as a preimage of an open set. \(\blacksquare\)</p></div></div></li>
+    <li><b>A map into a product is continuous iff each coordinate is.</b>
+      <div class="ex"><div><p>Curves in space are continuous exactly when their \(x\), \(y\) and \(z\) components are.</p></div></div>
+      <div class="proof"><div><p>Projections are continuous, so continuity of \(f\) gives continuity of \(\pi_i\circ f\). Conversely, preimages of the generating boxes are \(\bigcap_i(\pi_i\circ f)^{-1}(U_i)\), a finite intersection of open sets — hence open; a base's preimages being open suffices. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lindelöf's theorem:</b> in a second countable space, every open cover has a countable subcover.
+      <div class="ex"><div><p>You can always thin an unmanageable cover down to a list. Half of measure theory relies on it.</p></div></div>
+      <div class="proof"><div><p>Let \(\{B_k\}\) be a countable base and \(\mathcal{U}\) an open cover. For each \(k\) such that \(B_k \subseteq U\) for some \(U \in\mathcal U\), pick one such \(U_k\). Given \(x\), it lies in some \(U\in\mathcal U\), and the base supplies \(B_k\) with \(x\in B_k\subseteq U\); then \(x \in U_k\). So \(\{U_k\}\) is a countable subcover. \(\blacksquare\)</p></div></div></li>
+    <li><b>Homeomorphisms preserve openness, closure, compactness and connectedness.</b>
+      <div class="ex"><div><p>These are the properties that describe shape rather than measurement.</p></div></div>
+      <div class="proof"><div><p>If \(h\) is a homeomorphism, \(h(U) = (h^{-1})^{-1}(U)\) is open whenever \(U\) is, and likewise in reverse; so the open sets correspond exactly. Every property defined purely from the open sets — including those in Layers 3 and 4 — is therefore preserved. \(\blacksquare\)</p></div></div></li>
+    <li><b>Invariance of dimension</b> (stated): \(\mathbb{R}^{m}\) and \(\mathbb{R}^{n}\) are homeomorphic only if \(m=n\).
+      <div class="ex"><div><p>The plane really is different from the line — even though Chapter 2 showed they have equally many points, and there is even a <em>continuous</em> surjection from \([0,1]\) onto the square.</p></div></div>
+      <div class="proof"><div><p>Sketch: a homeomorphism would induce isomorphisms on the homology (or homotopy) groups of punctured spaces, but \(\mathbb{R}^{n}\setminus\{0\}\) has the homotopy type of \(S^{n-1}\), whose homology distinguishes the dimensions. No proof using only the tools of this book is known to be short; the result is due to Brouwer. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Work with a base</b> — check statements on basic open sets only.
+      <div class="ex"><div><p>Continuity, for instance, needs checking only on a base or subbase.</p></div></div></li>
+    <li><b>Relativise</b> — remember that "open" always means "open in <em>what</em>".
+      <div class="ex"><div><p>The single most common source of confusion in this subject.</p></div></div></li>
+    <li><b>Prove things are not homeomorphic by finding an invariant</b>.
+      <div class="ex"><div><p>Remove a point from a line and it falls apart; remove one from a circle and it doesn't.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Nothing escapes</span>
+  <h2 class="ltitle">Compactness</h2>
+  <p class="ldesc">The property that turns local promises into global ones.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Open cover</b> — a family of open sets whose union contains the set.
+      <div class="ex"><div><p>Beer mats scattered to hide the table: they may overlap, they just have to leave no wood showing.</p></div></div></li>
+    <li><b>Compact set</b> — every open cover has a finite subcover.
+      <div class="ex"><div><p>However you scatter the mats, finitely many of them already do the job.</p></div></div></li>
+    <li><b>Sequentially compact</b> — every sequence has a convergent subsequence with limit in the set.
+      <div class="ex"><div><p>Infinitely many points in a finite room must pile up. In metric spaces this is equivalent to compactness.</p></div></div></li>
+    <li><b>Totally bounded</b> — finitely many \(\varepsilon\)-balls cover it, for every \(\varepsilon\).
+      <div class="ex"><div><p>Stronger than bounded once you leave \(\mathbb{R}^{n}\); the unit ball of an infinite-dimensional space is bounded but not totally bounded.</p></div></div></li>
+    <li><b>Finite intersection property</b> — every finite subfamily has non-empty intersection.
+      <div class="ex"><div><p>The dual way of saying compactness, and the form Tychonoff's proof uses.</p></div></div></li>
+    <li><b>Locally compact</b> — every point has a compact neighbourhood.
+      <div class="ex"><div><p>\(\mathbb{R}^{n}\) is: a closed ball around each point. Infinite-dimensional spaces are not.</p></div></div></li>
+    <li><b>Lebesgue number</b> — a \(\delta\) such that every \(\delta\)-ball lies inside some member of a given cover.
+      <div class="ex"><div><p>A single scale at which the cover works everywhere. The engine behind uniform continuity.</p></div></div></li>
+    <li><b>Cantor set</b> — remove middle thirds forever.
+      <div class="ex"><div><p>Compact, uncountable, of length zero, and nowhere dense. Chapter 18 gives it dimension \(\log2/\log3\).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Compact \(\Rightarrow\) closed and bounded</b> (in any metric space).
+      <div class="ex"><div><p>The easy half. The converse is what needs \(\mathbb{R}^{n}\).</p></div></div>
+      <div class="proof"><div><p>Boundedness: the cover by balls \(B(x_0,k)\), \(k\in\mathbb{N}\), has a finite subcover, so one ball suffices. Closedness: if \(y \notin K\), the sets \(\{z : d(z,y) &gt; 1/k\}\) cover \(K\); a finite subcover leaves a ball around \(y\) disjoint from \(K\), so \(K^{c}\) is open. \(\blacksquare\)</p></div></div></li>
+    <li><b>Closed subsets of compact sets are compact.</b>
+      <div class="ex"><div><p>Compactness is inherited downward, provided you don't cut open edges.</p></div></div>
+      <div class="proof"><div><p>Let \(F \subseteq K\) be closed and \(\mathcal U\) an open cover of \(F\). Then \(\mathcal U \cup \{F^{c}\}\) covers \(K\); extract a finite subcover and discard \(F^{c}\). What remains is a finite subcover of \(F\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Heine–Borel:</b> in \(\mathbb{R}^{n}\), compact \(\iff\) closed and bounded.
+      <div class="ex"><div><p>The theorem that makes compactness usable: you can recognise it at a glance.</p></div></div>
+      <div class="proof"><div><p>One direction is above. For the converse it suffices to prove a box \(Q\) is compact, since a closed bounded set is a closed subset of a box. Suppose an open cover of \(Q\) had no finite subcover. Bisect \(Q\) into \(2^{n}\) sub-boxes; at least one has no finite subcover. Repeat, producing nested boxes with diameters \(\to0\), whose common point \(x\) (Chapter 7, Layer 3) lies in some cover member \(U\). But then a small enough box of the sequence lies inside \(U\) — a finite subcover of one element. Contradiction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Compact \(\iff\) sequentially compact \(\iff\) complete and totally bounded</b>, in metric spaces.
+      <div class="ex"><div><p>Three descriptions of the same idea. Use whichever is easiest to verify.</p></div></div>
+      <div class="proof"><div><p>Sketch. Compact \(\Rightarrow\) sequentially compact: a sequence with no cluster point would give each point a ball containing only finitely many terms; a finite subcover then contains only finitely many terms — absurd. Sequentially compact \(\Rightarrow\) complete and totally bounded: Cauchy sequences have convergent subsequences hence converge (Chapter 7), and failure of total boundedness produces an \(\varepsilon\)-separated sequence with no convergent subsequence. Complete + totally bounded \(\Rightarrow\) compact: given a cover with no finite subcover, bisect repeatedly using total boundedness to get nested sets of shrinking diameter, and complete the argument as in Heine–Borel. \(\blacksquare\)</p></div></div></li>
+    <li><b>Bolzano–Weierstrass in \(\mathbb{R}^{n}\):</b> every bounded sequence has a convergent subsequence.
+      <div class="ex"><div><p>The one-dimensional theorem, applied to each coordinate in turn.</p></div></div>
+      <div class="proof"><div><p>The sequence lies in a box, which is compact by Heine–Borel and hence sequentially compact. Directly: extract a subsequence convergent in the first coordinate, then a further subsequence convergent in the second, and so on — \(n\) extractions suffice. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous images of compact sets are compact.</b>
+      <div class="ex"><div><p>Compactness survives every continuous map — the single most useful thing about it.</p></div></div>
+      <div class="proof"><div><p>Let \(\mathcal V\) cover \(f(K)\). The preimages \(f^{-1}(V)\) are open and cover \(K\); take a finite subcover \(f^{-1}(V_1),\dots,f^{-1}(V_k)\). Then \(V_1,\dots,V_k\) cover \(f(K)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Extreme value theorem:</b> a continuous real function on a compact set attains its maximum and minimum.
+      <div class="ex"><div><p>Chapter 3's theorem, now in any number of dimensions and on any compact shape.</p></div></div>
+      <div class="proof"><div><p>\(f(K)\) is compact in \(\mathbb{R}\), hence closed and bounded, so \(\sup f(K)\) is finite and belongs to \(f(K)\) (a closed set contains its supremum). Any preimage of it is a maximiser; apply the same to \(-f\) for the minimum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lebesgue number lemma</b>, and <b>Heine–Cantor:</b> continuity on a compact set is uniform.
+      <div class="ex"><div><p>Compactness converts a promise made point by point into one promise for the whole set.</p></div></div>
+      <div class="proof"><div><p>Lemma: for each \(x\) choose \(r_x\) with \(B(x,2r_x)\) inside a cover member; finitely many \(B(x_i,r_{x_i})\) cover \(K\), and \(\delta = \min_i r_{x_i}\) works. Heine–Cantor: given \(\varepsilon\), the sets \(f^{-1}(B(f(x),\varepsilon/2))\) form an open cover; a Lebesgue number \(\delta\) for it makes any two points within \(\delta\) land in a common such preimage, so their images are within \(\varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Finite intersection property:</b> \(K\) is compact iff every family of closed subsets with the FIP has non-empty intersection.
+      <div class="ex"><div><p>Compactness, said with complements. Nested non-empty compact sets always meet.</p></div></div>
+      <div class="proof"><div><p>Take complements: a family of closed sets with empty intersection corresponds to an open cover, and "some finite subfamily has empty intersection" corresponds to "some finite subcover exists". \(\blacksquare\)</p></div></div></li>
+    <li><b>Tychonoff's theorem</b> (stated): an arbitrary product of compact spaces is compact — equivalent to the Axiom of Choice.
+      <div class="ex"><div><p>Finite products are easy; infinite products need Choice, and in fact <em>are</em> Choice.</p></div></div>
+      <div class="proof"><div><p>Sketch: extend a family of closed sets with the finite intersection property to a maximal such family using Zorn's lemma (Chapter 2, Layer 9). Maximality forces the projections into each factor to have the FIP there, so compactness of the factors supplies a point in each coordinate; the resulting point lies in every member of the family. \(\blacksquare\)</p></div></div></li>
+    <li><b>The Cantor set is compact, uncountable, nowhere dense and of total length 0.</b>
+      <div class="ex"><div><p>Every intuition about "small" fails on it — which is exactly why Chapters 11 and 18 need it.</p></div></div>
+      <div class="proof"><div><p>It is an intersection of closed sets, hence closed, and bounded — so compact. Its points are exactly those with a base-3 expansion using only 0 and 2, giving a bijection with \(\{0,2\}^{\mathbb{N}}\) and hence cardinality \(\mathfrak c\). It contains no interval, since at stage \(k\) every remaining interval has length \(3^{-k}\), so it is nowhere dense; and the removed lengths sum to \(\sum_k \frac{2^{k-1}}{3^{k}} = 1\), leaving total length 0. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check closed and bounded</b> — in \(\mathbb{R}^{n}\), that is compactness.
+      <div class="ex"><div><p>The single most-used test in analysis.</p></div></div></li>
+    <li><b>Extract a convergent subsequence</b> — the standard opening move.
+      <div class="ex"><div><p>"Let \(x_n\) be a sequence in \(K\); by compactness a subsequence converges to \(x\in K\)…"</p></div></div></li>
+    <li><b>Cover, then take a finite subcover</b> — to make finitely many local choices at once.
+      <div class="ex"><div><p>Then take a minimum or maximum over that finite list — the trick that produces uniformity.</p></div></div></li>
+    <li><b>Bisect</b> — halve repeatedly and pass to the limit.
+      <div class="ex"><div><p>Proves Heine–Borel and Bolzano–Weierstrass, and finds roots numerically.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · In one piece</span>
+  <h2 class="ltitle">Connectedness</h2>
+  <p class="ldesc">Sets that cannot be split — and the theorems that follow.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Disconnection</b> — a split into two non-empty disjoint relatively open pieces.
+      <div class="ex"><div><p>Two islands with clear water between them, each open in the set.</p></div></div></li>
+    <li><b>Connected set</b> — one admitting no disconnection.
+      <div class="ex"><div><p>A single landmass. \([0,1]\cup[2,3]\) is not.</p></div></div></li>
+    <li><b>Path</b> — a continuous \(\gamma : [0,1]\to X\).
+      <div class="ex"><div><p>A walk from \(a\) to \(b\), never jumping.</p></div></div></li>
+    <li><b>Path-connected</b> — any two points are joined by a path.
+      <div class="ex"><div><p>Stronger than connected in general; equivalent for open subsets of \(\mathbb{R}^{n}\).</p></div></div></li>
+    <li><b>Connected component</b> — a maximal connected subset.
+      <div class="ex"><div><p>The separate islands of an archipelago. Components are always closed.</p></div></div></li>
+    <li><b>Convex set</b> — contains the segment between any two of its points.
+      <div class="ex"><div><p>A disc, a box, a half-space. Convex \(\Rightarrow\) path-connected \(\Rightarrow\) connected. Chapter 19 is devoted to these.</p></div></div></li>
+    <li><b>Domain (region)</b> — an open connected set.
+      <div class="ex"><div><p>The standard setting for Chapter 10's calculus: open so derivatives exist, connected so "constant" means something.</p></div></div></li>
+    <li><b>Totally disconnected</b> — every component is a single point.
+      <div class="ex"><div><p>\(\mathbb{Q}\), and the Cantor set. Connected and compact are quite independent.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(X\) is connected iff its only clopen subsets are \(\varnothing\) and \(X\).</b>
+      <div class="ex"><div><p>The working definition — and the one used in almost every proof.</p></div></div>
+      <div class="proof"><div><p>A clopen \(A\) with \(\varnothing \ne A \ne X\) gives the disconnection \(A, A^{c}\), both open and non-empty. Conversely a disconnection \(U,V\) makes each of them clopen, since each is the complement of the other. \(\blacksquare\)</p></div></div></li>
+    <li><b>Intervals are exactly the connected subsets of \(\mathbb{R}\).</b>
+      <div class="ex"><div><p>Being in one piece, on the line, means having no missing middle.</p></div></div>
+      <div class="proof"><div><p>If \(A\) is not an interval, there are \(a &lt; c &lt; b\) with \(a,b\in A\), \(c\notin A\); then \(A\cap(-\infty,c)\) and \(A\cap(c,\infty)\) disconnect it. If \(I\) is an interval and \(U,V\) disconnect it, pick \(u\in U, v\in V\) with \(u&lt;v\) and let \(s = \sup(U\cap[u,v])\). Then \(s\) lies in \(I\) but can be in neither \(U\) nor \(V\) without contradicting openness or the definition of the supremum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous images of connected sets are connected.</b>
+      <div class="ex"><div><p>A continuous map cannot tear. This is the whole content of the intermediate value theorem.</p></div></div>
+      <div class="proof"><div><p>If \(U,V\) disconnected \(f(X)\), their preimages would be open, disjoint, non-empty and cover \(X\) — disconnecting \(X\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Intermediate value theorem (general form):</b> a continuous real function on a connected set attains every value between any two of its values.
+      <div class="ex"><div><p>Walk across a connected country and you cross every altitude between start and finish.</p></div></div>
+      <div class="proof"><div><p>\(f(X)\) is a connected subset of \(\mathbb{R}\), hence an interval; an interval containing \(f(a)\) and \(f(b)\) contains everything between them. \(\blacksquare\)</p></div></div></li>
+    <li><b>Unions with a common point are connected</b>, and closures of connected sets are connected.
+      <div class="ex"><div><p>Islands joined by a shared bridgehead form one landmass.</p></div></div>
+      <div class="proof"><div><p>Let \(A_i\) be connected with \(p \in \bigcap_iA_i\), and let \(U,V\) disconnect the union. Say \(p \in U\); then each \(A_i\), being connected, lies wholly in \(U\), so \(V\) is empty. For closures: a disconnection of \(\overline A\) restricts to one of \(A\) unless \(A\) lies entirely in one piece — and then the other piece is disjoint from \(A\) yet open, so it misses \(\overline A\) too. \(\blacksquare\)</p></div></div></li>
+    <li><b>Components partition the space</b> and are closed.
+      <div class="ex"><div><p>Every point belongs to exactly one island.</p></div></div>
+      <div class="proof"><div><p>Define \(x\sim y\) iff some connected subset contains both. This is an equivalence relation — transitivity uses the union theorem with a common point — so its classes partition \(X\), and each class is connected (a union of connected sets sharing a point) and maximal. Closedness follows since the closure of a component is connected and contains it. \(\blacksquare\)</p></div></div></li>
+    <li><b>Path-connected \(\Rightarrow\) connected</b>; the converse fails.
+      <div class="ex"><div><p>The topologist's sine curve \(\{(x,\sin(1/x))\}\cup(\{0\}\times[-1,1])\) is connected, but no path reaches the segment.</p></div></div>
+      <div class="proof"><div><p>If \(U,V\) disconnected a path-connected \(X\), take \(u\in U\), \(v\in V\) and a path \(\gamma\) between them; then \(\gamma^{-1}(U), \gamma^{-1}(V)\) would disconnect \([0,1]\), which is connected. The counterexample's connectedness follows from the closure theorem, as the curve's closure adds the segment. \(\blacksquare\)</p></div></div></li>
+    <li><b>For open subsets of \(\mathbb{R}^{n}\), connected \(\iff\) path-connected</b> — indeed polygonally connected.
+      <div class="ex"><div><p>Inside an open region you can always get anywhere by a chain of straight segments.</p></div></div>
+      <div class="proof"><div><p>Fix \(x\) in an open connected \(U\) and let \(A\) be the set of points reachable from \(x\) by a polygonal path in \(U\). \(A\) is open (a ball around any reachable point is reachable) and so is \(U\setminus A\) (by the same argument). Since \(A \ne\varnothing\) and \(U\) is connected, \(A = U\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> a differentiable function with zero derivative on a domain is constant.
+      <div class="ex"><div><p>Chapter 3's corollary, promoted to \(n\) dimensions — and it genuinely needs connectedness, or each piece could take its own value.</p></div></div>
+      <div class="proof"><div><p>Join any two points by a polygonal path inside the domain. Along each segment, the one-variable mean value theorem applied to \(t \mapsto f(a + t(b-a))\) gives equal endpoint values, since the derivative vanishes. Chaining the segments equates the values at the two original points. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Find a clopen set</b> — to prove connectedness, show the only ones are trivial.
+      <div class="ex"><div><p>The "open and closed and non-empty, therefore everything" argument.</p></div></div></li>
+    <li><b>Build a path</b> — usually straight segments will do.
+      <div class="ex"><div><p>In an open set, polygonal paths are always enough.</p></div></div></li>
+    <li><b>Use a continuous invariant to disconnect</b>.
+      <div class="ex"><div><p>If a continuous function takes only two values on a set, the set is disconnected.</p></div></div></li>
+    <li><b>Compact + connected</b> — the standard hypotheses for a "nice region".
+      <div class="ex"><div><p>Everything in Chapters 14–17 assumes some version of this.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Produce a radius</td><td>L1</td><td>Prove a set is open</td></tr>
+    <tr><td>Sequences or complements</td><td>L1</td><td>Prove a set is closed</td></tr>
+    <tr><td>Preimage of an inequality</td><td>L1</td><td>Recognise open and closed sets instantly</td></tr>
+    <tr><td>Dyadic cubes</td><td>L1</td><td>Break an open set into countably many boxes</td></tr>
+    <tr><td>Work with a base</td><td>L2</td><td>Check a property on generating sets only</td></tr>
+    <tr><td>Open-preimage criterion</td><td>L2</td><td>Define and prove continuity without metrics</td></tr>
+    <tr><td>Lindelöf thinning</td><td>L2</td><td>Reduce a cover to a countable one</td></tr>
+    <tr><td>Closed + bounded test</td><td>L3</td><td>Recognise compactness in \(\mathbb{R}^{n}\)</td></tr>
+    <tr><td>Extract a convergent subsequence</td><td>L3</td><td>Open a compactness argument</td></tr>
+    <tr><td>Finite subcover, then take a min</td><td>L3</td><td>Turn local choices into one uniform choice</td></tr>
+    <tr><td>Bisection</td><td>L3</td><td>Prove Heine–Borel; find roots</td></tr>
+    <tr><td>Clopen argument</td><td>L4</td><td>Prove a set is connected</td></tr>
+    <tr><td>Build a polygonal path</td><td>L4</td><td>Prove path-connectedness in an open set</td></tr>
+    <tr><td>Continuous image of connected</td><td>L4</td><td>Get the intermediate value theorem in any dimension</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Topology of \(\mathbb{R}^{n}\) · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

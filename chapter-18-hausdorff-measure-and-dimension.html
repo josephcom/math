@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 18 — Hausdorff Measure &amp; Dimension</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Hausdorff Measure &amp; Dimension</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-17-riemannian-geometry.html">&#10094; Chapter 17 — Riemannian Geometry</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Dimension as a Number, Not a Count</h2>
+    <p>Chapter 14 measured \(k\)-dimensional objects, but only smooth ones with a parametrisation. What is the "area" of a set too rough to parametrise?</p>
+    <p>Hausdorff's answer: cover it with small sets and add up \((\text{diameter})^{s}\). The exponent \(s\) at which the total jumps from \(\infty\) to \(0\) <b>is</b> the dimension — and it need not be a whole number.</p>
+    <p>This is the most general notion of size in the book: it measures curves, surfaces, fractals and Lebesgue volume with one formula.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\dim_H C = \log 2/\log 3\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Hausdorff Measure</a><a href="#L2">L2 Dimension</a><a href="#L3">L3 Fractals</a>
+  <a href="#L4">L4 Rectifiability</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · A ruler for every exponent</span>
+  <h2 class="ltitle">Hausdorff Measure</h2>
+  <p class="ldesc">Chapter 11's construction, with boxes replaced by arbitrary small sets.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>\(\delta\)-cover</b> — a countable cover by sets of diameter at most \(\delta\).
+      <div class="ex"><div><p>Chapter 11 used boxes; here any shape will do, provided it is small.</p></div></div></li>
+    <li><b>Pre-measure</b> \(\mathcal{H}^{s}_\delta(A) = \inf\sum_i\alpha_s\bigl(\tfrac{\operatorname{diam}U_i}{2}\bigr)^{s}\) over \(\delta\)-covers.
+      <div class="ex"><div><p>Add up "radius to the power \(s\)". The constant \(\alpha_s = \pi^{s/2}/\Gamma(\frac s2+1)\) is Chapter 13's ball volume, chosen so the answer normalises correctly.</p></div></div></li>
+    <li><b>Hausdorff measure</b> \(\mathcal{H}^{s}(A) = \lim_{\delta\to0}\mathcal{H}^{s}_\delta(A)\).
+      <div class="ex"><div><p>Force the covers to be fine, so they must follow the set's shape rather than bridging across it.</p></div></div></li>
+    <li><b>Counting measure</b> \(\mathcal{H}^{0}\).
+      <div class="ex"><div><p>At \(s=0\) every set contributes 1, so \(\mathcal H^{0}\) simply counts points.</p></div></div></li>
+    <li><b>Metric outer measure</b> — additive on sets a positive distance apart.
+      <div class="ex"><div><p>The property that makes all Borel sets measurable, with no further work.</p></div></div></li>
+    <li><b>Spherical measure</b> — the same construction using balls only.
+      <div class="ex"><div><p>Comparable to \(\mathcal H^{s}\), but not equal — the constants differ, which is why the isodiametric inequality matters.</p></div></div></li>
+    <li><b>Gauge function</b> \(h(\operatorname{diam}U)\) — a general weight in place of \(t^{s}\).
+      <div class="ex"><div><p>Lets you measure sets whose dimension is exactly critical, where \(\mathcal H^{s}\) is 0 or \(\infty\).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\mathcal{H}^{s}\) is an outer measure</b>, and the limit defining it exists in \([0,\infty]\).
+      <div class="ex"><div><p>Shrinking \(\delta\) restricts the covers available, so the infimum can only rise.</p></div></div>
+      <div class="proof"><div><p>Monotonicity and countable subadditivity of each \(\mathcal H^{s}_\delta\) are proved exactly as for Lebesgue outer measure (Chapter 11, Layer 3), by combining covers with the \(\varepsilon2^{-k}\) trick. As \(\delta\) decreases the family of admissible covers shrinks, so \(\mathcal H^{s}_\delta\) is non-increasing in \(\delta\) and the limit exists, possibly infinite; subadditivity passes to the limit. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal{H}^{s}\) is a metric outer measure</b>, so every Borel set is \(\mathcal H^{s}\)-measurable.
+      <div class="ex"><div><p>Two pieces held apart are measured separately, with nothing lost in between.</p></div></div>
+      <div class="proof"><div><p>If \(d(A,B) = \rho &gt; 0\), take \(\delta &lt; \rho\): no set in a \(\delta\)-cover can meet both \(A\) and \(B\), so any cover splits into a cover of \(A\) and one of \(B\), giving \(\mathcal H^{s}_\delta(A\cup B) = \mathcal H^{s}_\delta(A)+\mathcal H^{s}_\delta(B)\). Carathéodory's criterion for metric outer measures then makes all Borel sets measurable. \(\blacksquare\)</p></div></div></li>
+    <li><b>Scaling:</b> \(\mathcal{H}^{s}(cA) = c^{s}\mathcal{H}^{s}(A)\).
+      <div class="ex"><div><p>The exponent \(s\) behaves exactly as a dimension should. Chapter 11's \(c^{n}\) is the case \(s=n\).</p></div></div>
+      <div class="proof"><div><p>Scaling by \(c\) maps \(\delta\)-covers of \(A\) bijectively to \(c\delta\)-covers of \(cA\) and multiplies every diameter by \(c\), hence every summand by \(c^{s}\). Taking infima and letting \(\delta\to0\) gives the identity. \(\blacksquare\)</p></div></div></li>
+    <li><b>Behaviour under Lipschitz maps:</b> \(\mathcal{H}^{s}(f(A)) \le K^{s}\mathcal{H}^{s}(A)\) for \(K\)-Lipschitz \(f\); isometries preserve \(\mathcal H^{s}\).
+      <div class="ex"><div><p>You cannot increase dimension by a Lipschitz map — the key fact behind everything in Layer 2.</p></div></div>
+      <div class="proof"><div><p>If \(\{U_i\}\) is a \(\delta\)-cover of \(A\), then \(\{f(U_i\cap A)\}\) is a \(K\delta\)-cover of \(f(A)\) with \(\operatorname{diam}f(U_i\cap A)\le K\operatorname{diam}U_i\). Summing the \(s\)-th powers gives the bound. For an isometry, \(K=1\) in both directions. \(\blacksquare\)</p></div></div></li>
+    <li><b>Translation and rotation invariance.</b>
+      <div class="ex"><div><p>Moving a set doesn't change its size — as any measure worth the name must satisfy.</p></div></div>
+      <div class="proof"><div><p>Both are isometries of \(\mathbb{R}^{n}\), so the previous theorem applies with \(K=1\) in each direction. \(\blacksquare\)</p></div></div></li>
+    <li><b>The dimension threshold:</b> if \(\mathcal{H}^{s}(A)&lt;\infty\) and \(t &gt; s\) then \(\mathcal{H}^{t}(A) = 0\); if \(\mathcal H^{s}(A)&gt;0\) and \(t &lt; s\) then \(\mathcal H^{t}(A)=\infty\).
+      <div class="ex"><div><p>There is exactly one exponent where the answer is interesting. Everywhere else it is 0 or \(\infty\).</p></div></div>
+      <div class="proof"><div><p>For a \(\delta\)-cover, \(\sum(\operatorname{diam}U_i)^{t} \le \delta^{\,t-s}\sum(\operatorname{diam}U_i)^{s}\). If \(\mathcal H^{s}(A)\) is finite, the right side tends to 0 as \(\delta\to0\), so \(\mathcal H^{t}(A)=0\). The second statement is the contrapositive with the roles of \(s\) and \(t\) exchanged. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal H^{0}\) is counting measure and \(\mathcal H^{1}\) on a rectifiable curve is its length.</b>
+      <div class="ex"><div><p>The new ruler reproduces the old answers, which is the least it must do.</p></div></div>
+      <div class="proof"><div><p>For \(s=0\) each covering set contributes \(\alpha_0 = 1\), so the infimum counts the points. For a curve, projecting onto the chord between two points is 1-Lipschitz, so \(\mathcal H^{1}\) is at least the distance between endpoints, hence at least every inscribed polygon's length; conversely covering the curve by short arcs gives the reverse inequality. Chapter 14, Layer 1 identified that supremum with the arc-length integral. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Cover efficiently to bound \(\mathcal H^{s}\) above</b>.
+      <div class="ex"><div><p>Exhibit one good cover and you have an upper bound. This is always the easy direction.</p></div></div></li>
+    <li><b>Project or use a mass distribution to bound below</b>.
+      <div class="ex"><div><p>Lower bounds are the hard direction; Layer 3's mass distribution principle is the standard tool.</p></div></div></li>
+    <li><b>Use Lipschitz maps to transfer estimates</b>.
+      <div class="ex"><div><p>Dimension never increases under a Lipschitz map, and never changes under a bi-Lipschitz one.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The critical exponent</span>
+  <h2 class="ltitle">Hausdorff Dimension</h2>
+  <p class="ldesc">Where the measure jumps from infinite to zero.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Hausdorff dimension</b> \(\dim_HA = \inf\{s : \mathcal{H}^{s}(A) = 0\} = \sup\{s : \mathcal H^{s}(A)=\infty\}\).
+      <div class="ex"><div><p>The single number where the answer switches. At \(s = \dim_HA\) itself the measure may be \(0\), finite, or \(\infty\).</p></div></div></li>
+    <li><b>\(s\)-set</b> — a set with \(0 &lt; \mathcal{H}^{s}(A) &lt; \infty\).
+      <div class="ex"><div><p>The well-behaved case: the set has a genuine finite "\(s\)-dimensional size".</p></div></div></li>
+    <li><b>Bi-Lipschitz map</b> — Lipschitz with a Lipschitz inverse.
+      <div class="ex"><div><p>Stretches by a bounded factor in both directions. Dimension cannot notice.</p></div></div></li>
+    <li><b>Box-counting (Minkowski) dimension</b> \(\dim_B A = \lim\frac{\log N(\varepsilon)}{\log(1/\varepsilon)}\).
+      <div class="ex"><div><p>Count the \(\varepsilon\)-boxes needed to cover the set. Easier to compute, and sometimes wrong.</p></div></div></li>
+    <li><b>Topological dimension</b> — defined inductively from the dimension of boundaries.
+      <div class="ex"><div><p>Always an integer, and never larger than the Hausdorff dimension. Mandelbrot defined "fractal" as the gap between them.</p></div></div></li>
+    <li><b>Graph dimension</b> — the dimension of a function's graph.
+      <div class="ex"><div><p>A smooth graph has dimension 1; the Weierstrass nowhere-differentiable function's graph exceeds it.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The dimension is well defined</b> — the two descriptions agree.
+      <div class="ex"><div><p>A single threshold, approached from both sides.</p></div></div>
+      <div class="proof"><div><p>By Layer 1's threshold theorem, \(\{s : \mathcal H^{s}(A)=0\}\) is an up-set and \(\{s : \mathcal H^{s}(A)=\infty\}\) a down-set, and every \(s\) lies in one or the other except possibly the single boundary value. So the infimum of the first equals the supremum of the second. \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotonicity and countable stability:</b> \(A\subseteq B \Rightarrow \dim_HA\le\dim_HB\), and \(\dim_H\bigcup_kA_k = \sup_k\dim_HA_k\).
+      <div class="ex"><div><p>Countably many low-dimensional pieces cannot build a higher-dimensional whole — unlike box dimension, which fails this.</p></div></div>
+      <div class="proof"><div><p>Monotonicity is monotonicity of \(\mathcal H^{s}\). For the union, \(\ge\) follows from monotonicity. For \(\le\): if \(s &gt; \sup_k\dim_HA_k\) then \(\mathcal H^{s}(A_k)=0\) for every \(k\), so countable subadditivity gives \(\mathcal H^{s}(\bigcup_kA_k)=0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> countable sets have dimension 0.
+      <div class="ex"><div><p>\(\mathbb{Q}\) is dense in \(\mathbb{R}\) and 0-dimensional. Density has nothing to do with size.</p></div></div>
+      <div class="proof"><div><p>A single point has \(\mathcal H^{s} = 0\) for every \(s &gt; 0\), hence dimension 0; countable stability extends this to any countable union. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lipschitz maps do not increase dimension;</b> bi-Lipschitz maps preserve it.
+      <div class="ex"><div><p>Dimension is a bi-Lipschitz invariant — the reason it is a genuine geometric quantity.</p></div></div>
+      <div class="proof"><div><p>Layer 1: \(\mathcal H^{s}(f(A)) \le K^{s}\mathcal H^{s}(A)\), so \(\mathcal H^{s}(A) = 0\) forces \(\mathcal H^{s}(f(A))=0\), giving \(\dim_Hf(A)\le\dim_HA\). Applying this to \(f^{-1}\) in the bi-Lipschitz case gives the reverse. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal{H}^{n} = \lambda_n\) on \(\mathbb{R}^{n}\);</b> in particular \(\dim_H\mathbb{R}^{n} = n\).
+      <div class="ex"><div><p>The new ruler agrees with Lebesgue measure exactly — normalising constant included. That is what \(\alpha_s\) was chosen for.</p></div></div>
+      <div class="proof"><div><p>Both are translation-invariant Borel measures finite on boxes, so by Chapter 11's uniqueness theorem \(\mathcal H^{n} = c\lambda_n\). Identifying \(c=1\) requires the isodiametric inequality (Layer 4): among sets of a given diameter the ball has the largest volume, which makes the normalising constant \(\alpha_n\) exactly right. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\dim_H\) of a smooth \(k\)-manifold is \(k\)</b>, with \(\mathcal H^{k}\) equal to its Chapter 14 area.
+      <div class="ex"><div><p>Everything smooth gets the answer you already knew — the theory only adds new answers for rough sets.</p></div></div>
+      <div class="proof"><div><p>Locally the manifold is the bi-Lipschitz image of an open subset of \(\mathbb{R}^{k}\) (a chart with bounded derivative on a compact piece), so its dimension is \(k\); the area formula of Layer 4 identifies \(\mathcal H^{k}\) with the Gram-determinant integral. Countable stability handles the whole manifold. \(\blacksquare\)</p></div></div></li>
+    <li><b>Box dimension bounds:</b> \(\dim_HA \le \underline{\dim}_BA \le \overline{\dim}_BA\), and the inequalities can be strict.
+      <div class="ex"><div><p>\(\mathbb{Q}\cap[0,1]\) has Hausdorff dimension 0 and box dimension 1 — box counting cannot see that the set is countable.</p></div></div>
+      <div class="proof"><div><p>Covering by \(N(\varepsilon)\) sets of diameter \(\varepsilon\) gives \(\mathcal H^{s}_\varepsilon(A)\lesssim N(\varepsilon)\varepsilon^{s}\), which tends to 0 whenever \(s &gt; \overline{\dim}_BA\); hence \(\dim_H \le \overline{\dim}_B\). For strictness, note that \(N(\varepsilon)\approx1/\varepsilon\) for \(\mathbb{Q}\cap[0,1]\) since its closure is the interval, giving box dimension 1, while countable stability gives Hausdorff dimension 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Dimension of a product:</b> \(\dim_H(A\times B) \ge \dim_HA+\dim_HB\), with equality in the well-behaved cases.
+      <div class="ex"><div><p>Dimensions add for products — usually. The inequality can be strict for pathological sets.</p></div></div>
+      <div class="proof"><div><p>Sketch: a mass distribution argument. If \(\mu\) and \(\nu\) satisfy \(\mu(B_r)\lesssim r^{s}\) and \(\nu(B_r)\lesssim r^{t}\), then \(\mu\times\nu(B_r)\lesssim r^{s+t}\), and the mass distribution principle (Layer 3) gives the lower bound. Upper bounds require covers of the product built from covers of the factors, which need not be efficient — hence the possible strictness. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Bound above by covering</b> — one good cover gives an upper bound on dimension.
+      <div class="ex"><div><p>Usually built from the set's own construction stages.</p></div></div></li>
+    <li><b>Bound below with a mass distribution</b>.
+      <div class="ex"><div><p>Put a measure on the set and show it doesn't concentrate too much on small balls.</p></div></div></li>
+    <li><b>Use bi-Lipschitz equivalence</b> to transfer known dimensions.
+      <div class="ex"><div><p>If your set is a distorted copy of a known one, you're done.</p></div></div></li>
+    <li><b>Prefer Hausdorff over box dimension for unions</b>.
+      <div class="ex"><div><p>Countable stability is exactly what box dimension lacks.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Non-integer dimension</span>
+  <h2 class="ltitle">Self-Similar Sets &amp; Fractals</h2>
+  <p class="ldesc">Sets that look the same at every scale, and the exponent that describes them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Contracting similarity</b> \(S_i\) with ratio \(r_i &lt; 1\).
+      <div class="ex"><div><p>Shrink by a fixed factor, then move. Composition of a scaling with a rigid motion.</p></div></div></li>
+    <li><b>Iterated function system (IFS)</b> — a finite family \(\{S_1,\dots,S_m\}\).
+      <div class="ex"><div><p>A recipe: replace each copy of the shape by \(m\) smaller copies, forever.</p></div></div></li>
+    <li><b>Attractor</b> — the unique compact \(F\) with \(F = \bigcup_iS_i(F)\).
+      <div class="ex"><div><p>The set the recipe converges to, whatever you start from.</p></div></div></li>
+    <li><b>Similarity dimension</b> — the \(s\) solving \(\sum_ir_i^{s} = 1\).
+      <div class="ex"><div><p>For \(m\) copies each of ratio \(r\): \(s = \log m/\log(1/r)\).</p></div></div></li>
+    <li><b>Open set condition</b> — the copies overlap only at their edges.
+      <div class="ex"><div><p>Without it the pieces double-count and the formula overestimates.</p></div></div></li>
+    <li><b>Cantor set</b> — remove middle thirds; \(m=2\), \(r=1/3\).
+      <div class="ex"><div><p>\(\dim_H = \log2/\log3 \approx 0.631\). Uncountable, of length zero, and dimension strictly between 0 and 1.</p></div></div></li>
+    <li><b>Koch curve</b> — \(m=4\), \(r=1/3\).
+      <div class="ex"><div><p>\(\dim_H = \log4/\log3\approx1.262\). Infinite length, zero area — genuinely between a curve and a surface.</p></div></div></li>
+    <li><b>Sierpiński triangle</b> — \(m=3\), \(r=1/2\).
+      <div class="ex"><div><p>\(\dim_H = \log3/\log2\approx1.585\).</p></div></div></li>
+    <li><b>Mass distribution</b> — a finite measure supported on the set.
+      <div class="ex"><div><p>Spread one kilogram over the fractal. How it distributes reveals the dimension.</p></div></div></li>
+    <li><b>Space-filling curve</b> — a continuous surjection \([0,1]\to[0,1]^{2}\).
+      <div class="ex"><div><p>Peano's curve. Continuous images <em>can</em> raise dimension — which is why Layer 1 insisted on Lipschitz.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Existence and uniqueness of the attractor.</b>
+      <div class="ex"><div><p>Chapter 7's fixed point theorem, applied to the space of compact sets.</p></div></div>
+      <div class="proof"><div><p>Let \(\mathcal K\) be the compact subsets of \(\mathbb{R}^{n}\) with the Hausdorff metric \(d_H\); this is a complete metric space. The map \(\mathcal S(A) = \bigcup_iS_i(A)\) satisfies \(d_H(\mathcal S(A),\mathcal S(B))\le(\max_ir_i)\,d_H(A,B)\), a contraction. Banach's fixed point theorem (Chapter 7, Layer 4) gives a unique fixed point, reached from any starting compact set. \(\blacksquare\)</p></div></div></li>
+    <li><b>Mass distribution principle:</b> if \(\mu(A)&gt;0\) and \(\mu(U)\le c(\operatorname{diam}U)^{s}\) for all small \(U\), then \(\mathcal{H}^{s}(A)\ge\mu(A)/c &gt; 0\), so \(\dim_HA\ge s\).
+      <div class="ex"><div><p>If no small set can carry much mass, you need many small sets — which is exactly a lower bound on dimension.</p></div></div>
+      <div class="proof"><div><p>For any \(\delta\)-cover \(\{U_i\}\) of \(A\), \(\mu(A) \le \sum_i\mu(U_i) \le c\sum_i(\operatorname{diam}U_i)^{s}\). Taking the infimum over covers gives \(\mu(A)\le c\,\mathcal H^{s}_\delta(A)\), and letting \(\delta\to0\) gives the claim. \(\blacksquare\)</p></div></div></li>
+    <li><b>Moran–Hutchinson theorem:</b> under the open set condition, \(\dim_HF = s\) where \(\sum_ir_i^{s}=1\), and \(0&lt;\mathcal H^{s}(F)&lt;\infty\).
+      <div class="ex"><div><p>The similarity dimension is the real dimension. One equation answers every self-similar set.</p></div></div>
+      <div class="proof"><div><p>Upper bound: the \(k\)-th iterate covers \(F\) by \(m^{k}\) sets of diameters \(r_{i_1}\cdots r_{i_k}\operatorname{diam}F\), and \(\sum_{|i|=k}(r_{i_1}\cdots r_{i_k})^{s} = (\sum_ir_i^{s})^{k} = 1\), so \(\mathcal H^{s}(F)\le(\operatorname{diam}F)^{s}\). Lower bound: define \(\mu\) by assigning mass \(r_{i_1}^{s}\cdots r_{i_k}^{s}\) to each \(k\)-th level piece — a genuine measure since the weights sum to 1 at every level — and use the open set condition to show \(\mu(U)\lesssim(\operatorname{diam}U)^{s}\). The mass distribution principle finishes. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cantor set:</b> \(\dim_H = \log2/\log3\), with \(0 &lt; \mathcal H^{s} &lt; \infty\).
+      <div class="ex"><div><p>A set of length zero and dimension \(0.631\ldots\) — the first honest example of fractional dimension.</p></div></div>
+      <div class="proof"><div><p>The two maps \(x\mapsto x/3\) and \(x\mapsto x/3+2/3\) satisfy the open set condition with \(U = (0,1)\), and \(2(1/3)^{s}=1\) gives \(s = \log2/\log3\). Moran–Hutchinson applies. \(\blacksquare\)</p></div></div></li>
+    <li><b>Koch curve:</b> \(\dim_H = \log4/\log3\); it has infinite length and zero area.
+      <div class="ex"><div><p>Too big to be a curve, too small to be a region. The word "fractal" was invented for this.</p></div></div>
+      <div class="proof"><div><p>Four maps of ratio \(1/3\) satisfying the open set condition give \(s = \log4/\log3\approx1.262\) by Moran–Hutchinson. Since \(s &gt; 1\), \(\mathcal H^{1} = \infty\) (infinite length) and since \(s &lt; 2\), \(\mathcal H^{2} = \lambda_2 = 0\) (zero area), by Layer 1's threshold theorem. \(\blacksquare\)</p></div></div></li>
+    <li><b>Box dimension of self-similar sets</b> equals the Hausdorff dimension, under the open set condition.
+      <div class="ex"><div><p>For nice fractals the easy computation gives the right answer.</p></div></div>
+      <div class="proof"><div><p>At level \(k\), the natural cover uses \(m^{k}\) pieces of size \(\approx r^{k}\), so \(N(\varepsilon)\approx\varepsilon^{-s}\) with \(s = \log m/\log(1/r)\), giving box dimension \(s\). Since \(\dim_H\le\dim_B\) always (Layer 2) and Moran–Hutchinson gives \(\dim_H = s\), the two coincide. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous maps can raise dimension:</b> a space-filling curve maps \([0,1]\) onto \([0,1]^{2}\).
+      <div class="ex"><div><p>So "Lipschitz" in Layer 1 was not a technicality. Continuity alone controls nothing.</p></div></div>
+      <div class="proof"><div><p>Peano's construction: build \(f_k\) by iterating a pattern that visits each of \(4^{k}\) subsquares in order. The \(f_k\) converge uniformly (each stage moves points by at most \(2^{-k}\)) to a continuous \(f\), and every point of the square is a limit of visited points, so \(f\) is surjective. Such a map cannot be Lipschitz, since Lipschitz maps do not increase dimension. \(\blacksquare\)</p></div></div></li>
+    <li><b>The Weierstrass function is nowhere differentiable</b>, and its graph has dimension \(&gt;1\).
+      <div class="ex"><div><p>Continuous everywhere, smooth nowhere. Baire's theorem (Chapter 7) says that is the typical case, not the exception.</p></div></div>
+      <div class="proof"><div><p>Sketch: for \(W(x) = \sum_k a^{k}\cos(b^{k}\pi x)\) with \(0&lt;a&lt;1\), \(ab &gt; 1\), the M-test (Chapter 9, Layer 4) gives uniform convergence hence continuity. Comparing increments at scale \(b^{-k}\) shows \(|W(x+h)-W(x)|\gtrsim|h|^{\alpha}\) with \(\alpha = \log(1/a)/\log b &lt; 1\) infinitely often, so no finite derivative can exist; the same Hölder exponent forces the graph's box dimension to be \(2-\alpha &gt; 1\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Solve \(\sum r_i^{s} = 1\)</b> — the fastest route to a fractal's dimension.
+      <div class="ex"><div><p>Check the open set condition first, or the answer may be too large.</p></div></div></li>
+    <li><b>Build the natural measure</b> — distribute mass equally among the copies.
+      <div class="ex"><div><p>Then apply the mass distribution principle for the lower bound.</p></div></div></li>
+    <li><b>Count boxes at each construction stage</b>.
+      <div class="ex"><div><p>\(N(\varepsilon)\approx\varepsilon^{-s}\); read off \(s\) from a log-log plot.</p></div></div></li>
+    <li><b>Iterate a contraction on compact sets</b> — the attractor is a fixed point.
+      <div class="ex"><div><p>Start from any shape; after a dozen iterations you cannot tell the difference.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Back to smoothness</span>
+  <h2 class="ltitle">Rectifiability &amp; the Area Formula</h2>
+  <p class="ldesc">Where Hausdorff measure and Chapter 14 agree.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>\(k\)-rectifiable set</b> — covered, up to \(\mathcal H^{k}\)-null, by countably many Lipschitz images of \(\mathbb{R}^{k}\).
+      <div class="ex"><div><p>"Smooth apart from a negligible mess". The right class for a general theory of surface area.</p></div></div></li>
+    <li><b>Purely unrectifiable set</b> — meets every Lipschitz \(k\)-image in an \(\mathcal H^{k}\)-null set.
+      <div class="ex"><div><p>Fractal dust of the right dimension but no direction anywhere. The opposite extreme.</p></div></div></li>
+    <li><b>Approximate tangent plane</b> — a plane the set looks like under blow-up at almost every point.
+      <div class="ex"><div><p>Zoom in far enough on a rectifiable set and it flattens out — almost everywhere.</p></div></div></li>
+    <li><b>Area formula</b> — counts multiplicity when the map is not injective.
+      <div class="ex"><div><p>Chapter 12's change of variables, without the requirement of a bijection.</p></div></div></li>
+    <li><b>Coarea formula</b> — Fubini along the level sets of a map.
+      <div class="ex"><div><p>Slice a solid by a family of curved surfaces instead of parallel planes.</p></div></div></li>
+    <li><b>Isodiametric inequality</b> — among sets of given diameter, the ball has the largest volume.
+      <div class="ex"><div><p>The normalising fact that makes \(\mathcal H^{n} = \lambda_n\) exactly, not merely up to a constant.</p></div></div></li>
+    <li><b>Minkowski content</b> — \(\lim\frac{\lambda(A_\varepsilon)}{\alpha_{n-k}\varepsilon^{\,n-k}}\), a "thickening" definition of area.
+      <div class="ex"><div><p>Paint the surface with a thin coat and measure the paint. It agrees with \(\mathcal H^{k}\) on rectifiable sets.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Isodiametric inequality:</b> \(\lambda_n(A) \le \alpha_n\bigl(\tfrac{\operatorname{diam}A}{2}\bigr)^{n}\).
+      <div class="ex"><div><p>A set of diameter 2 can have volume at most that of the unit ball. Obvious-looking, and not obvious — the set need not be contained in <em>any</em> such ball.</p></div></div>
+      <div class="proof"><div><p>Sketch: apply Steiner symmetrisation in each coordinate direction. Each step preserves volume, does not increase the diameter, and moves the set towards a symmetric one; the limit is a centrally symmetric set of the same volume and no larger diameter, which is contained in the ball of that radius. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal H^{n} = \lambda_n\) on \(\mathbb{R}^{n}\), with constant exactly 1.</b>
+      <div class="ex"><div><p>Chapter 11's volume is a special case of Hausdorff measure. One theory, not two.</p></div></div>
+      <div class="proof"><div><p>Both are translation-invariant Borel measures finite on boxes, so \(\mathcal H^{n} = c\lambda_n\) by Chapter 11's uniqueness theorem. The isodiametric inequality gives \(\lambda_n(U)\le\alpha_n(\operatorname{diam}U/2)^{n}\) for each covering set, so \(\lambda_n(A)\le\mathcal H^{n}(A)\), i.e. \(c\ge1\); covering a cube by small cubes gives the reverse. \(\blacksquare\)</p></div></div></li>
+    <li><b>Area formula:</b> for Lipschitz \(f : \mathbb{R}^{k}\to\mathbb{R}^{n}\) (\(k\le n\)), \[\int_A J f\,dx = \int_{\mathbb{R}^{n}}\#\bigl(A\cap f^{-1}(y)\bigr)\,d\mathcal{H}^{k}(y),\] with \(Jf = \sqrt{\det(Df^{\mathsf T}Df)}\).
+      <div class="ex"><div><p>Chapter 14's surface area formula, freed from injectivity: overlapping sheets are simply counted twice.</p></div></div>
+      <div class="proof"><div><p>Sketch: Rademacher's theorem gives differentiability a.e. On a set where \(Df\) is nearly constant, \(f\) is nearly linear, and the linear case is Chapter 14, Layer 4's statement about \(\sqrt{\det(A^{\mathsf T}A)}\). Decompose the domain into countably many such pieces on which \(f\) is injective and bi-Lipschitz (using the rank theorem where \(Jf&gt;0\), and noting \(\{Jf = 0\}\) contributes nothing), then sum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> for an injective \(C^{1}\) parametrisation, \(\mathcal H^{k}(\text{image}) = \int\sqrt{\det G}\), reproducing Chapter 14.
+      <div class="ex"><div><p>The two definitions of surface area coincide wherever both make sense.</p></div></div>
+      <div class="proof"><div><p>Injectivity makes the multiplicity function equal to 1 on the image and 0 elsewhere, so the right-hand side of the area formula is \(\mathcal H^{k}(\text{image})\), while the left is the Gram-determinant integral. \(\blacksquare\)</p></div></div></li>
+    <li><b>Coarea formula:</b> for Lipschitz \(f : \mathbb{R}^{n}\to\mathbb{R}^{m}\) (\(m\le n\)), \[\int_A Jf\,dx = \int_{\mathbb{R}^{m}}\mathcal H^{\,n-m}\bigl(A\cap f^{-1}(y)\bigr)\,dy,\quad Jf = \sqrt{\det(Df\,Df^{\mathsf T})}.\]
+      <div class="ex"><div><p>Fubini along curved slices. Taking \(f(x) = \|x\|\) gives Chapter 12's spherical coordinates.</p></div></div>
+      <div class="proof"><div><p>Sketch: as for the area formula, reduce by Rademacher and a decomposition to the case where \(f\) is linear, where the identity is the linear change of variables plus Fubini. The rank theorem straightens \(f\) locally into a projection, and the factor \(Jf\) records the distortion. \(\blacksquare\)</p></div></div></li>
+    <li><b>Rademacher's theorem:</b> a Lipschitz function on \(\mathbb{R}^{n}\) is differentiable almost everywhere.
+      <div class="ex"><div><p>A speed limit forces smoothness almost everywhere, even if the function is nowhere smooth in the classical sense.</p></div></div>
+      <div class="proof"><div><p>Sketch: for a fixed direction \(v\), the one-variable function \(t\mapsto f(x+tv)\) is Lipschitz, hence differentiable a.e. (a monotonicity/Lebesgue differentiation argument); Fubini makes \(D_vf\) exist a.e. in \(\mathbb{R}^{n}\). Taking a countable dense set of directions and using the uniform Lipschitz bound shows the resulting candidate linear map really is the derivative at a.e. point. \(\blacksquare\)</p></div></div></li>
+    <li><b>Besicovitch structure theorem</b> (stated): every \(\mathcal H^{k}\)-finite set splits into a rectifiable part and a purely unrectifiable part.
+      <div class="ex"><div><p>Every set of finite \(k\)-area is a smooth piece plus fractal dust, with nothing in between.</p></div></div>
+      <div class="proof"><div><p>Sketch: let \(R\) be the union of a maximal countable family of rectifiable subsets — a supremum argument makes this well defined up to null sets — and let \(P\) be the remainder. By maximality, \(P\) can contain no rectifiable subset of positive measure, i.e. it is purely unrectifiable. The deep half of Besicovitch's theorem shows \(P\) additionally projects to a null set in almost every direction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Minkowski content agrees with \(\mathcal H^{k}\)</b> on compact rectifiable sets.
+      <div class="ex"><div><p>Painting the surface and measuring the paint really does give the area — for reasonable surfaces.</p></div></div>
+      <div class="proof"><div><p>Sketch: for a compact piece of a \(C^{1}\) manifold, the \(\varepsilon\)-neighbourhood is, to first order, the normal bundle of thickness \(\varepsilon\), whose volume is \(\alpha_{n-k}\varepsilon^{\,n-k}\mathcal H^{k}\) plus curvature corrections of higher order (Chapter 19's Steiner formula makes this exact for convex bodies). Dividing and letting \(\varepsilon\to0\) gives the identity; countable additivity extends it to rectifiable sets. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Use the area formula for non-injective parametrisations</b>.
+      <div class="ex"><div><p>Count multiplicity instead of insisting on a bijection.</p></div></div></li>
+    <li><b>Slice with the coarea formula</b>.
+      <div class="ex"><div><p>Turns an \(n\)-dimensional integral into a family of \((n-m)\)-dimensional ones.</p></div></div></li>
+    <li><b>Check rectifiability before expecting good behaviour</b>.
+      <div class="ex"><div><p>Purely unrectifiable sets defy every geometric intuition.</p></div></div></li>
+    <li><b>Thicken and measure</b> — Minkowski content as a practical substitute.
+      <div class="ex"><div><p>Especially useful numerically, where covers are awkward.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Cover efficiently</td><td>L1</td><td>Bound \(\mathcal H^{s}\) from above</td></tr>
+    <tr><td>Lipschitz transfer</td><td>L1</td><td>Move an estimate between sets</td></tr>
+    <tr><td>Threshold argument</td><td>L1</td><td>Show \(\mathcal H^{t}\) is 0 or \(\infty\) off the critical exponent</td></tr>
+    <tr><td>Countable stability</td><td>L2</td><td>Compute the dimension of a union</td></tr>
+    <tr><td>Bi-Lipschitz invariance</td><td>L2</td><td>Transfer a known dimension</td></tr>
+    <tr><td>Box counting</td><td>L2</td><td>Estimate dimension quickly (with care)</td></tr>
+    <tr><td>Solve \(\sum r_i^{s}=1\)</td><td>L3</td><td>Get a self-similar set's dimension</td></tr>
+    <tr><td>Mass distribution principle</td><td>L3</td><td>Bound dimension from below</td></tr>
+    <tr><td>Iterate a contraction on compact sets</td><td>L3</td><td>Construct the attractor</td></tr>
+    <tr><td>Area formula</td><td>L4</td><td>Measure a non-injective parametrised image</td></tr>
+    <tr><td>Coarea formula</td><td>L4</td><td>Integrate by slicing along level sets</td></tr>
+    <tr><td>Isodiametric inequality</td><td>L4</td><td>Fix the constant in \(\mathcal H^{n} = \lambda_n\)</td></tr>
+    <tr><td>Thicken and measure</td><td>L4</td><td>Estimate area by Minkowski content</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Hausdorff Measure &amp; Dimension · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

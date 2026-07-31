@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 15 — Manifolds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Manifolds</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-14-curves-and-surfaces.html">&#10094; Chapter 14 — Curves &amp; Surfaces</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Spaces That Are Flat Up Close</h2>
+    <p>A sphere is not \(\mathbb{R}^{2}\), but every small patch of it is. That is the entire idea of a <b>manifold</b>: a space that looks like \(\mathbb{R}^{k}\) locally, though not globally.</p>
+    <p>Chapter 14 measured curved objects sitting inside \(\mathbb{R}^{n}\). This chapter frees them from the ambient space — the surface exists in its own right, and the charts are the only access to it.</p>
+    <p>The payoff is Chapter 16: on a manifold you can differentiate and integrate, and Stokes' theorem holds.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\varphi_\beta\circ\varphi_\alpha^{-1}\) for a transition map.</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Charts</a><a href="#L2">L2 Tangent Spaces</a><a href="#L3">L3 Vector Fields</a>
+  <a href="#L4">L4 Orientation</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Local coordinates</span>
+  <h2 class="ltitle">Charts, Atlases &amp; Smooth Structure</h2>
+  <p class="ldesc">Describing a curved space by overlapping flat maps.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Topological manifold</b> — a Hausdorff, second countable space in which every point has a neighbourhood homeomorphic to \(\mathbb{R}^{k}\).
+      <div class="ex"><div><p>The Earth's surface: locally a flat map, globally not a plane.</p></div></div></li>
+    <li><b>Chart</b> \((U,\varphi)\) — an open set and a homeomorphism \(\varphi : U\to\varphi(U)\subseteq\mathbb{R}^{k}\).
+      <div class="ex"><div><p>One page of the atlas: coordinates for one region.</p></div></div></li>
+    <li><b>Atlas</b> — a collection of charts covering the manifold.
+      <div class="ex"><div><p>The whole book of maps. No single page can cover a sphere.</p></div></div></li>
+    <li><b>Transition map</b> \(\varphi_\beta\circ\varphi_\alpha^{-1}\).
+      <div class="ex"><div><p>How two overlapping pages disagree about coordinates. Requiring these to be smooth is the whole definition of a smooth manifold.</p></div></div></li>
+    <li><b>Smooth structure</b> — a maximal atlas whose transition maps are all \(C^{\infty}\).
+      <div class="ex"><div><p>Agree on what "smooth" means, consistently across every overlap.</p></div></div></li>
+    <li><b>Dimension</b> \(k\) — the \(k\) in \(\mathbb{R}^{k}\), constant on each connected component.
+      <div class="ex"><div><p>Well defined by Chapter 8's invariance of dimension. A surface is 2-dimensional however you chart it.</p></div></div></li>
+    <li><b>Embedded submanifold of \(\mathbb{R}^{n}\)</b> — locally the graph of a smooth map, or a regular level set.
+      <div class="ex"><div><p>The sphere, the torus, the graph of any smooth function. Chapter 10's regular value theorem produces these wholesale.</p></div></div></li>
+    <li><b>Manifold with boundary</b> — charts onto the half-space \(\mathbb{H}^{k} = \{x_k\ge0\}\).
+      <div class="ex"><div><p>A disc has a circle for a boundary; a sphere has none. Stokes' theorem lives on this distinction.</p></div></div></li>
+    <li><b>Product manifold</b> \(M\times N\).
+      <div class="ex"><div><p>The torus is \(S^{1}\times S^{1}\) — a circle of circles.</p></div></div></li>
+    <li><b>Quotient manifold</b> — glue points together and check the result is still locally flat.
+      <div class="ex"><div><p>Glue opposite edges of a square: a torus. Glue with a flip: a Klein bottle, which cannot fit in \(\mathbb{R}^{3}\).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Dimension is well defined:</b> a non-empty manifold cannot have charts to \(\mathbb{R}^{k}\) and \(\mathbb{R}^{m}\) with \(k\ne m\).
+      <div class="ex"><div><p>You cannot chart a surface with three coordinates and a solid with two.</p></div></div>
+      <div class="proof"><div><p>Overlapping charts would produce a homeomorphism between an open subset of \(\mathbb{R}^{k}\) and one of \(\mathbb{R}^{m}\), contradicting Brouwer's invariance of domain (Chapter 8, Layer 2). \(\blacksquare\)</p></div></div></li>
+    <li><b>Regular value theorem:</b> if \(c\) is a regular value of a smooth \(F : \mathbb{R}^{n}\to\mathbb{R}^{m}\), then \(F^{-1}(c)\) is a smooth \((n-m)\)-manifold.
+      <div class="ex"><div><p>The sphere, the torus, \(SL_n\), \(O(n)\) — all manufactured by this single theorem.</p></div></div>
+      <div class="proof"><div><p>Chapter 10, Layer 4: the implicit function theorem writes the level set locally as a graph over \(n-m\) of the variables. Those graph parametrisations are charts, and their transitions are smooth because they are compositions of smooth graph maps and projections. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(S^{n-1}\) is a smooth \((n-1)\)-manifold</b>, chartable by two stereographic projections.
+      <div class="ex"><div><p>Two flat maps suffice for any sphere — one from each pole.</p></div></div>
+      <div class="proof"><div><p>\(1\) is a regular value of \(F(x) = \|x\|^{2}\), since \(\nabla F = 2x \ne \mathbf 0\) on the sphere. For the explicit atlas, stereographic projection from the north pole is a homeomorphism of \(S^{n-1}\setminus\{N\}\) onto \(\mathbb{R}^{n-1}\), and similarly from the south pole; the transition map is \(y\mapsto y/\|y\|^{2}\), which is smooth away from the origin. \(\blacksquare\)</p></div></div></li>
+    <li><b>Equivalent descriptions of an embedded submanifold:</b> local graph, local level set, local parametrisation, and locally straightenable.
+      <div class="ex"><div><p>Four ways to say the same thing. Use whichever is easiest to verify in the case at hand.</p></div></div>
+      <div class="proof"><div><p>All four are the rank theorem (Chapter 10, Layer 4) read in different directions: a full-rank map of constant rank \(k\) can be straightened at both ends, and the straightened picture is simultaneously a graph, a level set \(\{x_{k+1}=\cdots=x_n=0\}\), and a parametrisation by the first \(k\) coordinates. \(\blacksquare\)</p></div></div></li>
+    <li><b>Manifolds are locally compact, locally connected and metrisable.</b>
+      <div class="ex"><div><p>All the good behaviour of \(\mathbb{R}^{k}\) survives locally — which is why analysis works on manifolds.</p></div></div>
+      <div class="proof"><div><p>Each point has a chart neighbourhood homeomorphic to \(\mathbb{R}^{k}\), which is locally compact and locally connected; these are local properties, so they transfer. Metrisability follows from Urysohn's theorem, since the space is Hausdorff, second countable and regular (the last from local compactness). \(\blacksquare\)</p></div></div></li>
+    <li><b>Charts are diffeomorphisms onto their images</b>, once a smooth structure is fixed.
+      <div class="ex"><div><p>Working in coordinates is legitimate: nothing smooth is lost or created by choosing a chart.</p></div></div>
+      <div class="proof"><div><p>By definition a smooth map \(M\to\mathbb{R}^{k}\) is one whose composition with chart inverses is smooth; for \(\varphi\) itself that composition is a transition map, which is smooth by hypothesis, and likewise for \(\varphi^{-1}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check a regular value</b> — the fastest way to prove something is a manifold.
+      <div class="ex"><div><p>Verify \(DF\) has full rank at every point of the level set, not merely at one.</p></div></div></li>
+    <li><b>Work in a chart</b> — pull everything back to \(\mathbb{R}^{k}\).
+      <div class="ex"><div><p>Then apply Chapters 9–12 verbatim.</p></div></div></li>
+    <li><b>Check independence of the chart</b> — every definition must survive a transition map.
+      <div class="ex"><div><p>The standing obligation of this chapter. If a quantity changes with the chart, it wasn't geometry.</p></div></div></li>
+    <li><b>Build from products and quotients</b>.
+      <div class="ex"><div><p>Torus, cylinder, projective space — all assembled from simpler pieces.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Calculus without an ambient space</span>
+  <h2 class="ltitle">Smooth Maps &amp; Tangent Spaces</h2>
+  <p class="ldesc">What "the derivative" means when there is no surrounding \(\mathbb{R}^{n}\).</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Smooth map</b> \(f : M \to N\) — smooth in every pair of charts.
+      <div class="ex"><div><p>Check it in coordinates; the transition maps guarantee the answer doesn't depend on which coordinates.</p></div></div></li>
+    <li><b>Diffeomorphism</b> — a smooth bijection with smooth inverse.
+      <div class="ex"><div><p>The manifolds are the same object. A sphere and an ellipsoid are diffeomorphic; a sphere and a torus are not.</p></div></div></li>
+    <li><b>Tangent vector, three ways</b> — a velocity of a curve; a derivation on functions; a coordinate tuple that transforms by the Jacobian.
+      <div class="ex"><div><p>Three costumes, one actor. The derivation definition is the one that needs no ambient space.</p></div></div></li>
+    <li><b>Tangent space</b> \(T_pM\) — the \(k\)-dimensional vector space of tangent vectors at \(p\).
+      <div class="ex"><div><p>The tangent plane of Chapter 14, defined without ever leaving the surface.</p></div></div></li>
+    <li><b>Coordinate basis</b> \(\partial/\partial x^{1},\dots,\partial/\partial x^{k}\).
+      <div class="ex"><div><p>The directions "increase this coordinate". A chart gives a basis of every tangent space in its domain.</p></div></div></li>
+    <li><b>Differential (pushforward)</b> \(df_p : T_pM\to T_{f(p)}N\).
+      <div class="ex"><div><p>Chapter 10's total derivative, now as a map between tangent spaces. In coordinates it is still the Jacobian.</p></div></div></li>
+    <li><b>Immersion, submersion, embedding</b> — \(df\) injective, surjective, and an immersion that is a homeomorphism onto its image.
+      <div class="ex"><div><p>A figure-eight is an immersed circle but not embedded — the crossing point ruins it.</p></div></div></li>
+    <li><b>Cotangent space</b> \(T_p^{*}M\) — the dual of \(T_pM\), with basis \(dx^{1},\dots,dx^{k}\).
+      <div class="ex"><div><p>Chapter 4's dual space, attached at each point. Chapter 16's forms live here.</p></div></div></li>
+    <li><b>Tangent bundle</b> \(TM = \bigsqcup_pT_pM\) — itself a \(2k\)-manifold.
+      <div class="ex"><div><p>All positions together with all velocities: exactly the phase space of mechanics.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The three definitions of a tangent vector agree.</b>
+      <div class="ex"><div><p>Velocity of a curve, derivation, coordinate tuple — one object, three descriptions.</p></div></div>
+      <div class="proof"><div><p>A curve \(\gamma\) with \(\gamma(0)=p\) acts on functions by \(f\mapsto(f\circ\gamma)'(0)\), which is a derivation. Conversely, in a chart every derivation is determined by its values on the coordinate functions — a Taylor expansion \(f = f(p)+\sum_i a_i(x^{i}-x^{i}(p))+\text{higher order}\) shows the higher-order terms are killed by the Leibniz rule — so derivations form a \(k\)-dimensional space with basis \(\partial/\partial x^{i}\), and each is realised by a straight coordinate curve. The transformation rule under a change of chart is the transition map's Jacobian, which is the third definition. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\dim T_pM = \dim M\).</b>
+      <div class="ex"><div><p>As many independent directions to move in as the manifold has dimensions.</p></div></div>
+      <div class="proof"><div><p>Immediate from the previous proof: the coordinate derivations \(\partial/\partial x^{i}\), \(i = 1,\dots,k\), form a basis. \(\blacksquare\)</p></div></div></li>
+    <li><b>Chain rule:</b> \(d(g\circ f)_p = dg_{f(p)}\circ df_p\).
+      <div class="ex"><div><p>Chapter 10's chain rule, unchanged. In coordinates it is still matrix multiplication.</p></div></div>
+      <div class="proof"><div><p>Apply both sides to a derivation \(v\) acting on a test function \(h\): \(d(g\circ f)(v)(h) = v(h\circ g\circ f) = df(v)(h\circ g) = dg(df(v))(h)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Inverse function theorem on manifolds:</b> \(df_p\) invertible implies \(f\) is a local diffeomorphism at \(p\).
+      <div class="ex"><div><p>The whole of Chapter 10, Layer 4, transported by charts.</p></div></div>
+      <div class="proof"><div><p>Read \(f\) in charts around \(p\) and \(f(p)\), giving a smooth map between open subsets of \(\mathbb{R}^{k}\) whose derivative is invertible. Chapter 10's theorem produces a local inverse, and composing with the chart maps turns it into a local inverse of \(f\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Tangent space of a level set:</b> for \(M = F^{-1}(c)\), \(T_pM = \ker dF_p\).
+      <div class="ex"><div><p>The tangent plane to a sphere is exactly the vectors perpendicular to the radius — Chapter 10's "gradient ⟂ level set", restated.</p></div></div>
+      <div class="proof"><div><p>Any curve in \(M\) satisfies \(F(\gamma(t)) = c\); differentiating gives \(dF_p(\gamma'(0)) = 0\), so \(T_pM \subseteq \ker dF_p\). Both spaces have dimension \(n-m\) (rank–nullity, and the regular value theorem), so they are equal. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(TM\) is a smooth \(2k\)-manifold</b>, with charts \((x,\xi)\).
+      <div class="ex"><div><p>Position and velocity together, and the whole thing is again a manifold you can do calculus on.</p></div></div>
+      <div class="proof"><div><p>Each chart \((U,\varphi)\) gives a bijection \(TU \to \varphi(U)\times\mathbb{R}^{k}\) sending a tangent vector to its base point and its coordinate components. The transitions are \((x,\xi)\mapsto(\psi(x), D\psi(x)\xi)\), smooth because \(\psi\) is smooth and \(D\psi\) depends smoothly on \(x\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Whitney embedding theorem</b> (stated): every smooth \(k\)-manifold embeds in \(\mathbb{R}^{2k}\).
+      <div class="ex"><div><p>Abstract manifolds are not more general than submanifolds of \(\mathbb{R}^{n}\) — but the chart-based definition is far more usable.</p></div></div>
+      <div class="proof"><div><p>Sketch: for compact \(M\), a finite atlas with a partition of unity gives an embedding into some large \(\mathbb{R}^{N}\) by assembling the chart maps. Then project along a generic direction: by Sard's theorem the directions that destroy injectivity or immersivity form a null set, so projections reduce \(N\) as long as \(N &gt; 2k+1\). A more delicate argument sharpens \(2k+1\) to \(2k\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Sard's theorem</b> (stated): the set of critical values of a smooth map has measure zero.
+      <div class="ex"><div><p>Almost every value is a regular value — so almost every level set is a manifold.</p></div></div>
+      <div class="proof"><div><p>Sketch: cover the critical set by small cubes. On each cube, Taylor's theorem shows the image lies in a thin slab whose thickness is higher order in the cube's side, because the derivative is degenerate there. Summing the volumes of these slabs and letting the cubes shrink gives measure zero; the smoothness order needed grows with the dimension gap. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compute in a chart, check chart-independence</b>.
+      <div class="ex"><div><p>The standard discipline of the entire subject.</p></div></div></li>
+    <li><b>Use curves to produce tangent vectors</b>.
+      <div class="ex"><div><p>Differentiate a curve through the point: the fastest way to identify a tangent space.</p></div></div></li>
+    <li><b>Identify \(T_pM = \ker dF_p\)</b> for level sets.
+      <div class="ex"><div><p>Turns a geometric question into linear algebra.</p></div></div></li>
+    <li><b>Quote Sard</b> — to get a regular value whenever you need one.
+      <div class="ex"><div><p>"For almost every \(c\), the level set is a manifold."</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Motion on a manifold</span>
+  <h2 class="ltitle">Vector Fields &amp; Flows</h2>
+  <p class="ldesc">Assigning a direction at every point, and following it.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Vector field</b> \(X\) — a smooth choice of \(X_p\in T_pM\) at each point.
+      <div class="ex"><div><p>The wind at every point of the globe. A section of the tangent bundle.</p></div></div></li>
+    <li><b>Integral curve</b> — a curve with \(\gamma'(t) = X_{\gamma(t)}\).
+      <div class="ex"><div><p>The path of a balloon released into the wind.</p></div></div></li>
+    <li><b>Flow</b> \(\Phi_t\) — the map sending each point along its integral curve for time \(t\).
+      <div class="ex"><div><p>A one-parameter family of diffeomorphisms, with \(\Phi_{s+t} = \Phi_s\circ\Phi_t\).</p></div></div></li>
+    <li><b>Complete vector field</b> — one whose flow is defined for all time.
+      <div class="ex"><div><p>On a compact manifold every field is complete; on \(\mathbb{R}\), \(X = x^{2}\partial_x\) blows up in finite time.</p></div></div></li>
+    <li><b>Lie bracket</b> \([X,Y] = XY - YX\).
+      <div class="ex"><div><p>The failure of two flows to commute. Go east then north, or north then east — the difference is the bracket.</p></div></div></li>
+    <li><b>Frame</b> — a set of vector fields forming a basis of each tangent space.
+      <div class="ex"><div><p>A consistent choice of axes across the whole manifold. Most manifolds don't admit one.</p></div></div></li>
+    <li><b>Parallelisable manifold</b> — one admitting a global frame.
+      <div class="ex"><div><p>The torus is; the 2-sphere is not, by the hairy ball theorem.</p></div></div></li>
+    <li><b>Lie derivative</b> \(\mathcal{L}_XY\) — the rate of change of \(Y\) along the flow of \(X\).
+      <div class="ex"><div><p>Drift downstream and watch how the neighbouring current changes relative to you.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Existence and uniqueness of integral curves.</b>
+      <div class="ex"><div><p>Release a balloon and its path is determined — a fact borrowed straight from Chapter 7.</p></div></div>
+      <div class="proof"><div><p>In a chart the condition \(\gamma' = X(\gamma)\) is an ODE with smooth — hence locally Lipschitz — right-hand side, so Picard–Lindelöf (Chapter 7, Layer 4) gives a unique local solution. Uniqueness lets the local solutions be glued along overlaps into a maximal integral curve. \(\blacksquare\)</p></div></div></li>
+    <li><b>The flow is a local one-parameter group:</b> \(\Phi_0 = \mathrm{id}\) and \(\Phi_{s+t} = \Phi_s\circ\Phi_t\) where defined.
+      <div class="ex"><div><p>Drifting for 3 hours then 2 is the same as drifting for 5.</p></div></div>
+      <div class="proof"><div><p>Both \(t\mapsto\Phi_{s+t}(p)\) and \(t\mapsto\Phi_t(\Phi_s(p))\) are integral curves of \(X\) starting at \(\Phi_s(p)\); uniqueness forces them to coincide. \(\blacksquare\)</p></div></div></li>
+    <li><b>Each \(\Phi_t\) is a diffeomorphism</b> onto its image, with inverse \(\Phi_{-t}\).
+      <div class="ex"><div><p>The wind can be run backwards.</p></div></div>
+      <div class="proof"><div><p>The group law gives \(\Phi_t\circ\Phi_{-t} = \Phi_0 = \mathrm{id}\), so \(\Phi_t\) is bijective with inverse \(\Phi_{-t}\); smooth dependence of ODE solutions on initial conditions makes both smooth. \(\blacksquare\)</p></div></div></li>
+    <li><b>Vector fields on a compact manifold are complete.</b>
+      <div class="ex"><div><p>Nothing can escape to infinity if there is no infinity to escape to.</p></div></div>
+      <div class="proof"><div><p>By compactness a uniform \(\varepsilon &gt; 0\) exists such that every integral curve is defined on \((-\varepsilon,\varepsilon)\) (take a finite subcover of chart neighbourhoods with local existence times). Repeatedly applying the group law extends any curve by \(\varepsilon\) at a time, indefinitely. \(\blacksquare\)</p></div></div></li>
+    <li><b>Straightening theorem:</b> near a point where \(X\ne0\), some chart makes \(X = \partial/\partial x^{1}\).
+      <div class="ex"><div><p>Any non-vanishing wind looks like a uniform breeze, in the right coordinates.</p></div></div>
+      <div class="proof"><div><p>Take a small hypersurface \(S\) through \(p\) transverse to \(X\), with coordinates \((x^{2},\dots,x^{k})\), and define \(\Psi(t,y) = \Phi_t(y)\) for \(y \in S\). Its differential at \((0,p)\) is invertible — it sends \(\partial_t\) to \(X_p\) and the \(S\)-directions to \(T_pS\) — so by the inverse function theorem \(\Psi\) is a local diffeomorphism, and in these coordinates the flow is translation in \(t\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Lie bracket properties:</b> \([X,Y]\) is a vector field, bilinear, antisymmetric, and satisfies the Jacobi identity.
+      <div class="ex"><div><p>Vector fields form a Lie algebra — the algebraic shadow of the group of diffeomorphisms.</p></div></div>
+      <div class="proof"><div><p>The second-order terms of \(XY\) and \(YX\) agree by Clairaut's theorem (Chapter 10, Layer 1), so their difference is a first-order operator, i.e. a derivation, i.e. a vector field. Bilinearity and antisymmetry are immediate, and the Jacobi identity follows by expanding all six terms of \([[X,Y],Z]+\text{cyclic}\), which cancel in pairs. \(\blacksquare\)</p></div></div></li>
+    <li><b>Flows commute iff the bracket vanishes:</b> \([X,Y]=0 \iff \Phi^{X}_s\circ\Phi^{Y}_t = \Phi^{Y}_t\circ\Phi^{X}_s\).
+      <div class="ex"><div><p>The bracket is precisely the obstruction to "east then north = north then east".</p></div></div>
+      <div class="proof"><div><p>Sketch: \(\mathcal L_XY = [X,Y]\) measures the derivative of \((\Phi^{X}_{-t})_{*}Y\) at \(t=0\). If the bracket vanishes, \(Y\) is invariant under the flow of \(X\), so \(\Phi^{X}\) carries integral curves of \(Y\) to integral curves of \(Y\), which is exactly commutation. Conversely, commuting flows make \((\Phi^{X}_{-t})_{*}Y\) constant, so its derivative — the bracket — is zero. \(\blacksquare\)</p></div></div></li>
+    <li><b>Hairy ball theorem</b> (stated): every smooth vector field on \(S^{2n}\) vanishes somewhere.
+      <div class="ex"><div><p>You cannot comb a coconut flat. There is always a cowlick — or, on Earth, always a point of zero wind.</p></div></div>
+      <div class="proof"><div><p>Sketch: a nowhere-zero field on \(S^{n}\) could be normalised and used to build a homotopy from the identity to the antipodal map. Those two maps have degrees 1 and \((-1)^{n+1}\), which differ when \(n\) is even — a contradiction. Equivalently, the Euler characteristic \(\chi(S^{2n}) = 2 \ne 0\) obstructs a non-vanishing field, by the Poincaré–Hopf theorem. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Solve the ODE in a chart</b> — then glue.
+      <div class="ex"><div><p>All existence questions about flows reduce to Chapter 7's fixed point theorem.</p></div></div></li>
+    <li><b>Straighten the field</b> — choose coordinates in which it is constant.
+      <div class="ex"><div><p>Turns a differential equation into a triviality, locally.</p></div></div></li>
+    <li><b>Compute the bracket</b> — to test whether two flows commute.
+      <div class="ex"><div><p>In coordinates, \([X,Y]^{i} = X^{j}\partial_jY^{i} - Y^{j}\partial_jX^{i}\).</p></div></div></li>
+    <li><b>Use compactness for completeness</b>.
+      <div class="ex"><div><p>On a compact manifold you never have to worry about the flow escaping.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Preparing to integrate</span>
+  <h2 class="ltitle">Orientation, Boundary &amp; Partitions of Unity</h2>
+  <p class="ldesc">The three technical ingredients Chapter 16 needs.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Orientation</b> — a consistent choice of "positive" ordered basis in every tangent space.
+      <div class="ex"><div><p>A consistent right-hand rule across the whole manifold. Some manifolds refuse to allow one.</p></div></div></li>
+    <li><b>Oriented atlas</b> — all transition maps have positive Jacobian determinant.
+      <div class="ex"><div><p>Chapter 5's orientation classes, glued together across charts.</p></div></div></li>
+    <li><b>Non-orientable manifold</b> — one admitting no such atlas.
+      <div class="ex"><div><p>The Möbius band and the Klein bottle. Walk around and you come back mirror-reversed.</p></div></div></li>
+    <li><b>Boundary</b> \(\partial M\) — the points mapping to \(\{x_k = 0\}\) in a half-space chart.
+      <div class="ex"><div><p>The rim of a disc; the two circles of a cylinder. \(\partial(\partial M) = \varnothing\), always.</p></div></div></li>
+    <li><b>Induced orientation on the boundary</b> — "outward normal first".
+      <div class="ex"><div><p>The convention that makes Stokes' theorem come out with a plus sign.</p></div></div></li>
+    <li><b>Partition of unity</b> — smooth \(\rho_\alpha \ge 0\) with locally finite supports summing to 1.
+      <div class="ex"><div><p>A way of chopping a global object into chart-sized pieces and reassembling it without seams.</p></div></div></li>
+    <li><b>Bump function</b> — smooth, 1 on a ball, 0 outside a bigger one.
+      <div class="ex"><div><p>Built from \(e^{-1/t}\). The existence of these is exactly what distinguishes smooth from analytic.</p></div></div></li>
+    <li><b>Density (volume element)</b> — a positive quantity transforming by \(|\det|\).
+      <div class="ex"><div><p>Lets you integrate on a non-orientable manifold, where forms cannot be consistently signed.</p></div></div></li>
+    <li><b>Riemannian volume</b> — the density \(\sqrt{\det g}\) from a metric.
+      <div class="ex"><div><p>Chapter 14's \(\sqrt{EG-F^{2}}\), in general. Chapter 17 supplies the metric.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Existence of bump functions:</b> for any \(p\) and neighbourhood \(U\) there is a smooth \(\rho\) that is 1 near \(p\) and 0 outside \(U\).
+      <div class="ex"><div><p>Smooth functions can be switched off entirely — something no non-zero analytic function can do.</p></div></div>
+      <div class="proof"><div><p>The function \(h(t) = e^{-1/t}\) for \(t &gt; 0\) and 0 otherwise is smooth, with all derivatives vanishing at 0 (each derivative is a rational function times \(e^{-1/t}\), which tends to 0). Then \(g(t) = \frac{h(t)}{h(t)+h(1-t)}\) is a smooth step from 0 to 1, and \(\rho(x) = g\bigl(\frac{b-\|x\|}{b-a}\bigr)\) in a chart gives the bump. \(\blacksquare\)</p></div></div></li>
+    <li><b>Existence of partitions of unity</b> subordinate to any open cover of a manifold.
+      <div class="ex"><div><p>The single most-used technical tool in the subject: it globalises anything that is easy locally.</p></div></div>
+      <div class="proof"><div><p>Second countability and local compactness give a countable, locally finite refinement of the cover by chart neighbourhoods with compact closures (an exhaustion argument). Place a bump function \(\psi_\alpha\) supported in each, positive on the corresponding smaller set. Local finiteness makes \(\Psi = \sum_\alpha\psi_\alpha\) a well-defined positive smooth function, and \(\rho_\alpha = \psi_\alpha/\Psi\) is the required partition. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — every manifold carries a Riemannian metric.</b>
+      <div class="ex"><div><p>Distance can always be installed. Chapter 17 explores what follows.</p></div></div>
+      <div class="proof"><div><p>In each chart take the pulled-back Euclidean inner product \(g_\alpha\), and set \(g = \sum_\alpha\rho_\alpha g_\alpha\). Each term is symmetric and positive semidefinite; at every point at least one \(\rho_\alpha\) is positive with \(g_\alpha\) positive definite, so the sum is positive definite. \(\blacksquare\)</p></div></div></li>
+    <li><b>Orientability criteria:</b> \(M\) is orientable iff it has an oriented atlas, iff it carries a nowhere-vanishing top-degree form.
+      <div class="ex"><div><p>Chapter 16's volume form exists exactly when the manifold is orientable.</p></div></div>
+      <div class="proof"><div><p>Given an oriented atlas, glue the local forms \(dx^{1}\wedge\cdots\wedge dx^{k}\) with a partition of unity; positivity of the transition determinants keeps the sum nowhere zero. Conversely, a nowhere-zero top form \(\omega\) singles out the charts in which \(\omega\) is a positive multiple of \(dx^{1}\wedge\cdots\wedge dx^{k}\), and their transitions have positive determinant. \(\blacksquare\)</p></div></div></li>
+    <li><b>The Möbius band is non-orientable.</b>
+      <div class="ex"><div><p>Slide a right-handed frame once around and it comes back left-handed.</p></div></div>
+      <div class="proof"><div><p>Parametrise the core circle and carry a frame around it. The gluing identification of the band reverses the transverse direction, so the transition map on the overlap has negative Jacobian determinant, and no relabelling of charts can fix it — a consistent choice would have to be both positive and negative on the single overlap. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\partial M\) is a \((k-1)\)-manifold without boundary</b>, and inherits an orientation from \(M\).
+      <div class="ex"><div><p>The edge of a disc is a circle, and the circle has no edge.</p></div></div>
+      <div class="proof"><div><p>Restricting half-space charts to \(\{x_k = 0\}\) gives charts of \(\partial M\) onto open subsets of \(\mathbb{R}^{k-1}\), whose transitions are restrictions of the original ones, hence smooth. No point of \(\partial M\) has a half-space chart in \(\partial M\), so \(\partial(\partial M) = \varnothing\). The induced orientation is defined by declaring a basis of \(T_p\partial M\) positive when preceded by an outward normal it forms a positive basis of \(T_pM\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Integration of a density is well defined</b> — chart-independent, thanks to partitions of unity.
+      <div class="ex"><div><p>Total mass of a curved sheet, computed chart by chart and summed without double counting.</p></div></div>
+      <div class="proof"><div><p>Define \(\int_M\mu = \sum_\alpha\int_{\varphi_\alpha(U_\alpha)}\rho_\alpha\mu\) in coordinates. Under a change of chart the coordinate expression of a density picks up \(|\det D\psi|\), which the change of variables formula (Chapter 12, Layer 4) cancels. Two different partitions of unity give the same total, since \(\sum_\alpha\rho_\alpha\sum_\beta\sigma_\beta\) can be summed in either order (all sums are locally finite). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Do it locally, glue with a partition of unity</b>.
+      <div class="ex"><div><p>The standard three-line proof of most existence theorems on manifolds.</p></div></div></li>
+    <li><b>Check transition determinants</b> — to decide orientability.
+      <div class="ex"><div><p>All positive, and you can orient; one stubborn negative, and you cannot.</p></div></div></li>
+    <li><b>Use bump functions to localise</b>.
+      <div class="ex"><div><p>Multiply by a bump and any global problem becomes a chart problem.</p></div></div></li>
+    <li><b>Fix the boundary orientation convention early</b>.
+      <div class="ex"><div><p>Outward normal first. Get it wrong and Stokes' theorem acquires a spurious minus sign.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Regular value check</td><td>L1</td><td>Prove a level set is a manifold</td></tr>
+    <tr><td>Work in a chart</td><td>L1</td><td>Import all of Chapters 9–12</td></tr>
+    <tr><td>Check chart-independence</td><td>L1</td><td>Confirm a definition is geometric</td></tr>
+    <tr><td>Differentiate a curve</td><td>L2</td><td>Produce tangent vectors</td></tr>
+    <tr><td>\(T_pM = \ker dF_p\)</td><td>L2</td><td>Identify a tangent space of a level set</td></tr>
+    <tr><td>Inverse function theorem in charts</td><td>L2</td><td>Get local diffeomorphisms</td></tr>
+    <tr><td>Sard's theorem</td><td>L2</td><td>Find a regular value when you need one</td></tr>
+    <tr><td>Solve the flow ODE in a chart</td><td>L3</td><td>Integrate a vector field</td></tr>
+    <tr><td>Straighten a vector field</td><td>L3</td><td>Make a field constant in coordinates</td></tr>
+    <tr><td>Compute the Lie bracket</td><td>L3</td><td>Test whether flows commute</td></tr>
+    <tr><td>Bump functions</td><td>L4</td><td>Localise a global problem</td></tr>
+    <tr><td>Partition of unity</td><td>L4</td><td>Glue local constructions into a global one</td></tr>
+    <tr><td>Transition determinant signs</td><td>L4</td><td>Decide orientability</td></tr>
+    <tr><td>Outward normal first</td><td>L4</td><td>Orient the boundary consistently</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Manifolds · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

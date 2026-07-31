@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2 — Set Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Set Theory</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-01-logic.html">&#10094; Chapter 1 — Logic</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Everything Is a Set</h2>
+    <p>Logic gave us the rules of argument. Set theory gives us the <b>objects</b> to argue about — and there is only one kind of object.</p>
+    <p>From the empty set and nine axioms come pairs, numbers, functions, infinity, and every space in the rest of this book.</p>
+    <p>Prerequisite: Chapter 1. Quantifiers, proof by contradiction and induction are used here without reintroduction.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\forall x\,\exists y\;(x \in y)\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Membership</a><a href="#L2">L2 ZFC Axioms</a><a href="#L3">L3 Operations</a>
+  <a href="#L4">L4 Relations</a><a href="#L5">L5 Functions</a><a href="#L6">L6 Numbers</a>
+  <a href="#L7">L7 Cardinality</a><a href="#L8">L8 Ordinals</a><a href="#L9">L9 Choice</a>
+  <a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · One primitive</span>
+  <h2 class="ltitle">Sets &amp; Membership</h2>
+  <p class="ldesc">A single undefined relation, and the paradox that forced the axioms.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Set</b> — an undefined primitive: a collection considered as one object.
+      <div class="ex"><div><p>A shopping bag is one thing, even though it holds six things. Nobody defines "bag" — you just use it.</p></div></div></li>
+    <li><b>Membership</b> \(x \in A\) — the one primitive relation; "\(x\) belongs to \(A\)".
+      <div class="ex"><div><p>Milk \(\in\) the shopping bag. That's the only kind of fact set theory starts with.</p></div></div></li>
+    <li><b>Roster notation</b> \(\{a, b, c\}\) — a set given by listing its members.
+      <div class="ex"><div><p>\(\{\text{tea}, \text{coffee}\}\). Order and repeats don't count: \(\{a,b\} = \{b,a\} = \{a,a,b\}\).</p></div></div></li>
+    <li><b>Set-builder notation</b> \(\{x \in A : P(x)\}\) — the members of \(A\) satisfying \(P\).
+      <div class="ex"><div><p>\(\{n \in \mathbb{N} : n \text{ is even}\}\) — "the ones in this bag that pass the test".</p></div></div></li>
+    <li><b>Empty set</b> \(\varnothing\) — the set with no members.
+      <div class="ex"><div><p>An empty bag is still a bag. This one object is where the entire universe is built from.</p></div></div></li>
+    <li><b>Subset</b> \(A \subseteq B\) — every member of \(A\) is a member of \(B\).
+      <div class="ex"><div><p>The cutlery drawer is a subset of the kitchen's contents.</p></div></div></li>
+    <li><b>Proper subset</b> \(A \subsetneq B\) — a subset that misses something.
+      <div class="ex"><div><p>The forks are a proper subset of the cutlery: no fork is missing, but a spoon is.</p></div></div></li>
+    <li><b>Superset</b> \(B \supseteq A\) — \(B\) contains \(A\); the same statement read backwards.
+      <div class="ex"><div><p>The kitchen is a superset of the drawer. Same fact, other end of the telescope.</p></div></div></li>
+    <li><b>Equality of sets</b> — \(A = B\) means they have exactly the same members.
+      <div class="ex"><div><p>Two guest lists are the same list if the same people are on them, however differently written.</p></div></div></li>
+    <li><b>Singleton</b> \(\{a\}\) — a set with exactly one member.
+      <div class="ex"><div><p>The box and the thing in the box are different objects: \(a \ne \{a\}\). One is a mug, one is a mug in a bag.</p></div></div></li>
+    <li><b>Disjoint sets</b> — sets sharing no member.
+      <div class="ex"><div><p>Vegetarians and meat-eaters at the same dinner: no overlap.</p></div></div></li>
+    <li><b>Family (indexed collection)</b> \(\{A_i\}_{i \in I}\) — a set of sets labelled by an index set.
+      <div class="ex"><div><p>One shelf per year of a diary. The years are the index; the shelves are the sets.</p></div></div></li>
+    <li><b>Russell's paradox</b> — \(R = \{x : x \notin x\}\) cannot exist.
+      <div class="ex"><div><p>"The barber shaves exactly those who don't shave themselves." Who shaves the barber? Nobody can — so no such barber, and no such set.</p></div></div></li>
+    <li><b>Proper class</b> — a collection too big to be a set, e.g. "all sets".
+      <div class="ex"><div><p>You can talk <em>about</em> everything, but you can't put everything in a bag and then put that bag on the shelf.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Russell's paradox is fatal to naive comprehension:</b> "for every property, the set of things with that property exists" is inconsistent.
+      <div class="ex"><div><p>This is why Layer 2 has axioms at all: you may only <em>filter</em> an existing set, never conjure one from a description.</p></div></div>
+      <div class="proof"><div><p>Assume unrestricted comprehension and form \(R = \{x : x \notin x\}\). Ask whether \(R \in R\). If \(R \in R\) then \(R\) satisfies the defining property, so \(R \notin R\). If \(R \notin R\) then \(R\) satisfies the property, so \(R \in R\). Both cases contradict, so the assumption fails. \(\blacksquare\)</p></div></div></li>
+    <li><b>The empty set is a subset of everything:</b> \(\varnothing \subseteq A\) for every \(A\).
+      <div class="ex"><div><p>"Every member of the empty bag is also in yours" — there are none to check, so it's true.</p></div></div>
+      <div class="proof"><div><p>\(\varnothing \subseteq A\) unfolds to \(\forall x\,(x \in \varnothing \to x \in A)\). The antecedent \(x \in \varnothing\) is false for every \(x\), so each implication is vacuously true (Chapter 1, Layer 3). \(\blacksquare\)</p></div></div></li>
+    <li><b>The empty set is unique.</b>
+      <div class="ex"><div><p>There is only one way to have nothing. Two empty bags hold the same (no) things, so as sets they are equal.</p></div></div>
+      <div class="proof"><div><p>Let \(\varnothing_1, \varnothing_2\) both have no members. By the previous result each is a subset of the other, so by Extensionality \(\varnothing_1 = \varnothing_2\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Double inclusion:</b> \(A = B\) if and only if \(A \subseteq B\) and \(B \subseteq A\).
+      <div class="ex"><div><p>The workhorse of every set proof: show each side is inside the other, then declare them equal.</p></div></div>
+      <div class="proof"><div><p>If \(A = B\) then \(x \in A \leftrightarrow x \in B\), giving both inclusions. Conversely the two inclusions give \(x \in A \to x \in B\) and \(x \in B \to x \in A\), i.e. \(x \in A \leftrightarrow x \in B\) for all \(x\); Extensionality then yields \(A = B\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Transitivity of inclusion:</b> \(A \subseteq B\) and \(B \subseteq C\) imply \(A \subseteq C\).
+      <div class="ex"><div><p>Forks \(\subseteq\) cutlery \(\subseteq\) kitchen, so forks \(\subseteq\) kitchen.</p></div></div>
+      <div class="proof"><div><p>Let \(x \in A\). Then \(x \in B\) by the first inclusion, and \(x \in C\) by the second. As \(x\) was arbitrary, \(A \subseteq C\). \(\blacksquare\)</p></div></div></li>
+    <li><b>No universal set:</b> there is no set containing every set.
+      <div class="ex"><div><p>"Everything" is a proper class, not a set — the bag containing all bags would be inside itself.</p></div></div>
+      <div class="proof"><div><p>Suppose \(U\) contained every set. By Separation (Layer 2) the set \(R = \{x \in U : x \notin x\}\) exists, and Russell's argument applies verbatim to give a contradiction. Hence no such \(U\) exists. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Element chasing</b> — to prove a set statement, take an arbitrary element and follow it.
+      <div class="ex"><div><p>"Let \(x \in A \cap B\)…" — everything about sets ultimately reduces to one wandering element.</p></div></div></li>
+    <li><b>Double inclusion</b> — prove \(A \subseteq B\) and \(B \subseteq A\).
+      <div class="ex"><div><p>Two short arguments beat one clever one; this is how nearly every identity in Layer 3 is proved.</p></div></div></li>
+    <li><b>Venn diagram</b> — draw overlapping regions to see what is being claimed.
+      <div class="ex"><div><p>Excellent for finding the truth, useless as a proof — three sets already need care, four can't be drawn with circles.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The rulebook</span>
+  <h2 class="ltitle">The ZFC Axioms</h2>
+  <p class="ldesc">Nine careful rules that say which sets you are allowed to build.</p>
+
+  <h3>Axioms</h3>
+  <ul>
+    <li><b>Extensionality</b> — two sets with the same members are equal.
+      <div class="ex"><div><p>A set is nothing but its contents: no hidden colour, no label, no order.</p></div></div></li>
+    <li><b>Empty set</b> — \(\varnothing\) exists. (Often derived from Infinity plus Separation.)
+      <div class="ex"><div><p>The first brick. Everything else is built out of it, including every number.</p></div></div></li>
+    <li><b>Pairing</b> — for any \(a, b\), the set \(\{a, b\}\) exists.
+      <div class="ex"><div><p>Any two things can be put in a bag together. With \(a = b\) you also get singletons.</p></div></div></li>
+    <li><b>Union</b> — for any set of sets, the set of all their members exists.
+      <div class="ex"><div><p>Tip every bag in the cupboard onto the table: what's on the table is a set.</p></div></div></li>
+    <li><b>Power set</b> — for any \(A\), the set \(\mathcal{P}(A)\) of all subsets of \(A\) exists.
+      <div class="ex"><div><p>All possible guest lists you could draw from one club — including the empty list and everyone.</p></div></div></li>
+    <li><b>Separation (subset schema)</b> — \(\{x \in A : P(x)\}\) exists for any property \(P\).
+      <div class="ex"><div><p>Filtering is safe; conjuring is not. This is the exact repair for Russell's paradox.</p></div></div></li>
+    <li><b>Replacement (schema)</b> — the image of a set under a definable function is a set.
+      <div class="ex"><div><p>Swap every item in the bag for something else, one for one: still a bag, never bigger.</p></div></div></li>
+    <li><b>Infinity</b> — an inductive set exists: it contains \(\varnothing\) and is closed under \(x \mapsto x \cup \{x\}\).
+      <div class="ex"><div><p>The one axiom that says "the counting never stops" — without it, only finite sets exist.</p></div></div></li>
+    <li><b>Foundation (regularity)</b> — every non-empty set has a member disjoint from it.
+      <div class="ex"><div><p>No bag contains itself, and no endless chain \(\cdots \in x_2 \in x_1 \in x_0\). The universe is built in layers, from the bottom.</p></div></div></li>
+    <li><b>Choice (AC)</b> — for any family of non-empty sets there is a function picking one member from each.
+      <div class="ex"><div><p>Infinitely many pairs of socks with no way to tell left from right — you still need <em>some</em> rule to grab one from each pair. Layer 9 is devoted to it.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — What the Axioms Immediately Give</h3>
+  <ul>
+    <li><b>Singletons exist:</b> \(\{a\} = \{a,a\}\).
+      <div class="ex"><div><p>Pairing with the same thing twice — the cheapest possible use of an axiom.</p></div></div>
+      <div class="proof"><div><p>Pairing applied to \(a\) and \(a\) yields a set whose members are exactly \(a\); by Extensionality this set is \(\{a\}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Binary unions and intersections exist:</b> \(A \cup B\) and \(A \cap B\) are sets.
+      <div class="ex"><div><p>Everything in either bag; everything in both bags.</p></div></div>
+      <div class="proof"><div><p>Pairing gives \(\{A,B\}\), and Union applied to it gives \(A \cup B\). For the intersection, Separation carves \(\{x \in A : x \in B\}\) out of \(A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Intersection of a non-empty family is a set:</b> \(\bigcap \mathcal{F}\) exists when \(\mathcal{F} \ne \varnothing\).
+      <div class="ex"><div><p>What every bag in the cupboard has in common. If the cupboard is empty the answer would be "everything" — which is not a set, hence the proviso.</p></div></div>
+      <div class="proof"><div><p>Pick any \(A \in \mathcal{F}\) and apply Separation inside it: \(\bigcap\mathcal{F} = \{x \in A : \forall B \in \mathcal{F},\, x \in B\}\). Non-emptiness of \(\mathcal{F}\) is what supplies the container \(A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>No set contains itself:</b> \(A \notin A\).
+      <div class="ex"><div><p>A bag can't be inside itself, however you fold it.</p></div></div>
+      <div class="proof"><div><p>Suppose \(A \in A\). Consider \(\{A\}\), which exists by Pairing. Its only member is \(A\), and \(A \cap \{A\} \ni A\) is non-empty, so \(\{A\}\) has no member disjoint from it — contradicting Foundation. \(\blacksquare\)</p></div></div></li>
+    <li><b>No membership cycles:</b> there is no chain \(A \in B \in A\), nor any longer loop.
+      <div class="ex"><div><p>You can't have box A inside box B inside box A. The stacking always bottoms out.</p></div></div>
+      <div class="proof"><div><p>Given a cycle \(A_1 \in A_2 \in \cdots \in A_n \in A_1\), form \(S = \{A_1,\dots,A_n\}\) by repeated Pairing and Union. Every \(A_i \in S\) contains some \(A_j \in S\), so no member of \(S\) is disjoint from \(S\) — contradicting Foundation. \(\blacksquare\)</p></div></div></li>
+    <li><b>Separation is a consequence of Replacement.</b>
+      <div class="ex"><div><p>Nine axioms, but not all independent — the list is chosen for clarity, not economy.</p></div></div>
+      <div class="proof"><div><p>Given \(A\) and a property \(P\), define the class function \(F\) sending \(x \mapsto x\) if \(P(x)\) holds and \(x \mapsto a_0\) (some fixed element satisfying \(P\), if one exists) otherwise; if no element of \(A\) satisfies \(P\) the desired set is \(\varnothing\). Replacement applied to \(F\) on \(A\) returns exactly \(\{x \in A : P(x)\}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Build, never conjure</b> — every new set must come from an axiom applied to sets you already have.
+      <div class="ex"><div><p>"Let \(S\) be the set of all…" is only legal if you can name the bag you filtered it out of.</p></div></div></li>
+    <li><b>Check the axiom used</b> — when a construction feels too easy, name the axiom licensing it.
+      <div class="ex"><div><p>Products, functions and sequences all trace back to Pairing, Union, Power set and Separation.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Combining</span>
+  <h2 class="ltitle">Operations on Sets</h2>
+  <p class="ldesc">The algebra of and, or, not — now applied to collections.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Union</b> \(A \cup B = \{x : x \in A \lor x \in B\}\).
+      <div class="ex"><div><p>Guests invited by either host — invited twice still means one seat.</p></div></div></li>
+    <li><b>Intersection</b> \(A \cap B = \{x : x \in A \land x \in B\}\).
+      <div class="ex"><div><p>People on both guest lists.</p></div></div></li>
+    <li><b>Difference</b> \(A \setminus B = \{x \in A : x \notin B\}\).
+      <div class="ex"><div><p>My list, minus anyone on yours.</p></div></div></li>
+    <li><b>Complement</b> \(A^{c} = U \setminus A\), relative to a fixed universe \(U\).
+      <div class="ex"><div><p>"Everyone not invited" — only meaningful once you've fixed who "everyone" is.</p></div></div></li>
+    <li><b>Symmetric difference</b> \(A \triangle B = (A \setminus B) \cup (B \setminus A)\).
+      <div class="ex"><div><p>The people exactly one of us invited — the exclusive-or of guest lists.</p></div></div></li>
+    <li><b>Power set</b> \(\mathcal{P}(A)\) — the set of all subsets of \(A\).
+      <div class="ex"><div><p>\(\mathcal{P}(\{a,b\}) = \{\varnothing, \{a\}, \{b\}, \{a,b\}\}\): 2 things, 4 subsets.</p></div></div></li>
+    <li><b>Arbitrary union</b> \(\bigcup_{i \in I} A_i\) — everything in at least one \(A_i\).
+      <div class="ex"><div><p>Every book in the building = the union of every shelf.</p></div></div></li>
+    <li><b>Arbitrary intersection</b> \(\bigcap_{i \in I} A_i\) — everything in all the \(A_i\).
+      <div class="ex"><div><p>The books every branch of the library owns.</p></div></div></li>
+    <li><b>Ordered pair</b> \((a,b) := \{\{a\},\{a,b\}\}\) — Kuratowski's trick.
+      <div class="ex"><div><p>A set doesn't remember order, so order is faked: mark the first element by putting it in a box of its own.</p></div></div></li>
+    <li><b>Cartesian product</b> \(A \times B = \{(a,b) : a \in A,\ b \in B\}\).
+      <div class="ex"><div><p>Every (shirt, trousers) outfit from 3 shirts and 4 trousers: 12 pairs. This is where \(\mathbb{R}^n\) will come from.</p></div></div></li>
+    <li><b>\(n\)-fold product</b> \(A_1 \times \cdots \times A_n\), with \(A^{n}\) when all factors agree.
+      <div class="ex"><div><p>\(\mathbb{R}^3\) is triples of reals. Chapters 4 onward live here.</p></div></div></li>
+    <li><b>Partition</b> — a family of non-empty, pairwise disjoint sets whose union is the whole.
+      <div class="ex"><div><p>Slicing a cake: every crumb in exactly one slice, no slice empty.</p></div></div></li>
+    <li><b>Cover</b> — a family whose union contains the set; overlaps allowed.
+      <div class="ex"><div><p>Beer mats scattered to hide the table: they may overlap, they just have to leave no wood showing. Compactness (Chapter 8) is about covers.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — The Algebra of Sets</h3>
+  <ul>
+    <li><b>Commutativity &amp; associativity:</b> \(\cup\) and \(\cap\) are commutative and associative.
+      <div class="ex"><div><p>Pouring bag A into B, or B into A, leaves the same pile.</p></div></div>
+      <div class="proof"><div><p>\(x \in A \cup B \iff x \in A \lor x \in B \iff x \in B \lor x \in A \iff x \in B \cup A\), using commutativity of \(\lor\) (Chapter 1, Layer 1); Extensionality concludes. Associativity follows the same way from associativity of \(\lor\), and the \(\cap\) cases from the corresponding \(\land\) laws. \(\blacksquare\)</p></div></div></li>
+    <li><b>Distributivity:</b> \(A \cap (B \cup C) = (A \cap B) \cup (A \cap C)\), and dually.
+      <div class="ex"><div><p>"Invited by me, and by either of you" = "invited by me and you-1, or by me and you-2."</p></div></div>
+      <div class="proof"><div><p>\(x \in A \cap (B \cup C) \iff x \in A \land (x \in B \lor x \in C) \iff (x \in A \land x \in B) \lor (x \in A \land x \in C)\), by the distributive law for \(\land\) over \(\lor\); the last line says \(x \in (A\cap B) \cup (A \cap C)\). Double inclusion is thereby established in one chain of equivalences. The dual is the mirror argument. \(\blacksquare\)</p></div></div></li>
+    <li><b>De Morgan for sets:</b> \((A \cup B)^{c} = A^{c} \cap B^{c}\) and \((A \cap B)^{c} = A^{c} \cup B^{c}\).
+      <div class="ex"><div><p>"Not invited by either" = "not invited by him and not invited by her."</p></div></div>
+      <div class="proof"><div><p>\(x \in (A\cup B)^c \iff \neg(x \in A \lor x \in B) \iff \neg(x\in A) \land \neg(x \in B) \iff x \in A^c \cap B^c\), by De Morgan's law for \(\lor\). The second identity is the same computation with \(\land\). \(\blacksquare\)</p></div></div></li>
+    <li><b>General De Morgan:</b> \(\bigl(\bigcup_i A_i\bigr)^{c} = \bigcap_i A_i^{c}\) and \(\bigl(\bigcap_i A_i\bigr)^{c} = \bigcup_i A_i^{c}\).
+      <div class="ex"><div><p>"In no shelf" = "outside shelf 1, and outside shelf 2, and…" — however many shelves there are.</p></div></div>
+      <div class="proof"><div><p>\(x \in (\bigcup_i A_i)^c \iff \neg \exists i\,(x \in A_i) \iff \forall i\,(x \notin A_i) \iff x \in \bigcap_i A_i^c\), using the quantifier-negation law of Chapter 1, Layer 3. The second identity is dual. \(\blacksquare\)</p></div></div></li>
+    <li><b>Idempotence, identity, absorption:</b> \(A \cup A = A\), \(A \cap U = A\), \(A \cup (A \cap B) = A\).
+      <div class="ex"><div><p>Adding your own list to itself changes nothing.</p></div></div>
+      <div class="proof"><div><p>Each is the set translation of the corresponding propositional law of Chapter 1, Layer 1, obtained by replacing \(\lor,\land\) with \(\cup,\cap\) and reading membership as truth. For instance \(x \in A \cup (A\cap B) \iff x \in A \lor (x \in A \land x \in B) \iff x \in A\) by absorption. \(\blacksquare\)</p></div></div></li>
+    <li><b>Difference as intersection:</b> \(A \setminus B = A \cap B^{c}\).
+      <div class="ex"><div><p>"Mine but not yours" = "mine, and among the not-yours".</p></div></div>
+      <div class="proof"><div><p>\(x \in A \setminus B \iff x \in A \land x \notin B \iff x \in A \land x \in B^c \iff x \in A \cap B^c\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Symmetric difference is associative</b>, and \(A \triangle B = (A \cup B) \setminus (A \cap B)\).
+      <div class="ex"><div><p>It behaves like addition modulo 2: elements cancel in pairs.</p></div></div>
+      <div class="proof"><div><p>Membership in \(A \triangle B\) means "in exactly one", i.e. the exclusive-or of \(x \in A\) and \(x \in B\). Since \(\oplus\) is associative on truth values (check the 8 rows), \(x \in (A \triangle B) \triangle C \iff\) an odd number of \(A,B,C\) contain \(x\) \(\iff x \in A \triangle (B \triangle C)\). The alternative formula says the same: in the union but not in both. \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotonicity:</b> \(A \subseteq B\) implies \(A \cup C \subseteq B \cup C\) and \(A \cap C \subseteq B \cap C\).
+      <div class="ex"><div><p>A bigger guest list stays bigger after both lists get the same extra invitations.</p></div></div>
+      <div class="proof"><div><p>If \(x \in A \cup C\) then \(x \in A\) — hence \(x \in B\) — or \(x \in C\); either way \(x \in B \cup C\). If \(x \in A \cap C\) then \(x \in A \subseteq B\) and \(x \in C\), so \(x \in B \cap C\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Power set of a finite set:</b> \(|\mathcal{P}(A)| = 2^{|A|}\) when \(A\) is finite.
+      <div class="ex"><div><p>3 toppings, 8 possible pizzas — each topping is an independent yes/no.</p></div></div>
+      <div class="proof"><div><p>Induct on \(n = |A|\). For \(n = 0\), \(\mathcal{P}(\varnothing) = \{\varnothing\}\) has \(1 = 2^0\) member. If \(|A| = n+1\), fix \(a \in A\); every subset either omits \(a\) — and these are exactly the subsets of \(A \setminus \{a\}\), of which there are \(2^{n}\) by hypothesis — or contains \(a\), and these are in bijection with the former by removing \(a\). So the total is \(2^n + 2^n = 2^{n+1}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Products distribute:</b> \(A \times (B \cup C) = (A \times B) \cup (A \times C)\), and likewise over \(\cap\).
+      <div class="ex"><div><p>Every shirt paired with (jeans or shorts) = (shirt, jeans) outfits together with (shirt, shorts) outfits.</p></div></div>
+      <div class="proof"><div><p>\((x,y) \in A \times (B \cup C) \iff x \in A \land (y \in B \lor y \in C) \iff (x\in A \land y \in B) \lor (x \in A \land y \in C)\), which says \((x,y) \in (A\times B) \cup (A \times C)\). The \(\cap\) case replaces \(\lor\) by \(\land\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Kuratowski pairs work:</b> \((a,b) = (c,d)\) if and only if \(a = c\) and \(b = d\).
+      <div class="ex"><div><p>The whole point of the trick: it really does remember which came first.</p></div></div>
+      <div class="proof"><div><p>(\(\Leftarrow\)) Immediate. (\(\Rightarrow\)) Suppose \(\{\{a\},\{a,b\}\} = \{\{c\},\{c,d\}\}\). If \(a = b\), the left side is \(\{\{a\}\}\), forcing \(\{c\} = \{c,d\} = \{a\}\), so \(c = d = a = b\). Otherwise \(\{a\} \ne \{a,b\}\); since \(\{a\}\) is a member of the right side and has one element, \(\{a\} = \{c\}\), so \(a = c\); then \(\{a,b\} = \{c,d\} = \{a,d\}\) and \(b \ne a\) forces \(b = d\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Translate to logic</b> — replace \(\cup, \cap, {}^{c}\) by \(\lor, \land, \neg\) and use Chapter 1.
+      <div class="ex"><div><p>Every identity above is a propositional law in disguise. Prove it once, in logic, and reuse it forever.</p></div></div></li>
+    <li><b>Chain of equivalences</b> — write \(x \in \text{LHS} \iff \cdots \iff x \in \text{RHS}\).
+      <div class="ex"><div><p>Both inclusions at once — as long as every step really is reversible.</p></div></div></li>
+    <li><b>Counting subsets</b> — each element is an independent in/out choice.
+      <div class="ex"><div><p>Encode a subset as a string of yes/no bits, and counting subsets becomes counting binary strings.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Structure</span>
+  <h2 class="ltitle">Relations</h2>
+  <p class="ldesc">Pairs, sorted: sameness, order, and everything in between.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Relation</b> — any subset \(R \subseteq A \times B\); write \(aRb\) for \((a,b) \in R\).
+      <div class="ex"><div><p>"Is a friend of" is just the set of all friend-pairs. Nothing more mysterious than that.</p></div></div></li>
+    <li><b>Domain &amp; range</b> — the first and second coordinates that actually occur.
+      <div class="ex"><div><p>Among the friend-pairs: who has at least one friend, and who is at least one person's friend.</p></div></div></li>
+    <li><b>Inverse relation</b> \(R^{-1} = \{(b,a) : (a,b) \in R\}\).
+      <div class="ex"><div><p>"Is a parent of", reversed, is "is a child of".</p></div></div></li>
+    <li><b>Composition</b> \(S \circ R\) — do \(R\), then \(S\).
+      <div class="ex"><div><p>"Sibling of a parent" composes into "aunt or uncle".</p></div></div></li>
+    <li><b>Reflexive</b> — \(aRa\) for all \(a\).
+      <div class="ex"><div><p>"Is the same age as" — everyone qualifies with themselves.</p></div></div></li>
+    <li><b>Symmetric</b> — \(aRb \Rightarrow bRa\).
+      <div class="ex"><div><p>"Is married to" goes both ways. "Loves" sadly need not.</p></div></div></li>
+    <li><b>Antisymmetric</b> — \(aRb\) and \(bRa\) imply \(a = b\).
+      <div class="ex"><div><p>If I'm at least as tall as you and you're at least as tall as me, we're the same height.</p></div></div></li>
+    <li><b>Transitive</b> — \(aRb\) and \(bRc\) imply \(aRc\).
+      <div class="ex"><div><p>"Is an ancestor of" passes down the generations.</p></div></div></li>
+    <li><b>Equivalence relation</b> — reflexive, symmetric and transitive.
+      <div class="ex"><div><p>"Was born in the same month as" — it sorts everyone into twelve tidy groups.</p></div></div></li>
+    <li><b>Equivalence class</b> \([a] = \{x : x \sim a\}\).
+      <div class="ex"><div><p>All the March people, treated as one object called "March".</p></div></div></li>
+    <li><b>Quotient set</b> \(A/{\sim}\) — the set of equivalence classes.
+      <div class="ex"><div><p>The calendar of twelve months, made from a crowd of people.</p></div></div></li>
+    <li><b>Partial order</b> \(\le\) — reflexive, antisymmetric, transitive.
+      <div class="ex"><div><p>"Is a subfolder of": some folders are unrelated, and that's allowed.</p></div></div></li>
+    <li><b>Strict order</b> \(&lt;\) — irreflexive and transitive.
+      <div class="ex"><div><p>"Is strictly cheaper than". Nothing is cheaper than itself.</p></div></div></li>
+    <li><b>Total (linear) order</b> — a partial order in which any two elements are comparable.
+      <div class="ex"><div><p>A queue: for any two people, one is definitely in front.</p></div></div></li>
+    <li><b>Well-order</b> — a total order in which every non-empty subset has a least element.
+      <div class="ex"><div><p>\(\mathbb{N}\) is well-ordered; \(\mathbb{Z}\) and \(\mathbb{R}\) are not — pick "all the negatives" and there's no smallest.</p></div></div></li>
+    <li><b>Upper bound, maximum, maximal</b> — above everything; a greatest member; nothing strictly above it.
+      <div class="ex"><div><p>A maximum beats everyone. A maximal element merely has nobody above it — in a partial order the two differ, and Zorn's lemma cares about the second.</p></div></div></li>
+    <li><b>Supremum &amp; infimum</b> — the least upper bound and greatest lower bound.
+      <div class="ex"><div><p>The lowest ceiling that still clears the furniture. Chapter 3's completeness axiom is exactly a promise that this exists in \(\mathbb{R}\).</p></div></div></li>
+    <li><b>Chain</b> — a subset that is totally ordered by the given order.
+      <div class="ex"><div><p>One unbroken line of nested folders inside a branching tree.</p></div></div></li>
+    <li><b>Hasse diagram</b> — a picture of a finite partial order, drawing only the direct links.
+      <div class="ex"><div><p>The family tree of divisibility for 12: lines from 1 up to 2 and 3, and so on, without the redundant shortcuts.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Equivalence classes partition:</b> the classes of an equivalence relation are non-empty, pairwise disjoint, and cover \(A\).
+      <div class="ex"><div><p>Twelve birth-month groups: everyone is in exactly one, none empty, none overlapping.</p></div></div>
+      <div class="proof"><div><p>Each \([a]\) contains \(a\) by reflexivity, so classes are non-empty and cover \(A\). Suppose \([a] \cap [b] \ne \varnothing\), say \(c \sim a\) and \(c \sim b\). By symmetry \(a \sim c\), and transitivity gives \(a \sim b\). Then for any \(x \in [a]\), \(x \sim a \sim b\) gives \(x \in [b]\), and symmetrically; so \([a] = [b]\). Hence distinct classes are disjoint. \(\blacksquare\)</p></div></div></li>
+    <li><b>Converse:</b> every partition of \(A\) arises from exactly one equivalence relation.
+      <div class="ex"><div><p>Cut the cake however you like, and "in the same slice" is automatically an equivalence.</p></div></div>
+      <div class="proof"><div><p>Given a partition \(\mathcal{P}\), define \(x \sim y\) iff some block contains both. Reflexivity holds since the blocks cover \(A\); symmetry is built into the definition; transitivity holds because blocks are pairwise disjoint, so the block containing \(x,y\) and the one containing \(y,z\) must coincide. Its classes are exactly the blocks, and any equivalence with those classes agrees with \(\sim\) pair by pair. \(\blacksquare\)</p></div></div></li>
+    <li><b>Suprema are unique</b> when they exist.
+      <div class="ex"><div><p>There can only be one <em>lowest</em> ceiling.</p></div></div>
+      <div class="proof"><div><p>Let \(s, s'\) both be least upper bounds of \(S\). Since \(s\) is an upper bound and \(s'\) is least among upper bounds, \(s' \le s\); by symmetry \(s \le s'\). Antisymmetry gives \(s = s'\). \(\blacksquare\)</p></div></div></li>
+    <li><b>A well-order is a total order</b>, and has no infinite strictly decreasing sequence.
+      <div class="ex"><div><p>There's always a first, so you can never keep stepping down forever.</p></div></div>
+      <div class="proof"><div><p>Totality: given \(a \neq b\), the set \(\{a,b\}\) is non-empty so has a least element, which is then below the other. Descent: an infinite strictly decreasing sequence \(a_0 &gt; a_1 &gt; \cdots\) has range a non-empty set with no least element, contradicting the well-ordering. \(\blacksquare\)</p></div></div></li>
+    <li><b>Transitive closure exists:</b> every relation \(R\) has a smallest transitive relation containing it.
+      <div class="ex"><div><p>"Parent of", closed up, becomes "ancestor of".</p></div></div>
+      <div class="proof"><div><p>The set of transitive relations on \(A\) containing \(R\) is non-empty (it contains \(A \times A\)) and is a subset of \(\mathcal{P}(A \times A)\), so its intersection exists by Layer 2. An intersection of transitive relations is transitive: if \((a,b)\) and \((b,c)\) lie in every member, so does \((a,c)\). That intersection contains \(R\) and is contained in every such relation, hence is the smallest. \(\blacksquare\)</p></div></div></li>
+    <li><b>Maximum \(\Rightarrow\) maximal, not conversely.</b>
+      <div class="ex"><div><p>In "is a subfolder of", two sibling folders can both be maximal, and neither is the maximum.</p></div></div>
+      <div class="proof"><div><p>If \(m\) is a maximum then \(x \le m\) for all \(x\); were \(m &lt; y\) we would also have \(y \le m\), so antisymmetry gives \(y = m\), contradicting strictness — hence \(m\) is maximal. For the failure of the converse, order \(\{a,b\}\) by equality only: both are maximal, neither is a maximum. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check the three properties</b> — to prove "\(\sim\) is an equivalence", verify reflexive, symmetric, transitive in turn.
+      <div class="ex"><div><p>Three short paragraphs, always in the same order. Never skip transitivity — it's the one that fails.</p></div></div></li>
+    <li><b>Quotient construction</b> — build a new object as the set of equivalence classes.
+      <div class="ex"><div><p>\(\mathbb{Z}\), \(\mathbb{Q}\), clock arithmetic and \(\mathbb{R}\) itself are all made this way in Layer 6 and Chapter 3.</p></div></div></li>
+    <li><b>Well-definedness check</b> — when defining an operation on classes, verify the answer doesn't depend on the representative.
+      <div class="ex"><div><p>"Add the fractions \(1/2\) and \(1/3\)" must give the same answer if you write them as \(2/4\) and \(2/6\).</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · Maps</span>
+  <h2 class="ltitle">Functions</h2>
+  <p class="ldesc">Relations with exactly one output — the workhorse of all later chapters.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Function</b> \(f : A \to B\) — a relation pairing each \(a \in A\) with exactly one \(b\).
+      <div class="ex"><div><p>A vending machine: one button, one snack, every time. Two snacks from one button would break it.</p></div></div></li>
+    <li><b>Domain, codomain, image</b> — where it starts, where it may land, where it actually lands.
+      <div class="ex"><div><p>\(f(x) = x^2\) on \(\mathbb{R}\): codomain \(\mathbb{R}\), image only \([0,\infty)\).</p></div></div></li>
+    <li><b>Injective (one-to-one)</b> — different inputs give different outputs.
+      <div class="ex"><div><p>Passport numbers: no two people share one.</p></div></div></li>
+    <li><b>Surjective (onto)</b> — every element of the codomain is hit.
+      <div class="ex"><div><p>Every seat in the theatre is taken — possibly some by more than one lap-sitter.</p></div></div></li>
+    <li><b>Bijective</b> — injective and surjective; a perfect pairing.
+      <div class="ex"><div><p>Every guest gets exactly one chair, every chair exactly one guest.</p></div></div></li>
+    <li><b>Composition</b> \((g \circ f)(x) = g(f(x))\).
+      <div class="ex"><div><p>Convert pounds to euros, then euros to yen — one machine made of two.</p></div></div></li>
+    <li><b>Identity function</b> \(\mathrm{id}_A(x) = x\).
+      <div class="ex"><div><p>The do-nothing machine. Useful precisely because it does nothing.</p></div></div></li>
+    <li><b>Inverse function</b> \(f^{-1}\) — exists exactly when \(f\) is a bijection.
+      <div class="ex"><div><p>The machine run backwards. It only works if nothing was lost and nothing was doubled up.</p></div></div></li>
+    <li><b>Image of a set</b> \(f[S] = \{f(x) : x \in S\}\).
+      <div class="ex"><div><p>Where this group of people ends up after the shuffle.</p></div></div></li>
+    <li><b>Preimage</b> \(f^{-1}[T] = \{x : f(x) \in T\}\) — defined even when \(f\) has no inverse.
+      <div class="ex"><div><p>"Who ended up in this room?" — a fair question even if several people did. Preimages behave far better than images, which is why topology (Chapter 8) is written with them.</p></div></div></li>
+    <li><b>Restriction</b> \(f|_S\) — the same rule, on a smaller domain.
+      <div class="ex"><div><p>\(x^2\) is not invertible on \(\mathbb{R}\), but restrict it to \([0,\infty)\) and \(\sqrt{\ }\) appears.</p></div></div></li>
+    <li><b>Sequence</b> — a function \(\mathbb{N} \to A\), written \((a_n)\).
+      <div class="ex"><div><p>A numbered list: item 1, item 2, item 3… Chapter 3 is built on these.</p></div></div></li>
+    <li><b>Indexed family</b> — a function \(I \to \text{sets}\), written \(\{A_i\}_{i\in I}\).
+      <div class="ex"><div><p>One box per label. The labels do the bookkeeping.</p></div></div></li>
+    <li><b>Function set</b> \(B^{A}\) — the set of all functions \(A \to B\).
+      <div class="ex"><div><p>\(\{0,1\}^{A}\) is "all ways to answer yes/no for each element" — and that's exactly \(\mathcal{P}(A)\) in disguise.</p></div></div></li>
+    <li><b>Characteristic function</b> \(\chi_S(x) = 1\) if \(x \in S\), else \(0\).
+      <div class="ex"><div><p>The guest list as a door policy: 1 means "let them in". These become the simple functions of Chapter 12.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Composition is associative:</b> \((h \circ g)\circ f = h \circ (g \circ f)\).
+      <div class="ex"><div><p>Three conversions in a row: it doesn't matter which pair you bolt together first.</p></div></div>
+      <div class="proof"><div><p>Both sides are functions with the same domain and codomain, and for every \(x\), \(((h\circ g)\circ f)(x) = h(g(f(x))) = (h \circ (g\circ f))(x)\). Functions agreeing at every point are equal as sets of pairs. \(\blacksquare\)</p></div></div></li>
+    <li><b>Inverse exists iff bijective</b>, and then it is unique.
+      <div class="ex"><div><p>Undo is possible exactly when nothing was lost (surjective) and nothing was merged (injective).</p></div></div>
+      <div class="proof"><div><p>If \(f\) is a bijection, define \(g(b)\) to be the unique \(a\) with \(f(a) = b\) — existence by surjectivity, uniqueness by injectivity — then \(g \circ f = \mathrm{id}_A\) and \(f \circ g = \mathrm{id}_B\). Conversely, a left inverse forces injectivity (\(f(a)=f(a') \Rightarrow a = g(f(a)) = g(f(a')) = a'\)) and a right inverse forces surjectivity (\(b = f(g(b))\)). Uniqueness: if \(g, g'\) are both inverses then \(g = g\circ \mathrm{id} = g \circ (f \circ g') = (g\circ f)\circ g' = g'\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Composition preserves injectivity and surjectivity.</b>
+      <div class="ex"><div><p>Two perfect pairings in a row make one perfect pairing.</p></div></div>
+      <div class="proof"><div><p>If \(f, g\) are injective and \(g(f(x)) = g(f(y))\), injectivity of \(g\) gives \(f(x) = f(y)\), then injectivity of \(f\) gives \(x = y\). If \(f, g\) are surjective and \(c\) is given, pick \(b\) with \(g(b) = c\) and \(a\) with \(f(a) = b\); then \(g(f(a)) = c\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Backwards information:</b> if \(g \circ f\) is injective then \(f\) is injective; if \(g \circ f\) is surjective then \(g\) is surjective.
+      <div class="ex"><div><p>If the whole pipeline loses nothing, the first stage lost nothing. Says nothing about the second stage.</p></div></div>
+      <div class="proof"><div><p>If \(f(x) = f(y)\) then \(g(f(x)) = g(f(y))\), so injectivity of \(g\circ f\) forces \(x=y\). If \(c\) is in the codomain of \(g\), surjectivity of \(g \circ f\) gives \(a\) with \(g(f(a)) = c\), so \(f(a)\) is a preimage of \(c\) under \(g\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Preimages respect everything:</b> \(f^{-1}[\bigcup T_i] = \bigcup f^{-1}[T_i]\), \(f^{-1}[\bigcap T_i] = \bigcap f^{-1}[T_i]\), \(f^{-1}[T^{c}] = (f^{-1}[T])^{c}\).
+      <div class="ex"><div><p>Preimages are perfectly behaved. Images are not — which is why continuity is defined with preimages.</p></div></div>
+      <div class="proof"><div><p>\(x \in f^{-1}[\bigcup_i T_i] \iff f(x) \in T_i\) for some \(i\) \(\iff x \in f^{-1}[T_i]\) for some \(i\). Replacing "some" by "all" gives the intersection case, and \(f(x) \notin T \iff x \notin f^{-1}[T]\) gives the complement case. \(\blacksquare\)</p></div></div></li>
+    <li><b>Images do not:</b> \(f[A \cap B] \subseteq f[A] \cap f[B]\), with equality for all \(A,B\) iff \(f\) is injective.
+      <div class="ex"><div><p>Two disjoint groups can still end up in the same room — so the shared destination isn't the destination of anyone shared.</p></div></div>
+      <div class="proof"><div><p>If \(y = f(x)\) with \(x \in A \cap B\) then \(y \in f[A]\) and \(y \in f[B]\), giving the inclusion. If \(f\) is not injective, take \(a \neq b\) with \(f(a)=f(b)\) and set \(A = \{a\}, B = \{b\}\): the left side is empty, the right is not. If \(f\) is injective and \(y \in f[A]\cap f[B]\), the preimages in \(A\) and in \(B\) must coincide, so \(y \in f[A\cap B]\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Round trips:</b> \(S \subseteq f^{-1}[f[S]]\) and \(f[f^{-1}[T]] \subseteq T\), with equality iff \(f\) is injective, resp. surjective.
+      <div class="ex"><div><p>Go and come back and you may have picked up strangers; come back and go and you may not fill the room.</p></div></div>
+      <div class="proof"><div><p>\(x \in S \Rightarrow f(x) \in f[S] \Rightarrow x \in f^{-1}[f[S]]\). If \(f\) is injective and \(x \in f^{-1}[f[S]]\), then \(f(x) = f(s)\) for some \(s \in S\), so \(x = s \in S\). Similarly \(y \in f[f^{-1}[T]]\) means \(y = f(x)\) with \(f(x) \in T\), so \(y \in T\); and if \(f\) is surjective every \(y \in T\) has a preimage, which lies in \(f^{-1}[T]\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal{P}(A)\) and \(\{0,1\}^{A}\) are in bijection.</b>
+      <div class="ex"><div><p>A subset <em>is</em> a yes/no answer for each element — the same object, written two ways.</p></div></div>
+      <div class="proof"><div><p>Map \(S \mapsto \chi_S\). It is injective, since \(\chi_S = \chi_T\) forces \(x \in S \iff x \in T\) and Extensionality gives \(S = T\); and surjective, since any \(g : A \to \{0,1\}\) is \(\chi_S\) for \(S = g^{-1}[\{1\}]\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Prove injectivity</b> — assume \(f(x) = f(y)\) and grind to \(x = y\).
+      <div class="ex"><div><p>Always this shape. Never "assume \(x \ne y\)" unless you want a harder life.</p></div></div></li>
+    <li><b>Prove surjectivity</b> — take an arbitrary \(b\) and construct an \(x\) with \(f(x) = b\).
+      <div class="ex"><div><p>Solve the equation for \(x\); the solution is the proof.</p></div></div></li>
+    <li><b>Build the inverse explicitly</b> — the cleanest way to prove a bijection.
+      <div class="ex"><div><p>Show the two round trips give the identity and you're finished in two lines.</p></div></div></li>
+    <li><b>Work with preimages</b> — whenever a proof about images turns ugly, try the preimage instead.
+      <div class="ex"><div><p>The standing advice of Chapters 8–12.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 6 ============ -->
+<section class="layer" id="L6">
+  <span class="chapter">Layer 6 · Counting</span>
+  <h2 class="ltitle">Numbers from Sets</h2>
+  <p class="ldesc">Building \(\mathbb{N}\), \(\mathbb{Z}\) and \(\mathbb{Q}\) out of nothing at all.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Von Neumann natural</b> — each number is the set of all smaller numbers: \(0 = \varnothing\), \(n+1 = n \cup \{n\}\).
+      <div class="ex"><div><p>\(3 = \{0,1,2\}\). The number 3 literally <em>is</em> a bag holding three things — and \(m &lt; n\) just means \(m \in n\).</p></div></div></li>
+    <li><b>Successor</b> \(S(n) = n \cup \{n\}\).
+      <div class="ex"><div><p>"Add yourself to your own list of predecessors." That's counting.</p></div></div></li>
+    <li><b>Inductive set</b> — contains \(\varnothing\) and is closed under successor.
+      <div class="ex"><div><p>A staircase with a bottom step and a next step for every step. The Axiom of Infinity says one exists.</p></div></div></li>
+    <li><b>\(\mathbb{N}\)</b> — the intersection of all inductive sets: the smallest one.
+      <div class="ex"><div><p>Take every possible staircase and keep only the steps common to all: exactly the counting numbers, nothing extra.</p></div></div></li>
+    <li><b>Peano axioms</b> — 0 exists; \(S\) is injective; 0 is not a successor; induction holds.
+      <div class="ex"><div><p>Four sentences that pin down counting. Here they are theorems, not assumptions.</p></div></div></li>
+    <li><b>\(\mathbb{Z}\)</b> — pairs \((a,b)\) of naturals meaning \(a - b\), modulo \((a,b)\sim(c,d) \iff a+d = c+b\).
+      <div class="ex"><div><p>"Owed 3, paid 5" and "owed 10, paid 12" describe the same debt: \(+2\).</p></div></div></li>
+    <li><b>\(\mathbb{Q}\)</b> — pairs \((p,q)\), \(q \ne 0\), meaning \(p/q\), modulo \((p,q)\sim(r,s)\iff ps = rq\).
+      <div class="ex"><div><p>\(1/2\) and \(2/4\) are two names for one class. The class is the number.</p></div></div></li>
+    <li><b>Ordered field</b> — a set with \(+, \times\) and a compatible order obeying the usual laws.
+      <div class="ex"><div><p>\(\mathbb{Q}\) is one. It is missing exactly one thing — no gaps — and that is Chapter 3's job.</p></div></div></li>
+    <li><b>Divisibility &amp; primes</b> — \(a \mid b\) means \(b = ac\); a prime has exactly two divisors.
+      <div class="ex"><div><p>12 is \(2\times2\times3\), and there's no second way to write it. That fact is a theorem, not an accident.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\mathbb{N}\) exists and is the least inductive set.</b>
+      <div class="ex"><div><p>Infinity hands you <em>some</em> staircase; intersecting them all trims it to exactly the numbers.</p></div></div>
+      <div class="proof"><div><p>Infinity gives an inductive set \(I\). By Separation, \(\mathbb{N} := \{x \in I : x \text{ belongs to every inductive set}\}\) is a set. It contains \(\varnothing\) and is closed under \(S\) (both properties are shared by every inductive set), so it is inductive; and by construction it is contained in every inductive set. \(\blacksquare\)</p></div></div></li>
+    <li><b>Peano's axioms hold in \(\mathbb{N}\).</b>
+      <div class="ex"><div><p>Counting isn't assumed here — it's derived, from bags inside bags.</p></div></div>
+      <div class="proof"><div><p>\(\varnothing \in \mathbb{N}\) by inductiveness. \(S(n) \ne \varnothing\) since \(n \in S(n)\), so \(0\) is no successor. Injectivity: if \(n \cup \{n\} = m \cup \{m\}\) then \(n \in m \cup \{m\}\) and \(m \in n \cup \{n\}\); Foundation rules out \(n \in m \in n\), leaving \(n = m\). Induction: if \(A \subseteq \mathbb{N}\) contains \(0\) and is closed under \(S\), then \(A\) is inductive, so \(\mathbb{N}\subseteq A\) by minimality, i.e. \(A = \mathbb{N}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{N}\) is well-ordered by \(\in\).</b>
+      <div class="ex"><div><p>Every non-empty pile of counting numbers has a smallest — the fact that makes "minimal counterexample" proofs legal.</p></div></div>
+      <div class="proof"><div><p>Let \(S \subseteq \mathbb{N}\) be non-empty and pick \(n \in S\). If \(n \cap S = \varnothing\) then \(n\) is least. Otherwise \(n \cap S\) is a non-empty subset of the finite set \(n = \{0,\dots,n-1\}\); Foundation applied to \(n \cap S\) yields a member \(m\) with \(m \cap (n\cap S) = \varnothing\), and such an \(m\) is a least element of \(S\). Totality of \(\in\) on \(\mathbb{N}\) follows by induction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Arithmetic is well defined:</b> \(+\) and \(\times\) exist on \(\mathbb{N}\), obeying associativity, commutativity and distributivity.
+      <div class="ex"><div><p>\(m + 0 = m\) and \(m + S(n) = S(m+n)\). Everything you know about addition follows from those two lines.</p></div></div>
+      <div class="proof"><div><p>The recursion theorem (Chapter 1, Layer 6) turns the two clauses into a genuine function \(+ : \mathbb{N}^2 \to \mathbb{N}\), and likewise \(m \times 0 = 0\), \(m \times S(n) = m\times n + m\) defines \(\times\). Each law is then an induction: e.g. associativity of \(+\) is proved by inducting on the third summand, the base case being \(m + (n+0) = (m+n)+0\) and the step following from \(S\) being applied to both sides. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{Z}\) is a well-defined ordered ring; \(\mathbb{Q}\) is a well-defined ordered field.</b>
+      <div class="ex"><div><p>Subtraction always works in \(\mathbb{Z}\); division (except by 0) always works in \(\mathbb{Q}\). Each is bought by a quotient construction.</p></div></div>
+      <div class="proof"><div><p>Check \(\sim\) is an equivalence (Layer 4), then define \([(a,b)] + [(c,d)] = [(a+c, b+d)]\) and \([(a,b)]\cdot[(c,d)] = [(ac+bd,\,ad+bc)]\), verifying independence of representatives — if \(a+d' = a'+d\) and similarly for the second pair, substitution shows the results agree. The ring axioms then follow from those of \(\mathbb{N}\). For \(\mathbb{Q}\), the same programme with \((p,q)\sim(r,s) \iff ps = rq\) gives a field: the inverse of \([(p,q)]\), \(p \neq 0\), is \([(q,p)]\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Division algorithm:</b> for \(a \in \mathbb{Z}\), \(b &gt; 0\), there are unique \(q, r\) with \(a = qb + r\) and \(0 \le r &lt; b\).
+      <div class="ex"><div><p>17 sweets among 5 children: 3 each, 2 left over — and there's no other honest answer.</p></div></div>
+      <div class="proof"><div><p>Existence: the set \(\{a - qb \ge 0 : q \in \mathbb{Z}\}\) is a non-empty set of naturals, so by well-ordering it has a least element \(r = a - qb\). If \(r \ge b\) then \(r - b \ge 0\) would be smaller and still in the set — contradiction, so \(r &lt; b\). Uniqueness: from \(q_1b + r_1 = q_2b+r_2\) we get \(b \mid (r_1 - r_2)\) with \(|r_1 - r_2| &lt; b\), forcing \(r_1 = r_2\) and then \(q_1 = q_2\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Fundamental theorem of arithmetic:</b> every integer \(&gt; 1\) factors into primes, uniquely up to order.
+      <div class="ex"><div><p>\(60 = 2\cdot2\cdot3\cdot5\), and no other bag of primes multiplies to 60.</p></div></div>
+      <div class="proof"><div><p>Existence by strong induction: \(n\) is prime, or \(n = ab\) with \(1 &lt; a,b &lt; n\), and both factor by hypothesis. Uniqueness uses Euclid's lemma (if \(p \mid ab\) then \(p\mid a\) or \(p \mid b\)), itself from the division algorithm via Bézout. Given two factorisations, \(p_1\) divides the other product, so it equals some \(q_j\); cancel and apply induction on the number of factors. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{Q}\) is dense in itself:</b> between any two rationals lies another.
+      <div class="ex"><div><p>Halfway between any two prices is another price. There is no "next" rational.</p></div></div>
+      <div class="proof"><div><p>Given \(p &lt; q\), the rational \(\frac{p+q}{2}\) exists (fields allow division by 2) and satisfies \(p &lt; \frac{p+q}{2} &lt; q\), since \(p &lt; q\) gives \(2p &lt; p + q &lt; 2q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{Q}\) has gaps:</b> no rational squares to 2.
+      <div class="ex"><div><p>The diagonal of a unit square has no rational length — the discovery that made \(\mathbb{R}\) necessary.</p></div></div>
+      <div class="proof"><div><p>Suppose \(p^2 = 2q^2\) with \(\gcd(p,q) = 1\). Then \(p^2\) is even, so \(p\) is even (contraposition: odd squared is odd), say \(p = 2k\); substituting gives \(4k^2 = 2q^2\), so \(q^2 = 2k^2\) and \(q\) is even too — contradicting \(\gcd(p,q)=1\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Construct by quotient</b> — invent the object you want as classes of pairs.
+      <div class="ex"><div><p>Want subtraction? Take pairs and declare "same difference". Want division? Pairs and "same ratio".</p></div></div></li>
+    <li><b>Define by recursion, prove by induction</b> — the standard pairing.
+      <div class="ex"><div><p>Two clauses define \(+\); one induction proves it associative.</p></div></div></li>
+    <li><b>Descent for irrationality</b> — assume lowest terms, derive a common factor.
+      <div class="ex"><div><p>Works for \(\sqrt{2}\), \(\sqrt{3}\), \(\sqrt[3]{2}\) — anywhere unique factorisation applies.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 7 ============ -->
+<section class="layer" id="L7">
+  <span class="chapter">Layer 7 · Sizes</span>
+  <h2 class="ltitle">Cardinality</h2>
+  <p class="ldesc">Comparing infinities by pairing things off.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Equinumerous</b> \(A \approx B\) — there is a bijection between them.
+      <div class="ex"><div><p>A shepherd with no numbers still knows whether every sheep has a pen: one sheep, one pen.</p></div></div></li>
+    <li><b>Cardinality</b> \(|A|\) — the size of \(A\), the thing shared by all sets equinumerous with it.
+      <div class="ex"><div><p>"Five" is what all five-element sets have in common.</p></div></div></li>
+    <li><b>Finite</b> — equinumerous with some \(n \in \mathbb{N}\).
+      <div class="ex"><div><p>You can count it and stop.</p></div></div></li>
+    <li><b>Infinite</b> — not finite.
+      <div class="ex"><div><p>You start counting and never finish.</p></div></div></li>
+    <li><b>Dedekind-infinite</b> — equinumerous with a proper subset of itself.
+      <div class="ex"><div><p>Hilbert's hotel: every room full, yet the evens alone can host everybody. Only an infinite set can do that.</p></div></div></li>
+    <li><b>Countably infinite</b> — equinumerous with \(\mathbb{N}\); cardinality \(\aleph_0\).
+      <div class="ex"><div><p>Anything you can put in an endless numbered list.</p></div></div></li>
+    <li><b>Countable</b> — finite or countably infinite.
+      <div class="ex"><div><p>Listable, with or without an end.</p></div></div></li>
+    <li><b>Uncountable</b> — infinite but not countable.
+      <div class="ex"><div><p>\(\mathbb{R}\). No list, however clever, can contain them all.</p></div></div></li>
+    <li><b>Cardinal comparison</b> \(|A| \le |B|\) — there is an injection \(A \to B\).
+      <div class="ex"><div><p>Everyone gets their own chair, chairs to spare allowed.</p></div></div></li>
+    <li><b>The continuum</b> \(\mathfrak{c} = |\mathbb{R}| = 2^{\aleph_0}\).
+      <div class="ex"><div><p>The number of ways to answer infinitely many yes/no questions.</p></div></div></li>
+    <li><b>Continuum hypothesis</b> — there is no cardinality strictly between \(\aleph_0\) and \(\mathfrak{c}\).
+      <div class="ex"><div><p>Famously undecidable: ZFC can neither prove it nor refute it. Status is <em>independent</em>, not "open".</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Equinumerosity is an equivalence relation</b> (on any set of sets).
+      <div class="ex"><div><p>Same size as yourself; if you match me, I match you; matches chain together.</p></div></div>
+      <div class="proof"><div><p>\(\mathrm{id}_A\) is a bijection, giving reflexivity. The inverse of a bijection is a bijection (Layer 5), giving symmetry. The composition of bijections is a bijection, giving transitivity. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{N}\), \(\mathbb{Z}\), \(\mathbb{Q}\) all have cardinality \(\aleph_0\).</b>
+      <div class="ex"><div><p>There are exactly as many fractions as counting numbers — even though the fractions look infinitely denser.</p></div></div>
+      <div class="proof"><div><p>\(\mathbb{Z}\): the map \(0,1,-1,2,-2,\dots\) is a bijection with \(\mathbb{N}\). \(\mathbb{Q}\): list the pairs \((p,q)\) by walking the diagonals of the grid \(\mathbb{Z}\times\mathbb{N}^{+}\), skipping non-reduced fractions; this is a surjection from a countable set onto \(\mathbb{Q}\), and \(\mathbb{Q}\) is infinite, so it is countably infinite. \(\blacksquare\)</p></div></div></li>
+    <li><b>A countable union of countable sets is countable</b> (uses a weak form of Choice).
+      <div class="ex"><div><p>Infinitely many numbered lists can be merged into one numbered list — by walking the diagonals.</p></div></div>
+      <div class="proof"><div><p>Choose an enumeration \(f_i : \mathbb{N}\to A_i\) for each \(i\) (this choice needs countable AC). Then \((i,n)\mapsto f_i(n)\) is a surjection \(\mathbb{N}\times\mathbb{N} \to \bigcup_i A_i\), and \(\mathbb{N}\times\mathbb{N}\) is countable via the diagonal pairing \((i,n)\mapsto \tfrac{(i+n)(i+n+1)}{2}+n\). A surjective image of a countable set is countable. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cantor's theorem:</b> \(|A| &lt; |\mathcal{P}(A)|\) for every set \(A\).
+      <div class="ex"><div><p>No list of guest lists can contain every guest list — there are always more ways to choose than there are things to choose from.</p></div></div>
+      <div class="proof"><div><p>\(a \mapsto \{a\}\) is an injection, so \(|A| \le |\mathcal{P}(A)|\). Suppose \(f : A \to \mathcal{P}(A)\) were surjective and set \(D = \{a \in A : a \notin f(a)\}\). If \(D = f(d)\) for some \(d\), then \(d \in D \iff d \notin f(d) = D\) — a contradiction. So no surjection exists, and the inequality is strict. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{R}\) is uncountable</b>, and \(|\mathbb{R}| = 2^{\aleph_0}\).
+      <div class="ex"><div><p>Cantor's diagonal: given any list of decimals, change the \(n\)-th digit of the \(n\)-th number and you have one that's nowhere on the list.</p></div></div>
+      <div class="proof"><div><p>Suppose \(x_1,x_2,\dots\) listed all reals in \((0,1)\). Define \(y\) whose \(n\)-th decimal digit differs from that of \(x_n\) (avoiding 0 and 9 to dodge the \(0.4999\ldots = 0.5\) ambiguity). Then \(y \in (0,1)\) differs from every \(x_n\) — contradiction. For the cardinality, binary expansions give an injection \(\{0,1\}^{\mathbb{N}} \to \mathbb{R}\) and an injection back via decimal codes, so Cantor–Schröder–Bernstein gives \(|\mathbb{R}| = 2^{\aleph_0}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Cantor–Schröder–Bernstein:</b> injections both ways give a bijection.
+      <div class="ex"><div><p>Everyone fits in their chairs and every chair fits a person: then a perfect seating exists — and you never had to find it directly.</p></div></div>
+      <div class="proof"><div><p>Let \(f: A\to B\), \(g : B \to A\) be injections. Call \(a \in A\) an <em>\(A\)-origin point</em> if the backward chain \(a, g^{-1}(a), f^{-1}(g^{-1}(a)),\dots\) terminates in \(A\). Define \(h(a) = f(a)\) if \(a\) is an \(A\)-origin point (or the chain is infinite), and \(h(a) = g^{-1}(a)\) otherwise. Chain by chain, \(h\) is checked to be well defined, injective and surjective — each chain is either a line or a cycle, and \(h\) pairs its elements off exactly. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cardinal arithmetic for infinite \(\kappa\):</b> \(\kappa + \kappa = \kappa\cdot\kappa = \kappa\) (with AC).
+      <div class="ex"><div><p>Hilbert's hotel again: doubling an infinite crowd, or squaring it, doesn't need a bigger hotel.</p></div></div>
+      <div class="proof"><div><p>Sketch: with AC every infinite cardinal is an aleph, so it suffices to prove \(\aleph_\alpha \cdot \aleph_\alpha = \aleph_\alpha\). Use transfinite induction and the Gödel pairing well-ordering of \(\kappa\times\kappa\), whose initial segments have size \(&lt; \kappa\); this exhibits a bijection \(\kappa\times\kappa \to \kappa\). Then \(\kappa \le \kappa + \kappa \le \kappa\cdot\kappa = \kappa\) squeezes the sum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(|\mathbb{R}^{n}| = |\mathbb{R}|\) for every \(n \ge 1\).
+      <div class="ex"><div><p>The plane has exactly as many points as the line. Dimension is <em>not</em> a matter of how many points there are — Chapters 8 and 18 will say what it really is.</p></div></div>
+      <div class="proof"><div><p>\(|\mathbb{R}^2| = \mathfrak{c}\cdot\mathfrak{c} = (2^{\aleph_0})^2 = 2^{\aleph_0 + \aleph_0} = 2^{\aleph_0} = \mathfrak{c}\); induction gives every finite \(n\). (Concretely, interleave the binary digits of two reals to make one.) \(\blacksquare\)</p></div></div></li>
+    <li><b>Dedekind's characterisation:</b> a set is infinite iff it is equinumerous with a proper subset (with countable AC).
+      <div class="ex"><div><p>Move every hotel guest from room \(n\) to room \(n+1\) and room 1 is free — with the same guests.</p></div></div>
+      <div class="proof"><div><p>If \(A\) is finite, no bijection with a proper subset exists (pigeonhole, Chapter 1, Layer 5). If \(A\) is infinite, countable choice extracts a sequence of distinct \(a_0,a_1,\dots \in A\); map \(a_n \mapsto a_{n+1}\) and fix everything else. This is an injection of \(A\) onto \(A \setminus \{a_0\}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Build a bijection</b> — the only way to prove two sets have the same size.
+      <div class="ex"><div><p>Pair them off explicitly; the formula is the proof.</p></div></div></li>
+    <li><b>Diagonalisation</b> — to show no list is complete, build the entry it missed.
+      <div class="ex"><div><p>Differ from the \(n\)-th item in the \(n\)-th place. Used again for the halting problem and Gödel.</p></div></div></li>
+    <li><b>Cantor–Schröder–Bernstein</b> — build two injections instead of one bijection.
+      <div class="ex"><div><p>Far easier in practice: squeeze from both sides and let the theorem finish the job.</p></div></div></li>
+    <li><b>Diagonal enumeration</b> — walk a grid by anti-diagonals to list a product of countable sets.
+      <div class="ex"><div><p>\((0,0), (0,1), (1,0), (0,2), (1,1), (2,0),\dots\) — nothing is ever skipped.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 8 ============ -->
+<section class="layer" id="L8">
+  <span class="chapter">Layer 8 · Past infinity</span>
+  <h2 class="ltitle">Ordinals &amp; Transfinite Methods</h2>
+  <p class="ldesc">Counting past the end of the counting numbers.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Transitive set</b> — every member is also a subset.
+      <div class="ex"><div><p>Open any box inside and its contents were already loose in the outer box.</p></div></div></li>
+    <li><b>Ordinal</b> — a transitive set well-ordered by \(\in\).
+      <div class="ex"><div><p>A position in a queue that may be infinitely long. Each ordinal <em>is</em> the set of ordinals before it.</p></div></div></li>
+    <li><b>Successor ordinal</b> \(\alpha + 1 = \alpha \cup \{\alpha\}\).
+      <div class="ex"><div><p>The next person in the queue.</p></div></div></li>
+    <li><b>Limit ordinal</b> — non-zero with no immediate predecessor, e.g. \(\omega\).
+      <div class="ex"><div><p>\(\omega\) is the position "after all the naturals" — nobody stands directly in front of it.</p></div></div></li>
+    <li><b>\(\omega\)</b> — the first infinite ordinal; as a set, exactly \(\mathbb{N}\).
+      <div class="ex"><div><p>Then \(\omega+1, \omega+2, \dots, \omega\cdot 2, \dots, \omega^2, \dots\) — the queue keeps going.</p></div></div></li>
+    <li><b>Order type</b> — the unique ordinal order-isomorphic to a given well-order.
+      <div class="ex"><div><p>Two queues of the same shape get the same label, however differently the people are named.</p></div></div></li>
+    <li><b>Cardinal</b> — an ordinal not equinumerous with any smaller ordinal.
+      <div class="ex"><div><p>\(\omega\) and \(\omega+1\) are different positions but the same size, so only \(\omega\) counts as a cardinal.</p></div></div></li>
+    <li><b>Aleph numbers</b> \(\aleph_0, \aleph_1, \aleph_2, \dots\) — the infinite cardinals in order.
+      <div class="ex"><div><p>\(\aleph_1\) is the next size up from countable. Whether \(\aleph_1 = \mathfrak{c}\) is the continuum hypothesis.</p></div></div></li>
+    <li><b>Cumulative hierarchy</b> \(V_0 = \varnothing\), \(V_{\alpha+1} = \mathcal{P}(V_\alpha)\), \(V_\lambda = \bigcup_{\alpha&lt;\lambda} V_\alpha\).
+      <div class="ex"><div><p>The universe built in floors. Foundation says every set appears on some floor.</p></div></div></li>
+    <li><b>Rank</b> — the first level at which a set appears.
+      <div class="ex"><div><p>How deeply nested the bags are. \(\varnothing\) has rank 0.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Ordinals are comparable:</b> for ordinals \(\alpha,\beta\), exactly one of \(\alpha \in \beta\), \(\alpha = \beta\), \(\beta \in \alpha\) holds.
+      <div class="ex"><div><p>Any two positions in the great queue can be compared. There are no side-by-side ordinals.</p></div></div>
+      <div class="proof"><div><p>Sketch: first show \(\alpha \cap \beta\) is an ordinal and is an initial segment of each. If \(\alpha \cap \beta\) were a proper initial segment of both, it would be a member of both, hence a member of itself — impossible by Foundation. So it equals \(\alpha\) or \(\beta\), giving \(\alpha \subseteq \beta\) or \(\beta \subseteq \alpha\); and for ordinals, proper inclusion coincides with membership. Foundation rules out two of the three cases holding at once. \(\blacksquare\)</p></div></div></li>
+    <li><b>Every well-ordered set is order-isomorphic to a unique ordinal.</b>
+      <div class="ex"><div><p>Ordinals are the official rulers for measuring "shape of a queue".</p></div></div>
+      <div class="proof"><div><p>Sketch: define \(F\) on the well-order \((W,&lt;)\) by transfinite recursion, \(F(w) = \{F(v) : v &lt; w\}\). Replacement makes the image a set; induction shows it is transitive and well-ordered by \(\in\), i.e. an ordinal, and that \(F\) is an order-isomorphism. Uniqueness: an order-isomorphism between ordinals is the identity, since the least point of disagreement would map to itself. \(\blacksquare\)</p></div></div></li>
+    <li><b>The class of ordinals is not a set</b> (Burali-Forti).
+      <div class="ex"><div><p>If you could bag every position in the queue, that bag would be a position after them all — and so inside itself.</p></div></div>
+      <div class="proof"><div><p>Suppose \(\Omega\) were the set of all ordinals. It is transitive (members of ordinals are ordinals) and well-ordered by \(\in\), hence itself an ordinal, so \(\Omega \in \Omega\) — contradicting Foundation. \(\blacksquare\)</p></div></div></li>
+    <li><b>Transfinite induction:</b> if a property passes to \(\alpha\) whenever it holds for all \(\beta &lt; \alpha\), it holds for every ordinal.
+      <div class="ex"><div><p>Dominoes with extra rules at the "after all of these" points.</p></div></div>
+      <div class="proof"><div><p>Suppose some ordinal fails the property. Ordinals are well-ordered by \(\in\), so among the ordinals below a fixed failing one there is a least failure \(\alpha\). Every \(\beta &lt; \alpha\) then has the property, so by hypothesis \(\alpha\) does too — contradiction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Transfinite recursion:</b> a function on all ordinals may be defined by giving its value in terms of earlier values.
+      <div class="ex"><div><p>How \(V_\alpha\), ordinal arithmetic and Zorn's proof are all built.</p></div></div>
+      <div class="proof"><div><p>Sketch: mimic the recursion theorem of Chapter 1. For each \(\alpha\), transfinite induction shows there is a unique function on \(\alpha\) obeying the clause; Replacement collects these approximations, and their union is a class function defined on all ordinals, unique by induction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Ordinal arithmetic is not commutative:</b> \(1 + \omega = \omega \ne \omega + 1\).
+      <div class="ex"><div><p>Adding one person to the <em>front</em> of an infinite queue changes nothing; adding one to the <em>end</em> creates a genuinely new position.</p></div></div>
+      <div class="proof"><div><p>\(1+\omega\) is the order type of one point followed by \(\mathbb{N}\), which is order-isomorphic to \(\mathbb{N}\) (shift by one), so it equals \(\omega\). But \(\omega + 1\) has a greatest element, and \(\omega\) does not; an order-isomorphism would have to preserve that, so \(\omega + 1 \ne \omega\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Foundation \(\iff\) every set has a rank:</b> \(V = \bigcup_\alpha V_\alpha\).
+      <div class="ex"><div><p>Every set lives on some floor of the tower. Nothing floats free.</p></div></div>
+      <div class="proof"><div><p>Sketch. If every set has a rank, an \(\in\)-descending chain would give a strictly decreasing sequence of ordinals, impossible; so Foundation holds. Conversely, assume Foundation and suppose some set lay outside every \(V_\alpha\); by Foundation choose one, \(x\), that is \(\in\)-minimal with this defect. Each member of \(x\) then has a rank; Replacement collects those ranks, their supremum \(\alpha\) exists, and \(x \subseteq V_\alpha\) puts \(x \in V_{\alpha+1}\) — contradiction. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Transfinite induction</b> — prove a statement for all ordinals: zero, successor and limit cases.
+      <div class="ex"><div><p>Three cases instead of two — the limit case is where the interesting arguments live.</p></div></div></li>
+    <li><b>Transfinite recursion</b> — define an object stage by stage, taking unions at limits.
+      <div class="ex"><div><p>Build up a basis, a well-ordering, or a maximal object by grabbing one more element at every stage.</p></div></div></li>
+    <li><b>Rank induction</b> — induct on how deeply a set is nested.
+      <div class="ex"><div><p>The standard way to prove something about <em>all</em> sets at once.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 9 ============ -->
+<section class="layer" id="L9">
+  <span class="chapter">Layer 9 · The controversial axiom</span>
+  <h2 class="ltitle">The Axiom of Choice</h2>
+  <p class="ldesc">One innocent-looking assumption, and everything it buys and costs.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Choice function</b> — a function picking one member from each set in a family.
+      <div class="ex"><div><p>One sweet from each of infinitely many jars — with no rule saying which.</p></div></div></li>
+    <li><b>Axiom of Choice (AC)</b> — every family of non-empty sets has a choice function.
+      <div class="ex"><div><p>Infinitely many pairs of shoes need no axiom (take the left one). Infinitely many pairs of <em>socks</em> do.</p></div></div></li>
+    <li><b>Countable choice</b> — the same, for countably many sets. Strictly weaker.
+      <div class="ex"><div><p>Enough for most of basic analysis; not enough for Zorn.</p></div></div></li>
+    <li><b>Dependent choice (DC)</b> — you may keep choosing, each step depending on the last.
+      <div class="ex"><div><p>Walk forever through a graph where every node has an exit. Strictly between countable choice and full AC.</p></div></div></li>
+    <li><b>Zorn's lemma</b> — if every chain in a partially ordered set has an upper bound, there is a maximal element.
+      <div class="ex"><div><p>A mountain range where every upward path has a top must have at least one peak.</p></div></div></li>
+    <li><b>Well-ordering principle</b> — every set can be well-ordered.
+      <div class="ex"><div><p>Even \(\mathbb{R}\) can be lined up so every subset has a first element — though no one can write that line down.</p></div></div></li>
+    <li><b>Non-measurable set</b> — a set of reals with no consistent notion of length.
+      <div class="ex"><div><p>AC's bill comes due in Chapter 11: it manufactures sets that no "volume" can measure.</p></div></div></li>
+    <li><b>Independence</b> — neither provable nor refutable from the other axioms.
+      <div class="ex"><div><p>AC and the continuum hypothesis are both independent of ZF and ZFC respectively. The axioms simply don't decide.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>AC \(\iff\) Zorn's lemma \(\iff\) well-ordering principle.</b>
+      <div class="ex"><div><p>Three costumes, one actor. Choose whichever is easiest for the job in hand.</p></div></div>
+      <div class="proof"><div><p>Sketch of the cycle. (AC \(\Rightarrow\) Zorn) If a poset had no maximal element, every element would have something strictly above it; a choice function picks such a "next step", and transfinite recursion builds a strictly increasing chain longer than the set itself — impossible. (Zorn \(\Rightarrow\) WO) Order the well-orderings of subsets of \(A\) by "is an initial segment of"; a chain's union is again such a well-ordering, so Zorn gives a maximal one, which must exhaust \(A\) or could be extended. (WO \(\Rightarrow\) AC) Well-order \(\bigcup_i A_i\) and let the choice function take the least element of each \(A_i\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — every vector space has a basis</b> (Chapter 4 uses this).
+      <div class="ex"><div><p>Even wild infinite-dimensional spaces have a basis. Nobody has ever exhibited one for \(\mathbb{R}\) over \(\mathbb{Q}\).</p></div></div>
+      <div class="proof"><div><p>Order the linearly independent subsets by inclusion. A chain's union is independent, because any dependency involves finitely many vectors, which already lie in one link of the chain — so every chain is bounded and Zorn gives a maximal independent set \(B\). If some \(v \notin \mathrm{span}(B)\), then \(B \cup \{v\}\) would be independent and strictly larger, contradicting maximality. So \(B\) spans, and is a basis. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — every surjection splits:</b> if \(f : A \to B\) is onto, there is \(g: B \to A\) with \(f\circ g = \mathrm{id}_B\).
+      <div class="ex"><div><p>Pick one representative from each fibre. Obvious-looking, and equivalent to AC.</p></div></div>
+      <div class="proof"><div><p>The family \(\{f^{-1}[\{b\}] : b \in B\}\) consists of non-empty sets, so AC supplies a choice function; define \(g(b)\) to be the chosen element of \(f^{-1}[\{b\}]\). Then \(f(g(b)) = b\) for all \(b\). Conversely, applying this to the projection \(\bigsqcup_i A_i \to I\) recovers AC. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — comparability of cardinals:</b> for any \(A, B\), either \(|A| \le |B|\) or \(|B| \le |A|\).
+      <div class="ex"><div><p>Any two infinities can be compared — but only because AC says so.</p></div></div>
+      <div class="proof"><div><p>Well-order both sets (WO principle). Two well-orders are always comparable: one is order-isomorphic to an initial segment of the other (compare them by transfinite recursion). That isomorphism is an injection one way or the other. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — Tychonoff's theorem:</b> a product of compact spaces is compact (Chapter 8's setting).
+      <div class="ex"><div><p>Compactness survives infinite products — a fact equivalent to AC itself.</p></div></div>
+      <div class="proof"><div><p>Sketch: use Zorn to extend a family of closed sets with the finite intersection property to a maximal such family; maximality forces its projections to converge coordinatewise, and the resulting point lies in every member. Kelley showed the converse: Tychonoff implies AC. \(\blacksquare\)</p></div></div></li>
+    <li><b>Banach–Tarski paradox:</b> a solid ball can be cut into five pieces and reassembled into two identical balls (with AC).
+      <div class="ex"><div><p>The pieces are so shredded they have no volume at all — which is exactly why nothing is conserved. Chapter 11 explains why this is a statement about measurability, not about oranges.</p></div></div>
+      <div class="proof"><div><p>Sketch: the free group on two generators acts on the sphere by rotations. AC picks one point from each orbit, and the group's paradoxical decomposition transfers to a decomposition of the sphere into finitely many non-measurable pieces which can be rotated to cover it twice. Cones to the centre extend this to the solid ball. \(\blacksquare\)</p></div></div></li>
+    <li><b>Independence of AC and CH:</b> ZF cannot prove or refute AC; ZFC cannot prove or refute CH.
+      <div class="ex"><div><p>Like the parallel postulate: assume it or deny it, and you get a different — equally legal — mathematical world.</p></div></div>
+      <div class="proof"><div><p>Sketch: Gödel (1938–40) built the constructible universe \(L\), an inner model of ZF satisfying AC and CH, so neither can be refuted. Cohen (1963) invented forcing, adjoining generic sets to a model to make AC fail (in a permutation/symmetric submodel) or to add \(\aleph_2\) new reals so that CH fails. Both halves assume only that ZF is consistent. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Zorn's lemma</b> — to conjure a maximal object: check every chain has an upper bound.
+      <div class="ex"><div><p>The bound is almost always "the union of the chain". Bases, maximal ideals and extensions all come this way.</p></div></div></li>
+    <li><b>Well-order and recurse</b> — line the set up, then build along it transfinitely.
+      <div class="ex"><div><p>How you construct pathological objects — including Chapter 11's non-measurable set.</p></div></div></li>
+    <li><b>Track your choices</b> — note when a proof needs AC, countable choice, or none.
+      <div class="ex"><div><p>Good hygiene: many analysis results need only countable choice, and it's worth knowing which.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Element chasing</td><td>L1</td><td>Prove any statement about sets</td></tr>
+    <tr><td>Double inclusion</td><td>L1</td><td>Prove two sets are equal</td></tr>
+    <tr><td>Venn diagrams</td><td>L1</td><td>Build intuition (never a proof)</td></tr>
+    <tr><td>Name the axiom</td><td>L2</td><td>Check a construction is legal</td></tr>
+    <tr><td>Translate to logic</td><td>L3</td><td>Turn a set identity into a propositional law</td></tr>
+    <tr><td>Chain of equivalences</td><td>L3</td><td>Prove both inclusions at once</td></tr>
+    <tr><td>Check reflexive / symmetric / transitive</td><td>L4</td><td>Verify an equivalence relation</td></tr>
+    <tr><td>Quotient construction</td><td>L4</td><td>Build \(\mathbb{Z}\), \(\mathbb{Q}\), clock arithmetic</td></tr>
+    <tr><td>Well-definedness check</td><td>L4</td><td>Make an operation on classes legitimate</td></tr>
+    <tr><td>Assume \(f(x)=f(y)\), derive \(x=y\)</td><td>L5</td><td>Prove injectivity</td></tr>
+    <tr><td>Solve \(f(x)=b\)</td><td>L5</td><td>Prove surjectivity</td></tr>
+    <tr><td>Work with preimages</td><td>L5</td><td>Keep unions, intersections and complements intact</td></tr>
+    <tr><td>Define by recursion, prove by induction</td><td>L6</td><td>Set up arithmetic on \(\mathbb{N}\)</td></tr>
+    <tr><td>Descent / lowest terms</td><td>L6</td><td>Prove irrationality</td></tr>
+    <tr><td>Bijection building</td><td>L7</td><td>Show two sets are the same size</td></tr>
+    <tr><td>Diagonalisation</td><td>L7</td><td>Show a set is too big to list</td></tr>
+    <tr><td>Cantor–Schröder–Bernstein</td><td>L7</td><td>Two injections instead of a bijection</td></tr>
+    <tr><td>Transfinite induction &amp; recursion</td><td>L8</td><td>Prove or build along all the ordinals</td></tr>
+    <tr><td>Rank induction</td><td>L8</td><td>Prove something about every set</td></tr>
+    <tr><td>Zorn's lemma</td><td>L9</td><td>Conjure maximal objects into existence</td></tr>
+    <tr><td>Well-order and recurse</td><td>L9</td><td>Construct pathological objects</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Set Theory · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

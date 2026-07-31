@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6 — Inner Products &amp; Norms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Inner Products &amp; Norms</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-05-determinants.html">&#10094; Chapter 5 — Determinants</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Length and Angle</h2>
+    <p>A vector space knows about direction and scale. It does not know how long a vector is, or whether two vectors are perpendicular.</p>
+    <p>One extra piece of structure — the <b>inner product</b> — supplies both, and with them distance: \(d(x,y) = \|x-y\|\).</p>
+    <p>This is where \(\mathbb{R}^{n}\) becomes <b>Euclidean</b> space. Chapter 7 then throws the inner product away and keeps only the distance.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\langle x,y\rangle = \sum_i x_iy_i\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Inner Products</a><a href="#L2">L2 Orthogonality</a><a href="#L3">L3 Symmetric Maps</a>
+  <a href="#L4">L4 Norms</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · The extra structure</span>
+  <h2 class="ltitle">Inner Products</h2>
+  <p class="ldesc">One bilinear form, and geometry appears.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Dot product</b> \(\langle x,y\rangle = \sum_{i=1}^{n} x_iy_i\).
+      <div class="ex"><div><p>Quantities times prices, summed: the total bill. That's all the formula is.</p></div></div></li>
+    <li><b>Inner product</b> — a symmetric, bilinear, positive-definite form on a real vector space.
+      <div class="ex"><div><p>Three demands, and length, angle and perpendicularity all follow.</p></div></div></li>
+    <li><b>Positive definite</b> — \(\langle x,x\rangle &gt; 0\) for \(x \ne \mathbf{0}\).
+      <div class="ex"><div><p>Only the zero vector has zero length. Without this you get a "metric" that can't tell points apart.</p></div></div></li>
+    <li><b>Induced norm</b> \(\|x\| = \sqrt{\langle x,x\rangle}\).
+      <div class="ex"><div><p>In \(\mathbb{R}^{n}\): \(\sqrt{x_1^2+\cdots+x_n^2}\) — Pythagoras in \(n\) dimensions.</p></div></div></li>
+    <li><b>Euclidean distance</b> \(d(x,y) = \|x-y\|\).
+      <div class="ex"><div><p>Straight-line distance. Chapter 7 shows it is only one distance among many.</p></div></div></li>
+    <li><b>Angle</b> \(\cos\theta = \frac{\langle x,y\rangle}{\|x\|\,\|y\|}\).
+      <div class="ex"><div><p>The definition is legal only because Cauchy–Schwarz keeps that ratio inside \([-1,1]\).</p></div></div></li>
+    <li><b>Orthogonal</b> \(x \perp y\) — \(\langle x,y\rangle = 0\).
+      <div class="ex"><div><p>At right angles. In \(n\) dimensions "perpendicular" means nothing else.</p></div></div></li>
+    <li><b>Unit vector</b> — \(\|x\| = 1\).
+      <div class="ex"><div><p>Pure direction, no magnitude. Normalise by dividing by the length.</p></div></div></li>
+    <li><b>Inner product space</b> — a vector space with a chosen inner product.
+      <div class="ex"><div><p>\(C[a,b]\) with \(\langle f,g\rangle = \int_a^b fg\): functions can be perpendicular too. That is the whole of Fourier analysis.</p></div></div></li>
+    <li><b>Gram matrix</b> \(G_{ij} = \langle v_i,v_j\rangle\).
+      <div class="ex"><div><p>All the lengths and angles of a list of vectors, in one table.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms — An Inner Product</h3>
+  <ul>
+    <li><b>Symmetry</b> — \(\langle x,y\rangle = \langle y,x\rangle\).
+      <div class="ex"><div><p>The angle from \(x\) to \(y\) is the angle from \(y\) to \(x\).</p></div></div></li>
+    <li><b>Bilinearity</b> — linear in each argument.
+      <div class="ex"><div><p>Double the quantities and the bill doubles.</p></div></div></li>
+    <li><b>Positive definiteness</b> — \(\langle x,x\rangle \ge 0\), with equality only at \(\mathbf{0}\).
+      <div class="ex"><div><p>Nothing has negative length, and only nothing has zero length.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Cauchy–Schwarz inequality:</b> \(|\langle x,y\rangle| \le \|x\|\,\|y\|\), with equality iff \(x, y\) are parallel.
+      <div class="ex"><div><p>The single most useful inequality in analysis. It is what makes "angle" definable at all.</p></div></div>
+      <div class="proof"><div><p>If \(y = \mathbf 0\) both sides vanish. Otherwise, for every \(t \in \mathbb{R}\), positive definiteness gives \(0 \le \|x - ty\|^{2} = \|x\|^{2} - 2t\langle x,y\rangle + t^{2}\|y\|^{2}\). This quadratic in \(t\) is never negative, so its discriminant satisfies \(4\langle x,y\rangle^{2} - 4\|x\|^{2}\|y\|^{2} \le 0\). Equality forces a double root \(t_0\), i.e. \(\|x - t_0y\| = 0\), so \(x = t_0y\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Triangle inequality:</b> \(\|x+y\| \le \|x\| + \|y\|\).
+      <div class="ex"><div><p>Going via a third point never saves distance. Chapter 7 promotes this to an axiom.</p></div></div>
+      <div class="proof"><div><p>\(\|x+y\|^{2} = \|x\|^{2} + 2\langle x,y\rangle + \|y\|^{2} \le \|x\|^{2} + 2\|x\|\|y\| + \|y\|^{2} = (\|x\|+\|y\|)^{2}\), using Cauchy–Schwarz. Taking square roots preserves the inequality. \(\blacksquare\)</p></div></div></li>
+    <li><b>Pythagoras:</b> \(x \perp y \Rightarrow \|x+y\|^{2} = \|x\|^{2}+\|y\|^{2}\).
+      <div class="ex"><div><p>The oldest theorem in mathematics, now a one-line consequence of bilinearity.</p></div></div>
+      <div class="proof"><div><p>\(\|x+y\|^{2} = \langle x+y,x+y\rangle = \|x\|^{2} + 2\langle x,y\rangle + \|y\|^{2}\), and the middle term vanishes by orthogonality. \(\blacksquare\)</p></div></div></li>
+    <li><b>Parallelogram law:</b> \(\|x+y\|^{2}+\|x-y\|^{2} = 2\|x\|^{2}+2\|y\|^{2}\).
+      <div class="ex"><div><p>The diagonals of a parallelogram know the sides. This identity is exactly what distinguishes norms that come from an inner product.</p></div></div>
+      <div class="proof"><div><p>Expand both squares by bilinearity: the cross terms \(\pm2\langle x,y\rangle\) cancel, leaving \(2\|x\|^2 + 2\|y\|^2\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Polarisation identity:</b> \(\langle x,y\rangle = \tfrac14\bigl(\|x+y\|^{2}-\|x-y\|^{2}\bigr)\).
+      <div class="ex"><div><p>The norm remembers the inner product — so lengths alone determine all the angles.</p></div></div>
+      <div class="proof"><div><p>Expanding, \(\|x+y\|^2 = \|x\|^2+2\langle x,y\rangle+\|y\|^2\) and \(\|x-y\|^2 = \|x\|^2-2\langle x,y\rangle+\|y\|^2\); subtracting leaves \(4\langle x,y\rangle\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Jordan–von Neumann:</b> a norm comes from an inner product iff it satisfies the parallelogram law.
+      <div class="ex"><div><p>The taxicab norm fails it, so no inner product produces taxicab geometry — it has lengths but no angles.</p></div></div>
+      <div class="proof"><div><p>Sketch: necessity is the parallelogram law above. For sufficiency, <em>define</em> \(\langle x,y\rangle\) by the polarisation formula. Symmetry and \(\langle x,x\rangle = \|x\|^{2}\) are immediate; additivity in the first argument follows from repeated use of the parallelogram law, and homogeneity then follows for integers, rationals, and — by continuity of the norm — all reals. \(\blacksquare\)</p></div></div></li>
+    <li><b>Gram matrices are positive semidefinite,</b> and \(\det G &gt; 0\) iff the vectors are independent.
+      <div class="ex"><div><p>The link to Chapter 5: \(\sqrt{\det G}\) is the volume of the box the vectors span.</p></div></div>
+      <div class="proof"><div><p>For any coefficient vector \(c\), \(c^{\mathsf T}Gc = \bigl\langle \sum_ic_iv_i, \sum_jc_jv_j\bigr\rangle = \|\sum_i c_iv_i\|^{2}\ge0\). It vanishes for some \(c \ne 0\) exactly when a non-trivial combination is \(\mathbf 0\), i.e. when the \(v_i\) are dependent — which is also when \(G\) is singular. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Expand \(\|x \pm y\|^{2}\) by bilinearity</b> — the standard opening move.
+      <div class="ex"><div><p>Almost every identity in this layer is one expansion away.</p></div></div></li>
+    <li><b>Apply Cauchy–Schwarz to bound a sum</b>.
+      <div class="ex"><div><p>\(\bigl(\sum a_ib_i\bigr)^2 \le \bigl(\sum a_i^2\bigr)\bigl(\sum b_i^2\bigr)\) — used constantly in estimates.</p></div></div></li>
+    <li><b>Normalise</b> — divide by the length to get a unit vector.
+      <div class="ex"><div><p>Separates "which way" from "how far", which usually simplifies the algebra.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Right angles</span>
+  <h2 class="ltitle">Orthogonality &amp; Projection</h2>
+  <p class="ldesc">Splitting a vector into the part you want and the part you don't.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Orthogonal set</b> — pairwise perpendicular non-zero vectors.
+      <div class="ex"><div><p>Axes that don't lean on each other. Coordinates in such a system are read off by dot products.</p></div></div></li>
+    <li><b>Orthonormal basis</b> — an orthogonal basis of unit vectors.
+      <div class="ex"><div><p>The standard basis of \(\mathbb{R}^{n}\), and every rotation of it.</p></div></div></li>
+    <li><b>Orthogonal complement</b> \(U^{\perp} = \{v : v \perp u \ \forall u \in U\}\).
+      <div class="ex"><div><p>Everything perpendicular to the floor is the vertical axis.</p></div></div></li>
+    <li><b>Orthogonal projection</b> \(\operatorname{proj}_U(v)\) — the nearest point of \(U\) to \(v\).
+      <div class="ex"><div><p>The shadow cast straight down onto the floor.</p></div></div></li>
+    <li><b>Gram–Schmidt process</b> — turning any basis into an orthonormal one.
+      <div class="ex"><div><p>Straighten each new axis by subtracting off its shadow on the ones already straightened.</p></div></div></li>
+    <li><b>QR factorisation</b> \(A = QR\) — Gram–Schmidt, written as matrices.
+      <div class="ex"><div><p>\(Q\) holds the straightened directions, \(R\) records the bookkeeping.</p></div></div></li>
+    <li><b>Least squares solution</b> — minimises \(\|Ax - b\|\) when \(Ax=b\) has no solution.
+      <div class="ex"><div><p>Fitting a line through scattered data: no line hits every point, so take the closest.</p></div></div></li>
+    <li><b>Fourier coefficients</b> \(\langle v, e_i\rangle\) with respect to an orthonormal set.
+      <div class="ex"><div><p>How much of each pure tone is in the chord.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Orthogonal sets are independent.</b>
+      <div class="ex"><div><p>Perpendicular directions can never be mixtures of one another.</p></div></div>
+      <div class="proof"><div><p>If \(\sum_i c_iv_i = \mathbf 0\), take the inner product with \(v_j\): all cross terms vanish, leaving \(c_j\|v_j\|^{2} = 0\), and \(v_j \ne \mathbf 0\) forces \(c_j = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Coordinates in an orthonormal basis:</b> \(v = \sum_i \langle v,e_i\rangle e_i\), and \(\|v\|^{2} = \sum_i\langle v,e_i\rangle^{2}\) (Parseval).
+      <div class="ex"><div><p>No linear system to solve — each coordinate is a single dot product.</p></div></div>
+      <div class="proof"><div><p>Write \(v = \sum_j c_je_j\) (possible since the \(e_j\) form a basis) and pair with \(e_i\): orthonormality leaves \(\langle v,e_i\rangle = c_i\). Then \(\|v\|^{2} = \langle\sum_ic_ie_i,\sum_jc_je_j\rangle = \sum_i c_i^{2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gram–Schmidt works:</b> every finite-dimensional inner product space has an orthonormal basis.
+      <div class="ex"><div><p>Perpendicular axes always exist — you never have to work in a skewed frame.</p></div></div>
+      <div class="proof"><div><p>Given a basis \(v_1,\dots,v_n\), set \(u_1 = v_1\) and inductively \(u_k = v_k - \sum_{i&lt;k}\frac{\langle v_k,u_i\rangle}{\|u_i\|^{2}}u_i\). Pairing with \(u_j\) for \(j &lt; k\) gives 0, so the \(u_k\) are orthogonal; \(u_k \ne \mathbf 0\) because \(v_k\) is not in the span of the earlier vectors. At each stage \(\operatorname{span}(u_1,\dots,u_k) = \operatorname{span}(v_1,\dots,v_k)\), so normalising gives an orthonormal basis. \(\blacksquare\)</p></div></div></li>
+    <li><b>Orthogonal decomposition:</b> \(V = U \oplus U^{\perp}\) for any subspace \(U\).
+      <div class="ex"><div><p>Every vector is uniquely "in the floor" plus "straight up".</p></div></div>
+      <div class="proof"><div><p>Take an orthonormal basis \(e_1,\dots,e_k\) of \(U\) and set \(p = \sum_i\langle v,e_i\rangle e_i\). Then \(v - p \perp e_j\) for each \(j\) — check by pairing — so \(v - p \in U^{\perp}\) and \(v = p + (v-p)\). If \(x \in U\cap U^{\perp}\) then \(\langle x,x\rangle = 0\), so \(x = \mathbf 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Projection formula and idempotence:</b> \(\operatorname{proj}_U(v) = \sum_i\langle v,e_i\rangle e_i\), and \(\operatorname{proj}_U^{2} = \operatorname{proj}_U\).
+      <div class="ex"><div><p>Casting a shadow twice changes nothing — a shadow is already flat.</p></div></div>
+      <div class="proof"><div><p>The formula is the \(p\) constructed above. For a vector already in \(U\), expanding in the orthonormal basis returns it unchanged, so applying the projection twice equals applying it once. \(\blacksquare\)</p></div></div></li>
+    <li><b>Best approximation:</b> \(\operatorname{proj}_U(v)\) is the unique closest point of \(U\) to \(v\).
+      <div class="ex"><div><p>The shortest way to the floor is straight down — the reason least squares works.</p></div></div>
+      <div class="proof"><div><p>For any \(u \in U\), write \(v - u = (v - p) + (p - u)\), where the first term is in \(U^{\perp}\) and the second in \(U\). Pythagoras gives \(\|v-u\|^{2} = \|v-p\|^{2} + \|p-u\|^{2} \ge \|v-p\|^{2}\), with equality only when \(u = p\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Bessel's inequality:</b> \(\sum_i\langle v,e_i\rangle^{2} \le \|v\|^{2}\) for any orthonormal set.
+      <div class="ex"><div><p>The parts you can see never outweigh the whole. Equality exactly when the set is complete.</p></div></div>
+      <div class="proof"><div><p>Let \(p\) be the projection onto the span of the \(e_i\). Then \(\|v\|^{2} = \|p\|^{2} + \|v-p\|^{2} \ge \|p\|^{2} = \sum_i\langle v,e_i\rangle^{2}\) by Parseval applied inside that span. \(\blacksquare\)</p></div></div></li>
+    <li><b>Normal equations:</b> \(x\) minimises \(\|Ax-b\|\) iff \(A^{\mathsf T}Ax = A^{\mathsf T}b\).
+      <div class="ex"><div><p>Line of best fit, in one formula. The residual must be perpendicular to every column.</p></div></div>
+      <div class="proof"><div><p>By best approximation, \(Ax\) must be the projection of \(b\) onto the column space, i.e. \(b - Ax \perp \operatorname{im}A\). That says \(\langle a^{(j)}, b - Ax\rangle = 0\) for every column, which in matrix form is \(A^{\mathsf T}(b-Ax) = \mathbf 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\dim U + \dim U^{\perp} = \dim V\), and \((U^{\perp})^{\perp} = U\).</b>
+      <div class="ex"><div><p>The perpendicular of the perpendicular is where you started.</p></div></div>
+      <div class="proof"><div><p>The dimension count is immediate from \(V = U\oplus U^{\perp}\) (Chapter 4, Layer 2). Clearly \(U \subseteq (U^{\perp})^{\perp}\), and both have dimension \(\dim V - \dim U^{\perp} = \dim U\), so they coincide. \(\blacksquare\)</p></div></div></li>
+    <li><b>Riesz representation (finite-dimensional):</b> every linear functional is \(v\mapsto\langle v,w\rangle\) for a unique \(w\).
+      <div class="ex"><div><p>Chapter 4's dual space becomes a copy of \(V\) itself — but only after you choose an inner product.</p></div></div>
+      <div class="proof"><div><p>Given \(f \in V^{*}\), fix an orthonormal basis and put \(w = \sum_i f(e_i)e_i\). Then \(\langle e_j, w\rangle = f(e_j)\) for each \(j\), so \(f\) and \(\langle\cdot,w\rangle\) agree on a basis, hence everywhere. Uniqueness: if \(\langle v,w\rangle = \langle v,w'\rangle\) for all \(v\), take \(v = w - w'\) to get \(\|w-w'\|^{2}=0\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Gram–Schmidt</b> — subtract shadows to straighten a basis.
+      <div class="ex"><div><p>Do it in order, normalise at the end, and check orthogonality as you go.</p></div></div></li>
+    <li><b>Project to approximate</b> — replace an unsolvable equation by the nearest solvable one.
+      <div class="ex"><div><p>Data fitting, signal compression and regression are all this one move.</p></div></div></li>
+    <li><b>Split \(v = p + (v-p)\)</b> — the standard orthogonal decomposition trick.
+      <div class="ex"><div><p>Then apply Pythagoras. Half the proofs above are exactly this.</p></div></div></li>
+    <li><b>Use orthonormal coordinates</b> — they turn every computation into dot products.
+      <div class="ex"><div><p>No matrix inversion, no linear systems.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Maps that respect length</span>
+  <h2 class="ltitle">Orthogonal &amp; Symmetric Maps</h2>
+  <p class="ldesc">Rigid motions, quadratic forms, and the spectral theorem.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Orthogonal matrix</b> — \(Q^{\mathsf T}Q = I\); its columns are orthonormal.
+      <div class="ex"><div><p>Rotations and reflections: the maps that don't distort anything.</p></div></div></li>
+    <li><b>Isometry</b> — a map preserving distances.
+      <div class="ex"><div><p>Picking up a rigid object and putting it down somewhere else.</p></div></div></li>
+    <li><b>Orthogonal group</b> \(O(n)\), and \(SO(n)\) with \(\det = 1\).
+      <div class="ex"><div><p>\(SO(3)\) is exactly the set of physical rotations of an object in space.</p></div></div></li>
+    <li><b>Adjoint</b> \(T^{*}\) — defined by \(\langle Tx,y\rangle = \langle x, T^{*}y\rangle\); in coordinates, the transpose.
+      <div class="ex"><div><p>Move the map to the other side of the dot product and it becomes its transpose.</p></div></div></li>
+    <li><b>Symmetric (self-adjoint) map</b> — \(T = T^{*}\), i.e. \(A = A^{\mathsf T}\).
+      <div class="ex"><div><p>Covariance matrices, Hessians, and inertia tensors are all symmetric. They behave impeccably.</p></div></div></li>
+    <li><b>Quadratic form</b> \(q(x) = \langle Ax,x\rangle = x^{\mathsf T}Ax\).
+      <div class="ex"><div><p>Energy, variance, squared distance — every "sum of squares with cross terms" is one.</p></div></div></li>
+    <li><b>Positive definite / semidefinite / indefinite</b>.
+      <div class="ex"><div><p>A bowl, a trough, or a saddle. Chapter 10's second-derivative test is this classification.</p></div></div></li>
+    <li><b>Principal axes</b> — the eigenvector directions of a symmetric matrix.
+      <div class="ex"><div><p>The natural axes of an ellipse. Turn your head to them and the cross terms vanish.</p></div></div></li>
+    <li><b>Singular value decomposition</b> \(A = U\Sigma V^{\mathsf T}\).
+      <div class="ex"><div><p>Every linear map is: rotate, stretch along axes, rotate again. No exceptions.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Isometry \(\iff\) orthogonal:</b> a linear map preserves norms iff it preserves inner products iff its matrix is orthogonal.
+      <div class="ex"><div><p>Preserve all lengths and you automatically preserve all angles — polarisation does the work.</p></div></div>
+      <div class="proof"><div><p>If \(\langle Qx,Qy\rangle = \langle x,y\rangle\) then taking \(y = x\) preserves norms. Conversely, preserving norms plus the polarisation identity (Layer 1) recovers the inner product. And \(\langle Qx,Qy\rangle = \langle Q^{\mathsf T}Qx, y\rangle\) equals \(\langle x,y\rangle\) for all \(x,y\) exactly when \(Q^{\mathsf T}Q = I\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\det Q = \pm1\)</b> for orthogonal \(Q\); \(+1\) rotations, \(-1\) reflections.
+      <div class="ex"><div><p>Rigid motions preserve volume — of course they do. The sign records handedness.</p></div></div>
+      <div class="proof"><div><p>\(1 = \det I = \det(Q^{\mathsf T}Q) = \det(Q^{\mathsf T})\det Q = (\det Q)^{2}\) by Chapter 5, so \(\det Q = \pm1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Symmetric matrices have real eigenvalues.</b>
+      <div class="ex"><div><p>No rotation hides inside a symmetric matrix; every direction is either stretched or squashed.</p></div></div>
+      <div class="proof"><div><p>Let \(Av = \lambda v\) with \(v \ne \mathbf 0\), allowing complex entries, and let \(\bar v\) denote the conjugate. Then \(\bar v^{\mathsf T}Av = \lambda\,\bar v^{\mathsf T}v\), while transposing and conjugating the same scalar gives \(\bar\lambda\,\bar v^{\mathsf T}v\) using \(A = A^{\mathsf T}\) with real entries. Since \(\bar v^{\mathsf T}v = \sum|v_i|^{2} &gt; 0\), we get \(\lambda = \bar\lambda\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Eigenvectors of a symmetric matrix for distinct eigenvalues are orthogonal.</b>
+      <div class="ex"><div><p>The principal axes of an ellipse meet at right angles — always.</p></div></div>
+      <div class="proof"><div><p>If \(Av = \lambda v\) and \(Aw = \mu w\) with \(\lambda \ne \mu\), then \(\lambda\langle v,w\rangle = \langle Av,w\rangle = \langle v,Aw\rangle = \mu\langle v,w\rangle\), so \((\lambda-\mu)\langle v,w\rangle = 0\) and hence \(\langle v,w\rangle = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Spectral theorem:</b> every real symmetric matrix is \(Q D Q^{\mathsf T}\) with \(Q\) orthogonal and \(D\) diagonal.
+      <div class="ex"><div><p>Turn your head to the principal axes and the map becomes pure stretching. The most useful theorem in applied mathematics.</p></div></div>
+      <div class="proof"><div><p>Induct on \(n\). A real eigenvalue \(\lambda_1\) exists with a unit eigenvector \(v_1\). The subspace \(v_1^{\perp}\) is invariant: for \(w \perp v_1\), \(\langle Aw, v_1\rangle = \langle w, Av_1\rangle = \lambda_1\langle w,v_1\rangle = 0\). The restriction of \(A\) to \(v_1^{\perp}\) is again symmetric, so the induction hypothesis provides an orthonormal eigenbasis there; adjoining \(v_1\) gives one for \(\mathbb{R}^{n}\), and its matrix is diagonal. \(\blacksquare\)</p></div></div></li>
+    <li><b>Principal axis theorem:</b> every quadratic form is \(\sum_i\lambda_i y_i^{2}\) in suitable orthonormal coordinates.
+      <div class="ex"><div><p>Every conic is an ellipse, hyperbola or parabola once you rotate the axes properly.</p></div></div>
+      <div class="proof"><div><p>Write \(q(x) = x^{\mathsf T}Ax\) with \(A\) symmetric (replace \(A\) by \(\tfrac12(A+A^{\mathsf T})\), which gives the same form). By the spectral theorem \(A = QDQ^{\mathsf T}\); substituting \(y = Q^{\mathsf T}x\) gives \(q = y^{\mathsf T}Dy = \sum_i\lambda_iy_i^{2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Definiteness test:</b> \(q\) is positive definite iff all eigenvalues are positive, iff all leading principal minors are positive (Sylvester).
+      <div class="ex"><div><p>Two ways to check a bowl: look at the stretch factors, or at a chain of determinants.</p></div></div>
+      <div class="proof"><div><p>In principal axes \(q = \sum\lambda_iy_i^{2}\), which is positive for \(y\ne0\) exactly when all \(\lambda_i &gt; 0\). For Sylvester's criterion, induct on \(n\): positive definiteness restricts to the leading \(k\times k\) block, whose determinant is a product of positive eigenvalues; conversely positive leading minors force, by induction and the determinant being the product of eigenvalues, that no eigenvalue can be \(\le 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rayleigh quotient:</b> \(\lambda_{\min} \le \frac{\langle Ax,x\rangle}{\|x\|^{2}} \le \lambda_{\max}\), both attained.
+      <div class="ex"><div><p>The extreme stretch factors are the extreme values of the form on the unit sphere.</p></div></div>
+      <div class="proof"><div><p>In principal axes with \(\|y\| = 1\), \(\langle Ax,x\rangle = \sum\lambda_iy_i^{2}\), a weighted average of the \(\lambda_i\) with weights summing to 1. Such an average lies between the smallest and largest, and equals them at the corresponding eigenvectors. \(\blacksquare\)</p></div></div></li>
+    <li><b>Singular value decomposition:</b> every \(m\times n\) real matrix factors as \(U\Sigma V^{\mathsf T}\) with \(U, V\) orthogonal and \(\Sigma\) diagonal with non-negative entries.
+      <div class="ex"><div><p>Rotate, stretch, rotate. The singular values say how much each direction is stretched — and \(\prod\sigma_i = |\det A|\) for square \(A\).</p></div></div>
+      <div class="proof"><div><p>\(A^{\mathsf T}A\) is symmetric and positive semidefinite, so the spectral theorem gives an orthonormal eigenbasis \(v_i\) with eigenvalues \(\sigma_i^{2}\ge0\). For \(\sigma_i &gt; 0\) put \(u_i = Av_i/\sigma_i\); these are orthonormal since \(\langle u_i,u_j\rangle = \langle Av_i,Av_j\rangle/(\sigma_i\sigma_j) = \langle A^{\mathsf T}Av_i, v_j\rangle/(\sigma_i\sigma_j) = \delta_{ij}\). Extend to an orthonormal basis of \(\mathbb{R}^{m}\); then \(Av_i = \sigma_iu_i\) reads exactly as \(A = U\Sigma V^{\mathsf T}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Diagonalise a symmetric matrix orthogonally</b> — find eigenvalues, then orthonormal eigenvectors.
+      <div class="ex"><div><p>Within one eigenspace, run Gram–Schmidt; across eigenspaces, orthogonality is automatic.</p></div></div></li>
+    <li><b>Complete the square / rotate to principal axes</b> — remove cross terms from a quadratic form.
+      <div class="ex"><div><p>What "the equation of an ellipse" looks like once you stop fighting the coordinates.</p></div></div></li>
+    <li><b>Test definiteness</b> — eigenvalue signs or leading minors.
+      <div class="ex"><div><p>Chapter 10 uses this on the Hessian to classify critical points.</p></div></div></li>
+    <li><b>Use the SVD</b> — for rank, pseudo-inverse, condition number and low-rank approximation.
+      <div class="ex"><div><p>Keeping the largest few singular values is exactly how image compression works.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Other rulers</span>
+  <h2 class="ltitle">Norms &amp; Unit Balls</h2>
+  <p class="ldesc">Length without angle — and why, in finite dimensions, the choice hardly matters.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Norm</b> — \(\|x\| \ge 0\) with equality only at \(\mathbf 0\); \(\|cx\| = |c|\|x\|\); \(\|x+y\|\le\|x\|+\|y\|\).
+      <div class="ex"><div><p>Three rules for "size". No inner product required — so no angles come with it.</p></div></div></li>
+    <li><b>Euclidean norm</b> \(\|x\|_2 = \sqrt{\sum x_i^{2}}\).
+      <div class="ex"><div><p>As the crow flies.</p></div></div></li>
+    <li><b>Taxicab norm</b> \(\|x\|_1 = \sum|x_i|\).
+      <div class="ex"><div><p>Distance through a city grid: you can't cut across the blocks.</p></div></div></li>
+    <li><b>Maximum norm</b> \(\|x\|_\infty = \max_i|x_i|\).
+      <div class="ex"><div><p>The worst single error, ignoring the rest. A king's move on a chessboard.</p></div></div></li>
+    <li><b>\(p\)-norm</b> \(\|x\|_p = \bigl(\sum|x_i|^{p}\bigr)^{1/p}\), \(p \ge 1\).
+      <div class="ex"><div><p>A dial running from taxicab (\(p=1\)) through Euclidean (\(p=2\)) to maximum (\(p=\infty\)).</p></div></div></li>
+    <li><b>Unit ball</b> \(B = \{x : \|x\|\le1\}\).
+      <div class="ex"><div><p>A round disc for \(p=2\), a diamond for \(p=1\), a square for \(p=\infty\). The ball <em>is</em> the norm.</p></div></div></li>
+    <li><b>Equivalent norms</b> — \(c\|x\|_a \le \|x\|_b \le C\|x\|_a\).
+      <div class="ex"><div><p>Different rulers, same verdict on which sequences converge.</p></div></div></li>
+    <li><b>Operator norm</b> \(\|A\| = \sup_{\|x\|=1}\|Ax\|\).
+      <div class="ex"><div><p>The worst stretching the map can do. Chapters 9 and 10 use it constantly.</p></div></div></li>
+    <li><b>Conjugate exponents</b> — \(\frac1p + \frac1q = 1\).
+      <div class="ex"><div><p>2 pairs with 2; 1 pairs with \(\infty\). The pairing behind Hölder's inequality.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Young's inequality:</b> \(ab \le \frac{a^{p}}{p} + \frac{b^{q}}{q}\) for \(a,b\ge0\) and conjugate \(p,q\).
+      <div class="ex"><div><p>The workhorse lemma. At \(p=q=2\) it is just \(ab \le \frac{a^2+b^2}{2}\).</p></div></div>
+      <div class="proof"><div><p>The logarithm is concave (its second derivative is \(-1/x^{2} &lt; 0\)), so \(\ln\bigl(\tfrac1p a^{p} + \tfrac1q b^{q}\bigr) \ge \tfrac1p\ln a^{p} + \tfrac1q \ln b^{q} = \ln(ab)\). Exponentiating gives the inequality; equality holds iff \(a^{p} = b^{q}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Hölder's inequality:</b> \(\sum|x_iy_i| \le \|x\|_p\|y\|_q\).
+      <div class="ex"><div><p>Cauchy–Schwarz is the case \(p=q=2\). This is its full family.</p></div></div>
+      <div class="proof"><div><p>Normalise so \(\|x\|_p = \|y\|_q = 1\). Apply Young to each pair: \(|x_iy_i| \le \frac{|x_i|^{p}}{p} + \frac{|y_i|^{q}}{q}\). Summing gives \(\sum|x_iy_i| \le \frac1p + \frac1q = 1 = \|x\|_p\|y\|_q\). Scaling restores the general case. \(\blacksquare\)</p></div></div></li>
+    <li><b>Minkowski's inequality:</b> \(\|x+y\|_p \le \|x\|_p + \|y\|_p\) — so \(\|\cdot\|_p\) is a norm.
+      <div class="ex"><div><p>The triangle inequality holds for every \(p \ge 1\). For \(p &lt; 1\) it fails, which is why \(p\ge1\) is required.</p></div></div>
+      <div class="proof"><div><p>Write \(\sum|x_i+y_i|^{p} \le \sum|x_i||x_i+y_i|^{p-1} + \sum|y_i||x_i+y_i|^{p-1}\), and apply Hölder to each sum with exponents \(p\) and \(q = p/(p-1)\). This gives \(\|x+y\|_p^{p}\le(\|x\|_p+\|y\|_p)\|x+y\|_p^{p-1}\); dividing by the last factor finishes. \(\blacksquare\)</p></div></div></li>
+    <li><b>Norm comparisons in \(\mathbb{R}^{n}\):</b> \(\|x\|_\infty \le \|x\|_2 \le \|x\|_1 \le n\|x\|_\infty\), and \(\|x\|_2 \le \sqrt n\,\|x\|_\infty\).
+      <div class="ex"><div><p>The constants grow with \(n\) — a warning that "equivalent" is not "interchangeable" once \(n\) is large. Chapter 13 collects the consequences.</p></div></div>
+      <div class="proof"><div><p>\(\|x\|_\infty^{2} = \max_i x_i^{2}\le\sum_i x_i^{2}\) gives the first. \(\|x\|_2^{2} = \sum x_i^2 \le (\sum|x_i|)^{2}\) since cross terms are non-negative, giving the second. Each \(|x_i|\le\|x\|_\infty\) summed \(n\) times gives the third, and \(\sum x_i^{2}\le n\|x\|^2_\infty\) the fourth. \(\blacksquare\)</p></div></div></li>
+    <li><b>All norms on a finite-dimensional space are equivalent.</b>
+      <div class="ex"><div><p>In \(\mathbb{R}^{n}\), "converges", "bounded", "open" and "continuous" mean the same thing whichever ruler you pick. In infinite dimensions this collapses.</p></div></div>
+      <div class="proof"><div><p>Fix a basis and compare an arbitrary norm \(N\) with \(\|\cdot\|_\infty\). Writing \(x = \sum x_ie_i\), the triangle inequality gives \(N(x) \le (\sum_iN(e_i))\|x\|_\infty =: C\|x\|_\infty\), so \(N\) is continuous with respect to \(\|\cdot\|_\infty\). The \(\|\cdot\|_\infty\)-unit sphere is closed and bounded, hence compact (Chapter 8's Heine–Borel), so the continuous positive function \(N\) attains a minimum \(c &gt; 0\) on it. Homogeneity extends \(c\|x\|_\infty \le N(x)\le C\|x\|_\infty\) to all \(x\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Unit balls are convex and symmetric</b>, and every such body with non-empty interior is the unit ball of a norm.
+      <div class="ex"><div><p>Norms and centrally symmetric convex bodies are the same thing seen twice. Chapter 19 exploits this constantly.</p></div></div>
+      <div class="proof"><div><p>Convexity: if \(\|x\|,\|y\|\le1\) and \(t\in[0,1]\), then \(\|tx+(1-t)y\| \le t\|x\|+(1-t)\|y\| \le 1\). Symmetry is \(\|-x\|=\|x\|\). Conversely, given such a body \(K\), define the Minkowski functional \(\|x\|_K = \inf\{t &gt; 0 : x/t \in K\}\); homogeneity is immediate, the triangle inequality follows from convexity, and definiteness from \(K\) being bounded with \(\mathbf 0\) in its interior. \(\blacksquare\)</p></div></div></li>
+    <li><b>The operator norm is a norm</b>, and \(\|AB\| \le \|A\|\|B\|\), \(\|Ax\| \le \|A\|\|x\|\).
+      <div class="ex"><div><p>Submultiplicativity: worst-case stretches compound. It makes matrix estimates behave like number estimates.</p></div></div>
+      <div class="proof"><div><p>The norm axioms follow from those of the target norm applied pointwise. For \(x\ne\mathbf 0\), \(\|Ax\| = \|x\|\,\bigl\|A\tfrac{x}{\|x\|}\bigr\| \le \|A\|\|x\|\). Then \(\|ABx\| \le \|A\|\|Bx\| \le \|A\|\|B\|\|x\|\), and taking the supremum over unit \(x\) gives the product bound. \(\blacksquare\)</p></div></div></li>
+    <li><b>For the Euclidean norm, \(\|A\| = \sigma_{\max}\)</b>, the largest singular value.
+      <div class="ex"><div><p>The SVD reads the answer straight off — the biggest stretch factor is the worst case, by construction.</p></div></div>
+      <div class="proof"><div><p>\(\|Ax\|^{2} = \langle A^{\mathsf T}Ax,x\rangle\), and by the Rayleigh quotient (Layer 3) this is maximised over unit \(x\) at the largest eigenvalue of \(A^{\mathsf T}A\), namely \(\sigma_{\max}^{2}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Choose the convenient norm</b> — in finite dimensions they are equivalent, so pick the easiest.
+      <div class="ex"><div><p>\(\|\cdot\|_\infty\) for coordinatewise arguments, \(\|\cdot\|_2\) for geometry, \(\|\cdot\|_1\) for sums.</p></div></div></li>
+    <li><b>Hölder to split a sum</b> — separate two factors into two norms.
+      <div class="ex"><div><p>The discrete rehearsal for the same inequality on integrals in Chapter 12.</p></div></div></li>
+    <li><b>Draw the unit ball</b> — the fastest way to understand an unfamiliar norm.
+      <div class="ex"><div><p>Diamond, disc, square: you can see immediately which vectors it considers small.</p></div></div></li>
+    <li><b>Bound with the operator norm</b> — turn \(\|Ax\|\) into \(\|A\|\|x\|\).
+      <div class="ex"><div><p>Used in every estimate of Chapters 9 and 10.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Expand \(\|x\pm y\|^{2}\)</td><td>L1</td><td>Prove an identity or inequality about lengths</td></tr>
+    <tr><td>Cauchy–Schwarz</td><td>L1</td><td>Bound a dot product or a sum</td></tr>
+    <tr><td>Polarisation</td><td>L1</td><td>Recover angles from lengths alone</td></tr>
+    <tr><td>Gram–Schmidt</td><td>L2</td><td>Build an orthonormal basis</td></tr>
+    <tr><td>Orthogonal projection</td><td>L2</td><td>Find the nearest point in a subspace</td></tr>
+    <tr><td>Normal equations \(A^{\mathsf T}Ax = A^{\mathsf T}b\)</td><td>L2</td><td>Fit data by least squares</td></tr>
+    <tr><td>Split \(v = p + (v-p)\)</td><td>L2</td><td>Apply Pythagoras to an estimate</td></tr>
+    <tr><td>Orthogonal diagonalisation</td><td>L3</td><td>Reduce a symmetric matrix to stretches</td></tr>
+    <tr><td>Rotate to principal axes</td><td>L3</td><td>Remove cross terms from a quadratic form</td></tr>
+    <tr><td>Definiteness test</td><td>L3</td><td>Classify a critical point or a form</td></tr>
+    <tr><td>Singular value decomposition</td><td>L3</td><td>Rank, pseudo-inverse, low-rank approximation</td></tr>
+    <tr><td>Choose a convenient norm</td><td>L4</td><td>Simplify an estimate at no cost</td></tr>
+    <tr><td>Hölder / Minkowski</td><td>L4</td><td>Split or combine sums under a \(p\)-norm</td></tr>
+    <tr><td>Draw the unit ball</td><td>L4</td><td>See what a norm considers small</td></tr>
+    <tr><td>Operator norm bound</td><td>L4</td><td>Control \(\|Ax\|\) by \(\|A\|\|x\|\)</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Inner Products &amp; Norms · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

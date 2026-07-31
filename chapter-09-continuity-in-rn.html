@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 9 — Continuity in R^n</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Continuity in \(\mathbb{R}^{n}\)</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-08-topology-of-rn.html">&#10094; Chapter 8 — Topology of \(\mathbb{R}^{n}\)</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Many Variables at Once</h2>
+    <p>On the line there are two ways to approach a point. In the plane there are infinitely many — and that single fact is what makes multivariable limits delicate.</p>
+    <p>Once continuity is pinned down, Chapter 8's compactness and connectedness do the rest: values are attained, continuity becomes uniform, and intermediate values are hit.</p>
+    <p>The last layer moves up a level, to sequences of functions — the setting Chapters 12 and 15 need.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\lim_{x\to a}f(x) = L\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Limits</a><a href="#L2">L2 Continuity</a><a href="#L3">L3 Global Theorems</a>
+  <a href="#L4">L4 Function Sequences</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Approaching from everywhere</span>
+  <h2 class="ltitle">Limits in Several Variables</h2>
+  <p class="ldesc">Why one direction is never enough.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Limit</b> \(\lim_{x\to a}f(x) = L\) — for every \(\varepsilon\) there is \(\delta\) with \(0&lt;\|x-a\|&lt;\delta \Rightarrow \|f(x)-L\|&lt;\varepsilon\).
+      <div class="ex"><div><p>Chapter 3's definition with \(|\cdot|\) replaced by \(\|\cdot\|\) — and now "close to \(a\)" means inside a ball, not an interval.</p></div></div></li>
+    <li><b>Cluster point of the domain</b> — where a limit may be asked about.
+      <div class="ex"><div><p>You can't ask what a function tends to at an isolated point; there is nothing to approach along.</p></div></div></li>
+    <li><b>Path (directional) limit</b> — the limit along a chosen curve into \(a\).
+      <div class="ex"><div><p>Approach the origin along the \(x\)-axis, the \(y\)-axis, or a parabola — three answers is entirely possible.</p></div></div></li>
+    <li><b>Iterated limit</b> \(\lim_{x\to a}\lim_{y\to b}f(x,y)\).
+      <div class="ex"><div><p>Take the limits one variable at a time. Both can exist, agree, and still not be the real limit.</p></div></div></li>
+    <li><b>Vector-valued function</b> \(f : \mathbb{R}^{n}\to\mathbb{R}^{m}\), with components \(f_1,\dots,f_m\).
+      <div class="ex"><div><p>A wind map: at each point of the ground, a velocity vector.</p></div></div></li>
+    <li><b>Scalar field &amp; vector field</b> — \(m=1\); \(m=n\).
+      <div class="ex"><div><p>Temperature in a room; the airflow in it.</p></div></div></li>
+    <li><b>Little-o and big-O</b> — \(g = o(h)\) means \(g/h \to 0\); \(g = O(h)\) means \(g/h\) stays bounded.
+      <div class="ex"><div><p>"Negligible compared to" and "no worse than". Chapter 10's derivative is defined with the first.</p></div></div></li>
+    <li><b>Limit at infinity</b> — \(\|x\|\to\infty\).
+      <div class="ex"><div><p>One "point at infinity" in every direction at once, unlike \(\pm\infty\) on the line.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Limits are unique</b>, and the limit is componentwise.
+      <div class="ex"><div><p>A vector limit is just \(m\) ordinary limits, computed separately.</p></div></div>
+      <div class="proof"><div><p>Uniqueness is Chapter 7, Layer 2, applied to the Euclidean metric. For components, \(|f_i(x)-L_i| \le \|f(x)-L\| \le \sum_j|f_j(x)-L_j|\); the left inequality gives one direction, the right (with \(\varepsilon/m\) for each component) the other. \(\blacksquare\)</p></div></div></li>
+    <li><b>Sequential criterion:</b> \(\lim_{x\to a}f = L\) iff \(f(x_k)\to L\) for every sequence \(x_k \to a\) with \(x_k \ne a\).
+      <div class="ex"><div><p>The practical tool: to disprove a limit, produce two sequences with different answers.</p></div></div>
+      <div class="proof"><div><p>Chapter 7, Layer 2's argument applies unchanged: the forward direction is immediate, and if the \(\varepsilon\)–\(\delta\) condition fails for some \(\varepsilon_0\), choosing \(x_k\) within \(1/k\) of \(a\) but with \(\|f(x_k)-L\|\ge\varepsilon_0\) gives a counterexample sequence. \(\blacksquare\)</p></div></div></li>
+    <li><b>Algebra of limits:</b> sums, scalar multiples, products, quotients and dot products behave as expected.
+      <div class="ex"><div><p>All inherited from \(\mathbb{R}\) via the componentwise theorem.</p></div></div>
+      <div class="proof"><div><p>By the sequential criterion each statement reduces to the corresponding one for sequences of real numbers (Chapter 3, Layer 3), applied component by component; for the dot product use bilinearity and boundedness of convergent sequences. \(\blacksquare\)</p></div></div></li>
+    <li><b>Path test:</b> if two paths into \(a\) give different limits, the limit does not exist.
+      <div class="ex"><div><p>\(f(x,y) = \frac{xy}{x^{2}+y^{2}}\) gives 0 along each axis and \(\tfrac12\) along \(y=x\). No limit at the origin.</p></div></div>
+      <div class="proof"><div><p>If the limit were \(L\), the sequential criterion would force every sequence approaching \(a\) — in particular sequences along each path — to have image tending to \(L\). Two different path limits therefore contradict existence. \(\blacksquare\)</p></div></div></li>
+    <li><b>All straight-line limits agreeing is not enough.</b>
+      <div class="ex"><div><p>\(f(x,y)=\frac{x^{2}y}{x^{4}+y^{2}}\) tends to 0 along every straight line through the origin, but to \(\tfrac12\) along \(y = x^{2}\).</p></div></div>
+      <div class="proof"><div><p>Along \(y = mx\), \(f = \frac{mx^{3}}{x^{4}+m^{2}x^{2}} = \frac{mx}{x^{2}+m^{2}} \to 0\); along \(x=0\), \(f \equiv 0\). But on \(y=x^{2}\), \(f = \frac{x^{4}}{2x^{4}} = \tfrac12\) for \(x \ne 0\). So no limit exists despite every line agreeing. \(\blacksquare\)</p></div></div></li>
+    <li><b>Iterated limits may exist and disagree with the limit.</b>
+      <div class="ex"><div><p>Order of limits matters — the same warning as Chapter 3's rearrangement theorem, in a new costume.</p></div></div>
+      <div class="proof"><div><p>For \(f(x,y) = \frac{x^{2}-y^{2}}{x^{2}+y^{2}}\), the inner limit as \(y\to0\) is 1, so the iterated limit is 1; taking \(x\to0\) first gives \(-1\). Since the two iterated limits differ, no joint limit exists (a joint limit would force both to equal it). \(\blacksquare\)</p></div></div></li>
+    <li><b>Squeeze theorem:</b> \(\|f(x)-L\| \le g(x)\) with \(g(x)\to0\) forces \(f(x)\to L\).
+      <div class="ex"><div><p>The <em>positive</em> tool: to prove a limit exists, bound the whole thing by something that clearly dies.</p></div></div>
+      <div class="proof"><div><p>Given \(\varepsilon\), take \(\delta\) making \(g(x) &lt; \varepsilon\) on the punctured ball; then \(\|f(x)-L\| &lt; \varepsilon\) there. \(\blacksquare\)</p></div></div></li>
+    <li><b>Polar coordinates test:</b> if \(|f(r\cos\theta, r\sin\theta) - L| \le h(r)\) with \(h(r)\to0\) <em>uniformly in \(\theta\)</em>, the limit is \(L\).
+      <div class="ex"><div><p>The uniformity is the whole point — a bound depending on \(\theta\) proves nothing.</p></div></div>
+      <div class="proof"><div><p>Since \(\|(x,y)\| = r\), the punctured ball of radius \(\delta\) is exactly \(0 &lt; r &lt; \delta\). Choosing \(\delta\) with \(h(r)&lt;\varepsilon\) for \(r &lt; \delta\) bounds \(|f - L|\) by \(\varepsilon\) at every such point, whatever \(\theta\) is. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Try two paths first</b> — the fastest way to show a limit does not exist.
+      <div class="ex"><div><p>Axes, then \(y = mx\), then \(y = x^{2}\). One disagreement ends the question.</p></div></div></li>
+    <li><b>Squeeze to prove existence</b> — bound \(\|f - L\|\) by a function of \(\|x-a\|\) alone.
+      <div class="ex"><div><p>\(\left|\frac{x^{2}y}{x^{2}+y^{2}}\right| \le |y| \le \|(x,y)\| \to 0\).</p></div></div></li>
+    <li><b>Switch to polar coordinates</b> — and check the bound is uniform in the angle.
+      <div class="ex"><div><p>Powers of \(r\) fall out immediately; the \(\theta\)-dependence is where the traps are.</p></div></div></li>
+    <li><b>Work componentwise</b> — split a vector limit into \(m\) scalar ones.
+      <div class="ex"><div><p>Nothing about the vector case is genuinely new once this is done.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · No jumps</span>
+  <h2 class="ltitle">Continuity</h2>
+  <p class="ldesc">Three equivalent definitions, and which to use when.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Continuity at a point</b> — \(\lim_{x\to a}f(x) = f(a)\).
+      <div class="ex"><div><p>The value is where the surrounding values are heading.</p></div></div></li>
+    <li><b>Continuity on a set</b> — continuous at each point; equivalently, preimages of open sets are open.
+      <div class="ex"><div><p>The second version needs no \(\varepsilon\) and is what Chapter 8 uses.</p></div></div></li>
+    <li><b>Uniform continuity</b> — one \(\delta\) serving every point.
+      <div class="ex"><div><p>\(1/x\) on \((0,1)\) is continuous but not uniformly: no single \(\delta\) survives near 0.</p></div></div></li>
+    <li><b>Lipschitz map</b> — \(\|f(x)-f(y)\| \le K\|x-y\|\).
+      <div class="ex"><div><p>Every linear map is Lipschitz, with \(K = \|A\|\), the operator norm.</p></div></div></li>
+    <li><b>Separately continuous</b> — continuous in each variable with the others fixed.
+      <div class="ex"><div><p>Strictly weaker than continuity — the standard trap in several variables.</p></div></div></li>
+    <li><b>Coordinate functions &amp; projections</b>.
+      <div class="ex"><div><p>\(\pi_i(x)=x_i\). Continuous, and the building block for showing polynomials are continuous.</p></div></div></li>
+    <li><b>Support of a function</b> — the closure of \(\{f \ne 0\}\).
+      <div class="ex"><div><p>Where the function actually does something. "Compact support" is a standing hypothesis from Chapter 12 onward.</p></div></div></li>
+    <li><b>Bump function</b> — smooth, non-negative, with small compact support.
+      <div class="ex"><div><p>A gentle hill that is exactly flat outside a small disc. Built from \(e^{-1/t}\), and essential in Chapter 15.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Componentwise continuity:</b> \(f\) is continuous iff every \(f_i\) is.
+      <div class="ex"><div><p>A moving point traces a continuous path exactly when each coordinate does.</p></div></div>
+      <div class="proof"><div><p>Immediate from Layer 1's componentwise limit theorem applied at each point — or from Chapter 8's product characterisation of continuity into a product. \(\blacksquare\)</p></div></div></li>
+    <li><b>Algebra of continuity:</b> sums, products, quotients (non-vanishing denominator), compositions and dot products of continuous maps are continuous.
+      <div class="ex"><div><p>Every polynomial in several variables is continuous; every rational function is, off its zero set.</p></div></div>
+      <div class="proof"><div><p>By the sequential criterion each case reduces to the algebra of limits (Layer 1). For compositions use the preimage criterion: \((g\circ f)^{-1}(W) = f^{-1}(g^{-1}(W))\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Linear maps are continuous</b>, indeed Lipschitz, with \(\|Ax - Ay\| \le \|A\|\|x-y\|\).
+      <div class="ex"><div><p>In finite dimensions there is no such thing as a discontinuous linear map. In infinite dimensions there is.</p></div></div>
+      <div class="proof"><div><p>Writing \(x = \sum x_ie_i\), \(\|Ax\| \le \sum_i|x_i|\|Ae_i\| \le \bigl(\sum_i\|Ae_i\|\bigr)\|x\|_\infty\), so \(A\) is bounded, hence Lipschitz by linearity: \(\|Ax-Ay\| = \|A(x-y)\|\le\|A\|\|x-y\|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Norms and the distance function are continuous.</b>
+      <div class="ex"><div><p>Length varies smoothly with the vector — used silently in almost every proof.</p></div></div>
+      <div class="proof"><div><p>The reverse triangle inequality gives \(\bigl|\|x\|-\|y\|\bigr| \le \|x-y\|\), so the norm is Lipschitz with constant 1; the same holds for \(x \mapsto d(x,A)\) (Chapter 7, Layer 2). \(\blacksquare\)</p></div></div></li>
+    <li><b>Separately continuous \(\not\Rightarrow\) continuous.</b>
+      <div class="ex"><div><p>\(f(x,y)=\frac{xy}{x^2+y^2}\) (with \(f(0,0)=0\)) is continuous in \(x\) for fixed \(y\) and vice versa, yet has no limit at the origin.</p></div></div>
+      <div class="proof"><div><p>With \(y\) fixed and non-zero, \(f\) is a rational function of \(x\) with non-vanishing denominator, hence continuous; the same with roles swapped, and along either axis \(f\equiv0\). But Layer 1 showed the joint limit at the origin does not exist, so \(f\) is not continuous there. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuity is a topological property</b> — it depends only on the open sets, hence not on which equivalent norm is used.
+      <div class="ex"><div><p>Taxicab or Euclidean, the continuous functions are the same.</p></div></div>
+      <div class="proof"><div><p>Continuity is characterised by open preimages (Chapter 8, Layer 2), and equivalent norms generate the same open sets (Chapter 6, Layer 4). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gluing lemma:</b> continuous functions agreeing on the overlap of two closed pieces glue to a continuous function.
+      <div class="ex"><div><p>Define a function piecewise and, provided the pieces are closed and match on the seam, it stays continuous.</p></div></div>
+      <div class="proof"><div><p>Let \(X = A\cup B\) with \(A,B\) closed and \(f|_A, f|_B\) continuous. For closed \(C\) in the target, \(f^{-1}(C) = (f|_A)^{-1}(C)\cup(f|_B)^{-1}(C)\), each closed in a closed set, hence closed in \(X\); a finite union of closed sets is closed. So preimages of closed sets are closed. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Build from known continuous pieces</b> — projections, norms, polynomials, then compose.
+      <div class="ex"><div><p>Almost never necessary to touch an \(\varepsilon\).</p></div></div></li>
+    <li><b>Use preimages of open sets</b>.
+      <div class="ex"><div><p>Especially for compositions and for proving sets open or closed.</p></div></div></li>
+    <li><b>Find a Lipschitz constant</b> — the strongest cheap form of continuity.
+      <div class="ex"><div><p>For a differentiable \(f\), a bound on \(\|Df\|\) gives one (Chapter 10).</p></div></div></li>
+    <li><b>Glue on closed pieces</b> — the standard piecewise construction.
+      <div class="ex"><div><p>On <em>open</em> pieces gluing also works; on half-open ones it fails.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · The great guarantees</span>
+  <h2 class="ltitle">Global Theorems</h2>
+  <p class="ldesc">What compactness and connectedness buy you.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Attained maximum</b> — a point where the function actually reaches its supremum.
+      <div class="ex"><div><p>Not merely approached. On \((0,1)\), \(f(x)=x\) has a supremum it never reaches.</p></div></div></li>
+    <li><b>Coercive function</b> — \(f(x)\to\infty\) as \(\|x\|\to\infty\).
+      <div class="ex"><div><p>The trick for optimising on all of \(\mathbb{R}^{n}\): coercivity confines the search to a compact ball.</p></div></div></li>
+    <li><b>Proper map</b> — preimages of compact sets are compact.
+      <div class="ex"><div><p>Nothing runs off to infinity. The right hypothesis when the domain is unbounded.</p></div></div></li>
+    <li><b>Homeomorphism onto the image</b>.
+      <div class="ex"><div><p>A continuous injection on a compact set is automatically one — a small miracle worth remembering.</p></div></div></li>
+    <li><b>Uniform continuity on compact sets</b>.
+      <div class="ex"><div><p>The upgrade that makes integration work in Chapter 12.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Extreme value theorem:</b> a continuous real function on a compact \(K \subseteq \mathbb{R}^{n}\) attains its maximum and minimum.
+      <div class="ex"><div><p>The warmest point of a closed room really exists.</p></div></div>
+      <div class="proof"><div><p>\(f(K)\) is compact (Chapter 8, Layer 3), hence closed and bounded in \(\mathbb{R}\); a non-empty closed bounded set contains its supremum and infimum, and their preimages are the extremisers. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — coercive functions attain a minimum on \(\mathbb{R}^{n}\).</b>
+      <div class="ex"><div><p>Every quadratic bowl has a lowest point, even though space is unbounded.</p></div></div>
+      <div class="proof"><div><p>Pick any \(x_0\) and let \(c = f(x_0)\). Coercivity gives \(R\) with \(f(x) &gt; c\) whenever \(\|x\| &gt; R\), so the infimum over \(\mathbb{R}^{n}\) equals the infimum over the closed ball \(\overline{B}(0,R)\), which is compact — and there the minimum is attained. \(\blacksquare\)</p></div></div></li>
+    <li><b>Heine–Cantor:</b> continuity on a compact set is uniform.
+      <div class="ex"><div><p>A local promise made everywhere becomes a single global promise.</p></div></div>
+      <div class="proof"><div><p>Chapter 8, Layer 3's Lebesgue number argument, applied to the cover by preimages of \(\varepsilon/2\)-balls. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous maps on compact sets are bounded</b> and their images are compact.
+      <div class="ex"><div><p>Compactness is the hypothesis that stops anything running away.</p></div></div>
+      <div class="proof"><div><p>Chapter 8, Layer 3: continuous images of compact sets are compact, hence closed and bounded. \(\blacksquare\)</p></div></div></li>
+    <li><b>A continuous bijection from a compact space to a Hausdorff space is a homeomorphism.</b>
+      <div class="ex"><div><p>You get the continuity of the inverse for free — no need to prove it.</p></div></div>
+      <div class="proof"><div><p>It suffices that \(f\) is a closed map. A closed subset \(C\) of a compact \(K\) is compact, so \(f(C)\) is compact, hence closed in a Hausdorff space. Therefore \((f^{-1})^{-1}(C) = f(C)\) is closed for every closed \(C\), which is continuity of \(f^{-1}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Intermediate value theorem:</b> a continuous real function on a connected set attains every intermediate value.
+      <div class="ex"><div><p>Somewhere on a connected map of the country, the temperature is exactly 15°C — if it is 10 somewhere and 20 elsewhere.</p></div></div>
+      <div class="proof"><div><p>Chapter 8, Layer 4: the image is a connected subset of \(\mathbb{R}\), hence an interval. \(\blacksquare\)</p></div></div></li>
+    <li><b>Borsuk–Ulam</b> (stated): every continuous \(f : S^{n}\to\mathbb{R}^{n}\) has a pair of antipodal points with equal values.
+      <div class="ex"><div><p>At any moment there are two opposite points on Earth with identical temperature <em>and</em> pressure.</p></div></div>
+      <div class="proof"><div><p>Sketch: consider \(g(x) = f(x)-f(-x)\), which is odd. If \(g\) never vanished, \(x\mapsto g(x)/\|g(x)\|\) would be a continuous odd map \(S^{n}\to S^{n-1}\); a degree (or homology) argument shows no such map exists. Hence \(g(x_0)=\mathbf 0\) for some \(x_0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Brouwer's fixed point theorem</b> (stated): a continuous self-map of a compact convex set in \(\mathbb{R}^{n}\) has a fixed point.
+      <div class="ex"><div><p>Stir the tea however you like: some point of the liquid ends where it began.</p></div></div>
+      <div class="proof"><div><p>Sketch: Chapter 7, Layer 4 gives the ball case via the impossibility of a retraction onto the sphere. A compact convex set with non-empty interior is homeomorphic to a closed ball, and fixed-point existence is preserved by homeomorphism; degenerate cases follow by working in the affine hull. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check compactness before optimising</b> — closed and bounded, or coercive.
+      <div class="ex"><div><p>Skip this and you may spend hours looking for a maximum that isn't there.</p></div></div></li>
+    <li><b>Restrict to a compact ball</b> — using coercivity or decay.
+      <div class="ex"><div><p>Turns a global problem into one the extreme value theorem can handle.</p></div></div></li>
+    <li><b>Use connectedness for existence</b> — sign changes give solutions.
+      <div class="ex"><div><p>The multivariable descendant of "the graph must cross the axis".</p></div></div></li>
+    <li><b>Compact + injective + continuous \(\Rightarrow\) homeomorphism</b>.
+      <div class="ex"><div><p>A standing shortcut in Chapters 14–15 when checking that a parametrisation is well behaved.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Functions as points</span>
+  <h2 class="ltitle">Sequences of Functions</h2>
+  <p class="ldesc">A whole space whose points are functions — and when it is compact.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Pointwise convergence</b> — \(f_k(x)\to f(x)\) for each \(x\).
+      <div class="ex"><div><p>Every point settles, but possibly at wildly different speeds.</p></div></div></li>
+    <li><b>Uniform convergence</b> — \(\sup_x\|f_k(x)-f(x)\|\to0\).
+      <div class="ex"><div><p>The whole graph settles together. This is convergence in the sup norm.</p></div></div></li>
+    <li><b>Sup norm</b> \(\|f\|_\infty = \sup_x\|f(x)\|\).
+      <div class="ex"><div><p>Turns the set of bounded functions into a normed vector space — complete, by Chapter 7.</p></div></div></li>
+    <li><b>Equicontinuity</b> — one \(\delta\) works for every function in the family at once.
+      <div class="ex"><div><p>A family with a common speed limit. The missing ingredient for compactness.</p></div></div></li>
+    <li><b>Uniformly bounded family</b> — one bound for all of them.
+      <div class="ex"><div><p>Bounded in the sup norm — necessary, but on its own not enough for compactness.</p></div></div></li>
+    <li><b>Algebra of functions</b> — a family closed under \(+\), \(\times\) and scalars.
+      <div class="ex"><div><p>Polynomials form one; so do trigonometric polynomials.</p></div></div></li>
+    <li><b>Separates points</b> — for \(x\ne y\) some member of the family has \(f(x)\ne f(y)\).
+      <div class="ex"><div><p>The family can tell any two points apart. Without this it can't approximate everything.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Uniform limits of continuous functions are continuous.</b>
+      <div class="ex"><div><p>Pointwise is not enough: \(x^{k}\) on \([0,1]\) has a discontinuous limit.</p></div></div>
+      <div class="proof"><div><p>The \(\varepsilon/3\) argument of Chapter 3, Layer 5, works verbatim with \(|\cdot|\) replaced by \(\|\cdot\|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\bigl(C(K,\mathbb{R}^{m}),\|\cdot\|_\infty\bigr)\) is a Banach space</b> for compact \(K\).
+      <div class="ex"><div><p>Functions become points of a complete space, so the fixed point theorem applies to them.</p></div></div>
+      <div class="proof"><div><p>Continuous functions on a compact set are bounded (Layer 3), so the sup norm is finite; the norm axioms are pointwise. Completeness: a sup-Cauchy sequence is pointwise Cauchy, hence has a pointwise limit, and the Cauchy estimate passes to the limit to give uniform convergence — whose limit is continuous by the previous theorem. \(\blacksquare\)</p></div></div></li>
+    <li><b>Weierstrass M-test:</b> if \(\|f_k\|_\infty \le M_k\) with \(\sum M_k &lt; \infty\), then \(\sum f_k\) converges uniformly.
+      <div class="ex"><div><p>The workhorse for showing a series of functions defines a continuous function.</p></div></div>
+      <div class="proof"><div><p>The partial sums satisfy \(\bigl\|\sum_{k=n}^{m}f_k\bigr\|_\infty \le \sum_{k=n}^{m}M_k\), which is small for large \(n\) by the Cauchy criterion for \(\sum M_k\). So the partial sums are Cauchy in the sup norm, and the previous theorem supplies the limit. \(\blacksquare\)</p></div></div></li>
+    <li><b>Dini's theorem:</b> a monotone pointwise-convergent sequence of continuous functions on a compact set converges uniformly.
+      <div class="ex"><div><p>Monotonicity plus compactness upgrade pointwise to uniform for free.</p></div></div>
+      <div class="proof"><div><p>Let \(g_k = f_k - f \downarrow 0\) pointwise, each continuous. Given \(\varepsilon\), the sets \(U_k = \{x : g_k(x)&lt;\varepsilon\}\) are open and increasing, and cover \(K\) by pointwise convergence. A finite subcover is a single \(U_N\), so \(g_k &lt; \varepsilon\) everywhere for \(k \ge N\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Arzelà–Ascoli:</b> a family in \(C(K)\) is relatively compact iff it is uniformly bounded and equicontinuous.
+      <div class="ex"><div><p>The Bolzano–Weierstrass theorem for functions — and the reason many differential equations have solutions.</p></div></div>
+      <div class="proof"><div><p>Sketch. (\(\Leftarrow\)) Take a countable dense \(\{x_j\}\subseteq K\). Uniform boundedness plus a diagonal argument extracts a subsequence converging at every \(x_j\). Equicontinuity then upgrades this to uniform convergence: split \(\|f_{k}(x)-f_{l}(x)\|\) into three pieces via a nearby \(x_j\), each under \(\varepsilon/3\). (\(\Rightarrow\)) A compact set in \(C(K)\) is bounded, and total boundedness gives a finite \(\varepsilon\)-net whose members' individual (uniform) continuity yields a common \(\delta\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Stone–Weierstrass:</b> a subalgebra of \(C(K,\mathbb{R})\) containing the constants and separating points is dense.
+      <div class="ex"><div><p>Every continuous function on a closed box is a uniform limit of polynomials — however jagged it looks.</p></div></div>
+      <div class="proof"><div><p>Sketch: first show the closure of such an algebra is closed under \(\max\) and \(\min\), using that \(|t|\) is a uniform limit of polynomials on a bounded interval. Then, given \(f\) and \(\varepsilon\), separation and the constants provide for each pair \(x,y\) a member agreeing with \(f\) at both; taking finitely many maxima and minima over a compactness argument produces a member within \(\varepsilon\) of \(f\) everywhere. \(\blacksquare\)</p></div></div></li>
+    <li><b>Uniform convergence permits swapping limits with integrals</b> (on compact sets).
+      <div class="ex"><div><p>Chapter 12 replaces this with far better theorems — but on a compact interval this one already does a lot.</p></div></div>
+      <div class="proof"><div><p>\(\bigl|\int_K f_k - \int_K f\bigr| \le \int_K\|f_k - f\| \le \|f_k-f\|_\infty\operatorname{vol}(K)\to0\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Estimate the sup norm</b> — to prove or disprove uniform convergence.
+      <div class="ex"><div><p>Find the worst point: often where the derivative of \(f_k - f\) vanishes.</p></div></div></li>
+    <li><b>M-test</b> — bound each term by a constant and sum the constants.
+      <div class="ex"><div><p>Three lines, and a series of functions is continuous.</p></div></div></li>
+    <li><b>Diagonal extraction</b> — converge at countably many points, then upgrade.
+      <div class="ex"><div><p>The engine of Arzelà–Ascoli and of many compactness proofs.</p></div></div></li>
+    <li><b>Approximate by polynomials</b> — prove the result for polynomials, then pass to the limit.
+      <div class="ex"><div><p>Stone–Weierstrass turns a hard general statement into an algebraic one.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Two-path test</td><td>L1</td><td>Show a multivariable limit does not exist</td></tr>
+    <tr><td>Squeeze by \(\|x-a\|\)</td><td>L1</td><td>Prove a multivariable limit does exist</td></tr>
+    <tr><td>Polar coordinates (uniform in \(\theta\))</td><td>L1</td><td>Settle limits at the origin</td></tr>
+    <tr><td>Work componentwise</td><td>L1</td><td>Reduce a vector limit to scalar ones</td></tr>
+    <tr><td>Build from known continuous pieces</td><td>L2</td><td>Prove continuity with no \(\varepsilon\)</td></tr>
+    <tr><td>Preimage criterion</td><td>L2</td><td>Handle compositions and open/closed sets</td></tr>
+    <tr><td>Lipschitz constant</td><td>L2</td><td>Get uniform continuity in one step</td></tr>
+    <tr><td>Gluing lemma</td><td>L2</td><td>Define a continuous function piecewise</td></tr>
+    <tr><td>Check compactness first</td><td>L3</td><td>Guarantee a maximum exists</td></tr>
+    <tr><td>Coercivity</td><td>L3</td><td>Optimise on unbounded domains</td></tr>
+    <tr><td>Compact + injective</td><td>L3</td><td>Get a homeomorphism free</td></tr>
+    <tr><td>Sup-norm estimate</td><td>L4</td><td>Decide uniform convergence</td></tr>
+    <tr><td>Weierstrass M-test</td><td>L4</td><td>Sum a series of functions safely</td></tr>
+    <tr><td>Arzelà–Ascoli</td><td>L4</td><td>Extract a convergent subsequence of functions</td></tr>
+    <tr><td>Stone–Weierstrass</td><td>L4</td><td>Reduce a problem to polynomials</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Continuity in \(\mathbb{R}^{n}\) · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

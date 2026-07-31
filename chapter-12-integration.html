@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 12 — Integration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Integration</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-11-measure.html">&#10094; Chapter 11 — Measure</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Adding Up Over a Volume</h2>
+    <p>Riemann chops the domain into strips. Lebesgue chops the <b>range</b> into layers and measures the set where each layer lives.</p>
+    <p>That one change buys the convergence theorems — limits may be taken inside the integral — and makes integration over \(\mathbb{R}^{n}\) work as smoothly as over an interval.</p>
+    <p>It also delivers the formula this book has been heading for: \(\int_{T(E)}f = \int_E (f\circ T)\,|\det DT|\).</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\int_{\mathbb{R}^{n}} f\,d\lambda\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 The Integral</a><a href="#L2">L2 Convergence</a><a href="#L3">L3 Fubini</a>
+  <a href="#L4">L4 Change of Variables</a><a href="#L5">L5 \(L^{p}\) Spaces</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Built in three steps</span>
+  <h2 class="ltitle">The Lebesgue Integral</h2>
+  <p class="ldesc">Simple, then non-negative, then general.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Integral of a simple function</b> \(\int\sum_ic_i\chi_{E_i} = \sum_ic_i\lambda(E_i)\).
+      <div class="ex"><div><p>Height times the measure of the set at that height. Just as with a staircase.</p></div></div></li>
+    <li><b>Integral of a non-negative function</b> \(\int f = \sup\bigl\{\int s : 0\le s\le f,\ s \text{ simple}\bigr\}\).
+      <div class="ex"><div><p>Approach from below with staircases. Always defined, possibly \(+\infty\).</p></div></div></li>
+    <li><b>Positive and negative parts</b> \(f^{+} = \max(f,0)\), \(f^{-} = \max(-f,0)\).
+      <div class="ex"><div><p>Profits and losses, kept separately, then netted.</p></div></div></li>
+    <li><b>Integrable function</b> — measurable with \(\int|f| &lt; \infty\); then \(\int f = \int f^{+}-\int f^{-}\).
+      <div class="ex"><div><p>The Lebesgue integral is absolute by design: \(f\) is integrable exactly when \(|f|\) is.</p></div></div></li>
+    <li><b>\(L^{1}\)</b> — the integrable functions, with \(\|f\|_1 = \int|f|\).
+      <div class="ex"><div><p>Functions identified when they agree a.e., so that \(\|f\|_1 = 0\) really means \(f = 0\).</p></div></div></li>
+    <li><b>Integral over a set</b> \(\int_E f = \int f\chi_E\).
+      <div class="ex"><div><p>Restrict by multiplying by the indicator. No separate theory needed.</p></div></div></li>
+    <li><b>Improper vs Lebesgue</b>.
+      <div class="ex"><div><p>\(\int_0^{\infty}\frac{\sin x}{x}dx\) converges as an improper Riemann integral but not as a Lebesgue one — the positive and negative parts are each infinite.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The integral of a simple function is well defined</b> and linear on simple functions.
+      <div class="ex"><div><p>Different ways of writing the same staircase must give the same area.</p></div></div>
+      <div class="proof"><div><p>Any two representations have a common refinement into disjoint measurable pieces; on each piece the coefficient is the same in both, and finite additivity of \(\lambda\) makes the sums agree. Linearity follows by refining the partitions of \(s\) and \(t\) to a common one. \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotonicity:</b> \(f \le g\) implies \(\int f \le \int g\); and \(\bigl|\int f\bigr| \le \int|f|\).
+      <div class="ex"><div><p>The bound used in almost every estimate in the rest of the book.</p></div></div>
+      <div class="proof"><div><p>Every simple \(s \le f\) also satisfies \(s\le g\), so the supremum defining \(\int f\) is over a smaller set. For the second, \(\pm f \le |f|\) gives \(\pm\int f \le \int|f|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Linearity:</b> \(\int(af+bg) = a\int f + b\int g\) for integrable \(f,g\).
+      <div class="ex"><div><p>Obvious for staircases, and everything else is a limit of staircases — but the limit needs the monotone convergence theorem.</p></div></div>
+      <div class="proof"><div><p>For non-negative \(f, g\), take increasing simple \(s_k\uparrow f\), \(t_k\uparrow g\) (Chapter 11, Layer 5). Then \(s_k+t_k\uparrow f+g\), and monotone convergence (Layer 2) plus linearity on simple functions gives \(\int(f+g) = \lim\int(s_k+t_k) = \int f+\int g\). The general case follows by splitting into positive and negative parts and rearranging. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\int f = 0\) for \(f\ge0\) iff \(f = 0\) a.e.;</b> and changing \(f\) on a null set changes nothing.
+      <div class="ex"><div><p>Null sets are invisible to the integral — which is exactly why they were worth defining.</p></div></div>
+      <div class="proof"><div><p>If \(\lambda(\{f&gt;1/k\}) &gt; 0\) for some \(k\), the simple function \(\tfrac1k\chi_{\{f&gt;1/k\}}\) lies under \(f\) and has positive integral. Conversely if \(f = 0\) a.e., every simple \(s \le f\) is 0 a.e., so \(\int s = 0\). The second claim follows by applying this to \(|f-g|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Chebyshev–Markov inequality:</b> \(\lambda(\{|f| \ge t\}) \le \frac1t\int|f|\).
+      <div class="ex"><div><p>A function with a small integral cannot be large on a large set.</p></div></div>
+      <div class="proof"><div><p>\(t\chi_{\{|f|\ge t\}} \le |f|\) pointwise; integrate and use monotonicity. \(\blacksquare\)</p></div></div></li>
+    <li><b>Integrable \(\Rightarrow\) finite a.e.</b>
+      <div class="ex"><div><p>A function can be infinite somewhere and still integrable — but only on a null set.</p></div></div>
+      <div class="proof"><div><p>By Chebyshev, \(\lambda(\{|f|\ge t\}) \le \|f\|_1/t \to 0\), and \(\{|f| = \infty\} \subseteq \{|f|\ge t\}\) for every \(t\), so it is null. \(\blacksquare\)</p></div></div></li>
+    <li><b>Riemann \(\Rightarrow\) Lebesgue:</b> a Riemann-integrable function on \([a,b]\) is Lebesgue integrable with the same value.
+      <div class="ex"><div><p>Nothing is lost; a great deal is gained. \(\chi_{\mathbb{Q}\cap[0,1]}\) now has integral 0.</p></div></div>
+      <div class="proof"><div><p>Upper and lower Darboux sums are integrals of simple step functions \(u_k \ge f \ge l_k\). Riemann integrability makes \(\int(u_k - l_k)\to0\), so the monotone limits \(u = \lim u_k\) and \(l = \lim l_k\) satisfy \(\int(u-l) = 0\), giving \(u = l = f\) a.e. Hence \(f\) is measurable (Chapter 11's completeness) and its Lebesgue integral is the common limit — the Riemann integral. \(\blacksquare\)</p></div></div></li>
+    <li><b>Absolute continuity of the integral:</b> for integrable \(f\) and \(\varepsilon &gt; 0\) there is \(\delta\) with \(\int_E|f| &lt; \varepsilon\) whenever \(\lambda(E)&lt;\delta\).
+      <div class="ex"><div><p>A little bit of domain contributes only a little bit of integral — however tall the function is.</p></div></div>
+      <div class="proof"><div><p>Let \(f_k = \min(|f|,k)\uparrow|f|\). By monotone convergence choose \(k\) with \(\int(|f|-f_k)&lt;\varepsilon/2\), then take \(\delta = \varepsilon/(2k)\): on any \(E\) with \(\lambda(E)&lt;\delta\), \(\int_E|f| \le \int(|f|-f_k) + k\lambda(E) &lt; \varepsilon\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Prove it for simple functions first</b>, then take monotone limits.
+      <div class="ex"><div><p>The standard three-step architecture: simple, non-negative, general.</p></div></div></li>
+    <li><b>Split into \(f^{+}\) and \(f^{-}\)</b>.
+      <div class="ex"><div><p>Reduces every general statement to the non-negative case.</p></div></div></li>
+    <li><b>Chebyshev to convert an integral bound into a measure bound</b>.
+      <div class="ex"><div><p>The bridge between "small integral" and "small set".</p></div></div></li>
+    <li><b>Modify on a null set</b> whenever it makes life easier.
+      <div class="ex"><div><p>The integral cannot tell.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Why Lebesgue won</span>
+  <h2 class="ltitle">The Convergence Theorems</h2>
+  <p class="ldesc">When you may move a limit inside an integral.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Monotone sequence of functions</b> \(0\le f_1\le f_2\le\cdots\).
+      <div class="ex"><div><p>A rising tide. The simplest situation in which limits behave.</p></div></div></li>
+    <li><b>Dominating function</b> \(g\) with \(|f_k|\le g\) and \(\int g&lt;\infty\).
+      <div class="ex"><div><p>A single integrable ceiling for the whole sequence. This is the hypothesis that does the work.</p></div></div></li>
+    <li><b>Uniform integrability</b> — the tails of \(\int|f_k|\) are small uniformly in \(k\).
+      <div class="ex"><div><p>The sharp condition: it is what dominated convergence really needs.</p></div></div></li>
+    <li><b>Escape of mass</b> — the failure mode when no dominating function exists.
+      <div class="ex"><div><p>A bump of area 1 that slides off to infinity, or gets taller and thinner. The pointwise limit is 0; the integrals are not.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Monotone convergence theorem:</b> \(0\le f_k\uparrow f\) pointwise implies \(\int f_k \uparrow \int f\).
+      <div class="ex"><div><p>A rising tide raises the integral to the limit. The foundation of everything else here.</p></div></div>
+      <div class="proof"><div><p>Monotonicity gives \(\lim\int f_k \le \int f\). For the reverse, fix a simple \(s \le f\) and \(c\in(0,1)\), and set \(E_k = \{f_k \ge cs\}\), which increase to the whole space. Then \(\int f_k \ge c\int_{E_k}s\), and continuity from below of the measure (Chapter 11, Layer 2) gives \(\int_{E_k}s \to \int s\). So \(\lim\int f_k \ge c\int s\) for every \(c &lt; 1\) and every such \(s\); take suprema. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — series:</b> \(\int\sum_kf_k = \sum_k\int f_k\) for non-negative \(f_k\) (Beppo Levi).
+      <div class="ex"><div><p>Infinite sums of non-negative functions may always be integrated term by term.</p></div></div>
+      <div class="proof"><div><p>The partial sums increase to the total sum, so monotone convergence applies, and linearity handles each partial sum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Fatou's lemma:</b> \(\int\liminf f_k \le \liminf\int f_k\) for \(f_k\ge0\).
+      <div class="ex"><div><p>Mass can be lost in the limit but never gained. The sliding bump loses all of it.</p></div></div>
+      <div class="proof"><div><p>Let \(g_N = \inf_{k\ge N}f_k\), so \(g_N \uparrow \liminf f_k\) and \(g_N \le f_k\) for all \(k \ge N\). Monotone convergence gives \(\int\liminf f_k = \lim_N\int g_N\), and \(\int g_N \le \inf_{k\ge N}\int f_k\), whose limit is \(\liminf\int f_k\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Dominated convergence theorem:</b> \(f_k\to f\) a.e. with \(|f_k|\le g\) integrable implies \(\int f_k\to\int f\) and \(\|f_k - f\|_1\to0\).
+      <div class="ex"><div><p>The workhorse. With a ceiling in place, limits pass through the integral without comment.</p></div></div>
+      <div class="proof"><div><p>Apply Fatou to the non-negative sequences \(g + f_k\) and \(g - f_k\): the first gives \(\int g + \int f \le \int g + \liminf\int f_k\), the second \(\int g - \int f \le \int g - \limsup\int f_k\). Cancelling the finite \(\int g\) yields \(\limsup\int f_k \le \int f \le \liminf\int f_k\). Applying the same to \(|f_k - f| \le 2g\) gives \(\|f_k-f\|_1\to0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Domination is necessary:</b> without it the conclusion fails.
+      <div class="ex"><div><p>\(f_k = k\chi_{(0,1/k)}\) tends to 0 pointwise, yet \(\int f_k = 1\) forever.</p></div></div>
+      <div class="proof"><div><p>Each \(f_k\) is simple with integral \(k\cdot\frac1k = 1\), and \(f_k(x)\to0\) for every \(x &gt; 0\). Any dominating \(g\) would satisfy \(g \ge k\) on \((0,1/k)\), forcing \(g \ge 1/x\), which is not integrable near 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Differentiation under the integral sign:</b> if \(|\partial_t f(x,t)| \le g(x)\) integrable, then \(\frac{d}{dt}\int f(x,t)dx = \int\partial_tf(x,t)dx\).
+      <div class="ex"><div><p>The everyday application of dominated convergence — and the reason it appears in every physics calculation.</p></div></div>
+      <div class="proof"><div><p>Write the difference quotient \(\frac{f(x,t+h)-f(x,t)}{h}\), which by the mean value theorem is bounded by \(g(x)\) and converges pointwise to \(\partial_tf(x,t)\) as \(h\to0\). Dominated convergence, applied along any sequence \(h_k\to0\), gives the claim. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuity of parameter integrals:</b> if \(f(x,\cdot)\) is continuous and dominated, then \(t\mapsto\int f(x,t)dx\) is continuous.
+      <div class="ex"><div><p>Same proof, one derivative less.</p></div></div>
+      <div class="proof"><div><p>For \(t_k \to t\), \(f(x,t_k)\to f(x,t)\) pointwise with the common bound \(g\); dominated convergence gives convergence of the integrals, which is sequential continuity. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Find a dominating function</b> — then take the limit inside without further thought.
+      <div class="ex"><div><p>Look for a bound independent of \(k\); that is the entire skill.</p></div></div></li>
+    <li><b>Use monotone convergence for non-negative increasing sequences</b>.
+      <div class="ex"><div><p>No domination needed — monotonicity is enough.</p></div></div></li>
+    <li><b>Fatou when you only need an inequality</b>.
+      <div class="ex"><div><p>Often all a proof requires, and it has almost no hypotheses.</p></div></div></li>
+    <li><b>Integrate a series term by term</b> — legitimate if the terms are non-negative, or if \(\sum\int|f_k|&lt;\infty\).
+      <div class="ex"><div><p>The integral version of absolute convergence from Chapter 3.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · One dimension at a time</span>
+  <h2 class="ltitle">Product Measures &amp; Fubini</h2>
+  <p class="ldesc">Turning an \(n\)-dimensional integral into \(n\) one-dimensional ones.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Product \(\sigma\)-algebra</b> \(\mathcal A\otimes\mathcal B\) — generated by the measurable rectangles.
+      <div class="ex"><div><p>Built from bricks, exactly as \(\mathbb{R}^{n}\) is built from boxes.</p></div></div></li>
+    <li><b>Product measure</b> \(\mu\otimes\nu\) — the unique measure with \((\mu\otimes\nu)(A\times B) = \mu(A)\nu(B)\).
+      <div class="ex"><div><p>Area = length \(\times\) length. Lebesgue measure on \(\mathbb{R}^{m+n}\) is the product of those on \(\mathbb{R}^{m}\) and \(\mathbb{R}^{n}\).</p></div></div></li>
+    <li><b>Section (slice)</b> \(E_x = \{y : (x,y)\in E\}\).
+      <div class="ex"><div><p>Cut the solid at height \(x\) and look at the cross-section.</p></div></div></li>
+    <li><b>Iterated integral</b> \(\int\!\!\left(\int f(x,y)dy\right)dx\).
+      <div class="ex"><div><p>Slice, measure each slice, then add up the slices.</p></div></div></li>
+    <li><b>Cavalieri's principle</b> — equal cross-sections, equal volume.
+      <div class="ex"><div><p>A leaning stack of coins has the same volume as a straight one. It falls out of Fubini in one line.</p></div></div></li>
+    <li><b>Region under a graph</b> \(\{(x,t) : 0 \le t \le f(x)\}\).
+      <div class="ex"><div><p>The integral literally <em>is</em> the measure of this set — the picture, made into a theorem.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Existence and uniqueness of the product measure</b> for \(\sigma\)-finite \(\mu,\nu\).
+      <div class="ex"><div><p>Area is determined by what it does to rectangles.</p></div></div>
+      <div class="proof"><div><p>Define \((\mu\otimes\nu)(E) = \int\nu(E_x)\,d\mu(x)\), after checking that \(x\mapsto\nu(E_x)\) is measurable — true for rectangles, and preserved under the monotone-class operations. Countable additivity follows from monotone convergence. Uniqueness: two such measures agree on the rectangles, which form a \(\pi\)-system generating the product \(\sigma\)-algebra, and \(\sigma\)-finiteness lets the uniqueness theorem of Chapter 11 apply. \(\blacksquare\)</p></div></div></li>
+    <li><b>Sections are measurable:</b> if \(E\) is product-measurable, every \(E_x\) is measurable.
+      <div class="ex"><div><p>You may always slice a measurable solid and get measurable cross-sections.</p></div></div>
+      <div class="proof"><div><p>The family of sets all of whose sections are measurable contains the rectangles and is closed under complements and countable unions (sections commute with both), hence contains the generated \(\sigma\)-algebra. \(\blacksquare\)</p></div></div></li>
+    <li><b>Tonelli's theorem:</b> for \(f\ge0\) measurable, both iterated integrals equal \(\int f\,d(\mu\otimes\nu)\).
+      <div class="ex"><div><p>For non-negative functions you may slice in either order with no hypotheses at all.</p></div></div>
+      <div class="proof"><div><p>For \(f = \chi_E\) the statement is the definition of the product measure together with the symmetric computation in the other order (both agree by uniqueness). Linearity extends it to simple functions, and monotone convergence — applied to \(s_k \uparrow f\) from Chapter 11, Layer 5 — extends it to all non-negative measurable \(f\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Fubini's theorem:</b> if \(f\) is integrable, the iterated integrals exist a.e., are integrable, and both equal \(\int f\).
+      <div class="ex"><div><p>Integrability is the licence. Check it with Tonelli on \(|f|\) first — always.</p></div></div>
+      <div class="proof"><div><p>Apply Tonelli to \(|f|\) to get \(\int\!\!\int|f| &lt; \infty\), so for a.e. \(x\) the section \(f(x,\cdot)\) is integrable. Split \(f = f^{+}-f^{-}\), apply Tonelli to each, and subtract — legitimate since both iterated integrals are finite. \(\blacksquare\)</p></div></div></li>
+    <li><b>Fubini fails without integrability.</b>
+      <div class="ex"><div><p>With \(f(x,y) = \frac{x^{2}-y^{2}}{(x^{2}+y^{2})^{2}}\) on \((0,1)^{2}\), the two iterated integrals are \(\pi/4\) and \(-\pi/4\).</p></div></div>
+      <div class="proof"><div><p>Direct computation: \(\int_0^{1}\!\!\int_0^{1}f\,dy\,dx = \pi/4\) while reversing the order gives \(-\pi/4\), by the antisymmetry \(f(x,y) = -f(y,x)\). Tonelli applied to \(|f|\) gives \(+\infty\), so the hypothesis of Fubini genuinely fails. \(\blacksquare\)</p></div></div></li>
+    <li><b>The integral is the area under the graph:</b> \(\int f\,d\lambda = (\lambda\otimes\lambda_1)\bigl(\{(x,t) : 0\le t\le f(x)\}\bigr)\).
+      <div class="ex"><div><p>The schoolroom picture, promoted to a theorem in \(n\) dimensions.</p></div></div>
+      <div class="proof"><div><p>The region is measurable (it is \(\{(x,t) : t \ge 0\}\cap\{(x,t) : f(x)-t\ge0\}\), a preimage of closed sets under measurable maps). Tonelli, slicing in \(t\), gives \(\int\lambda_1([0,f(x)])\,dx = \int f(x)\,dx\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Layer-cake formula:</b> \(\int|f| = \int_0^{\infty}\lambda(\{|f|&gt;t\})\,dt\).
+      <div class="ex"><div><p>Slice horizontally instead of vertically. This is Lebesgue's idea in a single equation.</p></div></div>
+      <div class="proof"><div><p>Apply Tonelli to \(\chi_{\{(x,t) : 0&lt;t&lt;|f(x)|\}}\): slicing in \(x\) gives \(\int|f|\), slicing in \(t\) gives \(\int_0^{\infty}\lambda(\{|f|&gt;t\})dt\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Cavalieri's principle:</b> if all parallel cross-sections have equal measure, the solids have equal volume.
+      <div class="ex"><div><p>Shearing a stack of coins doesn't change its volume — the same fact Chapter 5 read off the determinant.</p></div></div>
+      <div class="proof"><div><p>By Tonelli applied to the indicator of each solid, \(\lambda_{n}(E) = \int\lambda_{n-1}(E_x)\,dx\). If the integrands agree for a.e. \(x\), the integrals agree. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Tonelli on \(|f|\), then Fubini on \(f\)</b> — the standard two-step.
+      <div class="ex"><div><p>Never swap the order of integration before checking absolute integrability.</p></div></div></li>
+    <li><b>Slice in the easy direction</b> — one order is usually far simpler.
+      <div class="ex"><div><p>Draw the region first; the right order is then visible.</p></div></div></li>
+    <li><b>Layer-cake</b> — turn an integral into a measure of level sets.
+      <div class="ex"><div><p>Especially powerful for computing \(\int|f|^{p}\) and for probability tails.</p></div></div></li>
+    <li><b>Count by slicing</b> — Cavalieri for volumes, and the same idea for surface area in Chapter 14.
+      <div class="ex"><div><p>Archimedes computed the sphere's volume this way, two millennia early.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The formula this book was built for</span>
+  <h2 class="ltitle">Change of Variables</h2>
+  <p class="ldesc">Bending the coordinates, and paying \(|\det DT|\) for it.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Change of variables</b> — a \(C^{1}\) diffeomorphism \(T : U \to V\).
+      <div class="ex"><div><p>A smooth, invertible relabelling of the region. Chapter 10's inverse function theorem guarantees these exist locally.</p></div></div></li>
+    <li><b>Jacobian factor</b> \(|\det DT(x)|\).
+      <div class="ex"><div><p>How much a tiny box at \(x\) is stretched. It varies from point to point, which is the whole difficulty.</p></div></div></li>
+    <li><b>Polar coordinates</b> \((r,\theta)\), with \(dA = r\,dr\,d\theta\).
+      <div class="ex"><div><p>The extra \(r\) is the Jacobian: far from the origin, the same angle sweeps a wider arc.</p></div></div></li>
+    <li><b>Cylindrical and spherical coordinates</b>, with factors \(r\) and \(\rho^{2}\sin\varphi\).
+      <div class="ex"><div><p>The \(\rho^{2}\) is why the surface of a sphere grows as the square of the radius.</p></div></div></li>
+    <li><b>Generalised spherical coordinates</b> in \(\mathbb{R}^{n}\), with factor \(\rho^{n-1}\).
+      <div class="ex"><div><p>One radial direction, \(n-1\) angular ones. Chapter 13 computes the entire volume of the ball from this.</p></div></div></li>
+    <li><b>Pushforward measure</b> \(T_{*}\mu(E) = \mu(T^{-1}(E))\).
+      <div class="ex"><div><p>Carry the measure along with the map. Change of variables says how the density transforms.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Linear change of variables:</b> \(\int_{\mathbb{R}^{n}}f(Tx)|\det T|\,dx = \int_{\mathbb{R}^{n}}f(y)\,dy\).
+      <div class="ex"><div><p>Chapter 11's \(\lambda(T(E)) = |\det T|\lambda(E)\), read as a statement about integrals.</p></div></div>
+      <div class="proof"><div><p>For \(f = \chi_E\) the statement is exactly \(\lambda(T^{-1}(E))|\det T| = \lambda(E)\), i.e. Chapter 11, Layer 3. Linearity extends it to simple functions, and monotone convergence to all non-negative measurable \(f\); splitting into positive and negative parts finishes. \(\blacksquare\)</p></div></div></li>
+    <li><b>Change of variables theorem:</b> for a \(C^{1}\) diffeomorphism \(T : U\to V\) and measurable \(f \ge 0\), \[\int_V f(y)\,dy = \int_U f(T(x))\,|\det DT(x)|\,dx.\]
+      <div class="ex"><div><p>Every substitution you have ever made, in any number of dimensions, is this one formula.</p></div></div>
+      <div class="proof"><div><p>Sketch. It suffices to prove \(\lambda(T(E)) = \int_E|\det DT|\) for measurable \(E\), since the integral statement then follows by the simple-function argument above. Cover \(U\) by small cubes. On a cube of side \(\delta\) around \(x_0\), differentiability gives \(T(x) = T(x_0)+DT(x_0)(x-x_0)+o(\delta)\), so \(T\) maps the cube onto a set squeezed between two parallelepipeds whose volumes are \(|\det DT(x_0)|\delta^{n}(1\pm\varepsilon)\), by the linear case. Summing over the cubes, and using uniform continuity of \(DT\) on compact pieces to control \(\varepsilon\), gives the identity in the limit \(\delta\to0\). A covering argument transfers it from cubes to arbitrary measurable sets. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — polar coordinates:</b> \(\int_{\mathbb{R}^{2}}f = \int_0^{\infty}\!\!\int_0^{2\pi}f(r\cos\theta,r\sin\theta)\,r\,d\theta\,dr\).
+      <div class="ex"><div><p>Forget the \(r\) and every answer is wrong — it is the Jacobian, not a decoration.</p></div></div>
+      <div class="proof"><div><p>\(T(r,\theta) = (r\cos\theta, r\sin\theta)\) has \(DT = \begin{pmatrix}\cos\theta&amp;-r\sin\theta\\\sin\theta&amp;r\cos\theta\end{pmatrix}\), so \(\det DT = r(\cos^{2}\theta+\sin^{2}\theta) = r\). It is a diffeomorphism from \((0,\infty)\times(0,2\pi)\) onto the plane minus a null set (a ray), which the integral cannot see. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — spherical coordinates in \(\mathbb{R}^{n}\):</b> \(\int_{\mathbb{R}^{n}}f = \int_0^{\infty}\!\!\int_{S^{n-1}}f(\rho\omega)\rho^{\,n-1}\,d\sigma(\omega)\,d\rho\).
+      <div class="ex"><div><p>Integrate over shells. The \(\rho^{n-1}\) is the surface area factor — and Chapter 13 lives on this identity.</p></div></div>
+      <div class="proof"><div><p>Apply the theorem to \(T(\rho,\omega) = \rho\omega\) on \((0,\infty)\times S^{n-1}\), whose Jacobian factorises as \(\rho^{n-1}\) times the surface element, because scaling by \(\rho\) multiplies \((n-1)\)-dimensional area by \(\rho^{n-1}\) and radial displacement contributes the remaining factor 1. Defining \(\sigma\) as the resulting measure on \(S^{n-1}\) makes the identity precise. \(\blacksquare\)</p></div></div></li>
+    <li><b>The Gaussian integral:</b> \(\int_{\mathbb{R}}e^{-x^{2}}dx = \sqrt\pi\).
+      <div class="ex"><div><p>Computed by squaring it and switching to polar — the classic demonstration that two dimensions can be easier than one.</p></div></div>
+      <div class="proof"><div><p>Let \(I = \int_{\mathbb{R}}e^{-x^{2}}dx\). By Tonelli, \(I^{2} = \int_{\mathbb{R}^{2}}e^{-(x^{2}+y^{2})}dxdy\), and polar coordinates turn this into \(\int_0^{2\pi}\!\!\int_0^{\infty}e^{-r^{2}}r\,dr\,d\theta = 2\pi\cdot\tfrac12 = \pi\). Hence \(I = \sqrt\pi\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(\int_{\mathbb{R}^{n}}e^{-\|x\|^{2}}dx = \pi^{n/2}\).
+      <div class="ex"><div><p>The identity Chapter 13 uses to extract the volume of the \(n\)-ball.</p></div></div>
+      <div class="proof"><div><p>The integrand factorises as \(\prod_ie^{-x_i^{2}}\), so Tonelli turns the integral into the product of \(n\) copies of the one-dimensional Gaussian integral. \(\blacksquare\)</p></div></div></li>
+    <li><b>Substitution is a special case:</b> the one-variable rule \(\int_{g(a)}^{g(b)}f = \int_a^b f(g(x))g'(x)dx\).
+      <div class="ex"><div><p>The \(n=1\) case, where \(|\det DT|\) is simply \(|g'|\).</p></div></div>
+      <div class="proof"><div><p>For a monotone \(C^{1}\) \(g\), the theorem gives \(\int_{g(I)}f = \int_I f(g(x))|g'(x)|dx\). The absolute value disappears once the orientation of the limits is taken into account: reversing the endpoints flips the sign of both sides. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Choose coordinates matching the symmetry</b> — polar for discs, spherical for balls.
+      <div class="ex"><div><p>A circularly symmetric problem in Cartesian coordinates is a self-inflicted wound.</p></div></div></li>
+    <li><b>Compute the Jacobian, take \(|\det|\)</b> — and never forget it.
+      <div class="ex"><div><p>The single most common error in multivariable integration.</p></div></div></li>
+    <li><b>Ignore null sets when checking bijectivity</b> — a ray or a seam doesn't matter.
+      <div class="ex"><div><p>Polar coordinates fail on one ray; the integral cannot tell.</p></div></div></li>
+    <li><b>Square it and go polar</b> — the Gaussian trick.
+      <div class="ex"><div><p>Sometimes the way to do a hard integral is to do a harder-looking one.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · Spaces of functions</span>
+  <h2 class="ltitle">\(L^{p}\) Spaces</h2>
+  <p class="ldesc">Chapter 6's norms, applied to functions instead of vectors.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>\(L^{p}\) norm</b> \(\|f\|_p = \bigl(\int|f|^{p}\bigr)^{1/p}\), \(1\le p&lt;\infty\).
+      <div class="ex"><div><p>The \(p\)-norm of Chapter 6, with the sum replaced by an integral.</p></div></div></li>
+    <li><b>\(L^{\infty}\)</b> — the essentially bounded functions, with \(\|f\|_\infty = \operatorname{ess\,sup}|f|\).
+      <div class="ex"><div><p>The worst value, ignoring null sets.</p></div></div></li>
+    <li><b>Identification a.e.</b> — \(L^{p}\) consists of equivalence classes.
+      <div class="ex"><div><p>Without this, \(\|f\|_p = 0\) wouldn't imply \(f = 0\), and it wouldn't be a norm.</p></div></div></li>
+    <li><b>Conjugate exponents</b> \(\frac1p+\frac1q=1\).
+      <div class="ex"><div><p>2 with 2; 1 with \(\infty\). The same pairing as Chapter 6.</p></div></div></li>
+    <li><b>Convergence in \(L^{p}\)</b> — \(\|f_k - f\|_p \to 0\).
+      <div class="ex"><div><p>Neither implies nor is implied by pointwise convergence — the two are genuinely different.</p></div></div></li>
+    <li><b>Dense subspaces</b> — simple functions, continuous compactly supported functions, smooth ones.
+      <div class="ex"><div><p>You may always assume the function is as nice as you like, then pass to the limit.</p></div></div></li>
+    <li><b>Convolution</b> \((f*g)(x) = \int f(y)g(x-y)dy\).
+      <div class="ex"><div><p>Smearing one function by another. It smooths, and it turns differentiation into multiplication.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Hölder's inequality:</b> \(\|fg\|_1 \le \|f\|_p\|g\|_q\).
+      <div class="ex"><div><p>Cauchy–Schwarz is \(p=q=2\). This is the estimate that appears in every proof below.</p></div></div>
+      <div class="proof"><div><p>Assume \(\|f\|_p = \|g\|_q = 1\) by scaling. Young's inequality (Chapter 6, Layer 4) gives \(|fg| \le \frac{|f|^{p}}{p}+\frac{|g|^{q}}{q}\) pointwise; integrating gives \(\|fg\|_1 \le \frac1p+\frac1q = 1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Minkowski's inequality:</b> \(\|f+g\|_p \le \|f\|_p+\|g\|_p\), so \(\|\cdot\|_p\) is a norm.
+      <div class="ex"><div><p>The triangle inequality for functions.</p></div></div>
+      <div class="proof"><div><p>\(\int|f+g|^{p} \le \int|f||f+g|^{p-1}+\int|g||f+g|^{p-1}\), and Hölder with exponents \(p, q = p/(p-1)\) bounds each term by \(\|f\|_p\|f+g\|_p^{p-1}\) and \(\|g\|_p\|f+g\|_p^{p-1}\). Dividing by \(\|f+g\|_p^{p-1}\) gives the result. \(\blacksquare\)</p></div></div></li>
+    <li><b>Riesz–Fischer:</b> \(L^{p}\) is complete — a Banach space; \(L^{2}\) is a Hilbert space.
+      <div class="ex"><div><p>Chapter 7's completeness, for functions. It is what makes Fourier analysis possible.</p></div></div>
+      <div class="proof"><div><p>Given a Cauchy sequence, extract \(f_{k_j}\) with \(\|f_{k_{j+1}}-f_{k_j}\|_p&lt;2^{-j}\). Then \(g = \sum_j|f_{k_{j+1}}-f_{k_j}|\) has \(\|g\|_p \le 1\) by Minkowski and monotone convergence, so \(g\) is finite a.e. and the telescoping series converges a.e. to some \(f\). Fatou gives \(\|f - f_{k_j}\|_p \to 0\), and a Cauchy sequence with a convergent subsequence converges (Chapter 7, Layer 3). For \(p=2\), \(\langle f,g\rangle = \int fg\) is an inner product inducing \(\|\cdot\|_2\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> an \(L^{p}\)-convergent sequence has an a.e. convergent subsequence.
+      <div class="ex"><div><p>The two notions of convergence are related, but only through a subsequence.</p></div></div>
+      <div class="proof"><div><p>This is exactly the subsequence constructed in the proof above. The full sequence need not converge a.e. — the sliding-indicator "typewriter" sequence of Chapter 11, Layer 5, converges in every \(L^{p}\) to 0 but nowhere pointwise. \(\blacksquare\)</p></div></div></li>
+    <li><b>Density:</b> simple functions, and continuous compactly supported functions, are dense in \(L^{p}\) for \(p&lt;\infty\).
+      <div class="ex"><div><p>Prove your theorem for nice functions and extend by continuity — the standard manoeuvre.</p></div></div>
+      <div class="proof"><div><p>Simple functions: approximate \(f^{\pm}\) by increasing simple functions (Chapter 11, Layer 5) and apply dominated convergence to \(|f - s_k|^{p} \le |f|^{p}\). Continuous functions: an indicator \(\chi_E\) with \(\lambda(E)&lt;\infty\) is approximated using regularity — take \(K \subseteq E \subseteq U\) with \(\lambda(U\setminus K)&lt;\varepsilon\) and a continuous function that is 1 on \(K\), 0 outside \(U\) (built from \(x\mapsto d(x,U^{c})\), Chapter 7). \(\blacksquare\)</p></div></div></li>
+    <li><b>Inclusions on finite measure spaces:</b> \(p &lt; q\) implies \(L^{q}\subseteq L^{p}\); on \(\mathbb{R}^{n}\) neither inclusion holds.
+      <div class="ex"><div><p>On \([0,1]\), being square-integrable is stronger than being integrable. On the whole line, decay at infinity and blow-up at a point pull in opposite directions.</p></div></div>
+      <div class="proof"><div><p>Hölder with exponents \(q/p\) and its conjugate gives \(\int|f|^{p} \le \bigl(\int|f|^{q}\bigr)^{p/q}\lambda(X)^{1-p/q}\), finite when \(\lambda(X)&lt;\infty\). On \(\mathbb{R}\), \(x^{-1/2}\chi_{(0,1)}\) is in \(L^{1}\) but not \(L^{2}\), while \((1+|x|)^{-1}\) is in \(L^{2}\) but not \(L^{1}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Young's convolution inequality:</b> \(\|f*g\|_r \le \|f\|_p\|g\|_q\) when \(\frac1p+\frac1q = 1+\frac1r\).
+      <div class="ex"><div><p>Convolution never makes a function worse — it usually makes it better behaved.</p></div></div>
+      <div class="proof"><div><p>Sketch: for \(r=\infty\) it is Hölder applied pointwise. For \(r = p\) and \(q=1\), Minkowski's integral inequality gives \(\|f*g\|_p \le \int|g(y)|\|f(\cdot-y)\|_p\,dy = \|f\|_p\|g\|_1\) using translation invariance of \(\lambda\). The general case follows by interpolating between these endpoints. \(\blacksquare\)</p></div></div></li>
+    <li><b>Riesz representation on \(L^{2}\):</b> every continuous linear functional is \(f\mapsto\int fg\) for a unique \(g\in L^{2}\).
+      <div class="ex"><div><p>Chapter 6's finite-dimensional theorem, surviving intact into infinite dimensions — because \(L^{2}\) is complete.</p></div></div>
+      <div class="proof"><div><p>Sketch: let \(\varphi\) be a continuous functional with kernel \(N\), a closed subspace. If \(N = L^{2}\) take \(g=0\); otherwise pick a unit \(u \in N^{\perp}\) (which exists by the orthogonal decomposition, valid in Hilbert spaces by the best-approximation argument of Chapter 6 plus completeness). Then \(g = \overline{\varphi(u)}\,u\) works, since every \(f\) splits as a multiple of \(u\) plus an element of \(N\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Hölder to split a product</b>.
+      <div class="ex"><div><p>Choose the exponents to make both factors finite; the choice is the whole art.</p></div></div></li>
+    <li><b>Prove it on a dense class</b> — then extend by continuity of the norm.
+      <div class="ex"><div><p>Continuous compactly supported functions are almost always the class to use.</p></div></div></li>
+    <li><b>Pass to an a.e. convergent subsequence</b> when \(L^{p}\) convergence isn't enough.
+      <div class="ex"><div><p>Then apply Fatou or dominated convergence.</p></div></div></li>
+    <li><b>Convolve to smooth</b> — mollify a rough function into a smooth one.
+      <div class="ex"><div><p>How Chapter 15's partitions of unity and bump functions are manufactured.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Simple \(\to\) non-negative \(\to\) general</td><td>L1</td><td>Prove any statement about integrals</td></tr>
+    <tr><td>Split \(f = f^{+}-f^{-}\)</td><td>L1</td><td>Reduce to the non-negative case</td></tr>
+    <tr><td>Chebyshev's inequality</td><td>L1</td><td>Turn an integral bound into a measure bound</td></tr>
+    <tr><td>Monotone convergence</td><td>L2</td><td>Take a limit inside for increasing sequences</td></tr>
+    <tr><td>Fatou's lemma</td><td>L2</td><td>Get an inequality with almost no hypotheses</td></tr>
+    <tr><td>Find a dominating function</td><td>L2</td><td>Take a limit inside the integral</td></tr>
+    <tr><td>Differentiate under the integral</td><td>L2</td><td>Compute parameter derivatives</td></tr>
+    <tr><td>Tonelli, then Fubini</td><td>L3</td><td>Swap the order of integration safely</td></tr>
+    <tr><td>Layer-cake</td><td>L3</td><td>Rewrite an integral as a measure of level sets</td></tr>
+    <tr><td>Cavalieri / slicing</td><td>L3</td><td>Compute a volume from cross-sections</td></tr>
+    <tr><td>Change of variables with \(|\det DT|\)</td><td>L4</td><td>Bend the coordinates to fit the region</td></tr>
+    <tr><td>Polar / spherical coordinates</td><td>L4</td><td>Exploit radial symmetry</td></tr>
+    <tr><td>Square it and go polar</td><td>L4</td><td>Evaluate Gaussian integrals</td></tr>
+    <tr><td>Hölder / Minkowski</td><td>L5</td><td>Estimate products and sums of functions</td></tr>
+    <tr><td>Prove on a dense class</td><td>L5</td><td>Assume the function is smooth, then extend</td></tr>
+    <tr><td>Mollify by convolution</td><td>L5</td><td>Replace a rough function by a smooth one</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Integration · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

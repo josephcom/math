@@ -216,3 +216,57 @@ saved the way his notes are saved.
   old layout.
 - The bookmark is per page. The index page doesn't load these scripts, so it can't yet
   say "you're mid-way through Chapter 1" — the obvious next thing if it's wanted.
+
+---
+
+## 2026-07-31 — The whole tower: 19 chapters, and a back-to-top button
+
+Joseph asked for a syllabus taking him from the foundations up to volume, surface and
+distance in \(n\) dimensions — then asked for the whole thing built. Chapter 1 was deleted
+and rewritten: **logic and set theory now have a chapter each**, so the tower runs 1–19.
+
+**Done this session:**
+- Deleted `chapter-01-set-theory-and-logic.html` and wrote **19 chapters** from scratch:
+  Logic · Set Theory · The Real Line · Vector Spaces · Determinants · Inner Products &
+  Norms · Metric Spaces · Topology of \(\mathbb{R}^n\) · Continuity in \(\mathbb{R}^n\) ·
+  Differentiation in \(\mathbb{R}^n\) · Measure · Integration · Balls & Spheres · Curves &
+  Surfaces · Manifolds · Differential Forms & Stokes · Riemannian Geometry · Hausdorff
+  Measure & Dimension · Convex Bodies.
+- **1,921 items, 1,921 example boxes, 738 proof boxes, ~2,320 note/flag anchors.** Every
+  `li` has an example; every theorem/proposition/lemma/corollary has a proof after it.
+- `chapters.js` rewritten with all 19 entries. Its renderer now calls `renderMathInElement`
+  on the card list after injecting it — the cards contain KaTeX, and being deferred they
+  are built *after* the page-wide KaTeX pass has already run.
+- New `totop.js` + a `.totop` / `.topwrap` block in `style.css`: a small round ⇧ button in
+  the bottom-right corner, fading in once the page is scrolled past ~0.8 screens.
+- `STYLE-GUIDE.md` and `CLAUDE.md` updated: five scripts now, `totop.js` last, and the
+  reference implementation is `chapter-01-logic.html`.
+
+**Completeness was the explicit brief this round.** Joseph noted that the previous logic
+chapter had dropped several proof methods. Chapter 1 now has a whole layer for them (L5):
+direct, contraposition, contradiction, cases, trivial, vacuous, biconditional, chain of
+equivalences, cyclic, forward–backward, reduction, constructive and non-constructive
+existence, construction, uniqueness, counterexample, probabilistic, averaging, pigeonhole
+(and its generalisation), double counting, bijective, diagonalisation, extremal, invariant,
+monovariant, parity, WLOG, duality, generalisation, computer-assisted exhaustion — plus L6
+for induction in all its forms.
+
+**Surprises for future Claude:**
+- `totop.js` **appends its button to `.syncwrap`** when sync.js has built one, instead of
+  making its own fixed wrapper. That is why it must load last. It lands as the last child,
+  so the ⇧ sits in the corner with the sync chip above it and the sync popover clear of
+  both; on `index.html` (no sync) it creates its own `.topwrap`.
+- Verified with a headless sweep (`verify.js`, kept in the scratchpad, not the repo): every
+  `li` has exactly one `.ex` with the exact `.ex > div > p` nesting, every `.proof` follows
+  its `.ex` and ends in `\blacksquare`, chips match layer ids in both directions, all five
+  scripts present and in order, tags balanced, back-links chain correctly, no raw `<`/`>`
+  inside `\(...\)`, and no Unicode where a KaTeX macro exists. It found three stray `×`/`→`
+  in prose examples, now fixed. **Re-run it after editing a chapter.**
+- Checked live in Chrome over a local server: 19 cards render, 301 KaTeX spans on Chapter
+  13 with no raw TeX left, 81 pencils and 81 flags built, items open and close correctly.
+  Note that a **background tab pauses `requestAnimationFrame`**, so the ⇧ button's fade and
+  any smooth scroll appear frozen when testing headlessly — that is the harness, not a bug.
+- **Deleting the old Chapter 1 orphaned its notes and its bookmark**: they are keyed by file
+  name, and `chapter-01-set-theory-and-logic.html` no longer exists. Anything Joseph had
+  written there is still in the gist under the old key, recoverable by hand, but nothing
+  will display it.

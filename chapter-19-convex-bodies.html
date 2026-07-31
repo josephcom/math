@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 19 — Convex Bodies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Convex Bodies</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-18-hausdorff-measure-and-dimension.html">&#10094; Chapter 18 — Hausdorff Measure &amp; Dimension</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>The Best-Behaved Shapes</h2>
+    <p>The tower ends where volume and surface meet: among all bodies of a given volume, which has the least surface? The ball — and proving it needs everything built so far.</p>
+    <p>Convexity is the hypothesis that makes such questions answerable. Convex bodies have support functions, tangent planes almost everywhere, and a volume that behaves like a polynomial.</p>
+    <p>Brunn–Minkowski, the isoperimetric inequality and mixed volumes are the closing results of the book.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\lambda(A+B)^{1/n} \ge \lambda(A)^{1/n}+\lambda(B)^{1/n}\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Convex Sets</a><a href="#L2">L2 Support &amp; Separation</a><a href="#L3">L3 Brunn–Minkowski</a>
+  <a href="#L4">L4 Mixed Volumes</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · No dents</span>
+  <h2 class="ltitle">Convex Sets</h2>
+  <p class="ldesc">One condition, and a surprising amount follows.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Convex set</b> — contains the segment between any two of its points.
+      <div class="ex"><div><p>A disc, a box, a half-space. A crescent moon is not convex — the segment across the horns leaves it.</p></div></div></li>
+    <li><b>Convex hull</b> \(\operatorname{conv}(A)\) — the smallest convex set containing \(A\).
+      <div class="ex"><div><p>Stretch a rubber band around the points and let it snap tight.</p></div></div></li>
+    <li><b>Convex body</b> — a compact convex set with non-empty interior.
+      <div class="ex"><div><p>The standing object of this chapter: solid, bounded, and closed.</p></div></div></li>
+    <li><b>Simplex</b> — the convex hull of \(n+1\) affinely independent points.
+      <div class="ex"><div><p>Triangle, tetrahedron, and their higher-dimensional cousins. The smallest convex bodies.</p></div></div></li>
+    <li><b>Polytope</b> — the convex hull of finitely many points, equivalently a bounded intersection of half-spaces.
+      <div class="ex"><div><p>Cube, simplex, dodecahedron. Two descriptions of one object, and each is useful.</p></div></div></li>
+    <li><b>Extreme point</b> — a point that is not the midpoint of any segment in the set.
+      <div class="ex"><div><p>The corners of a cube; every point of a sphere. These are the essential points.</p></div></div></li>
+    <li><b>Face</b> — the intersection with a supporting hyperplane.
+      <div class="ex"><div><p>Faces, edges and vertices of a polytope, all one notion.</p></div></div></li>
+    <li><b>Convex function</b> — one whose epigraph is convex.
+      <div class="ex"><div><p>Chapter 10's definition, restated geometrically. The two are equivalent.</p></div></div></li>
+    <li><b>Affine independence</b> — no point is an affine combination of the others.
+      <div class="ex"><div><p>Three points not on a line; four not in a plane.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Intersections of convex sets are convex</b>, so the convex hull is well defined.
+      <div class="ex"><div><p>Unlike subspaces, unions again fail — two discs side by side are not convex.</p></div></div>
+      <div class="proof"><div><p>If \(x,y\in\bigcap_iC_i\) then the segment lies in each \(C_i\), hence in the intersection. The family of convex sets containing \(A\) is non-empty (it contains \(\mathbb{R}^{n}\)), so its intersection is the smallest one. \(\blacksquare\)</p></div></div></li>
+    <li><b>The hull is the set of convex combinations:</b> \(\operatorname{conv}(A) = \bigl\{\sum_i t_ia_i : t_i\ge0,\ \sum_it_i=1\bigr\}\).
+      <div class="ex"><div><p>Weighted averages of points of \(A\), with the weights being a probability distribution.</p></div></div>
+      <div class="proof"><div><p>The set of convex combinations contains \(A\) and is convex (a combination of two combinations is a combination). Conversely any convex set containing \(A\) contains all such combinations, by induction on the number of terms: \(\sum_{i\le k}t_ia_i = (1-t_k)\sum_{i&lt;k}\frac{t_i}{1-t_k}a_i + t_ka_k\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Carathéodory's theorem:</b> in \(\mathbb{R}^{n}\), \(n+1\) points always suffice.
+      <div class="ex"><div><p>Any point inside a shape in the plane is inside some triangle with corners on the shape. Never more than three.</p></div></div>
+      <div class="proof"><div><p>Suppose \(x = \sum_{i=1}^{m}t_ia_i\) with \(m &gt; n+1\) and all \(t_i&gt;0\). Then the \(m-1 &gt; n\) vectors \(a_i - a_m\) are dependent, giving \(\sum_i\lambda_ia_i = 0\) with \(\sum_i\lambda_i = 0\) and some \(\lambda_i \neq 0\). Subtracting \(\theta\lambda\) from \(t\) with \(\theta = \min\{t_i/\lambda_i : \lambda_i&gt;0\}\) keeps the weights non-negative, keeps the sum 1, and zeroes at least one weight. Repeat until \(m \le n+1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Radon's theorem:</b> any \(n+2\) points split into two sets whose hulls intersect.
+      <div class="ex"><div><p>Four points in the plane: either one is inside the triangle of the others, or the two diagonals cross.</p></div></div>
+      <div class="proof"><div><p>With \(n+2\) points, the system \(\sum_i\lambda_ia_i = 0\), \(\sum_i\lambda_i = 0\) has a non-trivial solution (it is \(n+1\) equations in \(n+2\) unknowns). Let \(I = \{i : \lambda_i&gt;0\}\) and \(J\) the rest, and put \(s = \sum_{i\in I}\lambda_i &gt; 0\). Then \(\sum_{i\in I}\frac{\lambda_i}{s}a_i = \sum_{j\in J}\frac{-\lambda_j}{s}a_j\) is a common point of the two hulls. \(\blacksquare\)</p></div></div></li>
+    <li><b>Helly's theorem:</b> if every \(n+1\) of finitely many convex sets in \(\mathbb{R}^{n}\) meet, they all meet.
+      <div class="ex"><div><p>In the plane: if every three of a family of convex sets share a point, all of them do.</p></div></div>
+      <div class="proof"><div><p>Induct on the number \(m\) of sets. For \(m = n+1\) it is the hypothesis. For \(m &gt; n+1\), the induction hypothesis gives a point \(x_i \in \bigcap_{j\ne i}C_j\) for each \(i\). Apply Radon to \(x_1,\dots,x_{n+2}\): the two parts' hulls share a point, and convexity shows that point lies in every \(C_j\). \(\blacksquare\)</p></div></div></li>
+    <li><b>The hull of a compact set is compact.</b>
+      <div class="ex"><div><p>The rubber band around a closed bounded set encloses a closed bounded region.</p></div></div>
+      <div class="proof"><div><p>By Carathéodory, \(\operatorname{conv}(A)\) is the image of the compact set \(\Delta^{n}\times A^{n+1}\) (simplex of weights times tuples of points) under the continuous map \((t,a)\mapsto\sum_it_ia_i\). A continuous image of a compact set is compact (Chapter 8, Layer 3). \(\blacksquare\)</p></div></div></li>
+    <li><b>Minkowski–Krein–Milman:</b> a compact convex set is the convex hull of its extreme points.
+      <div class="ex"><div><p>A polygon is determined by its corners. So is any convex body, by its "corners" — which for a ball is its whole surface.</p></div></div>
+      <div class="proof"><div><p>Induct on the dimension. Extreme points exist: maximise a generic linear functional and take an extreme point of the compact convex face where it is attained, of lower dimension. Then any \(x\) in the body lies on a chord whose endpoints are on the boundary, hence — by induction applied to the faces containing them — in the hull of extreme points. \(\blacksquare\)</p></div></div></li>
+    <li><b>Convex bodies are Lebesgue measurable</b>, and their boundary is null.
+      <div class="ex"><div><p>No convex body is pathological. Everything in Chapters 11–12 applies without caveat.</p></div></div>
+      <div class="proof"><div><p>A convex body is compact, hence Borel. For the boundary: scaling about an interior point by \(1-\varepsilon\) maps \(K\) into its interior, so \(\lambda(\partial K)\le\lambda(K)-\lambda((1-\varepsilon)K) = \bigl(1-(1-\varepsilon)^{n}\bigr)\lambda(K)\to0\) by Chapter 11's scaling law. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Reduce to \(n+1\) points</b> — Carathéodory bounds the complexity.
+      <div class="ex"><div><p>Any convexity statement can be tested on simplices.</p></div></div></li>
+    <li><b>Use Helly for "all of them" statements</b>.
+      <div class="ex"><div><p>Verify a small local condition, conclude a global one.</p></div></div></li>
+    <li><b>Work with extreme points</b>.
+      <div class="ex"><div><p>Linear functionals attain their maxima there, so optimisation reduces to the corners.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Seen from outside</span>
+  <h2 class="ltitle">Support &amp; Separation</h2>
+  <p class="ldesc">A convex body is exactly the intersection of its tangent half-spaces.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Supporting hyperplane</b> — one touching the body with the whole body on one side.
+      <div class="ex"><div><p>Lay a ruler against the shape. Convexity guarantees it touches without cutting.</p></div></div></li>
+    <li><b>Support function</b> \(h_K(u) = \sup_{x\in K}\langle x,u\rangle\).
+      <div class="ex"><div><p>How far the body reaches in direction \(u\). It encodes the body completely.</p></div></div></li>
+    <li><b>Width</b> \(h_K(u)+h_K(-u)\).
+      <div class="ex"><div><p>The gap between two parallel supporting planes — what a pair of callipers measures.</p></div></div></li>
+    <li><b>Polar body</b> \(K^{\circ} = \{y : \langle x,y\rangle\le1\ \forall x\in K\}\).
+      <div class="ex"><div><p>Chapter 4's duality made geometric. The cube's polar is the octahedron.</p></div></div></li>
+    <li><b>Gauge (Minkowski functional)</b> \(\|x\|_K = \inf\{t&gt;0 : x/t\in K\}\).
+      <div class="ex"><div><p>Chapter 6's correspondence between norms and symmetric convex bodies.</p></div></div></li>
+    <li><b>Normal cone</b> at a boundary point — all outward directions of supporting planes there.
+      <div class="ex"><div><p>At a smooth point it is a single ray; at a corner it fans out.</p></div></div></li>
+    <li><b>Strictly convex body</b> — the boundary contains no segment.
+      <div class="ex"><div><p>A ball is; a cube is not. Strict convexity makes nearest points unique.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Nearest point projection:</b> for a closed convex \(C\), every point has a unique nearest point in \(C\), and the projection is 1-Lipschitz.
+      <div class="ex"><div><p>Chapter 6's orthogonal projection, generalised from subspaces to any convex set.</p></div></div>
+      <div class="proof"><div><p>Existence: minimise the continuous \(\|x-\cdot\|\) over \(C\cap\overline B(x,R)\), which is compact. Uniqueness: if \(p,q\) were both nearest, the midpoint lies in \(C\) and the parallelogram law (Chapter 6, Layer 1) makes it strictly nearer unless \(p=q\). The characterisation \(\langle x - p, y-p\rangle\le0\) for all \(y\in C\) then gives \(\|P x - Py\|^{2}\le\langle x-y,Px-Py\rangle\le\|x-y\|\|Px-Py\|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Separating hyperplane theorem:</b> disjoint convex sets, one compact and one closed, can be strictly separated.
+      <div class="ex"><div><p>Two convex crowds that don't overlap can always be divided by a straight fence.</p></div></div>
+      <div class="proof"><div><p>The function \(x\mapsto d(x,C_2)\) attains a positive minimum on the compact \(C_1\), at points \(p\in C_1\), \(q\in C_2\) realising the distance. Take \(u = p - q \ne 0\); the nearest-point characterisation gives \(\langle u,x\rangle\ge\langle u,p\rangle\) for \(x\in C_1\) and \(\langle u,y\rangle\le\langle u,q\rangle\) for \(y \in C_2\), and \(\langle u,p\rangle &gt; \langle u,q\rangle\). Any level between them separates. \(\blacksquare\)</p></div></div></li>
+    <li><b>Supporting hyperplane theorem:</b> every boundary point of a convex body admits one.
+      <div class="ex"><div><p>You can rest a ruler against any point of the surface.</p></div></div>
+      <div class="proof"><div><p>Take \(x_k \to x\) from outside \(K\) and separate each \(x_k\) from \(K\) by a unit vector \(u_k\). The unit sphere is compact, so a subsequence \(u_k \to u\); passing to the limit in \(\langle u_k,y\rangle\le\langle u_k,x_k\rangle\) for \(y\in K\) gives \(\langle u,y\rangle\le\langle u,x\rangle\), a supporting hyperplane at \(x\). \(\blacksquare\)</p></div></div></li>
+    <li><b>A closed convex set is the intersection of the half-spaces containing it.</b>
+      <div class="ex"><div><p>Two complete descriptions: a list of points, or a list of inequalities. Linear programming lives on the switch between them.</p></div></div>
+      <div class="proof"><div><p>The set is clearly contained in that intersection. If \(x \notin C\), the separating hyperplane theorem applied to \(\{x\}\) and \(C\) produces a half-space containing \(C\) but not \(x\), so \(x\) is not in the intersection. \(\blacksquare\)</p></div></div></li>
+    <li><b>Support functions characterise bodies:</b> \(h_K\) is sublinear, \(K = \{x : \langle x,u\rangle\le h_K(u)\ \forall u\}\), and \(K\subseteq L \iff h_K\le h_L\).
+      <div class="ex"><div><p>The body and its support function are the same information, and inclusion becomes a pointwise inequality.</p></div></div>
+      <div class="proof"><div><p>Sublinearity: \(h_K(u+v)\le h_K(u)+h_K(v)\) and \(h_K(tu) = th_K(u)\) follow from the supremum. The description of \(K\) is the previous theorem written with support functions, since each supporting half-space is \(\{\langle\cdot,u\rangle\le h_K(u)\}\). Monotonicity of \(h\) in \(K\) is immediate, and the converse follows from the description. \(\blacksquare\)</p></div></div></li>
+    <li><b>Support function of a Minkowski sum:</b> \(h_{K+L} = h_K+h_L\).
+      <div class="ex"><div><p>Addition of bodies becomes addition of functions. This linearity is what makes Layer 4's mixed volumes possible.</p></div></div>
+      <div class="proof"><div><p>\(\sup_{x\in K, y\in L}\langle x+y,u\rangle = \sup_{x\in K}\langle x,u\rangle + \sup_{y\in L}\langle y,u\rangle\), since the two suprema are over independent variables. \(\blacksquare\)</p></div></div></li>
+    <li><b>Bipolar theorem:</b> \((K^{\circ})^{\circ} = K\) for a closed convex \(K\) containing the origin.
+      <div class="ex"><div><p>Chapter 4's double dual, made geometric. Cube \(\leftrightarrow\) octahedron, and back again.</p></div></div>
+      <div class="proof"><div><p>\(K\subseteq K^{\circ\circ}\) is immediate from the definition. If \(x\notin K\), separate: there is \(u\) with \(\langle x,u\rangle &gt; 1 \ge \langle y,u\rangle\) for all \(y \in K\). Then \(u \in K^{\circ}\) while \(\langle x,u\rangle&gt;1\), so \(x\notin K^{\circ\circ}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Convex bodies are differentiable almost everywhere:</b> the boundary has a unique tangent plane at \(\mathcal H^{n-1}\)-almost every point.
+      <div class="ex"><div><p>A convex body can have corners and edges, but not too many — the set of them is negligible.</p></div></div>
+      <div class="proof"><div><p>The body is locally the region above a convex function's graph (Layer 1), and a convex function is differentiable off a set of measure zero — its one-sided derivatives are monotone, hence have at most countably many jumps in each direction, and Rademacher's theorem (Chapter 18, Layer 4) applies since convex functions are locally Lipschitz. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Separate to prove non-membership</b>.
+      <div class="ex"><div><p>Produce one linear functional that tells the point and the set apart.</p></div></div></li>
+    <li><b>Work with \(h_K\) instead of \(K\)</b>.
+      <div class="ex"><div><p>Sums, inclusions and scalings all become simple operations on functions.</p></div></div></li>
+    <li><b>Project onto the body</b> — the nearest point map is well behaved.
+      <div class="ex"><div><p>The basis of every convex optimisation algorithm.</p></div></div></li>
+    <li><b>Switch between vertex and inequality descriptions</b>.
+      <div class="ex"><div><p>One is easy for constructing, the other for testing.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · The main inequality</span>
+  <h2 class="ltitle">Brunn–Minkowski &amp; Isoperimetry</h2>
+  <p class="ldesc">How volume behaves when you add sets — and why the ball wins.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Minkowski sum</b> \(A+B = \{a+b\}\).
+      <div class="ex"><div><p>Sweep one shape around the boundary of the other. A square plus a disc is a rounded square.</p></div></div></li>
+    <li><b>Dilation</b> \(A_\varepsilon = A + \varepsilon B^{n}\) — the \(\varepsilon\)-neighbourhood.
+      <div class="ex"><div><p>Give the body a coat of paint of thickness \(\varepsilon\).</p></div></div></li>
+    <li><b>Surface area</b> \(S(K) = \lim_{\varepsilon\to0}\dfrac{\lambda(K_\varepsilon)-\lambda(K)}{\varepsilon}\).
+      <div class="ex"><div><p>The paint definition. For convex bodies it agrees with Chapters 14 and 18.</p></div></div></li>
+    <li><b>Isoperimetric ratio</b> \(\dfrac{S(K)^{n}}{\lambda(K)^{n-1}}\).
+      <div class="ex"><div><p>Scale-invariant, so it measures shape alone. It is smallest for the ball.</p></div></div></li>
+    <li><b>Log-concave function</b> — \(\ln f\) is concave.
+      <div class="ex"><div><p>The Gaussian is one. Indicators of convex sets are too — which is how the functional proof works.</p></div></div></li>
+    <li><b>Steiner symmetrisation</b> — replace each line's slice by a centred segment of the same length.
+      <div class="ex"><div><p>Slide every chord until it is centred. Volume is preserved; the shape becomes rounder.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Brunn–Minkowski inequality:</b> \(\lambda(A+B)^{1/n} \ge \lambda(A)^{1/n}+\lambda(B)^{1/n}\), with equality iff \(A\) and \(B\) are homothetic convex bodies.
+      <div class="ex"><div><p>Volume\(^{1/n}\) is "additive at worst". This one inequality contains the isoperimetric theorem.</p></div></div>
+      <div class="proof"><div><p>First for boxes: with side vectors \(a\) and \(b\), \(\prod_i(a_i+b_i)^{1/n}\ge\prod a_i^{1/n}+\prod b_i^{1/n}\) is AM–GM applied to \(\frac{a_i}{a_i+b_i}\) and \(\frac{b_i}{a_i+b_i}\). Then use the Hadwiger–Ohmann induction on the number of boxes: given finite unions of boxes, translate to separate them by a hyperplane and apply the induction hypothesis to each side, recombining with the box case. Finally approximate arbitrary compact sets by finite unions of boxes (Chapter 11's regularity) and pass to the limit. \(\blacksquare\)</p></div></div></li>
+    <li><b>Prékopa–Leindler inequality</b> — the functional form, with Brunn–Minkowski as a corollary.
+      <div class="ex"><div><p>Replace sets by functions and the inequality gets easier to prove by induction on dimension.</p></div></div>
+      <div class="proof"><div><p>Sketch: for \(n=1\), if \(h(tx+(1-t)y)\ge f(x)^{t}g(y)^{1-t}\), compare level sets: \(\{h &gt; s\}\supseteq t\{f&gt;s\}+(1-t)\{g&gt;s\}\), whose length is at least \(t|\{f&gt;s\}|+(1-t)|\{g&gt;s\}|\); integrating over \(s\) and using AM–GM gives \(\int h\ge(\int f)^{t}(\int g)^{1-t}\). Induct on \(n\) by applying the one-dimensional case in the last variable and the inductive hypothesis to the slices. Taking \(f,g,h\) to be indicators of \(A\), \(B\), \(tA+(1-t)B\) recovers Brunn–Minkowski. \(\blacksquare\)</p></div></div></li>
+    <li><b>Brunn's slicing theorem:</b> the \((n-1)\)-volumes of parallel slices of a convex body have concave \(1/(n-1)\)-th powers.
+      <div class="ex"><div><p>A convex body's cross-sections grow and then shrink, never wobbling.</p></div></div>
+      <div class="proof"><div><p>The slice at height \(t\) satisfies \(K_{(1-s)t_1+st_2}\supseteq(1-s)K_{t_1}+sK_{t_2}\) by convexity of \(K\). Applying Brunn–Minkowski in \(\mathbb{R}^{n-1}\) gives \(\lambda_{n-1}(K_t)^{1/(n-1)}\) concave in \(t\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Isoperimetric inequality:</b> \(S(K)^{n}\ge n^{n}V_n\,\lambda(K)^{n-1}\), with equality only for balls.
+      <div class="ex"><div><p>Among all bodies of a given volume, the ball has the least surface. A soap bubble solves it instantly.</p></div></div>
+      <div class="proof"><div><p>Apply Brunn–Minkowski to \(K\) and \(\varepsilon B^{n}\): \(\lambda(K_\varepsilon)^{1/n}\ge\lambda(K)^{1/n}+\varepsilon V_n^{1/n}\). Raise to the \(n\)-th power, subtract \(\lambda(K)\), divide by \(\varepsilon\), and let \(\varepsilon\to0\): \(S(K)\ge nV_n^{1/n}\lambda(K)^{(n-1)/n}\), which is the stated inequality. Equality in Brunn–Minkowski forces \(K\) homothetic to a ball. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — the classical cases:</b> \(4\pi A \le L^{2}\) in the plane, and \(36\pi V^{2}\le S^{3}\) in space.
+      <div class="ex"><div><p>The circle encloses the most area for a given perimeter; the sphere the most volume for a given surface.</p></div></div>
+      <div class="proof"><div><p>Substitute \(n=2\) (with \(V_2 = \pi\)) and \(n=3\) (with \(V_3 = \frac43\pi\)) into the general inequality and rearrange. \(\blacksquare\)</p></div></div></li>
+    <li><b>Steiner symmetrisation preserves volume and does not increase surface area or diameter.</b>
+      <div class="ex"><div><p>The engine of the classical proof: symmetrise repeatedly and the body converges to a ball while only improving.</p></div></div>
+      <div class="proof"><div><p>Volume: Fubini (Chapter 12, Layer 3) — each slice keeps its length. Diameter: two points of the symmetrised body have their separation bounded by that of suitable points of the original, by a direct computation on the slices. Surface area: the symmetrised body's boundary is the graph of a function whose gradient is a convex combination of the original's, so its area integrand does not increase. \(\blacksquare\)</p></div></div></li>
+    <li><b>Blaschke selection theorem:</b> every bounded sequence of convex bodies has a subsequence converging in the Hausdorff metric.
+      <div class="ex"><div><p>Compactness for shapes. It is what lets an optimisation over bodies actually attain its optimum.</p></div></div>
+      <div class="proof"><div><p>The space of compact subsets of a fixed ball with the Hausdorff metric is compact (it is complete and totally bounded — cover the ball by finitely many \(\varepsilon\)-balls and use unions of them as an \(\varepsilon\)-net). Convexity is preserved under Hausdorff limits, since the segment condition passes to the limit. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — existence of optimal shapes:</b> a continuous shape functional attains its extremes on a compact family of convex bodies.
+      <div class="ex"><div><p>"The best shape exists" is a theorem, not an assumption. Many classical proofs quietly assumed it.</p></div></div>
+      <div class="proof"><div><p>Blaschke gives compactness; Chapter 9's extreme value theorem gives attainment, provided the functional is continuous in the Hausdorff metric — which volume and surface area both are on convex bodies. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Apply Brunn–Minkowski to \(K\) and a small ball</b>.
+      <div class="ex"><div><p>Differentiating at \(\varepsilon=0\) converts a volume inequality into a surface one.</p></div></div></li>
+    <li><b>Symmetrise</b> — make the body rounder without making it worse.
+      <div class="ex"><div><p>The classical route to every isoperimetric result.</p></div></div></li>
+    <li><b>Pass to the functional form</b>.
+      <div class="ex"><div><p>Prékopa–Leindler inducts on dimension far more comfortably than sets do.</p></div></div></li>
+    <li><b>Use Blaschke to get an optimiser</b>, then study it.
+      <div class="ex"><div><p>Existence first, characterisation second. Reversing the order is how classical proofs went wrong.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Volume as a polynomial</span>
+  <h2 class="ltitle">Mixed Volumes &amp; Polytopes</h2>
+  <p class="ldesc">The final structure: volume, surface and everything between them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Steiner formula</b> \(\lambda(K+\varepsilon B^{n}) = \sum_{j=0}^{n}\binom nj W_j(K)\,\varepsilon^{j}\).
+      <div class="ex"><div><p>The volume of the painted body is a polynomial in the thickness. The coefficients are geometric invariants.</p></div></div></li>
+    <li><b>Quermassintegrals</b> \(W_j(K)\) — those coefficients.
+      <div class="ex"><div><p>\(W_0 = \lambda(K)\) is volume, \(nW_1 = S(K)\) is surface area, and \(W_n = V_n\) is constant.</p></div></div></li>
+    <li><b>Mixed volume</b> \(V(K_1,\dots,K_n)\) — the coefficient in the expansion of \(\lambda(\sum_it_iK_i)\).
+      <div class="ex"><div><p>Volume is a symmetric multilinear function of \(n\) bodies — the same shape as Chapter 5's determinant.</p></div></div></li>
+    <li><b>Mean width</b> — the average of \(h_K(u)+h_K(-u)\) over directions.
+      <div class="ex"><div><p>The average callipers reading. It is the last quermassintegral, \(W_{n-1}\), up to a constant.</p></div></div></li>
+    <li><b>John ellipsoid</b> — the largest-volume ellipsoid inside \(K\).
+      <div class="ex"><div><p>The best ellipsoidal approximation to any convex body, and it is unique.</p></div></div></li>
+    <li><b>Euler's formula</b> \(V - E + F = 2\) for a convex polyhedron.
+      <div class="ex"><div><p>Cube: \(8-12+6=2\). It is Chapter 17's Gauss–Bonnet in disguise.</p></div></div></li>
+    <li><b>\(f\)-vector</b> — the counts of faces in each dimension.
+      <div class="ex"><div><p>The combinatorial fingerprint of a polytope.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Minkowski's theorem on mixed volumes:</b> \(\lambda(t_1K_1+\cdots+t_mK_m)\) is a homogeneous polynomial of degree \(n\) in the \(t_i\ge0\), with symmetric non-negative coefficients \(V(K_{i_1},\dots,K_{i_n})\).
+      <div class="ex"><div><p>Volume is multilinear in the bodies, once addition means Minkowski addition.</p></div></div>
+      <div class="proof"><div><p>Sketch: for polytopes, decompose \(\sum_it_iK_i\) into cells indexed by the faces, and check each cell's volume is a monomial in the \(t_i\) with coefficient depending only on the corresponding faces. Symmetry and non-negativity are read off the construction. General convex bodies follow by Hausdorff approximation by polytopes and continuity of volume (Layer 3's Blaschke argument). \(\blacksquare\)</p></div></div></li>
+    <li><b>Steiner formula</b> is the special case \(K_1 = K\), \(K_2 = B^{n}\).
+      <div class="ex"><div><p>Paint thickness \(\varepsilon\); read off the coefficients.</p></div></div>
+      <div class="proof"><div><p>Apply the mixed volume expansion to \(\lambda(K+\varepsilon B^{n})\) with two bodies. The coefficient of \(\varepsilon^{j}\) is \(\binom njV(K,\dots,K,B,\dots,B)\) with \(j\) copies of \(B\), which is the definition of \(W_j(K)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Surface area from the Steiner formula:</b> \(S(K) = nW_1(K)\).
+      <div class="ex"><div><p>Chapter 18's Minkowski content, made exact for convex bodies rather than merely a limit.</p></div></div>
+      <div class="proof"><div><p>Differentiate the Steiner polynomial at \(\varepsilon=0\): \(\frac{d}{d\varepsilon}\Big|_{0}\lambda(K_\varepsilon) = nW_1(K)\). Layer 3 defined \(S(K)\) as exactly this derivative. \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotonicity and continuity:</b> mixed volumes increase with each argument and are Hausdorff-continuous.
+      <div class="ex"><div><p>Grow one body and every mixed volume grows — as any sensible notion of size must.</p></div></div>
+      <div class="proof"><div><p>Monotonicity follows from \(K\subseteq L \Rightarrow \sum t_iK_i \subseteq\) the corresponding sum with \(L\), plus monotonicity of Lebesgue measure and the uniqueness of polynomial coefficients. Continuity follows from continuity of volume under Hausdorff convergence together with polynomial interpolation at finitely many values of \(t\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Minkowski's first inequality:</b> \(V(K,\dots,K,L)^{n}\ge\lambda(K)^{n-1}\lambda(L)\).
+      <div class="ex"><div><p>Brunn–Minkowski, differentiated. Taking \(L = B^{n}\) returns the isoperimetric inequality.</p></div></div>
+      <div class="proof"><div><p>Apply Brunn–Minkowski to \(K + tL\) and expand both sides to first order in \(t\): the left gives \(\lambda(K)+ntV(K,\dots,K,L)+O(t^{2})\), the right \(\bigl(\lambda(K)^{1/n}+t\lambda(L)^{1/n}\bigr)^{n} = \lambda(K)+nt\lambda(K)^{(n-1)/n}\lambda(L)^{1/n}+O(t^{2})\). Comparing the \(t\)-coefficients and raising to the \(n\)-th power gives the inequality. \(\blacksquare\)</p></div></div></li>
+    <li><b>Alexandrov–Fenchel inequality</b> (stated): \(V(K,L,C_3,\dots,C_n)^{2}\ge V(K,K,C_3,\dots)\,V(L,L,C_3,\dots)\).
+      <div class="ex"><div><p>A Cauchy–Schwarz for volumes. Brunn–Minkowski and the isoperimetric inequality are both special cases.</p></div></div>
+      <div class="proof"><div><p>Sketch: for polytopes, the mixed volume can be written as a quadratic form whose associated operator has exactly one positive eigenvalue — an index-one, or "hyperbolic", property. That signature immediately yields the reverse Cauchy–Schwarz inequality above. Approximation extends it to all convex bodies. \(\blacksquare\)</p></div></div></li>
+    <li><b>John's theorem:</b> the maximal-volume inscribed ellipsoid \(E\) is unique, and \(E\subseteq K\subseteq nE\) (\(\sqrt n\,E\) if \(K\) is symmetric).
+      <div class="ex"><div><p>Every convex body is an ellipsoid up to a factor of \(n\) — the starting point of Chapter 13's Dvoretzky theorem.</p></div></div>
+      <div class="proof"><div><p>Existence: maximise the (continuous) volume over the compact family of ellipsoids inside \(K\). Uniqueness follows from strict concavity of \(\det^{1/n}\) on positive definite matrices. For the inclusion, normalise \(E\) to the unit ball; a Lagrange-multiplier analysis of the maximisation produces contact points \(u_i\in\partial K\cap S^{n-1}\) and weights with \(\sum_ic_iu_iu_i^{\mathsf T} = I\), and those force \(K\) inside the stated dilate. \(\blacksquare\)</p></div></div></li>
+    <li><b>Euler's polyhedron formula:</b> \(\sum_{j=0}^{n-1}(-1)^{j}f_j = 1-(-1)^{n}\); in \(\mathbb{R}^{3}\), \(V-E+F=2\).
+      <div class="ex"><div><p>True for every convex polyhedron, however irregular. Combinatorics constrained by geometry.</p></div></div>
+      <div class="proof"><div><p>Project the polytope's boundary from an interior point onto a sphere, giving a cell decomposition of \(S^{n-1}\); the alternating face count is then its Euler characteristic, which is \(1-(-1)^{n}\). Alternatively, a shelling argument adds the facets one at a time, each step changing the alternating sum by a controlled amount. \(\blacksquare\)</p></div></div></li>
+    <li><b>Approximation by polytopes:</b> every convex body is a Hausdorff limit of polytopes.
+      <div class="ex"><div><p>Which is why proving something for polytopes and passing to the limit is a complete strategy.</p></div></div>
+      <div class="proof"><div><p>Take a finite \(\varepsilon\)-net of \(\partial K\) and let \(P\) be the convex hull of those points. Then \(P\subseteq K\) and every point of \(K\) is within \(\varepsilon\) of \(P\) — a supporting-hyperplane argument bounds the gap — so \(d_H(P,K)\le\varepsilon\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Expand the Steiner polynomial</b> — the coefficients are the invariants.
+      <div class="ex"><div><p>Volume, surface area and mean width all fall out of one expansion.</p></div></div></li>
+    <li><b>Differentiate Brunn–Minkowski</b> to get inequalities between mixed volumes.
+      <div class="ex"><div><p>The isoperimetric inequality is one derivative away.</p></div></div></li>
+    <li><b>Prove it for polytopes, then approximate</b>.
+      <div class="ex"><div><p>Continuity in the Hausdorff metric does the rest.</p></div></div></li>
+    <li><b>Normalise by the John ellipsoid</b>.
+      <div class="ex"><div><p>Reduces a general convex body to something within a factor of \(n\) of a ball.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Reduce to \(n+1\) points (Carathéodory)</td><td>L1</td><td>Bound the complexity of a convex combination</td></tr>
+    <tr><td>Helly's theorem</td><td>L1</td><td>Turn local intersections into a global one</td></tr>
+    <tr><td>Work with extreme points</td><td>L1</td><td>Optimise a linear functional</td></tr>
+    <tr><td>Separating hyperplane</td><td>L2</td><td>Prove a point is outside a convex set</td></tr>
+    <tr><td>Support function \(h_K\)</td><td>L2</td><td>Turn geometry into function inequalities</td></tr>
+    <tr><td>Nearest point projection</td><td>L2</td><td>Approximate inside a convex set</td></tr>
+    <tr><td>Vertex vs inequality description</td><td>L2</td><td>Switch to whichever is convenient</td></tr>
+    <tr><td>Brunn–Minkowski with a small ball</td><td>L3</td><td>Derive the isoperimetric inequality</td></tr>
+    <tr><td>Steiner symmetrisation</td><td>L3</td><td>Round a body without making it worse</td></tr>
+    <tr><td>Prékopa–Leindler</td><td>L3</td><td>Induct on dimension comfortably</td></tr>
+    <tr><td>Blaschke selection</td><td>L3</td><td>Prove an optimal shape exists</td></tr>
+    <tr><td>Expand the Steiner polynomial</td><td>L4</td><td>Extract volume, surface and mean width</td></tr>
+    <tr><td>Differentiate an inequality</td><td>L4</td><td>Get mixed-volume inequalities</td></tr>
+    <tr><td>Prove for polytopes, approximate</td><td>L4</td><td>Extend to all convex bodies</td></tr>
+    <tr><td>Normalise by the John ellipsoid</td><td>L4</td><td>Compare any body to a ball</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Convex Bodies · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

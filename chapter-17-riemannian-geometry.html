@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 17 — Riemannian Geometry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Riemannian Geometry</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-16-differential-forms-and-stokes.html">&#10094; Chapter 16 — Differential Forms &amp; Stokes</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Distance From the Inside</h2>
+    <p>Chapter 15 gave a manifold smoothness but no ruler. Add an inner product to every tangent space and length, angle, area and volume all reappear — measured entirely from within.</p>
+    <p>Then the questions become geometric: what is the shortest path? How much does the space curve? How does the volume of a small ball differ from \(V_nr^{n}\)?</p>
+    <p>That last question is where "volume in \(n\) dimensions" reaches its final form: curvature is exactly the correction term.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(ds^{2} = g_{ij}\,dx^{i}dx^{j}\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 The Metric</a><a href="#L2">L2 Geodesics</a><a href="#L3">L3 Curvature</a>
+  <a href="#L4">L4 Volume</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · The ruler</span>
+  <h2 class="ltitle">The Metric Tensor</h2>
+  <p class="ldesc">An inner product at every point, varying smoothly.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Riemannian metric</b> \(g\) — a smoothly varying inner product on each \(T_pM\).
+      <div class="ex"><div><p>Chapter 6's inner product, one copy per point. The "smoothly varying" is what makes it geometry rather than a list.</p></div></div></li>
+    <li><b>Components</b> \(g_{ij} = g(\partial_i,\partial_j)\), the first fundamental form.
+      <div class="ex"><div><p>Chapter 14's \(E, F, G\), in general and in any dimension.</p></div></div></li>
+    <li><b>Line element</b> \(ds^{2} = g_{ij}\,dx^{i}dx^{j}\).
+      <div class="ex"><div><p>The infinitesimal Pythagoras. On the sphere: \(ds^{2} = R^{2}(d\varphi^{2}+\sin^{2}\varphi\,d\theta^{2})\).</p></div></div></li>
+    <li><b>Length of a curve</b> \(L(\gamma) = \int\sqrt{g(\gamma',\gamma')}\,dt\).
+      <div class="ex"><div><p>Chapter 14's arc length, with the ambient dot product replaced by \(g\).</p></div></div></li>
+    <li><b>Riemannian distance</b> \(d(p,q) = \inf L(\gamma)\) over curves joining them.
+      <div class="ex"><div><p>Distance measured along the surface, not through the surrounding space. It turns \(M\) into a metric space (Chapter 7).</p></div></div></li>
+    <li><b>Riemannian volume</b> \(dV = \sqrt{\det g}\;dx^{1}\wedge\cdots\wedge dx^{k}\).
+      <div class="ex"><div><p>The Gram determinant of Chapter 5, promoted to a volume form.</p></div></div></li>
+    <li><b>Isometry</b> — a diffeomorphism preserving \(g\).
+      <div class="ex"><div><p>Rolling a sheet into a cylinder. The intrinsic geometry is unchanged.</p></div></div></li>
+    <li><b>Conformal map</b> — one preserving angles but not lengths.
+      <div class="ex"><div><p>The Mercator projection. Shapes are right locally; Greenland is not the size of Africa.</p></div></div></li>
+    <li><b>Model spaces</b> — Euclidean \(\mathbb{R}^{n}\), the round sphere, hyperbolic space.
+      <div class="ex"><div><p>Curvature \(0\), \(+1\), \(-1\). Every constant-curvature space is one of these, rescaled.</p></div></div></li>
+    <li><b>Hyperbolic plane</b> — the upper half-plane with \(ds^{2} = \frac{dx^{2}+dy^{2}}{y^{2}}\).
+      <div class="ex"><div><p>Distances blow up near the edge, so the "boundary" is infinitely far away. Parallel lines diverge.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Every smooth manifold admits a Riemannian metric.</b>
+      <div class="ex"><div><p>Distance can always be installed — though not canonically.</p></div></div>
+      <div class="proof"><div><p>Chapter 15, Layer 4: patch together pulled-back Euclidean inner products with a partition of unity. Positive definiteness survives because a convex combination of positive definite forms is positive definite. \(\blacksquare\)</p></div></div></li>
+    <li><b>\((M,d)\) is a metric space</b>, and its topology is the manifold topology.
+      <div class="ex"><div><p>Chapter 7 applies verbatim — convergence, completeness, compactness all come along.</p></div></div>
+      <div class="proof"><div><p>Symmetry and the triangle inequality follow from reversing and concatenating curves. Positivity: in a chart around \(p\), the metric is comparable to the Euclidean one on a small ball (continuity of \(g\) and compactness of the unit sphere give constants \(c, C\) with \(c\|v\|\le\sqrt{g(v,v)}\le C\|v\|\)), so \(d(p,q) &gt; 0\) for \(q \ne p\), and the same comparison sandwiches Riemannian balls between Euclidean ones. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lengths, angles and volumes are determined by \(g\)</b>, and preserved by isometries.
+      <div class="ex"><div><p>The metric tensor is the complete answer to "what can the ant measure?"</p></div></div>
+      <div class="proof"><div><p>Each is defined by a formula involving only \(g\) and derivatives of the curve or parametrisation. An isometry \(f\) satisfies \(g(df\,u,df\,v) = g(u,v)\), so it carries each formula to the corresponding one on the image. \(\blacksquare\)</p></div></div></li>
+    <li><b>Transformation rule:</b> under a change of chart, \(g_{ij}\) transforms as \(\tilde g_{kl} = g_{ij}\frac{\partial x^{i}}{\partial u^{k}}\frac{\partial x^{j}}{\partial u^{l}}\).
+      <div class="ex"><div><p>The components change; the geometry does not. This is what "tensor" means.</p></div></div>
+      <div class="proof"><div><p>The metric is a bilinear form on tangent vectors, and tangent vectors transform by the Jacobian of the transition map (Chapter 15, Layer 2). Substituting into \(g(u,v)\) gives the stated rule. \(\blacksquare\)</p></div></div></li>
+    <li><b>Volume is chart-independent:</b> \(\sqrt{\det g}\,dx\) defines a genuine measure on \(M\).
+      <div class="ex"><div><p>Chapter 14's reparametrisation invariance, in tensor language.</p></div></div>
+      <div class="proof"><div><p>Under a change of chart, \(\det\tilde g = (\det J)^{2}\det g\) by the transformation rule and multiplicativity of determinants, so \(\sqrt{\det\tilde g} = |\det J|\sqrt{\det g}\) — exactly the factor Chapter 12's change of variables formula absorbs. \(\blacksquare\)</p></div></div></li>
+    <li><b>Conformal metrics preserve angles:</b> if \(\tilde g = e^{2f}g\) then angles agree while lengths scale by \(e^{f}\).
+      <div class="ex"><div><p>The reason navigators used Mercator: a compass bearing on the map is the true bearing.</p></div></div>
+      <div class="proof"><div><p>The angle formula \(\cos\theta = \frac{g(u,v)}{\sqrt{g(u,u)g(v,v)}}\) is unchanged when \(g\) is multiplied by a positive scalar, since the factor cancels between numerator and denominator. Lengths pick up \(\sqrt{e^{2f}} = e^{f}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>The hyperbolic plane has infinite area and infinite diameter</b>, but every point looks like every other.
+      <div class="ex"><div><p>Homogeneous and isotropic, and yet unboundedly large — the geometry Escher drew.</p></div></div>
+      <div class="proof"><div><p>Its area element is \(dx\,dy/y^{2}\), whose integral over the upper half-plane diverges. The maps \(z\mapsto\frac{az+b}{cz+d}\) with real coefficients and \(ad-bc=1\) preserve \(ds^{2}\) and act transitively, so all points are equivalent; the distance from \(i\) to \(iy\) is \(|\ln y|\to\infty\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Write down \(ds^{2}\)</b> — it encodes the whole geometry.
+      <div class="ex"><div><p>Every later computation starts from the line element.</p></div></div></li>
+    <li><b>Compute \(\sqrt{\det g}\)</b> for volume.
+      <div class="ex"><div><p>On the sphere it gives \(R^{2}\sin\varphi\), reproducing Chapter 14.</p></div></div></li>
+    <li><b>Use isometries to move to a convenient point</b>.
+      <div class="ex"><div><p>On a homogeneous space, prove it at one point and you have proved it everywhere.</p></div></div></li>
+    <li><b>Look for a conformal factor</b> — angles are often easier than lengths.
+      <div class="ex"><div><p>Hyperbolic geometry is Euclidean geometry with one scalar function attached.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Straight lines, curved space</span>
+  <h2 class="ltitle">Connections &amp; Geodesics</h2>
+  <p class="ldesc">How to differentiate a vector field when the tangent spaces keep tilting.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Affine connection</b> \(\nabla_XY\) — a rule for differentiating one vector field along another.
+      <div class="ex"><div><p>Needed because \(T_pM\) and \(T_qM\) are different spaces; you cannot subtract their vectors without a rule.</p></div></div></li>
+    <li><b>Christoffel symbols</b> \(\Gamma^{k}_{ij}\) — the components of \(\nabla\) in a chart.
+      <div class="ex"><div><p>Not a tensor: they can be made to vanish at any single point by choosing coordinates well.</p></div></div></li>
+    <li><b>Levi-Civita connection</b> — the unique torsion-free connection compatible with \(g\).
+      <div class="ex"><div><p>Two natural requirements, and the derivative rule is forced.</p></div></div></li>
+    <li><b>Parallel transport</b> — carrying a vector along a curve with \(\nabla_{\gamma'}V = 0\).
+      <div class="ex"><div><p>Walk while keeping the arrow "as constant as possible". On a sphere it comes back rotated.</p></div></div></li>
+    <li><b>Holonomy</b> — the rotation acquired after transport around a loop.
+      <div class="ex"><div><p>Foucault's pendulum. The plane of swing rotates because the Earth's surface is curved.</p></div></div></li>
+    <li><b>Geodesic</b> — a curve with \(\nabla_{\gamma'}\gamma' = 0\).
+      <div class="ex"><div><p>Walk without steering. On a sphere: great circles.</p></div></div></li>
+    <li><b>Exponential map</b> \(\exp_p(v)\) — follow the geodesic from \(p\) with initial velocity \(v\) for time 1.
+      <div class="ex"><div><p>Turns the flat tangent space into a chart of the curved space. It is <em>the</em> tool of the subject.</p></div></div></li>
+    <li><b>Normal (geodesic) coordinates</b> — coordinates via \(\exp_p\).
+      <div class="ex"><div><p>Here \(g_{ij}(p) = \delta_{ij}\) and \(\partial_kg_{ij}(p) = 0\): the space looks flat to first order at \(p\).</p></div></div></li>
+    <li><b>Injectivity radius</b> — how far \(\exp_p\) stays a diffeomorphism.
+      <div class="ex"><div><p>On a sphere, until you reach the antipode, where all the geodesics reconverge.</p></div></div></li>
+    <li><b>Geodesically complete</b> — every geodesic extends to all time.
+      <div class="ex"><div><p>No edges to fall off. Chapter 7's completeness, in geometric form.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Fundamental theorem of Riemannian geometry:</b> there is exactly one torsion-free metric connection, with \[\Gamma^{k}_{ij} = \tfrac12 g^{kl}\bigl(\partial_ig_{jl}+\partial_jg_{il}-\partial_lg_{ij}\bigr).\]
+      <div class="ex"><div><p>The metric alone determines how to differentiate. No extra choice is needed.</p></div></div>
+      <div class="proof"><div><p>Metric compatibility \(\partial_kg_{ij} = \Gamma^{l}_{ki}g_{lj}+\Gamma^{l}_{kj}g_{il}\) written three times with the indices cycled, then combined with the alternating signs, isolates the symmetric part; torsion-freeness \(\Gamma^{k}_{ij} = \Gamma^{k}_{ji}\) removes the remaining ambiguity. Solving gives the Koszul formula above, which conversely is checked to define a connection with both properties. \(\blacksquare\)</p></div></div></li>
+    <li><b>Parallel transport exists, is unique, and is a linear isometry \(T_pM\to T_qM\).</b>
+      <div class="ex"><div><p>Lengths and angles survive the trip; only the identification of the two tangent spaces depends on the path.</p></div></div>
+      <div class="proof"><div><p>In a chart, \(\nabla_{\gamma'}V=0\) is a linear ODE in the components of \(V\), so Picard–Lindelöf (Chapter 7, Layer 4) gives existence and uniqueness, and linearity of the equation makes the transport map linear. Metric compatibility gives \(\frac{d}{dt}g(V,W) = g(\nabla_{\gamma'}V,W)+g(V,\nabla_{\gamma'}W) = 0\), so inner products are preserved. \(\blacksquare\)</p></div></div></li>
+    <li><b>Geodesic equation:</b> \(\ddot x^{k}+\Gamma^{k}_{ij}\dot x^{i}\dot x^{j} = 0\); geodesics exist and are unique given a point and a velocity.
+      <div class="ex"><div><p>A second-order ODE. Give a position and a direction, and the path is determined.</p></div></div>
+      <div class="proof"><div><p>Expanding \(\nabla_{\gamma'}\gamma' = 0\) in coordinates gives the stated system, which is a second-order ODE with smooth coefficients. Picard–Lindelöf applied to the equivalent first-order system on \(TM\) gives local existence and uniqueness. \(\blacksquare\)</p></div></div></li>
+    <li><b>Geodesics have constant speed</b>, and are locally length-minimising.
+      <div class="ex"><div><p>Shortest paths are geodesics; geodesics are shortest only locally. A great circle past the antipode is a geodesic and not a shortest route.</p></div></div>
+      <div class="proof"><div><p>Constant speed: \(\frac{d}{dt}g(\gamma',\gamma') = 2g(\nabla_{\gamma'}\gamma',\gamma') = 0\). Minimising: the first variation of the length functional vanishes exactly on geodesics (integrate by parts), and the Gauss lemma below shows that within a normal ball the radial geodesic is strictly shortest, since any other path has a non-negative extra transverse contribution. \(\blacksquare\)</p></div></div></li>
+    <li><b>Gauss lemma:</b> geodesics from \(p\) meet the geodesic spheres around \(p\) orthogonally.
+      <div class="ex"><div><p>Radial lines are perpendicular to circles — still true when "circle" means "points at fixed walking distance".</p></div></div>
+      <div class="proof"><div><p>Consider the variation \(f(r,s) = \exp_p(r\,v(s))\) with \(\|v(s)\|\) constant. Then \(\partial_rf\) is the unit radial field and \(\partial_sf\) is tangent to the sphere. Compute \(\partial_r\,g(\partial_rf,\partial_sf) = g(\nabla_r\partial_rf,\partial_sf) + g(\partial_rf,\nabla_r\partial_sf)\); the first term vanishes (geodesic) and the second is \(\tfrac12\partial_s\,g(\partial_rf,\partial_rf) = 0\) by constancy of speed. Since the quantity vanishes at \(r=0\), it vanishes throughout. \(\blacksquare\)</p></div></div></li>
+    <li><b>Normal coordinates exist:</b> \(g_{ij}(p) = \delta_{ij}\), \(\Gamma^{k}_{ij}(p) = 0\).
+      <div class="ex"><div><p>Every curved space looks flat at a point — Einstein's equivalence principle, as a theorem.</p></div></div>
+      <div class="proof"><div><p>\(d(\exp_p)_0 = \mathrm{id}\), so \(\exp_p\) is a local diffeomorphism (Chapter 15, Layer 2) and can be composed with a linear map making \(g_{ij}(p)=\delta_{ij}\). Along each radial geodesic the geodesic equation reads \(\Gamma^{k}_{ij}v^{i}v^{j}=0\) for every \(v\); polarising and using symmetry gives \(\Gamma^{k}_{ij}(p)=0\), hence \(\partial_kg_{ij}(p)=0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Hopf–Rinow theorem:</b> geodesic completeness, metric completeness and "closed bounded sets are compact" are equivalent — and then any two points are joined by a minimising geodesic.
+      <div class="ex"><div><p>Chapter 7's completeness and Chapter 8's Heine–Borel, unified on a curved space.</p></div></div>
+      <div class="proof"><div><p>Sketch: if \(\exp_p\) is defined on all of \(T_pM\), a continuity argument along the geodesic towards \(q\) — starting from a minimising direction supplied by compactness of the unit sphere in \(T_pM\) — shows the geodesic reaches \(q\) with length \(d(p,q)\). Closed bounded sets then lie in the image of a compact ball under \(\exp_p\), hence are compact. Metric completeness follows, and conversely a Cauchy-complete space cannot have a geodesic ending in finite time. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> a compact Riemannian manifold is complete, and any two points are joined by a minimising geodesic.
+      <div class="ex"><div><p>On a sphere the shortest route between two cities always exists — and it is a great-circle arc.</p></div></div>
+      <div class="proof"><div><p>A compact metric space is complete (Chapter 7, Layer 3), so Hopf–Rinow applies. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compute the Christoffel symbols from \(g\)</b>.
+      <div class="ex"><div><p>Tedious but mechanical; symmetry \(\Gamma^{k}_{ij}=\Gamma^{k}_{ji}\) halves the work.</p></div></div></li>
+    <li><b>Solve the geodesic equation</b>, or use symmetry to guess.
+      <div class="ex"><div><p>Great circles on the sphere are found by symmetry in one line: a reflection fixes them.</p></div></div></li>
+    <li><b>Work in normal coordinates</b>.
+      <div class="ex"><div><p>First derivatives of \(g\) vanish, so only curvature — the second derivatives — survives.</p></div></div></li>
+    <li><b>Use the exponential map as a chart</b>.
+      <div class="ex"><div><p>It converts questions about the manifold into questions about a vector space.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · How much it bends</span>
+  <h2 class="ltitle">Curvature</h2>
+  <p class="ldesc">The obstruction to being flat, in every direction at once.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Riemann curvature tensor</b> \(R(X,Y)Z = \nabla_X\nabla_YZ - \nabla_Y\nabla_XZ - \nabla_{[X,Y]}Z\).
+      <div class="ex"><div><p>The failure of second derivatives to commute. In flat space they do, and \(R = 0\).</p></div></div></li>
+    <li><b>Sectional curvature</b> \(K(\sigma)\) — the Gaussian curvature of the surface swept by a 2-plane \(\sigma\).
+      <div class="ex"><div><p>Chapter 14's \(K\), one number per 2-dimensional direction. It determines the whole tensor.</p></div></div></li>
+    <li><b>Ricci curvature</b> \(\mathrm{Ric}(v,v)\) — the average sectional curvature over planes containing \(v\).
+      <div class="ex"><div><p>How a narrow beam of geodesics focuses. This is the quantity in Einstein's field equations.</p></div></div></li>
+    <li><b>Scalar curvature</b> \(S\) — the average of Ricci over all directions.
+      <div class="ex"><div><p>One number per point. It controls how the volume of a small ball differs from the Euclidean one.</p></div></div></li>
+    <li><b>Flat manifold</b> — \(R\equiv0\).
+      <div class="ex"><div><p>Locally indistinguishable from \(\mathbb{R}^{n}\). The flat torus is flat, though it is not \(\mathbb{R}^{2}\).</p></div></div></li>
+    <li><b>Space form</b> — constant sectional curvature.
+      <div class="ex"><div><p>Sphere, Euclidean space, hyperbolic space. Everything else is a mixture.</p></div></div></li>
+    <li><b>Jacobi field</b> — a solution of \(J'' + R(J,\gamma')\gamma' = 0\).
+      <div class="ex"><div><p>The separation between two neighbouring geodesics. Positive curvature pulls them together; negative pushes them apart.</p></div></div></li>
+    <li><b>Conjugate points</b> — where a non-trivial Jacobi field vanishes again.
+      <div class="ex"><div><p>The antipode on a sphere: every geodesic from the north pole reconverges there.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(R\) is a tensor:</b> its value at \(p\) depends only on the vectors at \(p\), not on the fields extending them.
+      <div class="ex"><div><p>Curvature is a local, pointwise quantity — despite being built from derivatives of fields.</p></div></div>
+      <div class="proof"><div><p>Check \(C^{\infty}\)-linearity in each argument: replacing \(X\) by \(fX\) produces extra terms from the Leibniz rule in \(\nabla_X\nabla_Y\) and in \(\nabla_{[X,Y]}\), and they cancel exactly. A \(C^{\infty}\)-linear operator on fields is pointwise. \(\blacksquare\)</p></div></div></li>
+    <li><b>Symmetries:</b> \(R_{ijkl} = -R_{jikl} = -R_{ijlk} = R_{klij}\), plus the first Bianchi identity \(R_{i[jkl]} = 0\).
+      <div class="ex"><div><p>These cut the number of independent components from \(n^{4}\) to \(\frac{n^{2}(n^{2}-1)}{12}\) — one in dimension 2, twenty in dimension 4.</p></div></div>
+      <div class="proof"><div><p>Antisymmetry in the first pair is the definition; in the second pair it follows from metric compatibility applied to \(g(R(X,Y)Z,W)\). The pair symmetry and the Bianchi identity follow by writing all the terms in normal coordinates at a point, where the Christoffel symbols vanish and the expressions reduce to second derivatives of \(g\), then cancelling in pairs. \(\blacksquare\)</p></div></div></li>
+    <li><b>Sectional curvature determines \(R\).</b>
+      <div class="ex"><div><p>All the information is in the 2-planes — which is why Chapter 14's surface curvature was enough there.</p></div></div>
+      <div class="proof"><div><p>The symmetries make \(R\) a symmetric bilinear form on \(\Lambda^{2}\), and \(K(\sigma)\) records its quadratic form on decomposable elements. Polarisation (Chapter 6, Layer 1) recovers the bilinear form from the quadratic one, and decomposables span \(\Lambda^{2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>In dimension 2, \(K\) is the Gaussian curvature</b>, and the Theorema Egregium is the statement that it is intrinsic.
+      <div class="ex"><div><p>Chapter 14's remarkable theorem is now a definition: \(K\) was never anything but intrinsic.</p></div></div>
+      <div class="proof"><div><p>For a surface, \(\Lambda^{2}\) is one-dimensional and \(R\) reduces to a single function. Computing it in normal coordinates gives \(R_{1212} = K\det g\), where \(K\) matches Chapter 14's \(\frac{LN-M^{2}}{EG-F^{2}}\) via the Gauss equation. \(\blacksquare\)</p></div></div></li>
+    <li><b>Gauss equation:</b> for a submanifold, intrinsic curvature = ambient curvature + a second-fundamental-form term.
+      <div class="ex"><div><p>Chapter 14's \(K = \kappa_1\kappa_2\), generalised: a flat ambient space makes intrinsic curvature entirely a matter of how the surface bends.</p></div></div>
+      <div class="proof"><div><p>Decompose the ambient connection into tangential and normal parts, \(\overline\nabla_XY = \nabla_XY + \mathrm{II}(X,Y)\). Substituting into the ambient curvature definition and separating components gives \(\overline R(X,Y,Z,W) = R(X,Y,Z,W) - \langle\mathrm{II}(X,W),\mathrm{II}(Y,Z)\rangle + \langle\mathrm{II}(X,Z),\mathrm{II}(Y,W)\rangle\). For \(\overline R = 0\) in \(\mathbb{R}^{3}\) this is exactly \(K = \kappa_1\kappa_2\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Jacobi equation:</b> the separation of nearby geodesics satisfies \(J''+R(J,\gamma')\gamma'=0\).
+      <div class="ex"><div><p>Two people walking "straight ahead" from the equator converge at the pole. Curvature is what does the converging.</p></div></div>
+      <div class="proof"><div><p>Take a variation through geodesics \(f(t,s)\) and set \(J = \partial_sf\). Differentiating the geodesic equation \(\nabla_t\partial_tf=0\) in \(s\), and exchanging \(\nabla_s\nabla_t\) for \(\nabla_t\nabla_s\) at the cost of a curvature term (the definition of \(R\)), gives \(\nabla_t\nabla_tJ + R(J,\partial_tf)\partial_tf = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Curvature controls geodesic spreading:</b> \(K &gt; 0\) focuses, \(K = 0\) keeps them linear, \(K &lt; 0\) spreads them exponentially.
+      <div class="ex"><div><p>On a sphere geodesics meet; in the hyperbolic plane they run away exponentially fast.</p></div></div>
+      <div class="proof"><div><p>For constant curvature \(K\) the Jacobi equation becomes the scalar ODE \(j'' + Kj = 0\), whose solutions are \(\frac{\sin(\sqrt Kt)}{\sqrt K}\), \(t\), and \(\frac{\sinh(\sqrt{-K}t)}{\sqrt{-K}}\) in the three cases. Sturm comparison transfers the qualitative behaviour to variable curvature bounded by \(K\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Cartan–Hadamard theorem:</b> a complete simply connected manifold with \(K\le0\) is diffeomorphic to \(\mathbb{R}^{n}\).
+      <div class="ex"><div><p>Non-positive curvature forbids holes and forbids geodesics reconverging. Hyperbolic space is topologically just \(\mathbb{R}^{n}\).</p></div></div>
+      <div class="proof"><div><p>With \(K \le 0\) the Jacobi equation gives \(\|J\|'' \ge 0\), so no non-trivial Jacobi field vanishes twice: there are no conjugate points. Hence \(\exp_p\) has everywhere-invertible differential and, being defined on all of \(T_pM\) by completeness, is a covering map; simple connectivity makes it a diffeomorphism. \(\blacksquare\)</p></div></div></li>
+    <li><b>Bonnet–Myers theorem:</b> \(\mathrm{Ric}\ge(n-1)k &gt; 0\) forces \(\operatorname{diam}(M)\le\pi/\sqrt k\), so \(M\) is compact.
+      <div class="ex"><div><p>Enough positive curvature and the space closes up on itself. It cannot be infinite.</p></div></div>
+      <div class="proof"><div><p>Along a minimising geodesic of length \(L &gt; \pi/\sqrt k\), the second variation of length applied to the test fields \(\sin(\pi t/L)E_i\) sums to a strictly negative total, using the Ricci lower bound. That contradicts minimality, so no such geodesic exists and the diameter is bounded; completeness plus bounded diameter gives compactness by Hopf–Rinow. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Work in normal coordinates</b> — first derivatives vanish, so curvature is visible.
+      <div class="ex"><div><p>The standard simplification for any identity involving \(R\).</p></div></div></li>
+    <li><b>Use the symmetries</b> to reduce the number of components.
+      <div class="ex"><div><p>In dimension 2 there is only one; don't compute \(16\).</p></div></div></li>
+    <li><b>Track Jacobi fields</b> to see what curvature does.
+      <div class="ex"><div><p>Geodesic spreading is the physical meaning of the tensor.</p></div></div></li>
+    <li><b>Compare with a model space</b> — sphere, plane, hyperbolic.
+      <div class="ex"><div><p>Sturm comparison converts a curvature bound into a geometric conclusion.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Volume, curved</span>
+  <h2 class="ltitle">Volume &amp; Comparison</h2>
+  <p class="ldesc">How curvature changes the answer to "how big is a ball of radius \(r\)?"</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Geodesic ball</b> \(B(p,r)\) — all points within walking distance \(r\).
+      <div class="ex"><div><p>The right notion of "ball" on a curved space. Its volume is no longer \(V_nr^{n}\).</p></div></div></li>
+    <li><b>Volume density in normal coordinates</b> \(\theta(r,\omega) = \sqrt{\det g}\).
+      <div class="ex"><div><p>How much the exponential map stretches or squashes. Curvature is exactly its second-order behaviour.</p></div></div></li>
+    <li><b>Volume growth</b> — the rate at which \(\operatorname{vol}B(p,r)\) increases with \(r\).
+      <div class="ex"><div><p>Polynomial in flat space, exponential in hyperbolic space, bounded on a sphere.</p></div></div></li>
+    <li><b>Isoperimetric inequality on a manifold</b> — relating a region's volume to its boundary area.
+      <div class="ex"><div><p>Chapter 19's Euclidean statement, with curvature entering the constant.</p></div></div></li>
+    <li><b>Euler characteristic</b> \(\chi(M)\).
+      <div class="ex"><div><p>\(2\) for a sphere, \(0\) for a torus. Gauss–Bonnet ties it to total curvature.</p></div></div></li>
+    <li><b>Cut locus</b> — where geodesics from \(p\) stop being minimising.
+      <div class="ex"><div><p>On a sphere, the antipodal point. Beyond it, "radial coordinates" break down.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Volume in normal coordinates:</b> \(\operatorname{vol}B(p,r) = \displaystyle\int_{S^{n-1}}\!\!\int_0^{r}\theta(t,\omega)\,t^{n-1}\,dt\,d\omega\).
+      <div class="ex"><div><p>Chapter 12's spherical coordinates, with a correction factor \(\theta\) that records the curvature.</p></div></div>
+      <div class="proof"><div><p>Pull the volume form back by \(\exp_p\) and use polar coordinates on \(T_pM\cong\mathbb{R}^{n}\). The Gauss lemma (Layer 2) makes the radial direction orthogonal to the spheres, so the Jacobian factorises as \(t^{n-1}\theta(t,\omega)\), with \(\theta\) the determinant of the Jacobi fields' matrix. \(\blacksquare\)</p></div></div></li>
+    <li><b>Expansion of the volume density:</b> \(\theta(t,\omega) = 1 - \tfrac16\mathrm{Ric}(\omega,\omega)t^{2}+O(t^{3})\).
+      <div class="ex"><div><p>Ricci curvature <em>is</em> the second-order correction to volume. That is its geometric meaning.</p></div></div>
+      <div class="proof"><div><p>Expand the Jacobi fields along the radial geodesic: \(J(t) = t\,E - \tfrac{t^{3}}{6}R(E,\omega)\omega + O(t^{4})\). Taking the determinant of the matrix of such fields and using \(\operatorname{tr}R(\cdot,\omega)\omega = \mathrm{Ric}(\omega,\omega)\) gives the stated expansion. \(\blacksquare\)</p></div></div></li>
+    <li><b>Volume of a small ball:</b> \(\operatorname{vol}B(p,r) = V_nr^{n}\Bigl(1 - \dfrac{S(p)}{6(n+2)}r^{2}+O(r^{4})\Bigr)\).
+      <div class="ex"><div><p>Positive curvature makes balls smaller than Euclidean; negative makes them larger. Measure a small ball and you have measured the scalar curvature.</p></div></div>
+      <div class="proof"><div><p>Integrate the previous expansion over \(t\in[0,r]\) and over the unit sphere. The average of \(\mathrm{Ric}(\omega,\omega)\) over directions is \(S(p)/n\), and \(\int_0^{r}t^{n+1}dt / \int_0^{r}t^{n-1}dt = \frac{n}{n+2}r^{2}\); combining the constants gives the stated coefficient. \(\blacksquare\)</p></div></div></li>
+    <li><b>Bishop–Gromov comparison:</b> if \(\mathrm{Ric}\ge(n-1)k\), then \(\dfrac{\operatorname{vol}B(p,r)}{\operatorname{vol}_kB(r)}\) is non-increasing in \(r\), and is \(\le1\).
+      <div class="ex"><div><p>A lower bound on Ricci is an upper bound on volume — a curvature hypothesis controlling a global quantity.</p></div></div>
+      <div class="proof"><div><p>Sketch: the Ricci bound plus the Bochner/Riccati equation for \(\partial_t\ln\theta\) gives \(\partial_t\ln\theta \le \partial_t\ln\theta_k\), where \(\theta_k\) is the model density. Integrating shows \(\theta/\theta_k\) is non-increasing, and integrating again in the radial and angular variables transfers the monotonicity to the volume ratio, which tends to 1 as \(r\to0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — volume growth:</b> \(\mathrm{Ric}\ge0\) forces \(\operatorname{vol}B(p,r)\le V_nr^{n}\).
+      <div class="ex"><div><p>Non-negative curvature means space never grows faster than flat space.</p></div></div>
+      <div class="proof"><div><p>Take \(k=0\) in Bishop–Gromov: the ratio to the Euclidean ball is non-increasing and equals 1 in the limit \(r\to0\), so it is at most 1 for all \(r\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Hyperbolic volume grows exponentially:</b> in \(\mathbb{H}^{n}\), \(\operatorname{vol}B(r)\sim ce^{(n-1)r}\).
+      <div class="ex"><div><p>Almost all of a large hyperbolic ball is near its boundary — Chapter 13's thin-shell phenomenon, produced by curvature rather than by dimension.</p></div></div>
+      <div class="proof"><div><p>In \(\mathbb{H}^{n}\) the volume density is \(\theta = \bigl(\frac{\sinh t}{t}\bigr)^{n-1}\), so \(\operatorname{vol}B(r) = S_{n-1}\int_0^{r}\sinh^{n-1}t\,dt\), which grows like \(\frac{S_{n-1}}{2^{n-1}(n-1)}e^{(n-1)r}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gauss–Bonnet theorem:</b> for a closed surface, \(\displaystyle\int_MK\,dA = 2\pi\chi(M)\).
+      <div class="ex"><div><p>Deform a sphere however you like: bumps and dents redistribute the curvature but the total stays \(4\pi\).</p></div></div>
+      <div class="proof"><div><p>Chapter 14, Layer 3: triangulate, apply the angle-excess formula on each geodesic triangle, and sum. The interior angles at each vertex total \(2\pi\), and collecting the counts of vertices, edges and faces yields \(2\pi(V-E+F) = 2\pi\chi(M)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> a closed surface with \(K &gt; 0\) everywhere is a sphere or a projective plane.
+      <div class="ex"><div><p>Positive curvature everywhere forces a very short list of possible shapes.</p></div></div>
+      <div class="proof"><div><p>\(\int K\,dA &gt; 0\) forces \(\chi(M) &gt; 0\). Among closed surfaces only the sphere (\(\chi=2\)) and the projective plane (\(\chi=1\)) have positive Euler characteristic. \(\blacksquare\)</p></div></div></li>
+    <li><b>Curvature is measurable from within:</b> a being confined to the manifold can determine \(K\) from volumes of small balls.
+      <div class="ex"><div><p>The final answer to the ant's question. Measure a small disc's area, compare with \(\pi r^{2}\), and read off the curvature.</p></div></div>
+      <div class="proof"><div><p>Solve the small-ball expansion for \(S(p)\): \(S(p) = \frac{6(n+2)}{r^{2}}\Bigl(1 - \frac{\operatorname{vol}B(p,r)}{V_nr^{n}}\Bigr)+O(r^{2})\). In dimension 2, \(S = 2K\), giving Bertrand–Diguet–Puiseux: \(K = \lim_{r\to0}\frac{12(\pi r^{2}-\operatorname{area}B(p,r))}{\pi r^{4}}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Integrate in geodesic polar coordinates</b>.
+      <div class="ex"><div><p>Chapter 12's spherical coordinates with the density \(\theta\) attached.</p></div></div></li>
+    <li><b>Expand \(\theta\) in powers of \(r\)</b> to extract curvature.
+      <div class="ex"><div><p>Second order gives Ricci; averaging gives the scalar curvature.</p></div></div></li>
+    <li><b>Compare with a model space</b> — Bishop–Gromov turns a curvature bound into a volume bound.
+      <div class="ex"><div><p>The main technique of modern Riemannian geometry.</p></div></div></li>
+    <li><b>Use Gauss–Bonnet to link geometry and topology</b>.
+      <div class="ex"><div><p>Total curvature is fixed by the shape's topology alone.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Write down \(ds^{2}\)</td><td>L1</td><td>Encode the entire geometry</td></tr>
+    <tr><td>Compute \(\sqrt{\det g}\)</td><td>L1</td><td>Get the volume element</td></tr>
+    <tr><td>Exploit isometries</td><td>L1</td><td>Prove it at one point, get it everywhere</td></tr>
+    <tr><td>Koszul formula for \(\Gamma^{k}_{ij}\)</td><td>L2</td><td>Build the connection from the metric</td></tr>
+    <tr><td>Solve the geodesic equation</td><td>L2</td><td>Find shortest paths</td></tr>
+    <tr><td>Normal coordinates</td><td>L2</td><td>Make first derivatives of \(g\) vanish</td></tr>
+    <tr><td>Exponential map as a chart</td><td>L2</td><td>Trade the manifold for a vector space</td></tr>
+    <tr><td>Use the curvature symmetries</td><td>L3</td><td>Reduce the components to compute</td></tr>
+    <tr><td>Jacobi fields</td><td>L3</td><td>See curvature as geodesic spreading</td></tr>
+    <tr><td>Sturm comparison</td><td>L3</td><td>Turn a curvature bound into a geometric one</td></tr>
+    <tr><td>Geodesic polar coordinates</td><td>L4</td><td>Compute volumes on a curved space</td></tr>
+    <tr><td>Expand \(\theta\) in \(r\)</td><td>L4</td><td>Extract Ricci and scalar curvature</td></tr>
+    <tr><td>Bishop–Gromov</td><td>L4</td><td>Bound volume by curvature</td></tr>
+    <tr><td>Gauss–Bonnet</td><td>L4</td><td>Link total curvature to topology</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Riemannian Geometry · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

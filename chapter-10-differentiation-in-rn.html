@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 10 — Differentiation in R^n</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Differentiation in \(\mathbb{R}^{n}\)</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-09-continuity-in-rn.html">&#10094; Chapter 9 — Continuity in \(\mathbb{R}^{n}\)</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>The Derivative Is a Matrix</h2>
+    <p>In one variable the derivative is a number. In \(n\) variables it is a <b>linear map</b> — the best flat approximation to the function near a point.</p>
+    <p>Its matrix is the Jacobian, and \(|\det J|\) is the local volume-scaling factor. That single sentence connects Chapter 5 to the change of variables formula in Chapter 12.</p>
+    <p>The chapter ends with the inverse and implicit function theorems, which is where Chapter 15's curved surfaces come from.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(f(a+h) = f(a) + Df(a)h + o(\|h\|)\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Partial Derivatives</a><a href="#L2">L2 The Total Derivative</a><a href="#L3">L3 Optimisation</a>
+  <a href="#L4">L4 Inverse &amp; Implicit</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · One direction at a time</span>
+  <h2 class="ltitle">Partial &amp; Directional Derivatives</h2>
+  <p class="ldesc">The obvious first attempt — and why it is not enough.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Partial derivative</b> \(\partial f/\partial x_i\) — differentiate in the \(i\)-th coordinate, holding the rest fixed.
+      <div class="ex"><div><p>Walk due east and measure the slope. The other directions are simply ignored.</p></div></div></li>
+    <li><b>Directional derivative</b> \(D_vf(a) = \lim_{t\to0}\frac{f(a+tv)-f(a)}{t}\).
+      <div class="ex"><div><p>The slope along any chosen compass bearing, not just the axes.</p></div></div></li>
+    <li><b>Gradient</b> \(\nabla f = (\partial_1f,\dots,\partial_nf)\).
+      <div class="ex"><div><p>The arrow pointing straight uphill, whose length is the steepest slope.</p></div></div></li>
+    <li><b>Level set</b> \(\{x : f(x) = c\}\).
+      <div class="ex"><div><p>Contour lines on a map. The gradient always crosses them at right angles.</p></div></div></li>
+    <li><b>Smoothness classes</b> \(C^{0}, C^{1}, C^{k}, C^{\infty}\).
+      <div class="ex"><div><p>Continuous; continuously differentiable; \(k\) times; forever. Chapters 15–17 assume \(C^{\infty}\) throughout.</p></div></div></li>
+    <li><b>Jacobian matrix</b> \(J_f = \bigl(\partial f_i/\partial x_j\bigr)\).
+      <div class="ex"><div><p>One row per output, one column per input. For \(m = 1\) it is the gradient, written as a row.</p></div></div></li>
+    <li><b>Divergence &amp; curl</b> — \(\nabla\cdot F\) and \(\nabla\times F\) in \(\mathbb{R}^{3}\).
+      <div class="ex"><div><p>How much a flow spreads out, and how much it spins. Chapter 16 shows both are the exterior derivative in disguise.</p></div></div></li>
+    <li><b>Laplacian</b> \(\Delta f = \sum_i \partial^2 f/\partial x_i^{2}\).
+      <div class="ex"><div><p>How much a value exceeds the average of its neighbours. Heat, waves and gravity all run on it.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Partial derivatives can all exist while \(f\) is discontinuous.</b>
+      <div class="ex"><div><p>\(f(x,y)=\frac{xy}{x^{2}+y^{2}}\) (and 0 at the origin) has both partials at the origin, yet no limit there. Partials alone say almost nothing.</p></div></div>
+      <div class="proof"><div><p>Along either axis \(f \equiv 0\), so \(\partial_1f(0,0) = \partial_2f(0,0) = 0\) exist. But the path \(y = x\) gives \(f = \tfrac12\), so the limit at the origin fails to exist (Chapter 9, Layer 1) and \(f\) is not continuous there. \(\blacksquare\)</p></div></div></li>
+    <li><b>Even all directional derivatives existing is not enough.</b>
+      <div class="ex"><div><p>Every bearing can have a well-defined slope and the surface still be torn.</p></div></div>
+      <div class="proof"><div><p>Take \(f(x,y) = \frac{x^{2}y}{x^{4}+y^{2}}\), \(f(0,0)=0\). For \(v = (a,b)\ne0\), \(\frac{f(tv)}{t} = \frac{ta^{2}b}{t^{2}a^{4}+b^{2}}\to 0\) if \(b \ne 0\), and \(\equiv 0\) if \(b=0\); so every directional derivative at the origin is 0. Yet \(f = \tfrac12\) along \(y=x^{2}\), so \(f\) is not even continuous at the origin. \(\blacksquare\)</p></div></div></li>
+    <li><b>Gradient formula:</b> if \(f\) is differentiable then \(D_vf(a) = \langle\nabla f(a),v\rangle\).
+      <div class="ex"><div><p>One vector encodes the slope in every direction at once.</p></div></div>
+      <div class="proof"><div><p>Differentiability (Layer 2) gives \(f(a+tv) = f(a) + Df(a)(tv) + o(t)\). Dividing by \(t\) and letting \(t\to0\) yields \(D_vf(a) = Df(a)v\), and for \(m=1\) the matrix of \(Df(a)\) is the row \(\nabla f(a)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Steepest ascent:</b> \(\nabla f\) points in the direction of greatest increase, with rate \(\|\nabla f\|\).
+      <div class="ex"><div><p>Water runs downhill along \(-\nabla f\). Every optimisation algorithm starts here.</p></div></div>
+      <div class="proof"><div><p>For unit \(v\), \(D_vf = \langle\nabla f,v\rangle \le \|\nabla f\|\) by Cauchy–Schwarz (Chapter 6), with equality exactly when \(v\) is the unit vector along \(\nabla f\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gradients are orthogonal to level sets.</b>
+      <div class="ex"><div><p>Walk along a contour and your altitude doesn't change — so the uphill direction must be perpendicular to it.</p></div></div>
+      <div class="proof"><div><p>Let \(\gamma\) be a differentiable curve inside the level set, so \(f(\gamma(t)) = c\). Differentiating with the chain rule (Layer 2) gives \(\langle\nabla f(\gamma(t)),\gamma'(t)\rangle = 0\), i.e. \(\nabla f\) annihilates every tangent direction of the level set. \(\blacksquare\)</p></div></div></li>
+    <li><b>Clairaut–Schwarz:</b> if the second partials are continuous, \(\partial_i\partial_jf = \partial_j\partial_if\).
+      <div class="ex"><div><p>Mixed partials commute — provided you have continuity. Without it they can genuinely differ.</p></div></div>
+      <div class="proof"><div><p>Consider the second difference \(\Delta(h,k) = f(a+he_i+ke_j) - f(a+he_i) - f(a+ke_j) + f(a)\). Applying the one-variable mean value theorem twice, in each order, gives \(\Delta = hk\,\partial_j\partial_if(\xi) = hk\,\partial_i\partial_jf(\eta)\) for points \(\xi,\eta\) in the small rectangle. Dividing by \(hk\), letting \(h,k\to0\) and using continuity of both second partials at \(a\) forces the two values to agree. \(\blacksquare\)</p></div></div></li>
+    <li><b>The hypothesis is necessary:</b> there is an \(f\) with \(\partial_1\partial_2f(0)\ne\partial_2\partial_1f(0)\).
+      <div class="ex"><div><p>\(f(x,y)=xy\frac{x^{2}-y^{2}}{x^{2}+y^{2}}\) gives \(+1\) one way and \(-1\) the other.</p></div></div>
+      <div class="proof"><div><p>With \(f(0,0)=0\), direct computation gives \(\partial_2 f(x,0) = x\) for \(x \ne 0\) and \(\partial_1f(0,y) = -y\) for \(y \ne 0\). Differentiating these once more at the origin yields \(\partial_1\partial_2f(0,0) = 1\) and \(\partial_2\partial_1f(0,0) = -1\). The second partials are not continuous at the origin. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Differentiate one variable at a time</b> — treat the others as constants.
+      <div class="ex"><div><p>Mechanical, and all that partial differentiation ever is.</p></div></div></li>
+    <li><b>Compute the gradient, then dot with a direction</b>.
+      <div class="ex"><div><p>One computation answers every directional-derivative question at that point.</p></div></div></li>
+    <li><b>Use \(\nabla f \perp\) level set</b> — to find normals and tangent planes.
+      <div class="ex"><div><p>The tangent plane to \(f = c\) at \(a\) is \(\langle\nabla f(a), x - a\rangle = 0\).</p></div></div></li>
+    <li><b>Check continuity of the partials</b> before commuting them.
+      <div class="ex"><div><p>Cheap insurance against a genuinely wrong answer.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The right definition</span>
+  <h2 class="ltitle">The Total Derivative</h2>
+  <p class="ldesc">Differentiability as best linear approximation.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Differentiability at \(a\)</b> — there is a linear \(L\) with \(f(a+h) = f(a) + Lh + o(\|h\|)\).
+      <div class="ex"><div><p>Zoom in far enough and the graph looks flat. This is the definition that works in every dimension.</p></div></div></li>
+    <li><b>The derivative \(Df(a)\)</b> — that linear map; its matrix is the Jacobian.
+      <div class="ex"><div><p>Not a number, not a vector: a <em>map</em>. Everything else in this chapter follows from taking that seriously.</p></div></div></li>
+    <li><b>Tangent plane / affine approximation</b> \(x \mapsto f(a) + Df(a)(x-a)\).
+      <div class="ex"><div><p>The flat sheet that hugs the surface at \(a\).</p></div></div></li>
+    <li><b>Jacobian determinant</b> \(\det Df(a)\) — the local volume factor.
+      <div class="ex"><div><p>How much a tiny box is stretched near \(a\). Chapter 12's change of variables is exactly this.</p></div></div></li>
+    <li><b>Continuously differentiable (\(C^{1}\))</b> — the partials exist and are continuous.
+      <div class="ex"><div><p>The condition you actually check in practice, because it implies differentiability.</p></div></div></li>
+    <li><b>Diffeomorphism</b> — a bijection, differentiable both ways.
+      <div class="ex"><div><p>A smooth relabelling of space. Chapters 12 and 15 are written in terms of these.</p></div></div></li>
+    <li><b>Mean value inequality</b> — the vector replacement for the mean value theorem.
+      <div class="ex"><div><p>The exact equality fails for vector-valued functions, so an inequality is used instead.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The derivative is unique</b>, and differentiable \(\Rightarrow\) continuous.
+      <div class="ex"><div><p>Only one linear map can be the best approximation.</p></div></div>
+      <div class="proof"><div><p>If \(L_1,L_2\) both work, subtracting gives \((L_1-L_2)h = o(\|h\|)\). Taking \(h = tv\) and letting \(t\to0\) gives \((L_1-L_2)v = 0\) for every \(v\). Continuity: \(\|f(a+h)-f(a)\| \le \|Df(a)\|\|h\| + o(\|h\|)\to0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Differentiable \(\Rightarrow\) all directional derivatives exist</b>, with \(D_vf(a) = Df(a)v\); the converse fails.
+      <div class="ex"><div><p>Layer 1 gave the counterexample. Differentiability is genuinely stronger.</p></div></div>
+      <div class="proof"><div><p>Substituting \(h = tv\) into the definition gives \(\frac{f(a+tv)-f(a)}{t} = Df(a)v + \frac{o(|t|)}{t} \to Df(a)v\). The converse fails by Layer 1's second theorem. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(C^{1}\Rightarrow\) differentiable.</b>
+      <div class="ex"><div><p>The practical criterion: continuous partials are all you ever need to check.</p></div></div>
+      <div class="proof"><div><p>Move from \(a\) to \(a+h\) one coordinate at a time. On the \(i\)-th step the one-variable mean value theorem gives an increment \(\partial_if(\xi_i)h_i\) for some intermediate \(\xi_i\). Summing, \(f(a+h)-f(a) - \sum_i\partial_if(a)h_i = \sum_i\bigl(\partial_if(\xi_i)-\partial_if(a)\bigr)h_i\), which is \(o(\|h\|)\) by continuity of the partials, since each \(\xi_i \to a\) as \(h\to0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Linearity:</b> \(D(f+g) = Df + Dg\), \(D(cf) = c\,Df\); and linear maps are their own derivative.
+      <div class="ex"><div><p>A flat function is already its own best flat approximation.</p></div></div>
+      <div class="proof"><div><p>Add the two defining expansions; the error terms are each \(o(\|h\|)\). For a linear \(A\), \(A(a+h) = Aa + Ah\) exactly, with zero remainder, so \(DA(a) = A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Chain rule:</b> \(D(g\circ f)(a) = Dg(f(a))\circ Df(a)\) — the Jacobians multiply.
+      <div class="ex"><div><p>Best flat approximations compose. All those partial-derivative chain formulas are one matrix product.</p></div></div>
+      <div class="proof"><div><p>Write \(f(a+h) = f(a) + Ah + \varepsilon_1(h)\) with \(A = Df(a)\) and \(\varepsilon_1 = o(\|h\|)\), and \(g(b+k) = g(b)+Bk+\varepsilon_2(k)\) with \(B = Dg(f(a))\). Substituting \(k = Ah+\varepsilon_1(h)\) gives \(g(f(a+h)) = g(f(a)) + BAh + B\varepsilon_1(h) + \varepsilon_2(k)\). Since \(\|k\| = O(\|h\|)\), both error terms are \(o(\|h\|)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Product and quotient rules</b> follow from the chain rule.
+      <div class="ex"><div><p>Multiplication is a bilinear map; differentiate through it and Leibniz appears.</p></div></div>
+      <div class="proof"><div><p>The map \(m(u,v) = uv\) is bilinear, so \(Dm(u,v)(h,k) = hv + uk\). Applying the chain rule to \(x \mapsto (f(x),g(x)) \mapsto f(x)g(x)\) gives \(D(fg)(a)h = (Df(a)h)g(a) + f(a)(Dg(a)h)\). The quotient rule follows by composing with \(t\mapsto1/t\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Mean value inequality:</b> \(\|f(b)-f(a)\| \le \sup_{[a,b]}\|Df\|\cdot\|b-a\|\) on a segment inside the domain.
+      <div class="ex"><div><p>A bound on the derivative is a speed limit: a bounded \(\|Df\|\) makes \(f\) Lipschitz.</p></div></div>
+      <div class="proof"><div><p>Let \(\gamma(t) = a + t(b-a)\) and \(\varphi(t) = f(\gamma(t))\). Then \(\varphi'(t) = Df(\gamma(t))(b-a)\), so \(\|\varphi'(t)\| \le M\|b-a\|\) with \(M\) the supremum. Hence \(\|f(b)-f(a)\| = \|\int_0^{1}\varphi'(t)\,dt\| \le \int_0^{1}\|\varphi'(t)\|dt \le M\|b-a\|\). (The exact equality of the one-variable mean value theorem fails here: for \(f(t) = (\cos t,\sin t)\) on \([0,2\pi]\) the left side is 0 while \(\|f'\|\equiv1\).) \(\blacksquare\)</p></div></div></li>
+    <li><b>Zero derivative on a domain \(\Rightarrow\) constant.</b>
+      <div class="ex"><div><p>Needs connectedness: on two separate blobs each may take its own value.</p></div></div>
+      <div class="proof"><div><p>The mean value inequality gives \(f(b) = f(a)\) along any segment inside the domain, and any two points of an open connected set are joined by a polygonal path (Chapter 8, Layer 4). \(\blacksquare\)</p></div></div></li>
+    <li><b>Jacobian of a composition multiplies determinants:</b> \(\det D(g\circ f) = \det Dg \cdot \det Df\).
+      <div class="ex"><div><p>Local volume factors compound — exactly as Chapter 5 said they must.</p></div></div>
+      <div class="proof"><div><p>Take determinants in the chain rule and apply multiplicativity of the determinant (Chapter 5, Layer 3). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check \(C^{1}\), then quote differentiability</b>.
+      <div class="ex"><div><p>Computing the \(o(\|h\|)\) limit by hand is almost never necessary.</p></div></div></li>
+    <li><b>Assemble the Jacobian</b> — one row per component, one column per variable.
+      <div class="ex"><div><p>Then every chain rule question becomes matrix multiplication.</p></div></div></li>
+    <li><b>Use the mean value inequality for estimates</b>.
+      <div class="ex"><div><p>The standard way to get Lipschitz bounds — and thus contractions for Layer 4.</p></div></div></li>
+    <li><b>Disprove differentiability with the definition</b> — show the remainder is not \(o(\|h\|)\).
+      <div class="ex"><div><p>Approach along a curve where the candidate approximation fails.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Finding the best point</span>
+  <h2 class="ltitle">Taylor &amp; Optimisation</h2>
+  <p class="ldesc">Second-order information, and constrained extrema.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Hessian</b> \(H_f = (\partial_i\partial_jf)\) — the matrix of second partials.
+      <div class="ex"><div><p>The curvature of the graph. Symmetric whenever Clairaut applies.</p></div></div></li>
+    <li><b>Critical point</b> — where \(\nabla f = \mathbf 0\) (or \(f\) is not differentiable).
+      <div class="ex"><div><p>The only interior candidates for a maximum or minimum.</p></div></div></li>
+    <li><b>Local vs global extremum</b>.
+      <div class="ex"><div><p>The top of a hill vs the top of the mountain range. Second derivatives see only the hill.</p></div></div></li>
+    <li><b>Saddle point</b> — critical, but neither a max nor a min.
+      <div class="ex"><div><p>A mountain pass: up in one direction, down in another.</p></div></div></li>
+    <li><b>Second-order Taylor polynomial</b> \(f(a) + \nabla f(a)\cdot h + \tfrac12 h^{\mathsf T}H_f(a)h\).
+      <div class="ex"><div><p>Value, slope and curvature. Everything local optimisation uses.</p></div></div></li>
+    <li><b>Constraint set</b> \(\{g = 0\}\).
+      <div class="ex"><div><p>Optimise the profit, but stay on the budget line.</p></div></div></li>
+    <li><b>Lagrange multiplier</b> \(\lambda\) — the exchange rate between objective and constraint.
+      <div class="ex"><div><p>How much extra profit one more unit of budget would buy.</p></div></div></li>
+    <li><b>Convex function</b> — \(f(tx+(1-t)y)\le tf(x)+(1-t)f(y)\).
+      <div class="ex"><div><p>A bowl. For convex functions every critical point is a global minimum — the reason convex optimisation is easy.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Fermat's condition:</b> at an interior local extremum of a differentiable \(f\), \(\nabla f = \mathbf 0\).
+      <div class="ex"><div><p>At the top of the hill the ground is level in every direction.</p></div></div>
+      <div class="proof"><div><p>For each direction \(v\), \(t\mapsto f(a+tv)\) has an interior local extremum at \(t=0\), so its derivative \(D_vf(a) = \langle\nabla f(a),v\rangle\) vanishes (Chapter 3, Layer 6). Holding for every \(v\), this forces \(\nabla f(a) = \mathbf 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Taylor's theorem with remainder:</b> \(f(a+h) = f(a)+\nabla f(a)\cdot h + \tfrac12h^{\mathsf T}H_f(\xi)h\) for some \(\xi\) on the segment.
+      <div class="ex"><div><p>An exact second-order statement, with an honest error term.</p></div></div>
+      <div class="proof"><div><p>Apply the one-variable Taylor theorem (Chapter 3, Layer 6) to \(\varphi(t) = f(a+th)\) on \([0,1]\). The chain rule gives \(\varphi'(t) = \nabla f(a+th)\cdot h\) and \(\varphi''(t) = h^{\mathsf T}H_f(a+th)h\), so \(\varphi(1) = \varphi(0)+\varphi'(0)+\tfrac12\varphi''(\theta)\) is exactly the stated formula with \(\xi = a+\theta h\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Second derivative test:</b> at a critical point, \(H_f\) positive definite \(\Rightarrow\) local minimum; negative definite \(\Rightarrow\) local maximum; indefinite \(\Rightarrow\) saddle.
+      <div class="ex"><div><p>Chapter 6's classification of quadratic forms, applied to the curvature.</p></div></div>
+      <div class="proof"><div><p>With \(\nabla f(a)=\mathbf 0\), Taylor gives \(f(a+h)-f(a) = \tfrac12h^{\mathsf T}H_f(\xi)h\). If \(H_f(a)\) is positive definite, its smallest eigenvalue \(\lambda_{\min} &gt; 0\) (Chapter 6, Layer 3), and continuity keeps \(h^{\mathsf T}H_f(\xi)h \ge \tfrac{\lambda_{\min}}{2}\|h\|^{2} &gt; 0\) for small \(h\) — a strict local minimum. The negative definite case is symmetric; if indefinite, two directions give opposite signs, so \(a\) is a saddle. \(\blacksquare\)</p></div></div></li>
+    <li><b>The test is inconclusive when \(H_f\) is semidefinite.</b>
+      <div class="ex"><div><p>\(x^{4}\), \(-x^{4}\) and \(x^{3}\) all have vanishing second derivative at 0 and behave completely differently.</p></div></div>
+      <div class="proof"><div><p>For \(f(x,y)=x^{4}+y^{4}\), \(g = -(x^{4}+y^{4})\), \(h = x^{4}-y^{4}\), all three have zero gradient and zero Hessian at the origin, yet the origin is a strict minimum, a strict maximum and a saddle respectively. \(\blacksquare\)</p></div></div></li>
+    <li><b>Convexity criteria:</b> \(f\) is convex iff \(f(y)\ge f(x)+\nabla f(x)\cdot(y-x)\) for all \(x,y\), iff \(H_f \succeq 0\) everywhere.
+      <div class="ex"><div><p>The graph lies above every tangent plane.</p></div></div>
+      <div class="proof"><div><p>Restrict to a segment: \(\varphi(t)=f(x+t(y-x))\) is convex in \(t\) exactly when \(f\) is convex along that segment, and one-variable convexity is equivalent to \(\varphi'' \ge0\) (Chapter 3, Layer 6), i.e. \((y-x)^{\mathsf T}H_f(y-x)\ge0\). The tangent inequality is the one-variable statement that a convex function lies above its tangent line, applied along the segment. \(\blacksquare\)</p></div></div></li>
+    <li><b>For convex \(f\), every critical point is a global minimum.</b>
+      <div class="ex"><div><p>No local traps. This is why convex problems are the ones that get solved reliably.</p></div></div>
+      <div class="proof"><div><p>The tangent inequality with \(\nabla f(x)=\mathbf 0\) gives \(f(y)\ge f(x)\) for every \(y\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Lagrange multipliers:</b> at a constrained extremum of \(f\) on \(\{g=0\}\) with \(\nabla g \ne \mathbf 0\), there is \(\lambda\) with \(\nabla f = \lambda\nabla g\).
+      <div class="ex"><div><p>At the best point on the contour, the objective's contour is tangent to the constraint's — otherwise you could slide along and improve.</p></div></div>
+      <div class="proof"><div><p>Near such a point the implicit function theorem (Layer 4) parametrises the constraint set by a \(C^{1}\) curve \(\gamma\) through it, for every tangent direction \(v\) with \(\langle\nabla g,v\rangle = 0\). Since \(t\mapsto f(\gamma(t))\) has an extremum at 0, \(\langle\nabla f,v\rangle = 0\). So \(\nabla f\) annihilates the whole tangent hyperplane \(\nabla g^{\perp}\), which forces \(\nabla f\) to be a multiple of \(\nabla g\). With several constraints, the same argument gives \(\nabla f = \sum_i\lambda_i\nabla g_i\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Existence of constrained extrema:</b> a continuous \(f\) on a compact constraint set attains them.
+      <div class="ex"><div><p>Check compactness first; the multiplier equations only find <em>candidates</em>.</p></div></div>
+      <div class="proof"><div><p>Chapter 9, Layer 3's extreme value theorem: the constraint set \(\{g=0\}\) is closed as the preimage of a closed set under a continuous map, so if it is also bounded it is compact. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Solve \(\nabla f = \mathbf 0\), then classify with the Hessian</b>.
+      <div class="ex"><div><p>Eigenvalue signs, or Sylvester's leading-minor test (Chapter 6).</p></div></div></li>
+    <li><b>Compare interior candidates with the boundary</b>.
+      <div class="ex"><div><p>The maximum may well sit on the edge, where \(\nabla f\) need not vanish.</p></div></div></li>
+    <li><b>Lagrange:</b> solve \(\nabla f = \lambda\nabla g\) together with \(g = 0\).
+      <div class="ex"><div><p>\(n+1\) equations in \(n+1\) unknowns. Then compare the values at all solutions.</p></div></div></li>
+    <li><b>Look for convexity</b> — it turns a local answer into a global one.
+      <div class="ex"><div><p>Check \(H_f \succeq 0\) and the problem is essentially solved.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Solving for the unknown</span>
+  <h2 class="ltitle">Inverse &amp; Implicit Function Theorems</h2>
+  <p class="ldesc">When a nonlinear system can be untangled — and why surfaces exist.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Local inverse</b> — an inverse defined only near a point.
+      <div class="ex"><div><p>\(\sin\) has no global inverse, but near \(0\) it has \(\arcsin\).</p></div></div></li>
+    <li><b>Local diffeomorphism</b> — invertible with differentiable inverse, near a point.
+      <div class="ex"><div><p>Local, not global: \((r,\theta)\mapsto(r\cos\theta,r\sin\theta)\) is a local diffeomorphism everywhere off the origin, yet wraps around.</p></div></div></li>
+    <li><b>Implicit function</b> — \(y = \varphi(x)\) extracted from an equation \(F(x,y)=0\).
+      <div class="ex"><div><p>The circle \(x^{2}+y^{2}=1\) locally gives \(y = \pm\sqrt{1-x^{2}}\) — except at the two points where the tangent is vertical.</p></div></div></li>
+    <li><b>Regular value</b> — a \(c\) at which \(DF\) has full rank on all of \(\{F = c\}\).
+      <div class="ex"><div><p>The hypothesis that makes a level set a genuine smooth surface. Chapter 15 builds manifolds from it.</p></div></div></li>
+    <li><b>Immersion &amp; submersion</b> — \(Df\) injective; \(Df\) surjective.
+      <div class="ex"><div><p>Threading a curve into space; projecting space onto a plane.</p></div></div></li>
+    <li><b>Rank</b> of a map at a point — the rank of its Jacobian there.
+      <div class="ex"><div><p>How many independent directions the map actually moves in.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Inverse function theorem:</b> if \(f\) is \(C^{1}\) near \(a\) and \(\det Df(a) \ne 0\), then \(f\) is a diffeomorphism of a neighbourhood of \(a\) onto a neighbourhood of \(f(a)\), with \(D(f^{-1})(f(a)) = Df(a)^{-1}\).
+      <div class="ex"><div><p>If the linear approximation is invertible, so is the function — locally. Non-zero Jacobian determinant is the whole hypothesis.</p></div></div>
+      <div class="proof"><div><p>Sketch. Normalise so \(a = 0\), \(f(0)=0\) and \(Df(0)=I\) (compose with \(Df(a)^{-1}\)). For fixed \(y\), define \(T_y(x) = x - f(x) + y\); then fixed points of \(T_y\) are exactly solutions of \(f(x)=y\). Since \(DT_y(x) = I - Df(x)\) is small near 0 by continuity of \(Df\), the mean value inequality makes \(T_y\) a contraction of a small closed ball into itself for \(y\) small. Banach's fixed point theorem (Chapter 7, Layer 4) gives a unique solution \(x = g(y)\), so \(f\) is locally bijective. Continuity and then differentiability of \(g\) follow from the same estimates, and differentiating \(f(g(y)) = y\) with the chain rule gives \(Dg = (Df)^{-1}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — open mapping:</b> a \(C^{1}\) map with everywhere-invertible derivative sends open sets to open sets.
+      <div class="ex"><div><p>Such a map cannot squash a blob onto a curve.</p></div></div>
+      <div class="proof"><div><p>Each point of an open \(U\) has a neighbourhood mapped onto a neighbourhood of its image, by the inverse function theorem; the union of those images is open and equals \(f(U)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Implicit function theorem:</b> if \(F(a,b)=0\) and \(\det \partial F/\partial y\,(a,b)\ne0\), then near \(a\) the equation \(F(x,y)=0\) has a unique \(C^{1}\) solution \(y=\varphi(x)\), with \(D\varphi = -\bigl(\partial F/\partial y\bigr)^{-1}\partial F/\partial x\).
+      <div class="ex"><div><p>You may solve for \(y\) exactly when the equation is "non-degenerate in \(y\)" — and you get the derivative without ever solving.</p></div></div>
+      <div class="proof"><div><p>Apply the inverse function theorem to \(\Phi(x,y) = (x, F(x,y))\), whose Jacobian is block triangular with determinant \(\det(\partial F/\partial y) \ne 0\). Its local inverse has the form \((x,z)\mapsto(x,\psi(x,z))\), and \(\varphi(x) := \psi(x,0)\) satisfies \(F(x,\varphi(x))=0\). Differentiating that identity with the chain rule gives \(\partial F/\partial x + (\partial F/\partial y)D\varphi = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Regular value theorem:</b> if \(c\) is a regular value of \(F : \mathbb{R}^{n}\to\mathbb{R}^{k}\), then \(F^{-1}(c)\) is locally the graph of a \(C^{1}\) function — an \((n-k)\)-dimensional surface.
+      <div class="ex"><div><p>The sphere \(x^{2}+y^{2}+z^{2}=1\) is a surface because 1 is a regular value. This is where Chapter 15 begins.</p></div></div>
+      <div class="proof"><div><p>Full rank \(k\) means some \(k\) columns of \(DF\) are independent; call those variables \(y\) and the rest \(x\). Then \(\partial F/\partial y\) is invertible, and the implicit function theorem writes the level set locally as \(y = \varphi(x)\) with \(x\) ranging over an open subset of \(\mathbb{R}^{n-k}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rank theorem:</b> a \(C^{1}\) map of constant rank \(r\) looks, in suitable local coordinates, like \((x_1,\dots,x_n)\mapsto(x_1,\dots,x_r,0,\dots,0)\).
+      <div class="ex"><div><p>Choose the right coordinates at both ends and every smooth map becomes a projection. Chapter 4's rank normal form, made local.</p></div></div>
+      <div class="proof"><div><p>Sketch: after permuting coordinates, the top-left \(r\times r\) block of \(Df\) is invertible. The inverse function theorem straightens the source so that the first \(r\) components of \(f\) become coordinates. Constancy of the rank then forces the remaining components to be independent of the last \(n-r\) variables, and a second change of coordinates in the target kills them. \(\blacksquare\)</p></div></div></li>
+    <li><b>Local immersion / submersion forms.</b>
+      <div class="ex"><div><p>Immersions locally look like \(x \mapsto (x,0)\); submersions like \((x,y)\mapsto x\).</p></div></div>
+      <div class="proof"><div><p>Both are the rank theorem with \(r = n\) (immersion, so \(Df\) injective) or \(r = m\) (submersion, so \(Df\) surjective); in each case the rank is automatically locally constant since maximal rank is an open condition. \(\blacksquare\)</p></div></div></li>
+    <li><b>Non-zero Jacobian is not enough for global injectivity.</b>
+      <div class="ex"><div><p>\((r,\theta)\mapsto(e^{r}\cos\theta,e^{r}\sin\theta)\) has non-vanishing Jacobian everywhere and wraps the plane around infinitely often.</p></div></div>
+      <div class="proof"><div><p>Its Jacobian determinant is \(e^{2r} \ne 0\), yet the map takes the same value at \(\theta\) and \(\theta+2\pi\). So local invertibility never upgrades to global invertibility on its own. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check \(\det Df \ne 0\)</b> — then quote local invertibility.
+      <div class="ex"><div><p>One determinant replaces any attempt to solve the system explicitly.</p></div></div></li>
+    <li><b>Differentiate the constraint implicitly</b> — get \(D\varphi\) without solving for \(\varphi\).
+      <div class="ex"><div><p>From \(x^{2}+y^{2}=1\): \(2x + 2yy' = 0\), so \(y' = -x/y\). No square roots needed.</p></div></div></li>
+    <li><b>Verify a regular value</b> — to know a level set is a smooth surface.
+      <div class="ex"><div><p>Check \(\nabla F \ne \mathbf 0\) at every point of the level set, not merely at one.</p></div></div></li>
+    <li><b>Set up a contraction</b> — the proof technique behind all of these theorems.
+      <div class="ex"><div><p>Existence of solutions to nonlinear equations, every time, from Chapter 7's fixed point theorem.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Differentiate one variable at a time</td><td>L1</td><td>Compute partial derivatives</td></tr>
+    <tr><td>Gradient, then dot with a direction</td><td>L1</td><td>Get every directional derivative at once</td></tr>
+    <tr><td>\(\nabla f \perp\) level set</td><td>L1</td><td>Find normals and tangent planes</td></tr>
+    <tr><td>Check \(C^{1}\)</td><td>L2</td><td>Establish differentiability without limits</td></tr>
+    <tr><td>Assemble the Jacobian</td><td>L2</td><td>Turn the chain rule into matrix multiplication</td></tr>
+    <tr><td>Mean value inequality</td><td>L2</td><td>Bound \(\|f(b)-f(a)\|\); get Lipschitz constants</td></tr>
+    <tr><td>\(|\det Df|\) as a local volume factor</td><td>L2</td><td>Prepare for change of variables</td></tr>
+    <tr><td>Solve \(\nabla f=\mathbf 0\), classify with \(H_f\)</td><td>L3</td><td>Find and identify interior extrema</td></tr>
+    <tr><td>Compare interior and boundary</td><td>L3</td><td>Find the global maximum</td></tr>
+    <tr><td>Lagrange multipliers</td><td>L3</td><td>Optimise subject to constraints</td></tr>
+    <tr><td>Look for convexity</td><td>L3</td><td>Upgrade a local minimum to a global one</td></tr>
+    <tr><td>\(\det Df\ne0\) test</td><td>L4</td><td>Get a local inverse</td></tr>
+    <tr><td>Implicit differentiation</td><td>L4</td><td>Get \(D\varphi\) without solving</td></tr>
+    <tr><td>Regular value check</td><td>L4</td><td>Show a level set is a smooth surface</td></tr>
+    <tr><td>Contraction argument</td><td>L4</td><td>Prove a nonlinear equation is solvable</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Differentiation in \(\mathbb{R}^{n}\) · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

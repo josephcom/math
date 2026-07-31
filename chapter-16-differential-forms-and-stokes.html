@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 16 — Differential Forms &amp; Stokes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Differential Forms &amp; Stokes</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-15-manifolds.html">&#10094; Chapter 15 — Manifolds</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>One Theorem to Replace Four</h2>
+    <p>The fundamental theorem of calculus, Green's theorem, the divergence theorem and Kelvin–Stokes are four statements of the same fact — once you have the right language.</p>
+    <p>That language is <b>differential forms</b>: the things you integrate. A \(k\)-form eats \(k\) vectors and returns the signed \(k\)-volume they span, so integration is built into the object.</p>
+    <p>Everything rests on Chapter 5's alternating multilinear forms, carried point by point across a manifold.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\displaystyle\int_M d\omega = \int_{\partial M}\omega\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Exterior Algebra</a><a href="#L2">L2 Differential Forms</a><a href="#L3">L3 Integration</a>
+  <a href="#L4">L4 Stokes</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · The algebra</span>
+  <h2 class="ltitle">Exterior Algebra</h2>
+  <p class="ldesc">Chapter 5's alternating forms, organised.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Alternating \(k\)-form</b> — a multilinear map \(V^{k}\to\mathbb{R}\) vanishing when two arguments coincide.
+      <div class="ex"><div><p>It measures the signed \(k\)-volume of the box spanned by its \(k\) inputs.</p></div></div></li>
+    <li><b>The space \(\Lambda^{k}V^{*}\)</b> — all alternating \(k\)-forms on \(V\).
+      <div class="ex"><div><p>\(\Lambda^{0}\) is the scalars, \(\Lambda^{1}\) is the dual space, \(\Lambda^{n}\) is a line — the determinants.</p></div></div></li>
+    <li><b>Wedge product</b> \(\alpha\wedge\beta\) — the alternating product of forms.
+      <div class="ex"><div><p>Combine a \(k\)-box measurer and an \(l\)-box measurer into a \((k+l)\)-box measurer.</p></div></div></li>
+    <li><b>Decomposable form</b> \(\alpha_1\wedge\cdots\wedge\alpha_k\).
+      <div class="ex"><div><p>Its value on \(k\) vectors is exactly \(\det(\alpha_i(v_j))\) — the determinant, back again.</p></div></div></li>
+    <li><b>Basis of \(\Lambda^{k}\)</b> — \(dx^{i_1}\wedge\cdots\wedge dx^{i_k}\) with \(i_1&lt;\cdots&lt;i_k\).
+      <div class="ex"><div><p>Choose \(k\) coordinate directions out of \(n\). That's why the dimension is a binomial coefficient.</p></div></div></li>
+    <li><b>Exterior algebra</b> \(\Lambda^{\bullet}V^{*} = \bigoplus_k\Lambda^{k}V^{*}\).
+      <div class="ex"><div><p>All degrees at once, with \(\wedge\) as multiplication. Its total dimension is \(2^{n}\) — one for each subset of the coordinates.</p></div></div></li>
+    <li><b>Interior product</b> \(\iota_v\omega = \omega(v,\cdot,\dots,\cdot)\).
+      <div class="ex"><div><p>Feed in one vector and drop the degree by one. It converts flux forms into fluxes.</p></div></div></li>
+    <li><b>Pullback of a form</b> \((f^{*}\omega)(v_1,\dots,v_k) = \omega(df\,v_1,\dots,df\,v_k)\).
+      <div class="ex"><div><p>Push the vectors forward, then measure. Forms pull back where vectors push forward.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\dim\Lambda^{k}V^{*} = \binom nk\)</b>, and \(\Lambda^{k} = 0\) for \(k &gt; n\).
+      <div class="ex"><div><p>You cannot span a 4-dimensional box with 3-dimensional room. Beyond degree \(n\) everything vanishes.</p></div></div>
+      <div class="proof"><div><p>An alternating form is determined by its values on increasing tuples of basis vectors, since permuting arguments only changes the sign and repeats give 0. There are \(\binom nk\) such tuples, and the corresponding decomposable forms are independent (evaluate each on its own tuple). For \(k &gt; n\) every tuple repeats an index, so the form is 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Wedge is associative, bilinear, and graded-commutative:</b> \(\alpha\wedge\beta = (-1)^{kl}\beta\wedge\alpha\).
+      <div class="ex"><div><p>Two 1-forms anticommute: \(dx\wedge dy = -dy\wedge dx\). Even-degree forms commute with everything.</p></div></div>
+      <div class="proof"><div><p>On decomposables the wedge is a determinant-like sum over shuffles, and swapping a block of \(k\) arguments past a block of \(l\) requires \(kl\) transpositions, each contributing \(-1\) (Chapter 5, Layer 1). Associativity and bilinearity are checked on the basis, where both sides are the same signed sum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(\alpha\wedge\alpha = 0\) for any \(\alpha\) of odd degree.
+      <div class="ex"><div><p>\(dx\wedge dx = 0\). The single most-used simplification in the whole subject.</p></div></div>
+      <div class="proof"><div><p>Graded commutativity with \(k = l\) odd gives \(\alpha\wedge\alpha = -\alpha\wedge\alpha\), so \(2\alpha\wedge\alpha = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Decomposables and determinants:</b> \((\alpha_1\wedge\cdots\wedge\alpha_k)(v_1,\dots,v_k) = \det\bigl(\alpha_i(v_j)\bigr)\).
+      <div class="ex"><div><p>The wedge <em>is</em> the determinant. Chapter 5's uniqueness theorem is the reason.</p></div></div>
+      <div class="proof"><div><p>Both sides are multilinear and alternating in the \(v_j\), so by Chapter 5, Layer 2 they agree up to a constant; evaluating on a dual basis fixes the constant at 1. \(\blacksquare\)</p></div></div></li>
+    <li><b>Independence test:</b> \(v_1,\dots,v_k\) are linearly independent iff some decomposable \(k\)-form is non-zero on them.
+      <div class="ex"><div><p>Non-zero \(k\)-volume means genuinely \(k\)-dimensional — the geometric reading of independence.</p></div></div>
+      <div class="proof"><div><p>If the vectors are dependent, every alternating form vanishes on them (Chapter 5, Layer 2). If independent, extend to a basis and take the corresponding dual decomposable, which evaluates to 1. \(\blacksquare\)</p></div></div></li>
+    <li><b>Top-degree transformation:</b> for a linear \(T : V\to V\), \(T^{*}\omega = (\det T)\,\omega\) on \(\Lambda^{n}\).
+      <div class="ex"><div><p>Where the change-of-variables factor comes from. It is not inserted by hand; it is what forms do.</p></div></div>
+      <div class="proof"><div><p>\(\Lambda^{n}V^{*}\) is one-dimensional (previous theorem), so \(T^{*}\omega = c\,\omega\) for a scalar \(c\). Evaluating on a basis gives \(c = \omega(Te_1,\dots,Te_n)/\omega(e_1,\dots,e_n) = \det T\) by Chapter 5. \(\blacksquare\)</p></div></div></li>
+    <li><b>Pullback is an algebra homomorphism:</b> \(f^{*}(\alpha\wedge\beta) = f^{*}\alpha\wedge f^{*}\beta\), and \((g\circ f)^{*} = f^{*}\circ g^{*}\).
+      <div class="ex"><div><p>Change coordinates and every wedge formula survives unchanged. This is why forms are the right objects.</p></div></div>
+      <div class="proof"><div><p>Both statements follow by evaluating on vectors: the pullback simply pre-composes each argument with \(df\), and the shuffle sum defining \(\wedge\) commutes with that substitution. The composition rule is the chain rule \(d(g\circ f) = dg\circ df\) (Chapter 15, Layer 2). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Expand in the \(dx^{I}\) basis</b> — with increasing indices only.
+      <div class="ex"><div><p>Sort every term into increasing order, tracking the sign. That's the entire computational technique.</p></div></div></li>
+    <li><b>Kill repeats</b> — any wedge with a repeated 1-form is zero.
+      <div class="ex"><div><p>Most terms in an expansion vanish immediately.</p></div></div></li>
+    <li><b>Read a wedge as a determinant</b>.
+      <div class="ex"><div><p>Converts an unfamiliar expression into a familiar computation.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Forms that vary</span>
+  <h2 class="ltitle">Differential Forms &amp; \(d\)</h2>
+  <p class="ldesc">One operator that contains grad, curl and div.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Differential \(k\)-form</b> — a smooth choice of \(\omega_p\in\Lambda^{k}T_p^{*}M\).
+      <div class="ex"><div><p>A \(k\)-volume measurer attached to every point, varying smoothly.</p></div></div></li>
+    <li><b>0-forms and 1-forms</b> — functions; and objects like \(df = \sum_i\partial_if\,dx^{i}\).
+      <div class="ex"><div><p>A 1-form eats a direction and returns a number: exactly what a gradient does, without needing a metric.</p></div></div></li>
+    <li><b>Exterior derivative</b> \(d\) — the unique degree-raising operator with \(d^{2}=0\) extending \(f\mapsto df\).
+      <div class="ex"><div><p>One operator; in \(\mathbb{R}^{3}\) it is gradient, curl and divergence in degrees 0, 1 and 2.</p></div></div></li>
+    <li><b>Closed form</b> — \(d\omega = 0\).
+      <div class="ex"><div><p>Curl-free, or divergence-free, depending on the degree.</p></div></div></li>
+    <li><b>Exact form</b> — \(\omega = d\eta\) for some \(\eta\).
+      <div class="ex"><div><p>Has a potential. Every exact form is closed; the converse depends on the shape of the space.</p></div></div></li>
+    <li><b>de Rham cohomology</b> \(H^{k} = \dfrac{\text{closed }k\text{-forms}}{\text{exact }k\text{-forms}}\).
+      <div class="ex"><div><p>Measures the holes. Calculus detecting topology.</p></div></div></li>
+    <li><b>Contractible space</b> — continuously shrinkable to a point.
+      <div class="ex"><div><p>A ball is; a punctured plane is not — and that is why \(d\theta\) has no global potential.</p></div></div></li>
+    <li><b>Volume form</b> — a nowhere-vanishing top-degree form.
+      <div class="ex"><div><p>Exists exactly on orientable manifolds (Chapter 15, Layer 4). It is what you integrate to get volume.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Existence and uniqueness of \(d\):</b> there is exactly one operator that is linear, satisfies the graded Leibniz rule, agrees with \(f\mapsto df\) on functions, and has \(d^{2} = 0\).
+      <div class="ex"><div><p>Not a definition chosen for convenience — the properties force the formula.</p></div></div>
+      <div class="proof"><div><p>In a chart, the four properties force \(d\bigl(\sum_Ia_I\,dx^{I}\bigr) = \sum_Ida_I\wedge dx^{I}\): Leibniz splits the product, \(d^{2}=0\) kills \(d(dx^{I})\), and linearity assembles the terms. That formula is then checked to satisfy all four properties, and chart-independence follows from uniqueness on overlaps. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(d^{2} = 0\).</b>
+      <div class="ex"><div><p>"The boundary of a boundary is empty", in algebraic form. It is Clairaut's theorem wearing a new hat.</p></div></div>
+      <div class="proof"><div><p>For a function, \(d(df) = \sum_{i,j}\partial_j\partial_if\,dx^{j}\wedge dx^{i}\). The coefficients are symmetric in \(i,j\) (Clairaut, Chapter 10, Layer 1) while \(dx^{j}\wedge dx^{i}\) is antisymmetric, so the terms cancel in pairs. The general case follows from the Leibniz rule and this special case. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> exact \(\Rightarrow\) closed.
+      <div class="ex"><div><p>Every gradient field is curl-free. The converse is where topology enters.</p></div></div>
+      <div class="proof"><div><p>If \(\omega = d\eta\) then \(d\omega = d^{2}\eta = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Vector calculus dictionary:</b> in \(\mathbb{R}^{3}\), \(d\) on 0-, 1- and 2-forms is \(\operatorname{grad}\), \(\operatorname{curl}\), \(\operatorname{div}\).
+      <div class="ex"><div><p>And \(d^{2}=0\) becomes the two identities \(\operatorname{curl}\operatorname{grad} = 0\) and \(\operatorname{div}\operatorname{curl} = 0\).</p></div></div>
+      <div class="proof"><div><p>Identify a vector field \(F\) with the 1-form \(\omega_F = F_1dx+F_2dy+F_3dz\) and with the 2-form \(\eta_F = F_1dy\wedge dz + F_2dz\wedge dx + F_3dx\wedge dy\). Computing \(df\), \(d\omega_F\) and \(d\eta_F\) in coordinates reproduces exactly the gradient, curl and divergence formulas. \(\blacksquare\)</p></div></div></li>
+    <li><b>Pullback commutes with \(d\):</b> \(f^{*}(d\omega) = d(f^{*}\omega)\).
+      <div class="ex"><div><p>Differentiation is coordinate-free. Every formula you prove in one chart holds in all of them.</p></div></div>
+      <div class="proof"><div><p>For a function, \(f^{*}(dg) = d(g\circ f)\) is the chain rule. For a general form, write it in coordinates as a sum of \(a_I\,dx^{I}\), apply Layer 1's homomorphism property of \(f^{*}\), and use the function case on each coefficient. \(\blacksquare\)</p></div></div></li>
+    <li><b>Poincaré lemma:</b> on a contractible open set, every closed form is exact.
+      <div class="ex"><div><p>No holes, no obstruction: a curl-free field on a ball always has a potential.</p></div></div>
+      <div class="proof"><div><p>Sketch: let \(H(t,x)\) be a smooth contraction to a point. Define the homotopy operator \(K\omega = \int_0^{1}\iota_{\partial_t}H^{*}\omega\,dt\). A computation using \(d\) commuting with pullback and the Leibniz rule gives Cartan's homotopy formula \(dK\omega + Kd\omega = \omega\). If \(d\omega = 0\), then \(\omega = d(K\omega)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Closed but not exact:</b> \(\omega = \frac{-y\,dx + x\,dy}{x^{2}+y^{2}}\) on \(\mathbb{R}^{2}\setminus\{0\}\).
+      <div class="ex"><div><p>The angle form. It measures winding; the puncture is exactly what stops it having a global potential.</p></div></div>
+      <div class="proof"><div><p>A direct computation gives \(d\omega = 0\). If \(\omega = df\) then \(\oint_{S^{1}}\omega = f(\text{end})-f(\text{start}) = 0\); but parametrising the unit circle gives \(\oint\omega = 2\pi\). So no potential exists, and \(H^{1}(\mathbb{R}^{2}\setminus\{0\})\ne0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Homotopy invariance:</b> homotopic maps induce the same map on de Rham cohomology.
+      <div class="ex"><div><p>Cohomology cannot see continuous deformation — which is what makes it a topological invariant.</p></div></div>
+      <div class="proof"><div><p>The same homotopy operator: if \(f\simeq g\) via \(H\), then \(g^{*}\omega - f^{*}\omega = d(K\omega)+K(d\omega)\). On closed forms the second term vanishes, so the two pullbacks differ by an exact form and agree in cohomology. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compute \(d\) by differentiating coefficients and wedging</b>.
+      <div class="ex"><div><p>\(d(a\,dx\wedge dy) = da\wedge dx\wedge dy\); only the \(dz\) term survives in \(\mathbb{R}^{3}\).</p></div></div></li>
+    <li><b>Check closedness first</b> — it is necessary for exactness and cheap to test.
+      <div class="ex"><div><p>If \(d\omega \ne 0\), stop looking for a potential.</p></div></div></li>
+    <li><b>Integrate around a loop to detect a hole</b>.
+      <div class="ex"><div><p>A non-zero loop integral of a closed form proves the form is not exact.</p></div></div></li>
+    <li><b>Use the dictionary</b> — translate vector calculus into forms and back.
+      <div class="ex"><div><p>Identities that take a page in coordinates become one line in forms.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · What integration really is</span>
+  <h2 class="ltitle">Integration of Forms</h2>
+  <p class="ldesc">Why the change-of-variables factor comes for free.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Integral of a \(k\)-form over a \(k\)-manifold</b> \(\displaystyle\int_M\omega\).
+      <div class="ex"><div><p>Degrees must match: you integrate a 2-form over a surface, not over a curve.</p></div></div></li>
+    <li><b>Chart computation</b> — \(\int_{\varphi(U)}a(x)\,dx^{1}\cdots dx^{k}\) for \(\omega = a\,dx^{1}\wedge\cdots\wedge dx^{k}\).
+      <div class="ex"><div><p>Strip the wedges, integrate the coefficient with Chapter 12. That is the whole definition.</p></div></div></li>
+    <li><b>Orientation-compatible charts</b> — required for the sign to be consistent.
+      <div class="ex"><div><p>Reverse the orientation and every integral changes sign — unlike Chapter 12's unsigned measure.</p></div></div></li>
+    <li><b>Integration over a chain</b> — a formal sum of parametrised pieces.
+      <div class="ex"><div><p>Chop a surface into patches with signs, integrate over each, and add.</p></div></div></li>
+    <li><b>Volume form of a metric</b> \(\sqrt{\det g}\;dx^{1}\wedge\cdots\wedge dx^{k}\).
+      <div class="ex"><div><p>Chapter 14's \(\sqrt{EG-F^{2}}\), now as a form. Chapter 17 supplies \(g\).</p></div></div></li>
+    <li><b>Flux</b> — the integral of a 2-form over a surface in \(\mathbb{R}^{3}\).
+      <div class="ex"><div><p>How much fluid crosses the surface per second. The 2-form does the "per unit area, in the normal direction" bookkeeping.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The integral is well defined:</b> independent of the oriented atlas and the partition of unity.
+      <div class="ex"><div><p>Different charts, same answer — because the pullback of a top form already carries the Jacobian.</p></div></div>
+      <div class="proof"><div><p>On an overlap, \(\psi^{*}(a\,dx^{1}\wedge\cdots\wedge dx^{k}) = (a\circ\psi)(\det D\psi)\,du^{1}\wedge\cdots\wedge du^{k}\) by Layer 1's top-degree transformation rule. Since the atlas is oriented, \(\det D\psi &gt; 0\), so this matches the factor \(|\det D\psi|\) in Chapter 12's change of variables formula exactly. Independence of the partition of unity is the same double-sum argument as in Chapter 15, Layer 4. \(\blacksquare\)</p></div></div></li>
+    <li><b>Change of variables is automatic:</b> \(\displaystyle\int_{f(M)}\omega = \int_M f^{*}\omega\) for an orientation-preserving diffeomorphism.
+      <div class="ex"><div><p>Chapter 12's \(|\det DT|\) is not a correction bolted on — it is what a top-degree form does under pullback.</p></div></div>
+      <div class="proof"><div><p>Work in charts: the left side is the coordinate integral of the coefficient of \(\omega\), and the right side that of the coefficient of \(f^{*}\omega\), which is \((a\circ f)\det Df\). Chapter 12, Layer 4 says these agree, the sign being handled by orientation preservation. \(\blacksquare\)</p></div></div></li>
+    <li><b>Orientation reversal flips the sign:</b> \(\int_{-M}\omega = -\int_M\omega\).
+      <div class="ex"><div><p>Traverse a curve backwards and the line integral changes sign. Chapter 11's measure could not express this.</p></div></div>
+      <div class="proof"><div><p>Reversing orientation means composing charts with a reflection, whose Jacobian determinant is \(-1\); the top-form transformation rule then multiplies every local contribution by \(-1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Forms vs densities:</b> \(\int_M f\,\mathrm{vol}_g\) reproduces Chapter 14's surface area.
+      <div class="ex"><div><p>The two constructions agree wherever both apply — as they must.</p></div></div>
+      <div class="proof"><div><p>In a chart the volume form's coefficient is \(\sqrt{\det g} = \sqrt{\det(D\Phi^{\mathsf T}D\Phi)}\), which is exactly the Gram-determinant factor of Chapter 14, Layer 4. The two integrals therefore have identical integrands. \(\blacksquare\)</p></div></div></li>
+    <li><b>Line and surface integrals recovered:</b> \(\int_\gamma\omega_F = \int F\cdot T\,ds\) and \(\int_S\eta_F = \int F\cdot N\,dA\).
+      <div class="ex"><div><p>Work done along a path; flux through a surface. The classical formulas are pullbacks.</p></div></div>
+      <div class="proof"><div><p>Pull \(\omega_F\) back by \(\gamma\): \(\gamma^{*}\omega_F = \langle F(\gamma(t)),\gamma'(t)\rangle dt = \langle F,T\rangle\|\gamma'\|dt\), whose integral is the line integral. Similarly \(\Phi^{*}\eta_F = \langle F,\Phi_u\times\Phi_v\rangle du\wedge dv = \langle F,N\rangle\sqrt{EG-F^{2}}\,du\wedge dv\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Only top-degree forms integrate over \(M\);</b> lower degrees integrate over submanifolds.
+      <div class="ex"><div><p>Degree = dimension. It is the rule that makes every formula in this chapter type-check.</p></div></div>
+      <div class="proof"><div><p>In a \(k\)-dimensional chart, a form of degree \(&lt; k\) has no \(dx^{1}\wedge\cdots\wedge dx^{k}\) component to strip, and one of degree \(&gt; k\) is identically zero (Layer 1). Restricting a \(j\)-form to a \(j\)-dimensional submanifold — that is, pulling it back along the inclusion — makes it top-degree there. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Pull back to the parameter domain</b>, then integrate as in Chapter 12.
+      <div class="ex"><div><p>Substitute, expand the wedges, strip them, integrate. Always in that order.</p></div></div></li>
+    <li><b>Fix the orientation first</b>.
+      <div class="ex"><div><p>Half the sign errors in this subject come from doing this last.</p></div></div></li>
+    <li><b>Match degree to dimension</b> — a quick sanity check.
+      <div class="ex"><div><p>If they don't match, the expression is meaningless, not merely wrong.</p></div></div></li>
+    <li><b>Use the volume form</b> for unsigned quantities.
+      <div class="ex"><div><p>Area, mass and average values want a density, not a signed integral.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The theorem</span>
+  <h2 class="ltitle">Stokes' Theorem</h2>
+  <p class="ldesc">Everything in the interior is determined by the edge.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Compact support</b> — the form vanishes outside a compact set.
+      <div class="ex"><div><p>Keeps the integrals finite and stops mass escaping to infinity. The one hypothesis that cannot be dropped.</p></div></div></li>
+    <li><b>Induced boundary orientation</b> — outward normal first.
+      <div class="ex"><div><p>Chapter 15's convention. It is exactly what makes the theorem's sign come out positive.</p></div></div></li>
+    <li><b>Closed manifold</b> — compact, with empty boundary.
+      <div class="ex"><div><p>A sphere or a torus. On these, \(\int_Md\omega = 0\) always.</p></div></div></li>
+    <li><b>Conservative field</b> — one whose line integral depends only on the endpoints.
+      <div class="ex"><div><p>Gravity. The work done depends on the height climbed, not the route.</p></div></div></li>
+    <li><b>Winding number &amp; degree</b> — integrals of forms that count wrapping.
+      <div class="ex"><div><p>Calculus counting topology, made possible by Stokes.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Stokes' theorem:</b> for a compactly supported \((k-1)\)-form \(\omega\) on an oriented \(k\)-manifold with boundary, \[\int_Md\omega = \int_{\partial M}\omega.\]
+      <div class="ex"><div><p>Add up the local change over the whole region and only the edge survives. Everything inside cancels against its neighbour.</p></div></div>
+      <div class="proof"><div><p>Sketch. Using a partition of unity, reduce to \(\omega\) supported in a single chart, so the claim becomes a statement on \(\mathbb{R}^{k}\) or the half-space \(\{x_k\ge0\}\). Write \(\omega = \sum_i a_i\,dx^{1}\wedge\cdots\widehat{dx^{i}}\cdots\wedge dx^{k}\); then \(d\omega = \sum_i(-1)^{i-1}\partial_ia_i\,dx^{1}\wedge\cdots\wedge dx^{k}\). Integrating each term with Fubini (Chapter 12, Layer 3) and applying the one-dimensional fundamental theorem of calculus in the \(i\)-th variable, every term vanishes by compact support except the one differentiating across the boundary face \(x_k = 0\) — which is precisely \(\int_{\partial M}\omega\), with the induced orientation supplying the sign. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — fundamental theorem of calculus:</b> \(k=1\), \(M = [a,b]\).
+      <div class="ex"><div><p>\(\int_a^bf' = f(b)-f(a)\). The boundary of an interval is two points, with opposite signs.</p></div></div>
+      <div class="proof"><div><p>Take \(\omega = f\), a 0-form; then \(d\omega = f'\,dx\) and \(\partial M = \{b\}-\{a\}\), so Stokes reads \(\int_a^bf'\,dx = f(b)-f(a)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — Green's theorem:</b> \(\displaystyle\oint_{\partial D}(P\,dx+Q\,dy) = \iint_D(Q_x - P_y)\,dx\,dy\).
+      <div class="ex"><div><p>A planimeter measures the area of a shape by tracing its outline. This is why it works.</p></div></div>
+      <div class="proof"><div><p>Take \(\omega = P\,dx+Q\,dy\) on a plane region. Then \(d\omega = (Q_x-P_y)\,dx\wedge dy\), and Stokes gives the identity. Choosing \(P = -y/2\), \(Q = x/2\) makes the right side the area. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — Kelvin–Stokes:</b> \(\displaystyle\oint_{\partial S}F\cdot dr = \iint_S(\operatorname{curl}F)\cdot N\,dA\).
+      <div class="ex"><div><p>The circulation around the rim equals the total swirl inside.</p></div></div>
+      <div class="proof"><div><p>Take \(\omega = \omega_F\), the 1-form of \(F\). By Layer 2's dictionary \(d\omega_F = \eta_{\operatorname{curl}F}\), and Layer 3 identifies \(\int_S\eta_{\operatorname{curl}F}\) with the flux integral and \(\oint_{\partial S}\omega_F\) with the circulation. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — divergence theorem:</b> \(\displaystyle\iiint_V\operatorname{div}F\,dV = \iint_{\partial V}F\cdot N\,dA\).
+      <div class="ex"><div><p>What flows out through the skin equals what is created inside. Conservation of mass, as a theorem.</p></div></div>
+      <div class="proof"><div><p>Take \(\omega = \eta_F\), the 2-form of \(F\). Then \(d\eta_F = (\operatorname{div}F)\,dx\wedge dy\wedge dz\) by the dictionary, and Stokes gives the identity, with Layer 3 identifying the boundary integral as the flux. \(\blacksquare\)</p></div></div></li>
+    <li><b>On a closed manifold, \(\int_Md\omega = 0\).</b>
+      <div class="ex"><div><p>No boundary, no leakage. This is what makes de Rham cohomology in top degree meaningful.</p></div></div>
+      <div class="proof"><div><p>\(\partial M = \varnothing\), so the right side of Stokes is an integral over the empty set, which is 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — a volume form on a closed orientable manifold is never exact.</b>
+      <div class="ex"><div><p>So \(H^{k}(M)\ne0\): the total volume is a cohomological obstruction.</p></div></div>
+      <div class="proof"><div><p>If \(\mathrm{vol} = d\eta\), then \(\int_M\mathrm{vol} = \int_Md\eta = 0\) by the previous result. But \(\int_M\mathrm{vol} &gt; 0\) since the form is nowhere zero and positively oriented. \(\blacksquare\)</p></div></div></li>
+    <li><b>Conservative fields:</b> on a simply connected domain, curl-free implies path-independent implies gradient.
+      <div class="ex"><div><p>Three equivalent statements — and the punctured plane shows why "simply connected" is required.</p></div></div>
+      <div class="proof"><div><p>Curl-free means \(d\omega_F = 0\); on a simply connected domain the Poincaré lemma (Layer 2) gives \(\omega_F = df\), i.e. \(F = \nabla f\). Then Stokes in the \(k=1\) case makes every line integral \(f(\text{end})-f(\text{start})\), which is path-independent. Conversely path-independence defines a potential by integration from a fixed base point. \(\blacksquare\)</p></div></div></li>
+    <li><b>Integration by parts on a manifold:</b> \(\int_M d\alpha\wedge\beta = \int_{\partial M}\alpha\wedge\beta - (-1)^{\deg\alpha}\int_M\alpha\wedge d\beta\).
+      <div class="ex"><div><p>Chapter 3's integration by parts, in full generality — the workhorse of every partial differential equation.</p></div></div>
+      <div class="proof"><div><p>Apply Stokes to \(\omega = \alpha\wedge\beta\) and expand \(d(\alpha\wedge\beta) = d\alpha\wedge\beta + (-1)^{\deg\alpha}\alpha\wedge d\beta\) by the graded Leibniz rule. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Translate the problem into forms</b>, apply Stokes, translate back.
+      <div class="ex"><div><p>The four classical theorems become one application.</p></div></div></li>
+    <li><b>Swap a hard interior integral for an easy boundary one</b> — or vice versa.
+      <div class="ex"><div><p>Whichever side is simpler. That choice is the entire practical value of the theorem.</p></div></div></li>
+    <li><b>Check compact support and orientation</b>.
+      <div class="ex"><div><p>The two hypotheses people forget, and the two that produce wrong answers.</p></div></div></li>
+    <li><b>Use \(\int_Md\omega = 0\) on closed manifolds</b> to derive obstructions.
+      <div class="ex"><div><p>The quickest way to prove that something cannot exist.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Expand in the \(dx^{I}\) basis</td><td>L1</td><td>Compute with forms</td></tr>
+    <tr><td>Kill repeated factors</td><td>L1</td><td>Discard most terms instantly</td></tr>
+    <tr><td>Read a wedge as a determinant</td><td>L1</td><td>Evaluate a form on vectors</td></tr>
+    <tr><td>Differentiate coefficients and wedge</td><td>L2</td><td>Compute \(d\omega\)</td></tr>
+    <tr><td>Check \(d\omega = 0\)</td><td>L2</td><td>Test for a potential</td></tr>
+    <tr><td>Loop integral \(\ne 0\)</td><td>L2</td><td>Prove a closed form is not exact</td></tr>
+    <tr><td>Vector-calculus dictionary</td><td>L2</td><td>Turn grad/curl/div into one operator</td></tr>
+    <tr><td>Pull back to the parameter domain</td><td>L3</td><td>Compute any integral of a form</td></tr>
+    <tr><td>Fix the orientation first</td><td>L3</td><td>Get the sign right</td></tr>
+    <tr><td>Match degree to dimension</td><td>L3</td><td>Sanity-check an expression</td></tr>
+    <tr><td>Apply Stokes</td><td>L4</td><td>Trade an interior integral for a boundary one</td></tr>
+    <tr><td>Integration by parts</td><td>L4</td><td>Move a derivative off an awkward factor</td></tr>
+    <tr><td>\(\int_M d\omega = 0\) on closed \(M\)</td><td>L4</td><td>Derive obstructions and invariants</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Differential Forms &amp; Stokes · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

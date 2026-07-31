@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3 — The Real Line</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>The Real Line</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-02-set-theory.html">&#10094; Chapter 2 — Set Theory</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>One Dimension First</h2>
+    <p>\(\mathbb{R}\) is the first <b>space</b> in this book: a set with arithmetic, an order, and — crucially — no gaps.</p>
+    <p>Every idea in the later chapters is a copy of something here. Distance is \(|x-y|\); volume is length; a limit in \(\mathbb{R}^n\) is \(n\) limits on the line.</p>
+    <p>Prerequisites: Chapters 1–2. \(\mathbb{Q}\) was built in Chapter 2, Layer 6; here it gets completed and then used.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\lim_{n\to\infty} a_n = L\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Ordered Fields</a><a href="#L2">L2 Completeness</a><a href="#L3">L3 Sequences</a>
+  <a href="#L4">L4 Series</a><a href="#L5">L5 Continuity</a><a href="#L6">L6 Derivatives</a>
+  <a href="#L7">L7 The Integral</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Arithmetic and order</span>
+  <h2 class="ltitle">Ordered Fields</h2>
+  <p class="ldesc">The rules of \(+\), \(\times\) and \(&lt;\), written down once and for all.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Field</b> — a set with \(+\) and \(\times\) obeying the usual algebra, with \(0 \neq 1\) and inverses for everything except \(0\).
+      <div class="ex"><div><p>\(\mathbb{Q}\) and \(\mathbb{R}\) are fields; \(\mathbb{Z}\) is not, because \(2\) has no integer reciprocal.</p></div></div></li>
+    <li><b>Ordered field</b> — a field with a relation \(&lt;\) compatible with \(+\) and with multiplication by positives.
+      <div class="ex"><div><p>You may add the same amount to both sides of an inequality; multiplying by a negative flips it.</p></div></div></li>
+    <li><b>Positive cone</b> \(P = \{x : x &gt; 0\}\) — closed under \(+\) and \(\times\), and each \(x\) is in \(P\), is \(0\), or has \(-x \in P\).
+      <div class="ex"><div><p>Everything is a gain, a loss, or nothing. Two gains make a gain.</p></div></div></li>
+    <li><b>Absolute value</b> \(|x| = x\) if \(x \ge 0\), else \(-x\).
+      <div class="ex"><div><p>Distance from home, ignoring which way you walked.</p></div></div></li>
+    <li><b>Distance on the line</b> \(d(x,y) = |x-y|\).
+      <div class="ex"><div><p>The first metric in this book. Chapter 7 turns its three properties into axioms.</p></div></div></li>
+    <li><b>Interval</b> — \([a,b]\), \((a,b)\), \([a,b)\), \((a,\infty)\) and the rest.
+      <div class="ex"><div><p>Square bracket = endpoint included. That one detail decides half the theorems in Layer 5.</p></div></div></li>
+    <li><b>Bounded set</b> — contained in some \([-M, M]\).
+      <div class="ex"><div><p>Fits inside a big enough box. In \(\mathbb{R}^n\) (Chapter 8) this becomes half of compactness.</p></div></div></li>
+    <li><b>Maximum &amp; minimum</b> — a largest or smallest member <em>of the set itself</em>.
+      <div class="ex"><div><p>\((0,1)\) has neither: whatever you nominate, something is closer to the edge.</p></div></div></li>
+    <li><b>Integer part</b> \(\lfloor x \rfloor\) — the greatest integer \(\le x\).
+      <div class="ex"><div><p>\(\lfloor 3.7 \rfloor = 3\), \(\lfloor -3.7 \rfloor = -4\). Rounding down, not towards zero.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms — An Ordered Field</h3>
+  <ul>
+    <li><b>Associativity, commutativity, distributivity</b> for \(+\) and \(\times\).
+      <div class="ex"><div><p>The bookkeeping everyone learned at school, finally written as assumptions rather than facts.</p></div></div></li>
+    <li><b>Identities and inverses</b> — \(0\), \(1\), \(-x\), and \(x^{-1}\) for \(x \ne 0\).
+      <div class="ex"><div><p>Every debt can be cancelled; every non-zero scaling can be undone.</p></div></div></li>
+    <li><b>Trichotomy</b> — exactly one of \(x &lt; y\), \(x = y\), \(y &lt; x\).
+      <div class="ex"><div><p>Any two prices can be compared, and there's no tie-and-also-cheaper.</p></div></div></li>
+    <li><b>Compatibility</b> — \(x &lt; y \Rightarrow x + z &lt; y + z\), and \(x &lt; y,\ z &gt; 0 \Rightarrow xz &lt; yz\).
+      <div class="ex"><div><p>Give both runners a 10-metre head start and the same one still leads.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Uniqueness of identities and inverses.</b>
+      <div class="ex"><div><p>There is only one zero and only one way to undo \(+5\).</p></div></div>
+      <div class="proof"><div><p>If \(0\) and \(0'\) are both additive identities, \(0 = 0 + 0' = 0'\). If \(y, y'\) are both inverses of \(x\), then \(y = y + 0 = y + (x + y') = (y+x) + y' = 0 + y' = y'\). The multiplicative cases are identical with \(1\) and \(x^{-1}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(x \cdot 0 = 0\), and \((-x)y = -(xy)\).</b>
+      <div class="ex"><div><p>Multiplying by nothing gives nothing — a consequence of distributivity, not a separate rule.</p></div></div>
+      <div class="proof"><div><p>\(x\cdot 0 = x(0+0) = x\cdot 0 + x \cdot 0\); adding \(-(x\cdot 0)\) to both sides gives \(0 = x \cdot 0\). Then \((-x)y + xy = ((-x)+x)y = 0\cdot y = 0\), so \((-x)y\) is the additive inverse of \(xy\). \(\blacksquare\)</p></div></div></li>
+    <li><b>No zero divisors:</b> \(xy = 0\) implies \(x = 0\) or \(y = 0\).
+      <div class="ex"><div><p>Why "factorise and set each bracket to zero" is legal.</p></div></div>
+      <div class="proof"><div><p>Suppose \(xy = 0\) and \(x \ne 0\). Multiply by \(x^{-1}\): \(y = 1\cdot y = (x^{-1}x)y = x^{-1}(xy) = x^{-1}\cdot 0 = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Squares are non-negative:</b> \(x^{2} \ge 0\), and \(1 &gt; 0\).
+      <div class="ex"><div><p>Which is why \(\mathbb{C}\) cannot be ordered: \(i^2 = -1\) would have to be \(\ge 0\).</p></div></div>
+      <div class="proof"><div><p>If \(x &gt; 0\) then \(x\cdot x &gt; 0\) by compatibility. If \(x &lt; 0\) then \(-x &gt; 0\), so \(x^2 = (-x)(-x) &gt; 0\). If \(x = 0\) then \(x^2 = 0\). Taking \(x = 1\) and noting \(1 \ne 0\) gives \(1 = 1^2 &gt; 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Multiplying by a negative reverses the order.</b>
+      <div class="ex"><div><p>\(2 &lt; 3\), but \(-2 &gt; -3\). The classic sign slip.</p></div></div>
+      <div class="proof"><div><p>Let \(x &lt; y\) and \(z &lt; 0\), so \(-z &gt; 0\). Then \(x(-z) &lt; y(-z)\), i.e. \(-xz &lt; -yz\); adding \(xz + yz\) to both sides gives \(yz &lt; xz\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Triangle inequality:</b> \(|x + y| \le |x| + |y|\).
+      <div class="ex"><div><p>A detour is never shorter than going straight. It reappears as an axiom in Chapter 7 and as a theorem in Chapter 6.</p></div></div>
+      <div class="proof"><div><p>For every \(t\), \(-|t| \le t \le |t|\). Adding the two chains gives \(-(|x|+|y|) \le x + y \le |x|+|y|\), which is exactly \(|x+y| \le |x| + |y|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Reverse triangle inequality:</b> \(\bigl||x| - |y|\bigr| \le |x - y|\).
+      <div class="ex"><div><p>Two people's distances from home differ by at most the distance between them.</p></div></div>
+      <div class="proof"><div><p>\(|x| = |(x-y) + y| \le |x-y| + |y|\), so \(|x|-|y| \le |x-y|\). Swapping \(x\) and \(y\) gives \(|y|-|x| \le |x-y|\). Together they bound the absolute value of the difference. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(|xy| = |x||y|\), and \(|x| &lt; \varepsilon \iff -\varepsilon &lt; x &lt; \varepsilon\).</b>
+      <div class="ex"><div><p>The second is the "\(\varepsilon\)-band" reading: \(|x - a| &lt; \varepsilon\) means \(x\) sits within \(\varepsilon\) of \(a\).</p></div></div>
+      <div class="proof"><div><p>Multiplicativity is a four-case check on the signs of \(x\) and \(y\), each case immediate from \((-x)y = -(xy)\). For the band: if \(|x| &lt; \varepsilon\) then both \(x \le |x| &lt; \varepsilon\) and \(-x \le |x| &lt; \varepsilon\); conversely \(-\varepsilon &lt; x &lt; \varepsilon\) bounds whichever of \(x, -x\) equals \(|x|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Bernoulli's inequality:</b> \((1+x)^{n} \ge 1 + nx\) for \(x \ge -1\), \(n \in \mathbb{N}\).
+      <div class="ex"><div><p>Compound interest always beats simple interest. Used constantly to force sequences to grow.</p></div></div>
+      <div class="proof"><div><p>Induction on \(n\). True at \(n=0\). If \((1+x)^n \ge 1+nx\), then since \(1 + x \ge 0\), \((1+x)^{n+1} \ge (1+nx)(1+x) = 1 + (n+1)x + nx^2 \ge 1 + (n+1)x\). \(\blacksquare\)</p></div></div></li>
+    <li><b>AM–GM (two terms):</b> \(\frac{a+b}{2} \ge \sqrt{ab}\) for \(a, b \ge 0\).
+      <div class="ex"><div><p>A rectangle of given perimeter has most area when it's a square.</p></div></div>
+      <div class="proof"><div><p>\((\sqrt a - \sqrt b)^2 \ge 0\) expands to \(a - 2\sqrt{ab} + b \ge 0\), i.e. \(a + b \ge 2\sqrt{ab}\). Equality exactly when \(\sqrt a = \sqrt b\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Prove an inequality by moving everything to one side</b> and recognising a square.
+      <div class="ex"><div><p>Nearly every elementary inequality is "\(\text{something}^2 \ge 0\)" in disguise.</p></div></div></li>
+    <li><b>Case split on signs</b> — handle \(x \ge 0\) and \(x &lt; 0\) separately when absolute values appear.
+      <div class="ex"><div><p>Two short cases beat one clever manipulation, and you can't get the sign wrong.</p></div></div></li>
+    <li><b>The \(\varepsilon\)-band reading</b> — read \(|x - a| &lt; \varepsilon\) as "\(x\) is within \(\varepsilon\) of \(a\)".
+      <div class="ex"><div><p>Every limit in this book is a statement about such bands.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · No gaps</span>
+  <h2 class="ltitle">Completeness</h2>
+  <p class="ldesc">The single axiom that separates \(\mathbb{R}\) from \(\mathbb{Q}\).</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Upper bound</b> — \(M\) with \(x \le M\) for all \(x \in S\).
+      <div class="ex"><div><p>A ceiling above the tallest object. There are many; the interesting one is the lowest.</p></div></div></li>
+    <li><b>Supremum</b> \(\sup S\) — the least upper bound.
+      <div class="ex"><div><p>\(\sup (0,1) = 1\), even though \(1\) is not in the set. That's the whole point.</p></div></div></li>
+    <li><b>Infimum</b> \(\inf S\) — the greatest lower bound.
+      <div class="ex"><div><p>The highest floor under everything.</p></div></div></li>
+    <li><b>Complete ordered field</b> — an ordered field in which every non-empty bounded-above set has a supremum.
+      <div class="ex"><div><p>\(\mathbb{Q}\) fails: \(\{x : x^2 &lt; 2\}\) is bounded above but its least bound, \(\sqrt2\), is missing.</p></div></div></li>
+    <li><b>Dense subset</b> — a set meeting every interval.
+      <div class="ex"><div><p>\(\mathbb{Q}\) is dense in \(\mathbb{R}\): however small the window, a fraction is visible in it.</p></div></div></li>
+    <li><b>Nested intervals</b> — \(I_1 \supseteq I_2 \supseteq \cdots\), each closed and bounded.
+      <div class="ex"><div><p>Russian dolls of intervals. Completeness says the innermost point exists.</p></div></div></li>
+    <li><b>Irrational number</b> — a real that is not rational.
+      <div class="ex"><div><p>\(\sqrt2, \pi, e\). They vastly outnumber the fractions (Chapter 2, Layer 7).</p></div></div></li>
+    <li><b>Decimal expansion</b> — writing \(x\) as \(a_0.a_1a_2a_3\ldots\), i.e. as a limit of finite decimals.
+      <div class="ex"><div><p>\(0.999\ldots = 1\) — not "nearly", exactly. The two expressions name the same supremum.</p></div></div></li>
+    <li><b>Extended reals</b> \(\overline{\mathbb{R}} = \mathbb{R}\cup\{\pm\infty\}\) — a convenience, not a field.
+      <div class="ex"><div><p>Lets us write \(\sup S = +\infty\) for unbounded \(S\). Measure theory (Chapter 11) lives here.</p></div></div></li>
+  </ul>
+
+  <h3>Axiom</h3>
+  <ul>
+    <li><b>Completeness (least upper bound) axiom</b> — every non-empty subset of \(\mathbb{R}\) with an upper bound has a supremum in \(\mathbb{R}\).
+      <div class="ex"><div><p>The line has no holes. Every other theorem in this chapter is this axiom in a costume.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Characterisation of the supremum:</b> \(s = \sup S\) iff \(s\) is an upper bound and for every \(\varepsilon &gt; 0\) some \(x \in S\) has \(x &gt; s - \varepsilon\).
+      <div class="ex"><div><p>Nothing sits above \(s\), and you can always find members as close to \(s\) as you like.</p></div></div>
+      <div class="proof"><div><p>If \(s = \sup S\) and some \(\varepsilon\) admitted no such \(x\), then \(s - \varepsilon\) would be an upper bound smaller than \(s\) — contradicting leastness. Conversely, if the condition holds, any upper bound \(M &lt; s\) would fail at \(\varepsilon = s - M\), so \(s\) is least. \(\blacksquare\)</p></div></div></li>
+    <li><b>Infima exist:</b> every non-empty set bounded below has an infimum.
+      <div class="ex"><div><p>One axiom buys both ends of the line — just look at the reflection.</p></div></div>
+      <div class="proof"><div><p>Let \(S\) be bounded below by \(m\) and set \(-S = \{-x : x \in S\}\), which is bounded above by \(-m\). Then \(\sup(-S)\) exists, and \(-\sup(-S)\) is a lower bound for \(S\) greater than every other, i.e. \(\inf S\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Archimedean property:</b> \(\mathbb{N}\) is unbounded in \(\mathbb{R}\); for every \(x\) there is \(n\) with \(n &gt; x\).
+      <div class="ex"><div><p>No real number is bigger than every counting number — so there are no "infinitely large" reals, and no infinitesimals either.</p></div></div>
+      <div class="proof"><div><p>If \(\mathbb{N}\) were bounded above, it would have a supremum \(s\). Then \(s - 1\) is not an upper bound, so some \(n \in \mathbb{N}\) has \(n &gt; s-1\), whence \(n + 1 &gt; s\) with \(n+1 \in \mathbb{N}\) — contradicting that \(s\) bounds \(\mathbb{N}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> for every \(\varepsilon &gt; 0\) there is \(n\) with \(1/n &lt; \varepsilon\).
+      <div class="ex"><div><p>You can always chop a quantity finely enough. Every \(\varepsilon\)-argument in the book uses this line.</p></div></div>
+      <div class="proof"><div><p>By the Archimedean property choose \(n &gt; 1/\varepsilon &gt; 0\). Multiplying the inequality by \(\varepsilon/n &gt; 0\) gives \(\varepsilon &gt; 1/n\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Density of \(\mathbb{Q}\):</b> between any two reals lies a rational.
+      <div class="ex"><div><p>However fine the gap, a fraction slips in — which is why decimal approximation works at all.</p></div></div>
+      <div class="proof"><div><p>Let \(x &lt; y\) and pick \(n\) with \(1/n &lt; y - x\). Let \(m = \lfloor nx \rfloor + 1\), so \(m - 1 \le nx &lt; m\). Then \(x &lt; m/n\) and \(m/n \le x + 1/n &lt; x + (y-x) = y\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Density of the irrationals:</b> between any two reals lies an irrational.
+      <div class="ex"><div><p>Both kinds of number are everywhere, arbitrarily finely mixed.</p></div></div>
+      <div class="proof"><div><p>Apply density of \(\mathbb{Q}\) to \(x/\sqrt2 &lt; y/\sqrt2\), obtaining a rational \(q\) strictly between them with \(q \neq 0\) (shrink the interval if necessary). Then \(q\sqrt2\) lies strictly between \(x\) and \(y\), and is irrational: were \(q\sqrt2 = p \in \mathbb{Q}\), we would get \(\sqrt2 = p/q \in \mathbb{Q}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Existence of \(n\)-th roots:</b> every \(a &gt; 0\) has a unique positive \(n\)-th root.
+      <div class="ex"><div><p>\(\sqrt2\) exists — the completeness axiom is what puts it on the line.</p></div></div>
+      <div class="proof"><div><p>Let \(S = \{t &gt; 0 : t^{n} &lt; a\}\), non-empty and bounded above by \(1 + a\), and set \(s = \sup S\). If \(s^n &lt; a\), one checks \((s+\delta)^n &lt; a\) for small \(\delta &gt; 0\) (expand and bound the extra terms), contradicting that \(s\) is an upper bound. If \(s^n &gt; a\), similarly \((s - \delta)^n &gt; a\) for small \(\delta\), making \(s-\delta\) a smaller upper bound. So \(s^n = a\). Uniqueness: \(t \mapsto t^n\) is strictly increasing on \((0,\infty)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Nested interval theorem:</b> a nested sequence of closed bounded intervals has a common point.
+      <div class="ex"><div><p>Squeeze from both sides forever and something is caught. Fails for open intervals: \(\bigcap (0, 1/n) = \varnothing\).</p></div></div>
+      <div class="proof"><div><p>Write \(I_k = [a_k, b_k]\) with \(a_k\) increasing and \(b_k\) decreasing. Every \(b_j\) is an upper bound for \(\{a_k\}\), so \(a := \sup_k a_k\) exists and satisfies \(a_k \le a \le b_j\) for all \(k, j\). Hence \(a \in \bigcap_k I_k\). If additionally \(b_k - a_k \to 0\), that point is unique. \(\blacksquare\)</p></div></div></li>
+    <li><b>Uniqueness of \(\mathbb{R}\):</b> any two complete ordered fields are isomorphic.
+      <div class="ex"><div><p>However you build the reals — Dedekind cuts, Cauchy sequences, infinite decimals — you get the same object.</p></div></div>
+      <div class="proof"><div><p>Sketch: both fields contain a copy of \(\mathbb{Q}\) (generated by \(1\)), and by the Archimedean property — itself a consequence of completeness — that copy is dense. Map each element to the supremum of the rationals below it; the field and order axioms make this map well defined, additive, multiplicative, order-preserving, and bijective by density plus completeness on both sides. \(\blacksquare\)</p></div></div></li>
+    <li><b>Existence of \(\mathbb{R}\):</b> a complete ordered field exists — e.g. Dedekind cuts of \(\mathbb{Q}\).
+      <div class="ex"><div><p>A real number <em>is</em> the set of rationals below it. \(\sqrt2\) is literally "all fractions whose square is under 2".</p></div></div>
+      <div class="proof"><div><p>Sketch: a cut is a non-empty proper downward-closed \(A \subseteq \mathbb{Q}\) with no greatest element. Order cuts by \(\subseteq\); define \(A + B = \{a+b\}\) and handle multiplication by cases on sign. The field and order axioms are routine checks. Completeness is the punchline: given a non-empty family of cuts bounded above, its union is again a cut, and it is exactly the least upper bound. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Sup/inf argument</b> — to prove something exists, define it as a supremum and prove the two inequalities.
+      <div class="ex"><div><p>How roots, limits, integrals and dimensions all get their existence in this book.</p></div></div></li>
+    <li><b>Approximate from below</b> — use "\(\exists x \in S,\ x &gt; s - \varepsilon\)".
+      <div class="ex"><div><p>The supremum's defining trick, and the source of most \(\varepsilon\)'s.</p></div></div></li>
+    <li><b>Bisection</b> — halve the interval, keep the half that still works, repeat.
+      <div class="ex"><div><p>Builds nested intervals converging on the answer — used again for Bolzano–Weierstrass and the IVT.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Approaching</span>
+  <h2 class="ltitle">Sequences &amp; Limits</h2>
+  <p class="ldesc">What it means to get arbitrarily close, made exact.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Sequence</b> \((a_n)\) — a function \(\mathbb{N}\to\mathbb{R}\).
+      <div class="ex"><div><p>An endless numbered list of readings, one per day.</p></div></div></li>
+    <li><b>Convergence</b> — \(a_n \to L\) means: for every \(\varepsilon &gt; 0\) there is \(N\) with \(|a_n - L| &lt; \varepsilon\) for all \(n &gt; N\).
+      <div class="ex"><div><p>Name any tolerance; after some point, every reading is inside it. Chapters 7–9 copy this definition verbatim.</p></div></div></li>
+    <li><b>Divergence</b> — failing to converge; possibly to \(\pm\infty\), possibly by oscillating.
+      <div class="ex"><div><p>\(a_n = n\) runs away; \(a_n = (-1)^n\) just refuses to settle.</p></div></div></li>
+    <li><b>Bounded sequence</b> — all terms inside some \([-M,M]\).
+      <div class="ex"><div><p>Convergent sequences must be bounded; bounded ones need not converge.</p></div></div></li>
+    <li><b>Monotone sequence</b> — non-decreasing or non-increasing.
+      <div class="ex"><div><p>A savings balance that only grows. If it's also capped, it must approach something.</p></div></div></li>
+    <li><b>Subsequence</b> \((a_{n_k})\) — keep some terms, in order.
+      <div class="ex"><div><p>Read only the Monday entries of the diary.</p></div></div></li>
+    <li><b>Cauchy sequence</b> — terms eventually all within \(\varepsilon\) <em>of each other</em>.
+      <div class="ex"><div><p>The crowd bunches up, without you needing to know where. This is the definition that generalises to any metric space.</p></div></div></li>
+    <li><b>Limit superior &amp; inferior</b> \(\limsup a_n = \lim_{N}\sup_{n&gt;N} a_n\), similarly \(\liminf\).
+      <div class="ex"><div><p>The highest and lowest values the sequence keeps returning near. They always exist in \(\overline{\mathbb{R}}\), even when the limit doesn't.</p></div></div></li>
+    <li><b>Cluster point</b> — a value approached by some subsequence.
+      <div class="ex"><div><p>\((-1)^n\) has two: \(+1\) and \(-1\).</p></div></div></li>
+    <li><b>Euler's number</b> \(e = \lim (1 + 1/n)^{n}\).
+      <div class="ex"><div><p>Interest compounded ever more often; the payout tops out at \(e\).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Limits are unique.</b>
+      <div class="ex"><div><p>A sequence can't settle down in two places at once.</p></div></div>
+      <div class="proof"><div><p>Suppose \(a_n \to L\) and \(a_n \to L'\) with \(L \ne L'\). Put \(\varepsilon = |L - L'|/2 &gt; 0\) and take \(n\) beyond both thresholds. Then \(|L - L'| \le |L - a_n| + |a_n - L'| &lt; 2\varepsilon = |L-L'|\) — impossible. \(\blacksquare\)</p></div></div></li>
+    <li><b>Convergent \(\Rightarrow\) bounded.</b>
+      <div class="ex"><div><p>If the readings settle near 7, they were never at a million.</p></div></div>
+      <div class="proof"><div><p>Take \(\varepsilon = 1\) and the corresponding \(N\): for \(n &gt; N\), \(|a_n| &lt; |L| + 1\). The finitely many earlier terms have a largest absolute value, so \(M = \max\{|a_1|,\dots,|a_N|, |L|+1\}\) bounds them all. \(\blacksquare\)</p></div></div></li>
+    <li><b>Algebra of limits:</b> limits respect \(+\), \(-\), \(\times\), and \(\div\) (when the denominator's limit is non-zero).
+      <div class="ex"><div><p>You may take limits term by term — the reason nobody computes with \(\varepsilon\)'s in practice.</p></div></div>
+      <div class="proof"><div><p>For sums: given \(\varepsilon\), choose \(N\) making both \(|a_n - A| &lt; \varepsilon/2\) and \(|b_n - B| &lt; \varepsilon/2\); the triangle inequality gives \(|(a_n+b_n)-(A+B)| &lt; \varepsilon\). For products write \(a_nb_n - AB = a_n(b_n - B) + B(a_n - A)\) and use boundedness of \((a_n)\). For quotients, first show \(1/b_n \to 1/B\) by bounding \(|b_n| \ge |B|/2\) eventually. \(\blacksquare\)</p></div></div></li>
+    <li><b>Order is preserved:</b> if \(a_n \le b_n\) for all large \(n\), then \(\lim a_n \le \lim b_n\).
+      <div class="ex"><div><p>Weak inequalities survive limits; strict ones do not — \(1/n &gt; 0\) but the limit is \(0\).</p></div></div>
+      <div class="proof"><div><p>Suppose \(A &gt; B\) and put \(\varepsilon = (A-B)/2\). For large \(n\), \(a_n &gt; A - \varepsilon = B + \varepsilon &gt; b_n\), contradicting \(a_n \le b_n\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Squeeze theorem:</b> \(a_n \le c_n \le b_n\) with \(a_n, b_n \to L\) forces \(c_n \to L\).
+      <div class="ex"><div><p>Trapped between two convergent walls, the middle has nowhere else to go.</p></div></div>
+      <div class="proof"><div><p>Given \(\varepsilon\), take \(N\) beyond both thresholds. Then \(L - \varepsilon &lt; a_n \le c_n \le b_n &lt; L + \varepsilon\), so \(|c_n - L| &lt; \varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotone convergence theorem:</b> a bounded monotone sequence converges — to its supremum (or infimum).
+      <div class="ex"><div><p>Always rising, never above the ceiling: it must approach the ceiling's lowest position.</p></div></div>
+      <div class="proof"><div><p>Let \((a_n)\) be non-decreasing and bounded above, and \(s = \sup_n a_n\). Given \(\varepsilon &gt; 0\), some \(a_N &gt; s - \varepsilon\) by the supremum characterisation. Monotonicity gives \(s - \varepsilon &lt; a_N \le a_n \le s\) for all \(n \ge N\), so \(|a_n - s| &lt; \varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Bolzano–Weierstrass:</b> every bounded sequence has a convergent subsequence.
+      <div class="ex"><div><p>Infinitely many points in a finite room must pile up somewhere. This is compactness, in its first appearance.</p></div></div>
+      <div class="proof"><div><p>Bisect the bounding interval and keep a half containing infinitely many terms; repeat. This yields nested intervals of halving length, whose common point is \(L\) by the nested interval theorem. Choosing one term from each interval, with increasing indices, gives a subsequence with \(|a_{n_k} - L| \le\) the \(k\)-th length \(\to 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Convergent \(\iff\) Cauchy</b> in \(\mathbb{R}\).
+      <div class="ex"><div><p>You can certify convergence without knowing the limit — the property Chapter 7 promotes to the definition of "complete".</p></div></div>
+      <div class="proof"><div><p>(\(\Rightarrow\)) If \(a_n \to L\), then \(|a_n - a_m| \le |a_n - L| + |L - a_m| &lt; \varepsilon\) for \(n,m\) large. (\(\Leftarrow\)) A Cauchy sequence is bounded (take \(\varepsilon = 1\)), so Bolzano–Weierstrass gives a subsequence \(a_{n_k} \to L\). Then for large \(n\) and a large chosen \(n_k\), \(|a_n - L| \le |a_n - a_{n_k}| + |a_{n_k} - L| &lt; \varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Subsequences inherit limits:</b> if \(a_n \to L\), every subsequence \(\to L\).
+      <div class="ex"><div><p>Reading only Mondays still shows the same trend.</p></div></div>
+      <div class="proof"><div><p>Since \(n_k \ge k\), any threshold \(N\) for the sequence is also passed by \(n_k\) once \(k &gt; N\), so the same \(\varepsilon\) bound applies. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\limsup\) and \(\liminf\) always exist</b> in \(\overline{\mathbb{R}}\), and \(a_n \to L\) iff \(\limsup = \liminf = L\).
+      <div class="ex"><div><p>The top and bottom of the eventual band. When they meet, the sequence converges.</p></div></div>
+      <div class="proof"><div><p>The tail suprema \(s_N = \sup_{n&gt;N}a_n\) form a non-increasing sequence, so they converge in \(\overline{\mathbb{R}}\) by monotone convergence; that limit is \(\limsup a_n\), and dually for \(\liminf\). If both equal \(L\), then for large \(N\) every tail lies in \((L-\varepsilon, L+\varepsilon)\), giving convergence; conversely convergence forces both tail bounds to \(L\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(e\) exists:</b> \((1+1/n)^{n}\) is increasing and bounded above by 3.
+      <div class="ex"><div><p>Compounding more often always helps a little, but never beyond \(e \approx 2.71828\).</p></div></div>
+      <div class="proof"><div><p>By the binomial theorem, \((1+1/n)^n = \sum_{k=0}^{n}\binom{n}{k}n^{-k} = \sum_{k=0}^n \frac{1}{k!}\prod_{j&lt;k}(1 - j/n)\). Each factor \(1 - j/n\) increases with \(n\) and a new positive term appears, so the sequence increases; and each term is at most \(1/k! \le 2^{-(k-1)}\), so the sum is under \(1 + \sum_{k\ge1}2^{-(k-1)} = 3\). Monotone convergence finishes. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>The \(\varepsilon\)–\(N\) proof</b> — given \(\varepsilon\), produce \(N\) explicitly.
+      <div class="ex"><div><p>Work backwards from \(|a_n - L| &lt; \varepsilon\) to find how big \(n\) must be, then write it forwards.</p></div></div></li>
+    <li><b>Squeeze</b> — bound the awkward sequence between two easy ones.
+      <div class="ex"><div><p>\(|\sin n / n| \le 1/n \to 0\), so the limit is 0 without touching \(\sin\).</p></div></div></li>
+    <li><b>Monotone + bounded</b> — the standard existence proof for a limit.
+      <div class="ex"><div><p>Used for \(e\), for recursively defined sequences, and for the integral in Layer 7.</p></div></div></li>
+    <li><b>Cauchy criterion</b> — prove convergence without naming the limit.
+      <div class="ex"><div><p>Essential when the limit is the thing being constructed.</p></div></div></li>
+    <li><b>Extract a subsequence</b> — use Bolzano–Weierstrass to get convergence, then identify the limit.
+      <div class="ex"><div><p>The standard opening move in compactness arguments throughout Chapters 8–9.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Infinite sums</span>
+  <h2 class="ltitle">Series</h2>
+  <p class="ldesc">Adding infinitely many numbers, carefully.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Series</b> \(\sum_{n=1}^{\infty} a_n\) — the limit of the partial sums \(s_N = \sum_{n\le N}a_n\).
+      <div class="ex"><div><p>An infinite sum is not an act of adding; it is a limit of finite additions.</p></div></div></li>
+    <li><b>Convergent &amp; divergent series</b> — according as \((s_N)\) converges.
+      <div class="ex"><div><p>\(1 + \tfrac12 + \tfrac14 + \cdots = 2\). But \(1+1+1+\cdots\) has nowhere to go.</p></div></div></li>
+    <li><b>Geometric series</b> \(\sum ar^{n}\) — converges iff \(|r| &lt; 1\), to \(\frac{a}{1-r}\).
+      <div class="ex"><div><p>Walk half the remaining distance each step: you cover the whole metre and no more.</p></div></div></li>
+    <li><b>Harmonic series</b> \(\sum 1/n\) — diverges, very slowly.
+      <div class="ex"><div><p>Terms shrink to zero, and the total still runs to infinity. The standard warning against wishful thinking.</p></div></div></li>
+    <li><b>\(p\)-series</b> \(\sum 1/n^{p}\) — converges iff \(p &gt; 1\).
+      <div class="ex"><div><p>The reference ruler every comparison test is measured against.</p></div></div></li>
+    <li><b>Absolute convergence</b> — \(\sum |a_n|\) converges.
+      <div class="ex"><div><p>Robust: you may reorder freely, multiply series, and swap sums. Chapter 12's Fubini is the grown-up version.</p></div></div></li>
+    <li><b>Conditional convergence</b> — converges, but not absolutely.
+      <div class="ex"><div><p>\(1 - \tfrac12 + \tfrac13 - \cdots = \ln 2\). Fragile: rearranging it changes the answer.</p></div></div></li>
+    <li><b>Power series</b> \(\sum c_n (x-a)^{n}\), with a radius of convergence \(R\).
+      <div class="ex"><div><p>A polynomial of infinite degree; inside its radius it behaves like one.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — Convergence Tests</h3>
+  <ul>
+    <li><b>Term test:</b> if \(\sum a_n\) converges then \(a_n \to 0\). The converse is false.
+      <div class="ex"><div><p>Only ever useful for proving <em>divergence</em>. The harmonic series is why.</p></div></div>
+      <div class="proof"><div><p>If \(s_N \to s\) then \(a_N = s_N - s_{N-1} \to s - s = 0\). The harmonic series shows the converse fails. \(\blacksquare\)</p></div></div></li>
+    <li><b>Geometric series formula:</b> \(\sum_{n=0}^{\infty} r^{n} = \frac{1}{1-r}\) for \(|r| &lt; 1\).
+      <div class="ex"><div><p>The one closed form everything else is compared to.</p></div></div>
+      <div class="proof"><div><p>\((1-r)s_N = 1 - r^{N+1}\), so \(s_N = \frac{1-r^{N+1}}{1-r}\). For \(|r| &lt; 1\), \(r^{N+1}\to 0\) (since \(|r|^{N+1} \le \frac{1}{1 + N\delta}\to 0\) by Bernoulli with \(1/|r| = 1+\delta\)), giving the limit. For \(|r|\ge1\) the terms do not tend to 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cauchy criterion for series:</b> \(\sum a_n\) converges iff tails \(\bigl|\sum_{n=m}^{k}a_n\bigr|\) are eventually small.
+      <div class="ex"><div><p>The same "bunching up" idea, applied to blocks of terms.</p></div></div>
+      <div class="proof"><div><p>The partial sums converge iff they are Cauchy (Layer 3), and \(s_k - s_{m-1} = \sum_{n=m}^{k}a_n\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Comparison test:</b> \(0 \le a_n \le b_n\); then \(\sum b_n\) convergent \(\Rightarrow\) \(\sum a_n\) convergent, and \(\sum a_n\) divergent \(\Rightarrow\) \(\sum b_n\) divergent.
+      <div class="ex"><div><p>Smaller than something finite is finite. Bigger than something infinite is infinite.</p></div></div>
+      <div class="proof"><div><p>With non-negative terms the partial sums are non-decreasing. If \(\sum b_n\) converges, the sums of \(a_n\) are bounded above by \(\sum b_n\), so by monotone convergence they converge. The second statement is the contrapositive. \(\blacksquare\)</p></div></div></li>
+    <li><b>Integral test:</b> for positive decreasing \(f\), \(\sum f(n)\) converges iff \(\int_1^{\infty} f\) does.
+      <div class="ex"><div><p>Compare the staircase of terms with the area under the curve — the fastest proof that \(\sum 1/n\) diverges.</p></div></div>
+      <div class="proof"><div><p>Since \(f\) decreases, \(f(n+1) \le \int_n^{n+1}f \le f(n)\). Summing from \(1\) to \(N\) gives \(s_{N+1} - f(1) \le \int_1^{N+1}f \le s_N\), so the partial sums and the integrals are bounded in terms of one another; both being monotone, they converge or diverge together. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(p\)-series:</b> \(\sum 1/n^{p}\) converges exactly for \(p &gt; 1\).
+      <div class="ex"><div><p>\(p = 1\) is the exact tipping point — infinitely slowly divergent.</p></div></div>
+      <div class="proof"><div><p>Apply the integral test to \(f(x) = x^{-p}\): \(\int_1^{M}x^{-p}dx = \frac{M^{1-p}-1}{1-p}\) for \(p\ne1\), which converges as \(M\to\infty\) iff \(p &gt; 1\); and \(\int_1^M x^{-1}dx = \ln M \to \infty\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Ratio test:</b> if \(\limsup |a_{n+1}/a_n| &lt; 1\) the series converges absolutely; if \(\liminf &gt; 1\) it diverges.
+      <div class="ex"><div><p>Terms shrinking geometrically fast: compare with a geometric series and you're done.</p></div></div>
+      <div class="proof"><div><p>If the \(\limsup\) is \(L &lt; 1\), pick \(r\) with \(L &lt; r &lt; 1\); for \(n \ge N\), \(|a_{n+1}| \le r|a_n|\), so \(|a_n| \le |a_N| r^{n-N}\). Comparison with the convergent geometric series gives absolute convergence. If the ratios eventually exceed 1, the terms do not tend to 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Root test:</b> if \(\limsup |a_n|^{1/n} &lt; 1\) it converges absolutely; if \(&gt;1\) it diverges.
+      <div class="ex"><div><p>Strictly stronger than the ratio test, and the one that computes the radius of a power series.</p></div></div>
+      <div class="proof"><div><p>If \(\limsup|a_n|^{1/n} = L &lt; 1\), choose \(L &lt; r &lt; 1\); then \(|a_n| \le r^n\) for all large \(n\), and comparison applies. If \(L &gt; 1\) then \(|a_n| &gt; 1\) infinitely often, so the terms do not tend to 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Alternating series test:</b> if \(b_n \downarrow 0\) then \(\sum(-1)^{n}b_n\) converges, with error under the first omitted term.
+      <div class="ex"><div><p>Steps alternate direction and shrink: the walk closes in on a point, and you always know how close.</p></div></div>
+      <div class="proof"><div><p>The even partial sums increase, the odd ones decrease, and every even one is below every odd one; both are monotone and bounded, so both converge, and \(s_{2n+1}-s_{2n} = b_{2n+1}\to0\) forces the limits to coincide. The remainder is trapped between consecutive partial sums, hence bounded by the next term. \(\blacksquare\)</p></div></div></li>
+    <li><b>Absolute \(\Rightarrow\) convergent.</b>
+      <div class="ex"><div><p>Taking absolute values only makes cancellation harder, so if that still converges, the original does.</p></div></div>
+      <div class="proof"><div><p>\(\bigl|\sum_{n=m}^k a_n\bigr| \le \sum_{n=m}^{k}|a_n|\), so the Cauchy criterion for \(\sum|a_n|\) transfers immediately to \(\sum a_n\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Riemann rearrangement theorem:</b> a conditionally convergent series can be rearranged to sum to <em>any</em> value, or to diverge.
+      <div class="ex"><div><p>Order of addition matters, once cancellation is doing the work. The single best reason to care about absolute convergence.</p></div></div>
+      <div class="proof"><div><p>Sketch: split into positive and negative parts. Conditional convergence forces both \(\sum a_n^{+}\) and \(\sum a_n^{-}\) to diverge while \(a_n \to 0\). To reach a target \(t\), add positive terms until the running total first exceeds \(t\), then negatives until it drops below, and repeat. Because the terms tend to zero, the overshoot at each turn tends to zero, so the rearranged partial sums converge to \(t\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rearrangement is safe when absolute:</b> an absolutely convergent series has the same sum in every order.
+      <div class="ex"><div><p>Why you may add up a doubly-indexed family in any order you like — the discrete Fubini.</p></div></div>
+      <div class="proof"><div><p>Given \(\varepsilon\), choose \(N\) with \(\sum_{n&gt;N}|a_n| &lt; \varepsilon\). Any rearrangement's partial sums eventually include all of \(a_1,\dots,a_N\); beyond that point they differ from \(\sum_{n\le N}a_n\) by at most \(\varepsilon\), as does the original sum. Hence both limits lie within \(2\varepsilon\) of each other for every \(\varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Cauchy product:</b> the product of two absolutely convergent series converges to the product of the sums.
+      <div class="ex"><div><p>Multiplying infinite sums works exactly like multiplying polynomials — provided both converge absolutely.</p></div></div>
+      <div class="proof"><div><p>Let \(c_n = \sum_{k=0}^{n}a_kb_{n-k}\). The double family \((a_ib_j)\) is absolutely summable, since \(\sum_{i,j}|a_ib_j| = (\sum|a_i|)(\sum|b_j|) &lt; \infty\). By the rearrangement theorem for absolutely convergent series, summing it by diagonals (giving \(\sum c_n\)) or by rows (giving \((\sum a_i)(\sum b_j)\)) produces the same value. \(\blacksquare\)</p></div></div></li>
+    <li><b>Radius of convergence:</b> \(\sum c_n(x-a)^n\) converges absolutely for \(|x-a| &lt; R\) and diverges for \(|x-a| &gt; R\), where \(1/R = \limsup|c_n|^{1/n}\).
+      <div class="ex"><div><p>A power series has a disc of health and nothing to say at its rim, where anything can happen.</p></div></div>
+      <div class="proof"><div><p>Apply the root test to \(a_n = c_n(x-a)^n\): \(\limsup|a_n|^{1/n} = |x-a|\limsup|c_n|^{1/n} = |x-a|/R\). This is \(&lt;1\) exactly when \(|x-a| &lt; R\) and \(&gt;1\) when \(|x-a| &gt; R\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compare with a \(p\)-series or a geometric series</b> — the two reference families.
+      <div class="ex"><div><p>Estimate the term's size, match it to \(1/n^p\) or \(r^n\), and quote the test.</p></div></div></li>
+    <li><b>Test the terms first</b> — if \(a_n \not\to 0\), stop; it diverges.
+      <div class="ex"><div><p>Ten seconds of work that saves a page.</p></div></div></li>
+    <li><b>Telescoping</b> — write \(a_n = b_n - b_{n+1}\) so the sum collapses.
+      <div class="ex"><div><p>\(\sum \frac{1}{n(n+1)} = \sum(\frac1n - \frac{1}{n+1}) = 1\).</p></div></div></li>
+    <li><b>Prove absolute convergence when you can</b> — it licenses reordering and multiplying.
+      <div class="ex"><div><p>The difference between a formula you can manipulate and one you must handle with tongs.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · Unbroken</span>
+  <h2 class="ltitle">Limits &amp; Continuity of Functions</h2>
+  <p class="ldesc">Functions with no sudden jumps, and what that guarantees.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Limit of a function</b> — \(\lim_{x\to a}f(x) = L\): for all \(\varepsilon &gt; 0\) there is \(\delta &gt; 0\) with \(0 &lt; |x-a| &lt; \delta \Rightarrow |f(x)-L| &lt; \varepsilon\).
+      <div class="ex"><div><p>Get the output as close to \(L\) as demanded by keeping the input close enough to \(a\) — without ever using \(a\) itself.</p></div></div></li>
+    <li><b>One-sided limits</b> \(\lim_{x\to a^{\pm}}\).
+      <div class="ex"><div><p>A price that jumps at midnight has one value approaching from before and another from after.</p></div></div></li>
+    <li><b>Continuity at a point</b> — \(f(a)\) is defined and \(\lim_{x\to a}f(x) = f(a)\).
+      <div class="ex"><div><p>The pencil never leaves the paper, and it lands where the function says it should.</p></div></div></li>
+    <li><b>Continuity on a set</b> — continuous at each of its points.
+      <div class="ex"><div><p>Chapter 8 restates this using open sets, and the definition survives into any dimension.</p></div></div></li>
+    <li><b>Removable, jump, essential discontinuity</b> — the three ways continuity can fail.
+      <div class="ex"><div><p>A hole you could plug; a step; and \(\sin(1/x)\), which oscillates forever at the origin.</p></div></div></li>
+    <li><b>Uniform continuity</b> — one \(\delta\) works for every point at once.
+      <div class="ex"><div><p>\(x^2\) on \(\mathbb{R}\) is continuous but not uniformly: far from the origin, tiny input changes cause big output changes.</p></div></div></li>
+    <li><b>Lipschitz condition</b> — \(|f(x)-f(y)| \le K|x-y|\).
+      <div class="ex"><div><p>A speed limit on the graph. Lipschitz \(\Rightarrow\) uniformly continuous, and it powers Chapter 7's fixed-point theorem.</p></div></div></li>
+    <li><b>Monotone function</b> — order-preserving or order-reversing.
+      <div class="ex"><div><p>Monotone functions can only ever have jump discontinuities, and at most countably many.</p></div></div></li>
+    <li><b>Pointwise vs uniform convergence</b> of a sequence of functions.
+      <div class="ex"><div><p>Pointwise: each \(x\) settles eventually. Uniform: the whole graph settles together — and only then is the limit guaranteed continuous.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Sequential characterisation:</b> \(f\) is continuous at \(a\) iff \(x_n \to a\) implies \(f(x_n)\to f(a)\).
+      <div class="ex"><div><p>Turns every continuity question into a sequence question — often much easier.</p></div></div>
+      <div class="proof"><div><p>(\(\Rightarrow\)) Given \(\varepsilon\), take \(\delta\) from continuity and \(N\) with \(|x_n - a| &lt; \delta\) for \(n &gt; N\); then \(|f(x_n)-f(a)| &lt; \varepsilon\). (\(\Leftarrow\)) If continuity failed, some \(\varepsilon_0\) admits, for each \(n\), a point \(x_n\) with \(|x_n - a| &lt; 1/n\) but \(|f(x_n)-f(a)| \ge \varepsilon_0\). Then \(x_n \to a\) while \(f(x_n)\not\to f(a)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Algebra of continuity:</b> sums, products, quotients (non-zero denominator) and compositions of continuous functions are continuous.
+      <div class="ex"><div><p>Every polynomial and rational function is continuous where defined — no \(\varepsilon\) required.</p></div></div>
+      <div class="proof"><div><p>Immediate from the algebra of limits (Layer 3) via the sequential characterisation: if \(x_n \to a\) then \(f(x_n)\to f(a)\) and \(g(x_n)\to g(a)\), so \((f+g)(x_n)\to (f+g)(a)\), and likewise for products and quotients. For composition, \(x_n \to a \Rightarrow g(x_n)\to g(a) \Rightarrow f(g(x_n))\to f(g(a))\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Intermediate value theorem:</b> a continuous \(f\) on \([a,b]\) attains every value between \(f(a)\) and \(f(b)\).
+      <div class="ex"><div><p>Walk from a valley to a peak and you cross every altitude on the way. Chapter 9 generalises it to connected sets.</p></div></div>
+      <div class="proof"><div><p>Say \(f(a) &lt; c &lt; f(b)\), and let \(S = \{x \in [a,b] : f(x) &lt; c\}\), non-empty and bounded; put \(s = \sup S\). If \(f(s) &lt; c\), continuity keeps \(f &lt; c\) on a neighbourhood, so points slightly right of \(s\) lie in \(S\) — contradicting the supremum. If \(f(s) &gt; c\), continuity keeps \(f &gt; c\) nearby, so \(s - \delta\) would already be an upper bound. Hence \(f(s) = c\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Boundedness theorem:</b> a continuous function on a closed bounded interval is bounded.
+      <div class="ex"><div><p>No continuous temperature curve blows up over a finite closed day.</p></div></div>
+      <div class="proof"><div><p>If \(f\) were unbounded, pick \(x_n \in [a,b]\) with \(|f(x_n)| &gt; n\). Bolzano–Weierstrass gives \(x_{n_k}\to x^{*} \in [a,b]\) (closedness keeps the limit inside), and continuity gives \(f(x_{n_k})\to f(x^{*})\) — contradicting \(|f(x_{n_k})| \to \infty\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Extreme value theorem:</b> such a function attains a maximum and a minimum.
+      <div class="ex"><div><p>The hottest moment of the day really occurs; it isn't just approached.</p></div></div>
+      <div class="proof"><div><p>By boundedness, \(M = \sup_{[a,b]}f\) exists. Choose \(x_n\) with \(f(x_n) &gt; M - 1/n\). Bolzano–Weierstrass gives \(x_{n_k}\to x^{*}\in[a,b]\), and continuity gives \(f(x^{*}) = \lim f(x_{n_k}) = M\). The minimum follows by applying this to \(-f\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Heine–Cantor:</b> continuity on a closed bounded interval is automatically uniform.
+      <div class="ex"><div><p>Compactness upgrades a local promise to a global one. The template for Chapter 9.</p></div></div>
+      <div class="proof"><div><p>If not, some \(\varepsilon_0\) has, for each \(n\), points \(x_n, y_n\) with \(|x_n-y_n| &lt; 1/n\) but \(|f(x_n)-f(y_n)| \ge \varepsilon_0\). Bolzano–Weierstrass gives \(x_{n_k}\to x^{*}\), and then \(y_{n_k}\to x^{*}\) too. Continuity at \(x^{*}\) forces \(|f(x_{n_k}) - f(y_{n_k})| \to 0\), a contradiction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous image of an interval is an interval.</b>
+      <div class="ex"><div><p>Continuity cannot tear a connected piece into two.</p></div></div>
+      <div class="proof"><div><p>Let \(u &lt; w\) lie in \(f[I]\), say \(u = f(p)\), \(w = f(q)\), and let \(u &lt; c &lt; w\). The intermediate value theorem applied to \(f\) on the interval between \(p\) and \(q\) produces \(x\) with \(f(x) = c\), so \(c \in f[I]\). A set containing every value between any two of its members is an interval. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous inverse:</b> a continuous strictly monotone function on an interval has a continuous, strictly monotone inverse.
+      <div class="ex"><div><p>\(\sqrt{\ }\), \(\ln\), \(\arcsin\) — all continuous, and this is why.</p></div></div>
+      <div class="proof"><div><p>Strict monotonicity gives injectivity, and the image is an interval \(J\) by the previous result, so \(f^{-1}: J\to I\) exists and is strictly monotone. A monotone function whose image is an interval has no jumps: a jump would leave a gap in the image. Hence \(f^{-1}\) is continuous. \(\blacksquare\)</p></div></div></li>
+    <li><b>Uniform limit theorem:</b> a uniform limit of continuous functions is continuous.
+      <div class="ex"><div><p>Pointwise is not enough: \(x^{n}\) on \([0,1]\) has a discontinuous limit.</p></div></div>
+      <div class="proof"><div><p>The \(\varepsilon/3\) argument. Given \(\varepsilon\), pick \(n\) with \(\sup_x|f_n(x)-f(x)| &lt; \varepsilon/3\), then \(\delta\) from continuity of \(f_n\) at \(a\). For \(|x-a| &lt; \delta\), \(|f(x)-f(a)| \le |f(x)-f_n(x)| + |f_n(x)-f_n(a)| + |f_n(a)-f(a)| &lt; \varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotone functions have at most countably many discontinuities.</b>
+      <div class="ex"><div><p>A staircase can have infinitely many steps, but never uncountably many.</p></div></div>
+      <div class="proof"><div><p>At each discontinuity of an increasing \(f\), the jump interval \((\lim_{x\to a^-}f, \lim_{x\to a^+}f)\) is non-empty, and for different discontinuities these intervals are disjoint by monotonicity. Each contains a rational, and distinct intervals give distinct rationals, so the set of discontinuities injects into \(\mathbb{Q}\) — hence is countable. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>\(\varepsilon\)–\(\delta\)</b> — given \(\varepsilon\), produce \(\delta\), usually by solving the target inequality.
+      <div class="ex"><div><p>For \(f(x)=3x\): \(|3x-3a| &lt; \varepsilon\) needs \(\delta = \varepsilon/3\). Write the discovery backwards.</p></div></div></li>
+    <li><b>Use sequences instead</b> — prove or disprove continuity by choosing a clever sequence.
+      <div class="ex"><div><p>To kill continuity of \(\sin(1/x)\) at 0, take \(x_n\) with \(\sin(1/x_n)\) alternating.</p></div></div></li>
+    <li><b>Compactness upgrade</b> — on a closed bounded interval, continuous gives bounded, attained and uniform for free.
+      <div class="ex"><div><p>Always check whether your domain is closed and bounded before working hard.</p></div></div></li>
+    <li><b>Bisection for roots</b> — apply the IVT and halve.
+      <div class="ex"><div><p>Sign change over an interval, halve, repeat: an algorithm and a proof at once.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 6 ============ -->
+<section class="layer" id="L6">
+  <span class="chapter">Layer 6 · Rates</span>
+  <h2 class="ltitle">Differentiation</h2>
+  <p class="ldesc">Best linear approximation — the idea Chapter 10 lifts into \(n\) dimensions.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Derivative</b> \(f'(a) = \lim_{h\to0}\frac{f(a+h)-f(a)}{h}\).
+      <div class="ex"><div><p>Speed at an instant: the average speed over ever-shorter intervals.</p></div></div></li>
+    <li><b>Differentiability as linear approximation</b> — \(f(a+h) = f(a) + f'(a)h + o(h)\).
+      <div class="ex"><div><p>Zoom in far enough and the graph looks straight. This — not the quotient — is the definition that survives into \(\mathbb{R}^n\).</p></div></div></li>
+    <li><b>Tangent line</b> \(y = f(a) + f'(a)(x-a)\).
+      <div class="ex"><div><p>The straight line that agrees with the curve to first order.</p></div></div></li>
+    <li><b>Higher derivatives</b> \(f'', f''', f^{(n)}\).
+      <div class="ex"><div><p>Position, speed, acceleration — each the rate of the one before.</p></div></div></li>
+    <li><b>Critical point</b> — where \(f' = 0\) or \(f'\) fails to exist.
+      <div class="ex"><div><p>The only places an interior maximum can hide.</p></div></div></li>
+    <li><b>Convexity</b> — the chord lies above the graph; equivalently \(f'' \ge 0\) for smooth \(f\).
+      <div class="ex"><div><p>A bowl, not a dome. Convexity is Chapter 19's whole subject.</p></div></div></li>
+    <li><b>Taylor polynomial</b> \(T_n(x) = \sum_{k\le n}\frac{f^{(k)}(a)}{k!}(x-a)^{k}\).
+      <div class="ex"><div><p>The best polynomial fit at a point: matches value, slope, curvature, and so on.</p></div></div></li>
+    <li><b>Analytic function</b> — equal to its Taylor series near every point.
+      <div class="ex"><div><p>Smooth is not enough: \(e^{-1/x^{2}}\) has every derivative zero at 0, yet isn't zero.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Differentiable \(\Rightarrow\) continuous.</b>
+      <div class="ex"><div><p>A graph with a tangent line can't have a jump. The converse fails at \(|x|\).</p></div></div>
+      <div class="proof"><div><p>\(f(a+h)-f(a) = h\cdot\frac{f(a+h)-f(a)}{h} \to 0 \cdot f'(a) = 0\) as \(h \to 0\), by the algebra of limits. So \(f(a+h)\to f(a)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rules:</b> linearity, product rule, quotient rule, chain rule.
+      <div class="ex"><div><p>\((fg)' = f'g + fg'\): two things changing at once, each contributing its share.</p></div></div>
+      <div class="proof"><div><p>Product: \(\frac{f(a+h)g(a+h)-f(a)g(a)}{h} = f(a+h)\frac{g(a+h)-g(a)}{h} + g(a)\frac{f(a+h)-f(a)}{h} \to f(a)g'(a)+g(a)f'(a)\), using continuity of \(f\) at \(a\). Chain rule: write \(f(y) - f(y_0) = (f'(y_0)+\eta(y))(y-y_0)\) with \(\eta \to 0\); substitute \(y = g(a+h)\), divide by \(h\) and let \(h\to0\). Quotient follows from product plus the derivative of \(1/x\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Fermat's interior extremum theorem:</b> at an interior extremum with \(f\) differentiable, \(f'=0\).
+      <div class="ex"><div><p>At the top of the hill the ground is momentarily level.</p></div></div>
+      <div class="proof"><div><p>At an interior maximum \(a\), the difference quotient is \(\le 0\) for \(h &gt; 0\) and \(\ge 0\) for \(h &lt; 0\). Taking one-sided limits gives \(f'(a) \le 0\) and \(f'(a)\ge0\), so \(f'(a)=0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rolle's theorem:</b> if \(f\) is continuous on \([a,b]\), differentiable inside, and \(f(a)=f(b)\), then \(f'(c)=0\) somewhere.
+      <div class="ex"><div><p>Leave and return to the same altitude: at some moment you were going neither up nor down.</p></div></div>
+      <div class="proof"><div><p>By the extreme value theorem \(f\) attains a maximum and minimum on \([a,b]\). If both occur at endpoints then \(f\) is constant and \(f' \equiv 0\). Otherwise an extremum is interior, and Fermat's theorem gives \(f'(c)=0\) there. \(\blacksquare\)</p></div></div></li>
+    <li><b>Mean value theorem:</b> \(f(b)-f(a) = f'(c)(b-a)\) for some \(c \in (a,b)\).
+      <div class="ex"><div><p>Average 90 km/h over a journey and at some instant your speedometer read exactly 90.</p></div></div>
+      <div class="proof"><div><p>Apply Rolle to \(g(x) = f(x) - f(a) - \frac{f(b)-f(a)}{b-a}(x-a)\), which is continuous on \([a,b]\), differentiable inside, and satisfies \(g(a)=g(b)=0\). Then \(g'(c)=0\) gives the claim. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(f' = 0\) on an interval \(\Rightarrow\) \(f\) is constant; \(f' &gt; 0 \Rightarrow\) strictly increasing.
+      <div class="ex"><div><p>Never moving means never having moved — the fact that makes antiderivatives unique up to a constant.</p></div></div>
+      <div class="proof"><div><p>For \(x &lt; y\) in the interval, the MVT gives \(f(y)-f(x) = f'(c)(y-x)\). If \(f' \equiv 0\) this is 0, so \(f\) is constant; if \(f' &gt; 0\) it is positive, so \(f(y) &gt; f(x)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Cauchy mean value theorem</b> and <b>l'Hôpital's rule</b>.
+      <div class="ex"><div><p>\(0/0\) forms can be resolved by comparing the two rates of change instead of the two values.</p></div></div>
+      <div class="proof"><div><p>Cauchy MVT: apply Rolle to \(h(x) = (f(b)-f(a))g(x) - (g(b)-g(a))f(x)\), giving \((f(b)-f(a))g'(c) = (g(b)-g(a))f'(c)\). For l'Hôpital with \(f(a)=g(a)=0\): \(\frac{f(x)}{g(x)} = \frac{f(x)-f(a)}{g(x)-g(a)} = \frac{f'(c_x)}{g'(c_x)}\) with \(c_x\) between \(a\) and \(x\); as \(x\to a\), \(c_x \to a\) and the limit follows. \(\blacksquare\)</p></div></div></li>
+    <li><b>Darboux's theorem:</b> a derivative has the intermediate value property, even when it isn't continuous.
+      <div class="ex"><div><p>Derivatives can't jump, even though they can be wild.</p></div></div>
+      <div class="proof"><div><p>Let \(f'(a) &lt; c &lt; f'(b)\) and set \(g(x) = f(x)-cx\), so \(g'(a) &lt; 0 &lt; g'(b)\). By the extreme value theorem \(g\) attains a minimum on \([a,b]\); the sign of \(g'\) at each endpoint rules out both endpoints, so the minimum is interior, and Fermat gives \(g'(x_0)=0\), i.e. \(f'(x_0)=c\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Taylor's theorem with Lagrange remainder:</b> \(f(x) = T_n(x) + \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-a)^{n+1}\).
+      <div class="ex"><div><p>The polynomial fit, plus an exact honest error term. Chapter 10's second-derivative test is its two-term version.</p></div></div>
+      <div class="proof"><div><p>Fix \(x\) and choose \(M\) so that \(F(t) = f(x) - T_n^{(t)}(x) - M(x-t)^{n+1}\) vanishes at \(t=a\), where \(T_n^{(t)}\) is the Taylor polynomial expanded at \(t\). Then \(F(x) = F(a) = 0\), so Rolle gives \(\xi\) with \(F'(\xi)=0\). Differentiating, the telescoping Taylor terms cancel and leave \(\frac{f^{(n+1)}(\xi)}{n!}(x-\xi)^n = M(n+1)(x-\xi)^{n}\), i.e. \(M = \frac{f^{(n+1)}(\xi)}{(n+1)!}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Second derivative test:</b> \(f'(a) = 0\) and \(f''(a) &gt; 0\) give a local minimum.
+      <div class="ex"><div><p>Flat and curving upward: a valley floor.</p></div></div>
+      <div class="proof"><div><p>Taylor with \(n=1\) gives \(f(a+h) = f(a) + \tfrac12 f''(\xi)h^{2}\) for some \(\xi\) between \(a\) and \(a+h\). Continuity of \(f''\) keeps it positive near \(a\), so \(f(a+h) &gt; f(a)\) for all small \(h \ne 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Convexity criterion:</b> \(f'' \ge 0\) on an interval iff \(f\) is convex there.
+      <div class="ex"><div><p>Curving upward everywhere means every chord sits above the curve.</p></div></div>
+      <div class="proof"><div><p>If \(f''\ge0\) then \(f'\) is non-decreasing; for \(x &lt; z &lt; y\), the MVT on \([x,z]\) and \([z,y]\) gives slopes \(f'(c_1)\le f'(c_2)\), so the chord slope from \(x\) to \(z\) is at most that from \(z\) to \(y\) — which is exactly convexity. Conversely, convexity makes difference quotients monotone, so \(f'\) is non-decreasing and \(f'' \ge 0\) where it exists. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Differentiate by rules, not by limits</b> — build from a handful of known derivatives.
+      <div class="ex"><div><p>The limit definition is used to establish the rules once, then never again.</p></div></div></li>
+    <li><b>Mean value argument</b> — to compare \(f\) at two points, write the difference as \(f'(c)\cdot\) gap.
+      <div class="ex"><div><p>The single most useful one-line trick in analysis.</p></div></div></li>
+    <li><b>Optimisation</b> — find critical points, check endpoints, compare values.
+      <div class="ex"><div><p>Chapter 10 repeats this with gradients and Lagrange multipliers.</p></div></div></li>
+    <li><b>Taylor approximation with error control</b>.
+      <div class="ex"><div><p>Approximate, then bound the remainder — never approximate and hope.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 7 ============ -->
+<section class="layer" id="L7">
+  <span class="chapter">Layer 7 · Area, first attempt</span>
+  <h2 class="ltitle">The Riemann Integral</h2>
+  <p class="ldesc">Length and area by exhaustion — and where the method runs out.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Partition</b> of \([a,b]\) — finitely many points \(a = x_0 &lt; \cdots &lt; x_n = b\).
+      <div class="ex"><div><p>Chop the interval into strips. Everything follows from making them thin.</p></div></div></li>
+    <li><b>Upper &amp; lower sums</b> \(U(f,P) = \sum M_i \Delta x_i\), \(L(f,P) = \sum m_i \Delta x_i\).
+      <div class="ex"><div><p>Boxes drawn to just cover the region, and boxes drawn to just fit inside it.</p></div></div></li>
+    <li><b>Riemann integrability</b> — \(\inf_P U = \sup_P L\); that common value is \(\int_a^b f\).
+      <div class="ex"><div><p>Squeeze the true area from above and below until the two estimates meet.</p></div></div></li>
+    <li><b>Riemann sum</b> \(\sum f(t_i)\Delta x_i\) with sample points \(t_i\).
+      <div class="ex"><div><p>The practical version: measure the height somewhere in each strip.</p></div></div></li>
+    <li><b>Antiderivative</b> \(F\) with \(F' = f\).
+      <div class="ex"><div><p>Running total of a rate. Distance is the antiderivative of speed.</p></div></div></li>
+    <li><b>Improper integral</b> — a limit of integrals over growing or shrinking ranges.
+      <div class="ex"><div><p>\(\int_1^{\infty}x^{-2}dx = 1\): an infinitely long region with finite area.</p></div></div></li>
+    <li><b>Content zero</b> — coverable by finitely many intervals of arbitrarily small total length.
+      <div class="ex"><div><p>The forerunner of "measure zero" (Chapter 11), where "finitely" becomes "countably" and everything gets better.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Riemann criterion:</b> \(f\) is integrable iff for every \(\varepsilon\) there is a partition with \(U - L &lt; \varepsilon\).
+      <div class="ex"><div><p>You never need the exact value — just that the gap between over- and under-estimate can be closed.</p></div></div>
+      <div class="proof"><div><p>Refining a partition raises \(L\) and lowers \(U\), so \(\sup_P L \le \inf_P U\) always. If some partition has \(U-L &lt; \varepsilon\) for every \(\varepsilon\), the two must be equal. Conversely if they are equal, choose partitions with \(L &gt; I - \varepsilon/2\) and \(U &lt; I + \varepsilon/2\) and take their common refinement. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous \(\Rightarrow\) integrable</b> on \([a,b]\).
+      <div class="ex"><div><p>Uniform continuity makes every strip's height nearly constant, so the two estimates converge.</p></div></div>
+      <div class="proof"><div><p>By Heine–Cantor, \(f\) is uniformly continuous: given \(\varepsilon\), take \(\delta\) with \(|f(x)-f(y)| &lt; \frac{\varepsilon}{b-a}\) whenever \(|x-y| &lt; \delta\). For any partition of mesh \(&lt; \delta\), \(M_i - m_i \le \frac{\varepsilon}{b-a}\) on each strip, so \(U - L \le \frac{\varepsilon}{b-a}\sum\Delta x_i = \varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotone \(\Rightarrow\) integrable.</b>
+      <div class="ex"><div><p>Even with infinitely many jumps, a staircase has a well-defined area.</p></div></div>
+      <div class="proof"><div><p>For increasing \(f\) and the uniform partition of mesh \(h\), \(U - L = h\sum_i (f(x_i)-f(x_{i-1})) = h\,(f(b)-f(a))\) by telescoping, which is \(&lt; \varepsilon\) once \(h\) is small. \(\blacksquare\)</p></div></div></li>
+    <li><b>Linearity, additivity and monotonicity of the integral.</b>
+      <div class="ex"><div><p>Split the region, scale it, compare it — all behave exactly as area should.</p></div></div>
+      <div class="proof"><div><p>Each follows by proving the corresponding statement for upper and lower sums on a common refinement and passing to the infimum/supremum. E.g. \(U(f+g,P)\le U(f,P)+U(g,P)\) and the reverse for \(L\), squeezing \(\int(f+g) = \int f + \int g\); additivity over \([a,c]\cup[c,b]\) comes from partitions containing \(c\); monotonicity from \(f \le g\) giving \(M_i(f)\le M_i(g)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Fundamental theorem of calculus, part I:</b> if \(f\) is continuous, \(F(x) = \int_a^x f\) satisfies \(F' = f\).
+      <div class="ex"><div><p>Accumulating a rate and then measuring the rate of accumulation gets you back where you started.</p></div></div>
+      <div class="proof"><div><p>\(\frac{F(x+h)-F(x)}{h} = \frac1h\int_x^{x+h}f\). Since \(f\) is continuous at \(x\), for small \(h\) the values of \(f\) on \([x,x+h]\) lie within \(\varepsilon\) of \(f(x)\), so the average lies within \(\varepsilon\) of \(f(x)\). Letting \(h \to 0\) gives \(F'(x) = f(x)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Fundamental theorem of calculus, part II:</b> \(\int_a^b f = F(b)-F(a)\) for any antiderivative \(F\).
+      <div class="ex"><div><p>The reason integration is ever computed rather than approximated.</p></div></div>
+      <div class="proof"><div><p>Take any partition and apply the mean value theorem on each strip: \(F(x_i)-F(x_{i-1}) = f(t_i)\Delta x_i\) for some \(t_i\). Summing telescopes to \(F(b)-F(a) = \sum f(t_i)\Delta x_i\), a Riemann sum lying between \(L(f,P)\) and \(U(f,P)\). As those squeeze to \(\int_a^b f\), the constant \(F(b)-F(a)\) must equal it. \(\blacksquare\)</p></div></div></li>
+    <li><b>Integration by parts and by substitution.</b>
+      <div class="ex"><div><p>The product rule and the chain rule, read backwards.</p></div></div>
+      <div class="proof"><div><p>Parts: integrate \((uv)' = u'v + uv'\) over \([a,b]\) and apply part II. Substitution: if \(g\) is \(C^{1}\) and \(F' = f\), then \((F\circ g)' = f(g(x))g'(x)\) by the chain rule; integrating and applying part II gives \(\int_a^b f(g(x))g'(x)dx = F(g(b))-F(g(a)) = \int_{g(a)}^{g(b)}f\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Mean value theorem for integrals:</b> \(\int_a^b f = f(c)(b-a)\) for some \(c\), when \(f\) is continuous.
+      <div class="ex"><div><p>The average of a continuous quantity is actually achieved at some instant.</p></div></div>
+      <div class="proof"><div><p>Let \(m, M\) be the minimum and maximum of \(f\) on \([a,b]\) (extreme value theorem). Monotonicity gives \(m(b-a) \le \int_a^b f \le M(b-a)\), so the average \(\frac{1}{b-a}\int_a^b f\) lies in \([m,M]\); the intermediate value theorem supplies \(c\) attaining it. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lebesgue's criterion:</b> \(f\) is Riemann integrable iff it is bounded and its set of discontinuities has measure zero.
+      <div class="ex"><div><p>Exactly how broken a function may be. Chapter 11 supplies the word "measure".</p></div></div>
+      <div class="proof"><div><p>Sketch: define the oscillation \(\omega(x)\) of \(f\) at \(x\); the discontinuity set is \(\bigcup_k\{\omega \ge 1/k\}\). If each such set has measure zero, cover it by small intervals and use uniform smallness of oscillation on the compact remainder to make \(U-L\) small. Conversely, if some \(\{\omega\ge1/k\}\) has positive measure, every partition keeps \(U - L \ge \frac{1}{k}\cdot(\text{that measure})\), so integrability fails. \(\blacksquare\)</p></div></div></li>
+    <li><b>Where Riemann fails:</b> the indicator of \(\mathbb{Q}\cap[0,1]\) is not Riemann integrable, and Riemann integrals do not survive pointwise limits.
+      <div class="ex"><div><p>Every upper sum is 1 and every lower sum is 0, forever. Chapter 12 replaces the whole machine to fix this.</p></div></div>
+      <div class="proof"><div><p>Every subinterval contains both a rational and an irrational (density, Layer 2), so \(M_i = 1\) and \(m_i = 0\) for every partition, giving \(U = 1\), \(L = 0\). Moreover this function is the pointwise limit of the integrable functions \(f_k\) = indicator of the first \(k\) rationals, each with integral 0 — so pointwise limits do not preserve Riemann integrability. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Upper/lower sum squeeze</b> — prove integrability by making \(U - L\) small.
+      <div class="ex"><div><p>Choose the partition <em>after</em> seeing \(\varepsilon\); mesh \(&lt; \delta\) is the usual answer.</p></div></div></li>
+    <li><b>Antidifferentiate and evaluate</b> — the fundamental theorem in action.
+      <div class="ex"><div><p>Find \(F\), subtract the endpoints. Everything else is technique for finding \(F\).</p></div></div></li>
+    <li><b>Substitution and parts</b> — the two workhorse transformations.
+      <div class="ex"><div><p>Substitution becomes the change-of-variables formula with \(|\det J|\) in Chapter 12.</p></div></div></li>
+    <li><b>Estimate rather than evaluate</b> — bound the integrand and integrate the bound.
+      <div class="ex"><div><p>\(\bigl|\int f\bigr| \le \int |f| \le M(b-a)\) settles more questions than exact evaluation ever does.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Move everything to one side, find a square</td><td>L1</td><td>Prove an inequality</td></tr>
+    <tr><td>Case split on signs</td><td>L1</td><td>Handle absolute values</td></tr>
+    <tr><td>Triangle inequality</td><td>L1</td><td>Bound a sum by its parts</td></tr>
+    <tr><td>Sup / inf argument</td><td>L2</td><td>Prove a number exists</td></tr>
+    <tr><td>Approximate from below (\(s-\varepsilon\))</td><td>L2</td><td>Use a supremum in a proof</td></tr>
+    <tr><td>Bisection</td><td>L2</td><td>Build nested intervals around an answer</td></tr>
+    <tr><td>\(\varepsilon\)–\(N\)</td><td>L3</td><td>Prove a sequence converges</td></tr>
+    <tr><td>Squeeze</td><td>L3</td><td>Get a limit without computing it</td></tr>
+    <tr><td>Monotone + bounded</td><td>L3</td><td>Prove a limit exists</td></tr>
+    <tr><td>Cauchy criterion</td><td>L3</td><td>Prove convergence without the limit</td></tr>
+    <tr><td>Extract a subsequence (Bolzano–Weierstrass)</td><td>L3</td><td>Open any compactness argument</td></tr>
+    <tr><td>Comparison / ratio / root / integral tests</td><td>L4</td><td>Decide whether a series converges</td></tr>
+    <tr><td>Telescoping</td><td>L4</td><td>Sum a series exactly</td></tr>
+    <tr><td>Prove absolute convergence</td><td>L4</td><td>Earn the right to reorder and multiply</td></tr>
+    <tr><td>\(\varepsilon\)–\(\delta\)</td><td>L5</td><td>Prove continuity or a function limit</td></tr>
+    <tr><td>Sequential criterion</td><td>L5</td><td>Disprove continuity quickly</td></tr>
+    <tr><td>Compactness upgrade</td><td>L5</td><td>Get boundedness, attainment and uniformity free</td></tr>
+    <tr><td>Mean value argument</td><td>L6</td><td>Convert a difference into a derivative</td></tr>
+    <tr><td>Critical points + endpoints</td><td>L6</td><td>Optimise a function</td></tr>
+    <tr><td>Taylor with remainder</td><td>L6</td><td>Approximate with a guaranteed error</td></tr>
+    <tr><td>Upper/lower sum squeeze</td><td>L7</td><td>Prove a function is integrable</td></tr>
+    <tr><td>Antidifferentiate and evaluate</td><td>L7</td><td>Compute an integral</td></tr>
+    <tr><td>Substitution &amp; parts</td><td>L7</td><td>Transform an integral into a doable one</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>The Real Line · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

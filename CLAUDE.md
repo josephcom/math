@@ -32,6 +32,7 @@ The reader is Joseph. Audience: himself and anyone he shares the link with.
 | `notes.js` | Joseph's own note boxes: Markdown + LaTeX, saved in his browser. Automatic — no per-chapter markup. |
 | `bookmark.js` | The ⚑ "where I left off" flag — one per page, plus the Resume pill. Shares the notes' store. Automatic. |
 | `sync.js` | Carries the notes and the bookmark between browsers/machines via one **secret gist**. Adds the sync chip, bottom right. |
+| `totop.js` | The small round ⇧ button in the bottom-right corner. Joins the sync chip's stack when there is one. Automatic; load it last. |
 | `STYLE-GUIDE.md` | The full spec for writing a chapter. Non-negotiable. |
 | `JOURNAL.md` | Session-by-session log. Append to it, newest last. |
 | `internal-not to be used by Claude/` | Off-limits. Git-ignored. Do not read or commit. |

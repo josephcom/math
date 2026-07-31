@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7 — Metric Spaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Metric Spaces</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-06-inner-products-and-norms.html">&#10094; Chapter 6 — Inner Products &amp; Norms</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Distance, and Nothing Else</h2>
+    <p>Chapter 6 built distance out of an inner product. This chapter keeps the <b>distance</b> and throws everything else away.</p>
+    <p>Three axioms remain — and they are enough for convergence, continuity, completeness and a fixed point theorem that solves differential equations.</p>
+    <p>The payoff is reach: the same theorems now apply to \(\mathbb{R}^{n}\), to spaces of functions, to strings of text, and to graphs.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(d(x,z) \le d(x,y) + d(y,z)\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Metrics</a><a href="#L2">L2 Convergence</a><a href="#L3">L3 Completeness</a>
+  <a href="#L4">L4 Fixed Points</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Three axioms</span>
+  <h2 class="ltitle">Metrics &amp; Balls</h2>
+  <p class="ldesc">What a distance has to satisfy, and what it may otherwise be.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Metric space</b> \((X,d)\) — a set with a distance function obeying three axioms.
+      <div class="ex"><div><p>Points and the distances between them. No addition, no scaling, no angles.</p></div></div></li>
+    <li><b>Open ball</b> \(B(x,r) = \{y : d(x,y) &lt; r\}\).
+      <div class="ex"><div><p>Everything within \(r\) of \(x\), edge excluded. The basic building block of every later chapter.</p></div></div></li>
+    <li><b>Closed ball &amp; sphere</b> — \(\le r\), and \(= r\).
+      <div class="ex"><div><p>In \(\mathbb{R}^{n}\) the sphere is the skin; Chapter 13 measures it.</p></div></div></li>
+    <li><b>Bounded set</b> — contained in some ball.
+      <div class="ex"><div><p>Fits inside a big enough circle, wherever you centre it.</p></div></div></li>
+    <li><b>Diameter</b> \(\operatorname{diam}(A) = \sup\{d(x,y) : x,y\in A\}\).
+      <div class="ex"><div><p>The width of the set at its widest. Chapter 18 builds Hausdorff measure out of diameters.</p></div></div></li>
+    <li><b>Distance between sets</b> \(d(A,B) = \inf\{d(a,b)\}\).
+      <div class="ex"><div><p>Can be 0 for disjoint sets — the \(x\)-axis and the graph of \(1/x\) never meet, yet get arbitrarily close.</p></div></div></li>
+    <li><b>Subspace metric</b> — restrict \(d\) to a subset.
+      <div class="ex"><div><p>The surface of the Earth with straight-line distance through the rock. A legitimate metric, if not a useful one.</p></div></div></li>
+    <li><b>Product metric</b> — e.g. \(d\bigl((x_1,x_2),(y_1,y_2)\bigr) = \max_i d_i(x_i,y_i)\).
+      <div class="ex"><div><p>How \(\mathbb{R}^{n}\) is assembled from \(n\) copies of \(\mathbb{R}\).</p></div></div></li>
+    <li><b>Discrete metric</b> — \(d(x,y) = 1\) for \(x \ne y\).
+      <div class="ex"><div><p>Every point is an island. The standard source of counterexamples.</p></div></div></li>
+    <li><b>Isometry</b> — a distance-preserving bijection.
+      <div class="ex"><div><p>The same space with the points renamed.</p></div></div></li>
+    <li><b>Metrics from norms</b> — \(d(x,y) = \|x-y\|\).
+      <div class="ex"><div><p>Every norm gives a metric. Not every metric comes from a norm — the discrete one doesn't.</p></div></div></li>
+    <li><b>Equivalent metrics</b> — metrics with the same convergent sequences and the same open sets.
+      <div class="ex"><div><p>All the \(p\)-metrics on \(\mathbb{R}^{n}\) are equivalent (Chapter 6, Layer 4), so they define the same analysis.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms — A Metric</h3>
+  <ul>
+    <li><b>Identity of indiscernibles</b> — \(d(x,y) \ge 0\), and \(d(x,y) = 0\) iff \(x=y\).
+      <div class="ex"><div><p>Zero distance means the same place. Drop this and you get a pseudometric, where distinct points can coincide.</p></div></div></li>
+    <li><b>Symmetry</b> — \(d(x,y) = d(y,x)\).
+      <div class="ex"><div><p>There and back are the same length — false for one-way streets, which is why traffic models drop this axiom.</p></div></div></li>
+    <li><b>Triangle inequality</b> — \(d(x,z) \le d(x,y)+d(y,z)\).
+      <div class="ex"><div><p>Detours never help. This is the only axiom with real content.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Reverse triangle inequality:</b> \(|d(x,z)-d(y,z)| \le d(x,y)\).
+      <div class="ex"><div><p>Moving a small step changes your distance to anywhere by at most that step.</p></div></div>
+      <div class="proof"><div><p>From \(d(x,z)\le d(x,y)+d(y,z)\) we get \(d(x,z)-d(y,z)\le d(x,y)\); swapping \(x\) and \(y\) and using symmetry gives the other direction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Balls are open, and every open set is a union of balls.</b>
+      <div class="ex"><div><p>The balls form a base: knowing them is knowing the whole topology (Chapter 8).</p></div></div>
+      <div class="proof"><div><p>Let \(y \in B(x,r)\) and put \(s = r - d(x,y) &gt; 0\). If \(d(y,z) &lt; s\) then \(d(x,z)\le d(x,y)+d(y,z) &lt; r\), so \(B(y,s)\subseteq B(x,r)\). Hence every point of a ball is interior. Given an open set \(U\), each \(x \in U\) has a ball \(B(x,r_x)\subseteq U\), and \(U = \bigcup_{x\in U}B(x,r_x)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Metrics separate points (Hausdorff):</b> distinct points have disjoint balls around them.
+      <div class="ex"><div><p>Two different places can always be told apart by a small enough neighbourhood. This is what makes limits unique.</p></div></div>
+      <div class="proof"><div><p>Let \(x \ne y\) and \(r = d(x,y)/2 &gt; 0\). If \(z\) lay in both \(B(x,r)\) and \(B(y,r)\), the triangle inequality would give \(d(x,y)\le d(x,z)+d(z,y) &lt; 2r = d(x,y)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(d\) is continuous</b>, in each variable and jointly.
+      <div class="ex"><div><p>Distance itself varies smoothly — which is why "nearest point" arguments behave.</p></div></div>
+      <div class="proof"><div><p>By the reverse triangle inequality, \(|d(x,y) - d(x',y')| \le d(x,x') + d(y,y')\). So \(d\) is Lipschitz with constant 1 in the product metric, hence continuous. \(\blacksquare\)</p></div></div></li>
+    <li><b>The \(p\)-metrics on \(\mathbb{R}^{n}\) are metrics</b>, and are all equivalent.
+      <div class="ex"><div><p>Taxicab, Euclidean and maximum distance disagree on numbers but agree on every limit.</p></div></div>
+      <div class="proof"><div><p>Each \(\|\cdot\|_p\) is a norm by Minkowski's inequality (Chapter 6, Layer 4), and \(d_p(x,y) = \|x-y\|_p\) inherits the three axioms — the triangle inequality from the norm's. Equivalence follows from the norm comparison constants there, which sandwich each metric between multiples of another. \(\blacksquare\)</p></div></div></li>
+    <li><b>Any set carries a metric</b> — the discrete one.
+      <div class="ex"><div><p>So "metric space" is no restriction at all by itself; the content is always in <em>which</em> metric.</p></div></div>
+      <div class="proof"><div><p>Non-negativity and symmetry are clear. For the triangle inequality, if \(x = z\) the left side is 0; otherwise it is 1, and at least one of \(d(x,y), d(y,z)\) must be 1 since \(y\) cannot equal both \(x\) and \(z\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Verify the three axioms</b> — and expect all the work to be in the triangle inequality.
+      <div class="ex"><div><p>Non-negativity and symmetry are usually one line each.</p></div></div></li>
+    <li><b>Draw the unit ball</b> — it tells you what the metric thinks "close" means.
+      <div class="ex"><div><p>A diamond, a disc, a square — same points, three geometries.</p></div></div></li>
+    <li><b>Replace a metric by an equivalent one</b> — pick whichever makes the estimate easy.
+      <div class="ex"><div><p>In \(\mathbb{R}^{n}\), \(\max_i|x_i - y_i|\) is nearly always the easiest.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Getting close</span>
+  <h2 class="ltitle">Convergence &amp; Continuity</h2>
+  <p class="ldesc">Chapter 3's definitions, with \(|x-y|\) replaced by \(d(x,y)\).</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Convergence</b> \(x_n \to x\) — \(d(x_n,x)\to 0\).
+      <div class="ex"><div><p>Word for word Chapter 3's definition, with the distance abstracted.</p></div></div></li>
+    <li><b>Limit point (cluster point)</b> of a set — every ball around it meets the set in another point.
+      <div class="ex"><div><p>0 is a limit point of \(\{1/n\}\), though it isn't in the set.</p></div></div></li>
+    <li><b>Isolated point</b> — a point with a ball containing nothing else of the set.
+      <div class="ex"><div><p>In the discrete metric every point is isolated, so the only convergent sequences are eventually constant.</p></div></div></li>
+    <li><b>Closure</b> \(\overline{A}\) — \(A\) together with its limit points.
+      <div class="ex"><div><p>Sealing the edges: \(\overline{(0,1)} = [0,1]\).</p></div></div></li>
+    <li><b>Dense subset</b> — closure is the whole space.
+      <div class="ex"><div><p>\(\mathbb{Q}\) in \(\mathbb{R}\). Every point is approximable by the dense set — the basis of all numerical work.</p></div></div></li>
+    <li><b>Separable space</b> — has a countable dense subset.
+      <div class="ex"><div><p>\(\mathbb{R}^{n}\) is separable, thanks to points with rational coordinates.</p></div></div></li>
+    <li><b>Continuity at a point</b> — for all \(\varepsilon\) there is \(\delta\) with \(d(x,a)&lt;\delta \Rightarrow d(f(x),f(a))&lt;\varepsilon\).
+      <div class="ex"><div><p>Small input change, small output change — measured by the two metrics involved.</p></div></div></li>
+    <li><b>Uniform continuity</b> — one \(\delta\) works everywhere.
+      <div class="ex"><div><p>A single promise for the whole space, not one per point.</p></div></div></li>
+    <li><b>Lipschitz map</b> — \(d(f(x),f(y)) \le K\,d(x,y)\).
+      <div class="ex"><div><p>A hard speed limit. Lipschitz \(\Rightarrow\) uniformly continuous \(\Rightarrow\) continuous, and neither arrow reverses.</p></div></div></li>
+    <li><b>Contraction</b> — Lipschitz with \(K &lt; 1\).
+      <div class="ex"><div><p>Every application shrinks distances. Layer 4 shows this forces a fixed point.</p></div></div></li>
+    <li><b>Homeomorphism</b> — a continuous bijection with continuous inverse.
+      <div class="ex"><div><p>Same shape, possibly different distances: a circle and a square are homeomorphic, not isometric.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Limits are unique.</b>
+      <div class="ex"><div><p>A sequence cannot settle in two places — the Hausdorff property is what forbids it.</p></div></div>
+      <div class="proof"><div><p>If \(x_n \to x\) and \(x_n \to y\) with \(x \ne y\), take \(r = d(x,y)/2\). Beyond some index the terms lie in \(B(x,r)\) and beyond another in \(B(y,r)\), so beyond both they lie in the intersection — which is empty by Layer 1. \(\blacksquare\)</p></div></div></li>
+    <li><b>Convergent sequences are bounded, and so is any Cauchy sequence.</b>
+      <div class="ex"><div><p>Settling down means never having been far away for long.</p></div></div>
+      <div class="proof"><div><p>Take \(\varepsilon = 1\) and the corresponding index \(N\): the terms beyond \(N\) lie in \(B(x,1)\) (or within 1 of \(x_N\) in the Cauchy case), and the finitely many earlier terms lie in a large enough ball around \(x\). The larger radius bounds all of them. \(\blacksquare\)</p></div></div></li>
+    <li><b>Closure by sequences:</b> \(x \in \overline{A}\) iff some sequence in \(A\) converges to \(x\); and \(A\) is closed iff it contains all its sequential limits.
+      <div class="ex"><div><p>In metric spaces you may always argue with sequences instead of neighbourhoods — a luxury general topology loses.</p></div></div>
+      <div class="proof"><div><p>If every ball \(B(x,1/n)\) meets \(A\), choose \(a_n\) in the intersection to get \(a_n \to x\). Conversely, a sequence in \(A\) converging to \(x\) puts points of \(A\) in every ball around \(x\), so \(x\in\overline A\). The closed-set statement is this applied to \(A = \overline A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Sequential characterisation of continuity:</b> \(f\) is continuous at \(a\) iff \(x_n\to a \Rightarrow f(x_n)\to f(a)\).
+      <div class="ex"><div><p>The quickest way to disprove continuity: find one bad sequence.</p></div></div>
+      <div class="proof"><div><p>(\(\Rightarrow\)) Given \(\varepsilon\), take \(\delta\) from continuity and then \(N\) with \(d(x_n,a)&lt;\delta\). (\(\Leftarrow\)) If continuity fails for some \(\varepsilon_0\), then for each \(n\) there is \(x_n\) with \(d(x_n,a)&lt;1/n\) but \(d(f(x_n),f(a))\ge\varepsilon_0\), giving a sequence that converges while its image does not. \(\blacksquare\)</p></div></div></li>
+    <li><b>Topological characterisation:</b> \(f\) is continuous iff preimages of open sets are open, iff preimages of closed sets are closed.
+      <div class="ex"><div><p>No \(\varepsilon\), no \(\delta\), no sequences. Chapter 8 adopts this as <em>the</em> definition.</p></div></div>
+      <div class="proof"><div><p>If \(f\) is continuous and \(V\) is open, take \(x \in f^{-1}(V)\) and \(\varepsilon\) with \(B(f(x),\varepsilon)\subseteq V\); continuity gives \(\delta\) with \(f(B(x,\delta))\subseteq B(f(x),\varepsilon)\subseteq V\), so \(B(x,\delta)\subseteq f^{-1}(V)\). Conversely, apply the hypothesis to \(V = B(f(a),\varepsilon)\): its preimage is open and contains \(a\), so it contains some \(B(a,\delta)\). The closed version follows by taking complements (Chapter 2, Layer 5). \(\blacksquare\)</p></div></div></li>
+    <li><b>Compositions of continuous maps are continuous</b>; Lipschitz \(\Rightarrow\) uniformly continuous \(\Rightarrow\) continuous.
+      <div class="ex"><div><p>A chain of well-behaved steps is well behaved.</p></div></div>
+      <div class="proof"><div><p>For composition, use the preimage criterion: \((g\circ f)^{-1}(W) = f^{-1}(g^{-1}(W))\), open as the preimage of an open set. For the implications, \(\delta = \varepsilon/K\) serves uniformly in the Lipschitz case, and a uniform \(\delta\) is in particular a \(\delta\) at each point. \(\blacksquare\)</p></div></div></li>
+    <li><b>Equivalent metrics give the same convergent sequences, open sets and continuous functions.</b>
+      <div class="ex"><div><p>Analysis on \(\mathbb{R}^{n}\) does not depend on which \(p\)-norm you like.</p></div></div>
+      <div class="proof"><div><p>If \(c\,d_1 \le d_2 \le C\,d_1\), then \(d_1(x_n,x)\to0 \iff d_2(x_n,x)\to0\) by the sandwich, and every \(d_1\)-ball contains a \(d_2\)-ball and vice versa, so the open sets agree. Continuity, characterised by open sets, follows. \(\blacksquare\)</p></div></div></li>
+    <li><b>Distance to a set is Lipschitz:</b> \(x \mapsto d(x,A)\) has constant 1, and vanishes exactly on \(\overline A\).
+      <div class="ex"><div><p>A ready-made continuous function attached to any set — the standard tool for building bump functions and partitions of unity (Chapter 15).</p></div></div>
+      <div class="proof"><div><p>For any \(a\in A\), \(d(x,A)\le d(x,a)\le d(x,y)+d(y,a)\); taking the infimum over \(a\) gives \(d(x,A)\le d(x,y)+d(y,A)\), and symmetrically, so \(|d(x,A)-d(y,A)|\le d(x,y)\). And \(d(x,A) = 0\) means points of \(A\) come arbitrarily close to \(x\), i.e. \(x\in\overline A\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Argue with sequences</b> — in a metric space this is always legitimate.
+      <div class="ex"><div><p>Usually shorter than \(\varepsilon\)–\(\delta\), and much easier to get right.</p></div></div></li>
+    <li><b>Use preimages for continuity</b> — no estimates at all.
+      <div class="ex"><div><p>The proof that compositions are continuous shrinks to one line.</p></div></div></li>
+    <li><b>Find a Lipschitz constant</b> — the strongest easy form of continuity.
+      <div class="ex"><div><p>A bounded derivative gives one immediately, by the mean value theorem.</p></div></div></li>
+    <li><b>Use \(d(x,A)\)</b> — to turn a set into a continuous function.
+      <div class="ex"><div><p>Separating two closed sets, cutting off a function smoothly, measuring nearness — all from this one formula.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · No holes</span>
+  <h2 class="ltitle">Completeness</h2>
+  <p class="ldesc">Chapter 3's completeness axiom, restated so it travels.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Cauchy sequence</b> — for every \(\varepsilon\) there is \(N\) with \(d(x_n,x_m)&lt;\varepsilon\) for \(n,m &gt; N\).
+      <div class="ex"><div><p>The terms bunch together, without reference to any limit point.</p></div></div></li>
+    <li><b>Complete space</b> — every Cauchy sequence converges.
+      <div class="ex"><div><p>\(\mathbb{R}\) is complete; \(\mathbb{Q}\) is not — a sequence of rationals can bunch around \(\sqrt2\) and have nowhere to land.</p></div></div></li>
+    <li><b>Completion</b> \(\hat X\) — the smallest complete space containing \(X\) densely.
+      <div class="ex"><div><p>\(\mathbb{R}\) is the completion of \(\mathbb{Q}\). Filling the holes is always possible, and essentially in one way.</p></div></div></li>
+    <li><b>Banach space</b> — a complete normed vector space.
+      <div class="ex"><div><p>\(\mathbb{R}^{n}\) with any norm; \(C[a,b]\) with the sup norm. The natural home of analysis.</p></div></div></li>
+    <li><b>Hilbert space</b> — a complete inner product space.
+      <div class="ex"><div><p>Everything from Chapter 6 plus no holes. Where Fourier series live.</p></div></div></li>
+    <li><b>Nowhere dense set</b> — its closure has empty interior.
+      <div class="ex"><div><p>A line inside the plane: thin from every angle.</p></div></div></li>
+    <li><b>Meagre set</b> — a countable union of nowhere dense sets.
+      <div class="ex"><div><p>"Small" in the sense of category. Baire's theorem says a complete space is never meagre in itself.</p></div></div></li>
+    <li><b>Totally bounded</b> — coverable by finitely many balls of any given radius.
+      <div class="ex"><div><p>Stronger than bounded in general spaces; combined with completeness it gives compactness (Chapter 8).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Convergent \(\Rightarrow\) Cauchy</b>, but not conversely.
+      <div class="ex"><div><p>Cauchy is what convergence looks like from the inside — and inside \(\mathbb{Q}\) it can be a mirage.</p></div></div>
+      <div class="proof"><div><p>If \(x_n\to x\), then \(d(x_n,x_m)\le d(x_n,x)+d(x,x_m)&lt;\varepsilon\) for large \(n,m\). The sequence \(1, 1.4, 1.41, \dots\) in \(\mathbb{Q}\) is Cauchy with no rational limit, so the converse fails. \(\blacksquare\)</p></div></div></li>
+    <li><b>A Cauchy sequence with a convergent subsequence converges.</b>
+      <div class="ex"><div><p>If the crowd is bunching and part of it has settled, all of it has.</p></div></div>
+      <div class="proof"><div><p>Let \(x_{n_k}\to x\). Given \(\varepsilon\), choose \(N\) with \(d(x_n,x_m)&lt;\varepsilon/2\) for \(n,m&gt;N\), and \(k\) with \(n_k &gt; N\) and \(d(x_{n_k},x)&lt;\varepsilon/2\). Then \(d(x_n,x)\le d(x_n,x_{n_k})+d(x_{n_k},x)&lt;\varepsilon\) for \(n &gt; N\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{R}^{n}\) is complete.</b>
+      <div class="ex"><div><p>The foundation for everything that follows: limits in \(n\) dimensions never escape.</p></div></div>
+      <div class="proof"><div><p>If \((x^{(k)})\) is Cauchy in \(\mathbb{R}^{n}\), then \(|x^{(k)}_i - x^{(m)}_i| \le \|x^{(k)}-x^{(m)}\|\), so each coordinate sequence is Cauchy in \(\mathbb{R}\) and converges (Chapter 3, Layer 3). Let \(x\) collect the limits; then \(\|x^{(k)}-x\|\le\sqrt n\max_i|x^{(k)}_i - x_i|\to0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>A closed subset of a complete space is complete</b>, and a complete subspace is closed.
+      <div class="ex"><div><p>Completeness passes down to closed pieces, and only to those.</p></div></div>
+      <div class="proof"><div><p>A Cauchy sequence in a closed \(A\subseteq X\) converges in \(X\) by completeness, and its limit lies in \(A\) by closedness. Conversely, if \(A\) is complete and \(x \in \overline A\), take \(a_n \to x\) with \(a_n \in A\); the sequence is Cauchy, so it converges in \(A\), and uniqueness of limits puts \(x \in A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(C[a,b]\) with the sup metric is complete.</b>
+      <div class="ex"><div><p>Uniform limits of continuous functions are continuous (Chapter 3), so nothing escapes the space. This is what makes Layer 4's applications possible.</p></div></div>
+      <div class="proof"><div><p>A sup-Cauchy sequence \((f_n)\) is pointwise Cauchy, so \(f(x) := \lim f_n(x)\) exists. Letting \(m\to\infty\) in \(\sup_x|f_n(x)-f_m(x)|\le\varepsilon\) gives \(\sup_x|f_n(x)-f(x)|\le\varepsilon\), i.e. uniform convergence; and a uniform limit of continuous functions is continuous. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cantor's intersection theorem:</b> in a complete space, nested non-empty closed sets with diameters \(\to 0\) meet in exactly one point.
+      <div class="ex"><div><p>The nested interval theorem, freed from \(\mathbb{R}\).</p></div></div>
+      <div class="proof"><div><p>Pick \(x_n \in F_n\). For \(m &gt; n\), both points lie in \(F_n\), so \(d(x_n,x_m)\le\operatorname{diam}F_n\to0\): the sequence is Cauchy, hence convergent to some \(x\). Each \(F_n\) is closed and contains the tail, so \(x\in F_n\) for every \(n\). Two such points would force \(\operatorname{diam}F_n \ge d &gt; 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Every metric space has a completion</b>, unique up to isometry.
+      <div class="ex"><div><p>The construction of \(\mathbb{R}\) from \(\mathbb{Q}\), performed in general.</p></div></div>
+      <div class="proof"><div><p>Sketch: take Cauchy sequences in \(X\) and declare two equivalent when \(d(x_n,y_n)\to0\) — an equivalence relation (Chapter 2, Layer 4). Define \(\hat d([x],[y]) = \lim d(x_n,y_n)\), which exists because the reals are complete and is well defined by the reverse triangle inequality. Embed \(X\) by constant sequences; the image is dense, and \(\hat X\) is complete since a Cauchy sequence of classes can be represented by a diagonal sequence. Uniqueness: a dense isometric embedding extends uniquely to the completions. \(\blacksquare\)</p></div></div></li>
+    <li><b>Baire category theorem:</b> in a complete space, a countable intersection of dense open sets is dense.
+      <div class="ex"><div><p>You cannot exhaust a complete space with countably many thin sets. It powers a surprising number of existence proofs.</p></div></div>
+      <div class="proof"><div><p>Let \(U_n\) be dense open and \(B_0\) any ball. Inductively choose closed balls \(\overline{B_n}\subseteq B_{n-1}\cap U_n\) with radius \(&lt; 2^{-n}\) — possible since \(U_n\) is dense and open. Cantor's intersection theorem gives a point in every \(\overline{B_n}\), hence in \(B_0\cap\bigcap_nU_n\). So the intersection meets every ball. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> a complete space is not a countable union of nowhere dense sets; e.g. \(\mathbb{R}\) is uncountable.
+      <div class="ex"><div><p>A second proof of uncountability, with no diagonal in sight.</p></div></div>
+      <div class="proof"><div><p>If \(X = \bigcup_nA_n\) with each \(A_n\) nowhere dense, the sets \(U_n = X\setminus\overline{A_n}\) are dense and open, so \(\bigcap_nU_n\) is dense — in particular non-empty — yet it misses every \(A_n\), contradicting the union being all of \(X\). Applying this with \(A_n\) the singletons of a supposed enumeration of \(\mathbb{R}\) shows \(\mathbb{R}\) is uncountable. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Prove convergence via Cauchy</b> — when the limit is the object being constructed.
+      <div class="ex"><div><p>Solutions of equations, integrals and inverse functions are all built this way.</p></div></div></li>
+    <li><b>Work in a complete space on purpose</b> — choose \(C[a,b]\) with the sup norm, not the \(L^1\) one.
+      <div class="ex"><div><p>Completeness is a resource; pick the metric that has it.</p></div></div></li>
+    <li><b>Nested closed sets</b> — shrink to a point to prove existence.
+      <div class="ex"><div><p>Bisection, Baire, and Chapter 8's compactness proofs all run on this.</p></div></div></li>
+    <li><b>Baire category argument</b> — show a "generic" object exists by intersecting dense open conditions.
+      <div class="ex"><div><p>How one proves that most continuous functions are nowhere differentiable.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The payoff</span>
+  <h2 class="ltitle">Fixed Points</h2>
+  <p class="ldesc">One theorem that solves equations, inverts functions and integrates differential equations.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Fixed point</b> — \(x\) with \(f(x) = x\).
+      <div class="ex"><div><p>Stir a cup of tea and put it down: some molecule ends up exactly where it started.</p></div></div></li>
+    <li><b>Contraction constant</b> \(K &lt; 1\) with \(d(f(x),f(y))\le K\,d(x,y)\).
+      <div class="ex"><div><p>Every application shrinks all distances by at least the factor \(K\).</p></div></div></li>
+    <li><b>Iteration</b> \(x_{n+1} = f(x_n)\).
+      <div class="ex"><div><p>Press the same calculator button repeatedly and watch the display settle.</p></div></div></li>
+    <li><b>Rate of convergence</b> \(d(x_n,x^{*}) \le \frac{K^{n}}{1-K}d(x_0,x_1)\).
+      <div class="ex"><div><p>Geometric — each step buys a fixed fraction of the remaining error, and the bound is computable in advance.</p></div></div></li>
+    <li><b>Picard iteration</b> — solving \(y' = F(x,y)\) by repeatedly integrating.
+      <div class="ex"><div><p>Guess a solution, plug it in, integrate, repeat. The contraction theorem says the guesses converge.</p></div></div></li>
+    <li><b>Newton's method</b> — \(x_{n+1} = x_n - f(x_n)/f'(x_n)\).
+      <div class="ex"><div><p>Follow the tangent line to the axis and repeat. Near a simple root it is a contraction, and a very fast one.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Banach fixed point theorem:</b> a contraction on a non-empty complete metric space has exactly one fixed point, and iteration from anywhere converges to it.
+      <div class="ex"><div><p>Existence, uniqueness and an algorithm, from one hypothesis. Few theorems give so much.</p></div></div>
+      <div class="proof"><div><p>Let \(x_{n+1}=f(x_n)\). Then \(d(x_{n+1},x_n)\le K^{n}d(x_1,x_0)\), so for \(m &gt; n\) the triangle inequality gives \(d(x_n,x_m)\le\sum_{k=n}^{m-1}K^{k}d(x_1,x_0)\le\frac{K^{n}}{1-K}d(x_1,x_0)\to0\): the sequence is Cauchy, hence convergent to some \(x^{*}\) by completeness. A contraction is continuous, so \(f(x^{*}) = \lim f(x_n) = \lim x_{n+1} = x^{*}\). Uniqueness: two fixed points give \(d(x^{*},y^{*}) = d(f(x^{*}),f(y^{*}))\le K\,d(x^{*},y^{*})\), forcing the distance to be 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>A priori error bound:</b> \(d(x_n,x^{*})\le\frac{K^{n}}{1-K}d(x_0,x_1)\).
+      <div class="ex"><div><p>You can decide how many iterations you need before running a single one.</p></div></div>
+      <div class="proof"><div><p>Let \(m \to \infty\) in the estimate \(d(x_n,x_m)\le\frac{K^{n}}{1-K}d(x_0,x_1)\) obtained above, and use continuity of the metric (Layer 1). \(\blacksquare\)</p></div></div></li>
+    <li><b>Contraction on a closed ball:</b> if \(f\) contracts \(\overline{B}(x_0,r)\) into itself, the fixed point lies there — and \(d(x_0,f(x_0))\le(1-K)r\) suffices.
+      <div class="ex"><div><p>The practical form: you rarely contract the whole space, only a neighbourhood.</p></div></div>
+      <div class="proof"><div><p>The ball is closed in a complete space, hence complete (Layer 3). For invariance, if \(d(x,x_0)\le r\) then \(d(f(x),x_0)\le d(f(x),f(x_0))+d(f(x_0),x_0)\le Kr + (1-K)r = r\). Banach's theorem then applies to the ball. \(\blacksquare\)</p></div></div></li>
+    <li><b>Picard–Lindelöf theorem:</b> \(y' = F(x,y)\), \(y(x_0)=y_0\) has a unique local solution when \(F\) is continuous and Lipschitz in \(y\).
+      <div class="ex"><div><p>Why differential equations have predictable solutions at all. Drop the Lipschitz condition and uniqueness dies: \(y'=\sqrt{|y|}\) has many solutions through 0.</p></div></div>
+      <div class="proof"><div><p>The initial value problem is equivalent to the integral equation \(y(x) = y_0 + \int_{x_0}^{x}F(t,y(t))\,dt\). On \(C[x_0-h,x_0+h]\) with the sup metric — complete by Layer 3 — the right-hand side defines a map \(T\), and \(\|Ty_1 - Ty_2\|_\infty \le hL\|y_1-y_2\|_\infty\) using the Lipschitz constant \(L\) of \(F\). Choosing \(h &lt; 1/L\) makes \(T\) a contraction on a suitable closed ball, so it has a unique fixed point — the solution. \(\blacksquare\)</p></div></div></li>
+    <li><b>Newton's method converges quadratically</b> near a simple root.
+      <div class="ex"><div><p>The number of correct digits roughly doubles each step — but only once you are close enough.</p></div></div>
+      <div class="proof"><div><p>Let \(g(x) = x - f(x)/f'(x)\). Then \(g'(x) = f(x)f''(x)/f'(x)^{2}\), which vanishes at a simple root \(x^{*}\) where \(f(x^{*})=0, f'(x^{*})\ne0\). By Taylor (Chapter 3, Layer 6), \(|g(x)-x^{*}| \le C|x-x^{*}|^{2}\) near \(x^{*}\), which is both a contraction on a small enough ball and the stated quadratic rate. \(\blacksquare\)</p></div></div></li>
+    <li><b>Brouwer's fixed point theorem</b> (stated): a continuous self-map of a closed ball in \(\mathbb{R}^{n}\) has a fixed point.
+      <div class="ex"><div><p>No contraction needed — but also no uniqueness, and no algorithm. Lay a map of the country on the ground anywhere in it and one point sits exactly above its own image.</p></div></div>
+      <div class="proof"><div><p>Sketch: suppose \(f\) had no fixed point. Then \(r(x)\), the point where the ray from \(f(x)\) through \(x\) meets the sphere, is a continuous retraction of the ball onto its boundary. Such a retraction is impossible — it would make the identity map of the sphere null-homotopic, contradicting the non-vanishing of a topological invariant (degree, or the top homology of \(S^{n-1}\)). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Rewrite an equation as a fixed point problem</b> — turn \(g(x)=0\) into \(f(x)=x\).
+      <div class="ex"><div><p>Many rewritings exist; choose one whose \(f\) contracts.</p></div></div></li>
+    <li><b>Check the contraction constant</b> — usually a derivative bound.
+      <div class="ex"><div><p>\(|f'|\le K &lt; 1\) on an interval gives a contraction by the mean value theorem.</p></div></div></li>
+    <li><b>Contract a closed ball into itself</b> — the practical form of the hypothesis.
+      <div class="ex"><div><p>Verify invariance first; it is the step most often skipped and most often false.</p></div></div></li>
+    <li><b>Iterate and bound</b> — use the a priori estimate to choose the number of steps.
+      <div class="ex"><div><p>Numerical analysis in one line.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Verify the three metric axioms</td><td>L1</td><td>Confirm a distance is a metric</td></tr>
+    <tr><td>Draw the unit ball</td><td>L1</td><td>See what the metric calls "close"</td></tr>
+    <tr><td>Swap in an equivalent metric</td><td>L1</td><td>Simplify an estimate for free</td></tr>
+    <tr><td>Argue with sequences</td><td>L2</td><td>Prove closure, continuity or their failure</td></tr>
+    <tr><td>Preimage criterion</td><td>L2</td><td>Prove continuity with no estimates</td></tr>
+    <tr><td>Find a Lipschitz constant</td><td>L2</td><td>Get uniform continuity in one step</td></tr>
+    <tr><td>Use \(x \mapsto d(x,A)\)</td><td>L2</td><td>Turn a set into a continuous function</td></tr>
+    <tr><td>Cauchy criterion</td><td>L3</td><td>Prove convergence without naming the limit</td></tr>
+    <tr><td>Nested closed sets</td><td>L3</td><td>Produce a point by shrinking</td></tr>
+    <tr><td>Baire category</td><td>L3</td><td>Prove a "generic" object exists</td></tr>
+    <tr><td>Rewrite as \(f(x)=x\)</td><td>L4</td><td>Turn an equation into an iteration</td></tr>
+    <tr><td>Banach fixed point theorem</td><td>L4</td><td>Existence, uniqueness and an algorithm at once</td></tr>
+    <tr><td>Picard iteration</td><td>L4</td><td>Solve a differential equation</td></tr>
+    <tr><td>A priori error bound</td><td>L4</td><td>Choose the iteration count in advance</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Metric Spaces · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

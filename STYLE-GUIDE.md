@@ -1,7 +1,7 @@
 # Math Book — Instructions for Writing the Next Chapter
 
-You are Claude, continuing an interactive math book. Chapter 1 ("Set Theory & Logic",
-`chapter-01-set-theory-and-logic.html`) is the reference implementation. **Match it exactly.**
+You are Claude, continuing an interactive math book. Chapter 1 ("Logic",
+`chapter-01-logic.html`) is the reference implementation. **Match it exactly.**
 Read this whole file, then open Chapter 1's HTML and mirror its structure.
 
 ---
@@ -109,14 +109,18 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   in that page's entry — so `sync.js` carries it between browsers with no extra work,
   newest wins, and clearing it travels as a tombstone. Same orphan rule as the notes:
   **rewording a term or heading loses the mark pinned to it.**
-- The one thing a chapter must do is keep the four scripts in the head, in this order:
+- The one thing a chapter must do is keep the five scripts in the head, in this order:
 
 ```html
 <script defer src="script.js"></script>
 <script defer src="notes.js"></script>
 <script defer src="bookmark.js"></script>
 <script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
 ```
+
+`totop.js` must come **last**: it looks for the sync chip's fixed stack and, finding one,
+appends its ⇧ button to it so the two can never overlap.
 
 ## 7. Math Notation
 
@@ -138,7 +142,8 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
   - `script.js` — the click-to-reveal behavior. Link it with `defer`.
   - `notes.js` — the reader's note boxes (§5). Link it with `defer`, after `script.js`.
   - `bookmark.js` — the ⚑ where-I-left-off flag (§6). Link it with `defer`, after `notes.js`.
-  - `sync.js` — gist sync for both (§5, §6). Link it with `defer`, last.
+  - `sync.js` — gist sync for both (§5, §6). Link it with `defer`, after `bookmark.js`.
+  - `totop.js` — the floating ⇧ back-to-top button. Link it with `defer`, last.
   - Each chapter: `chapter-NN-topic-name.html`.
 - Page skeleton (copy from Chapter 1):
   1. `<header>`: `<h1>` chapter title + `.topnav` with an outlined back-button
@@ -196,6 +201,7 @@ Read this whole file, then open Chapter 1's HTML and mirror its structure.
 **Checklist before delivering:** every li has an example ✅ · exact `.ex` markup ✅ ·
 every theorem/proposition/lemma/corollary has a `.proof` box right after its `.ex` ✅ ·
 all math in KaTeX ✅ · chips match layer ids ✅ · toolbox table present ✅ ·
-external css/js linked, nothing inlined ✅ · `script.js`, `notes.js`, `bookmark.js` and
-`sync.js` all linked with `defer`, in that order ✅ · no hand-written note or flag
-markup ✅ · no token anywhere in the repo ✅
+external css/js linked, nothing inlined ✅ · `script.js`, `notes.js`, `bookmark.js`,
+`sync.js` and `totop.js` all linked with `defer`, in that order ✅ · back-button points at
+the previous chapter ✅ · no hand-written note or flag markup ✅ · no token anywhere in
+the repo ✅

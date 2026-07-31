@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5 — Determinants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Determinants</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-04-vector-spaces.html">&#10094; Chapter 4 — Vector Spaces</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>The First Volume</h2>
+    <p>Chapter 4 gave direction but no size. The determinant is the first quantity in this book that measures <b>how much space</b> something occupies.</p>
+    <p>It is the unique way to attach a number to \(n\) vectors so that the number scales linearly in each and dies when two coincide. That forces it to be signed volume.</p>
+    <p>Everything that follows — the Jacobian in Chapter 10, the change of variables formula in Chapter 12, the volume form in Chapter 16 — is this one idea.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\det(AB) = \det A \cdot \det B\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Permutations</a><a href="#L2">L2 Alternating Forms</a><a href="#L3">L3 The Determinant</a>
+  <a href="#L4">L4 Volume</a><a href="#L5">L5 Eigenvalues</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Shuffling</span>
+  <h2 class="ltitle">Permutations &amp; Sign</h2>
+  <p class="ldesc">The bookkeeping that produces the minus signs.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Permutation</b> \(\sigma\) — a bijection of \(\{1,\dots,n\}\) to itself.
+      <div class="ex"><div><p>A reseating of \(n\) guests: everyone gets a chair, no chair gets two.</p></div></div></li>
+    <li><b>Symmetric group</b> \(S_n\) — all \(n!\) permutations under composition.
+      <div class="ex"><div><p>3 guests, 6 seatings. 10 guests, 3.6 million.</p></div></div></li>
+    <li><b>Transposition</b> — a permutation swapping two elements and fixing the rest.
+      <div class="ex"><div><p>Two guests trade chairs; nobody else moves.</p></div></div></li>
+    <li><b>Cycle</b> \((a_1\,a_2\,\dots\,a_k)\) — each element passes to the next, the last back to the first.
+      <div class="ex"><div><p>Everyone shifts one seat to the left around a round table.</p></div></div></li>
+    <li><b>Inversion</b> — a pair \(i &lt; j\) with \(\sigma(i) &gt; \sigma(j)\).
+      <div class="ex"><div><p>A pair standing in the wrong order. Counting them measures how scrambled the shuffle is.</p></div></div></li>
+    <li><b>Sign</b> \(\operatorname{sgn}(\sigma) = (-1)^{\#\text{inversions}}\); even or odd.
+      <div class="ex"><div><p>The single number that turns a sum over shuffles into a determinant.</p></div></div></li>
+    <li><b>Alternating group</b> \(A_n\) — the even permutations.
+      <div class="ex"><div><p>Exactly half of them, for \(n \ge 2\). These are the ones that preserve orientation.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Cycle decomposition:</b> every permutation is a product of disjoint cycles, uniquely up to order.
+      <div class="ex"><div><p>Follow each guest to their new seat and you trace out closed loops. The loops are the permutation.</p></div></div>
+      <div class="proof"><div><p>Define \(x \sim y\) iff \(y = \sigma^{k}(x)\) for some \(k\); this is an equivalence relation (Chapter 2, Layer 4), so its classes partition \(\{1,\dots,n\}\). On each class the orbit \(x, \sigma(x),\sigma^2(x),\dots\) must return to \(x\) — the set is finite and \(\sigma\) is injective — giving a cycle. Distinct classes are disjoint, and the cycles commute, so the order is irrelevant. \(\blacksquare\)</p></div></div></li>
+    <li><b>Every permutation is a product of transpositions.</b>
+      <div class="ex"><div><p>Any seating can be reached by a sequence of two-person swaps.</p></div></div>
+      <div class="proof"><div><p>By cycle decomposition it suffices to handle a single cycle, and \((a_1\,a_2\,\dots\,a_k) = (a_1\,a_k)(a_1\,a_{k-1})\cdots(a_1\,a_2)\), which is checked by tracking where each \(a_i\) goes. \(\blacksquare\)</p></div></div></li>
+    <li><b>Sign is well defined:</b> the parity of the number of transpositions does not depend on the decomposition.
+      <div class="ex"><div><p>You may need more swaps than your neighbour, but never a different parity of swaps.</p></div></div>
+      <div class="proof"><div><p>Consider the polynomial \(\Delta = \prod_{i&lt;j}(x_i - x_j)\) and let \(\sigma\) act by permuting indices. A transposition swaps two variables and changes the sign of \(\Delta\) exactly once: the factor between them flips, and the remaining factors pair up with sign changes cancelling. So \(\sigma\cdot\Delta = \operatorname{sgn}(\sigma)\Delta\) with \(\operatorname{sgn}\) equal to \((-1)^{t}\) for any decomposition into \(t\) transpositions — and since \(\Delta \ne 0\), the parity of \(t\) is forced. \(\blacksquare\)</p></div></div></li>
+    <li><b>Sign is multiplicative:</b> \(\operatorname{sgn}(\sigma\tau) = \operatorname{sgn}(\sigma)\operatorname{sgn}(\tau)\), and \(\operatorname{sgn}(\sigma^{-1}) = \operatorname{sgn}(\sigma)\).
+      <div class="ex"><div><p>Two even shuffles make an even shuffle; even and odd make odd.</p></div></div>
+      <div class="proof"><div><p>Concatenating decompositions of \(\sigma\) and \(\tau\) into \(s\) and \(t\) transpositions gives one of \(\sigma\tau\) into \(s+t\), so \((-1)^{s+t} = (-1)^s(-1)^t\). Reversing a decomposition inverts the permutation with the same number of transpositions, giving the second claim. \(\blacksquare\)</p></div></div></li>
+    <li><b>A \(k\)-cycle has sign \((-1)^{k-1}\).</b>
+      <div class="ex"><div><p>A 3-cycle is even, a 2-cycle (a swap) is odd. Handy for computing signs at a glance.</p></div></div>
+      <div class="proof"><div><p>The decomposition above writes a \(k\)-cycle as \(k-1\) transpositions, so its sign is \((-1)^{k-1}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Decompose into cycles, then read the sign</b> — multiply \((-1)^{k-1}\) over the cycles.
+      <div class="ex"><div><p>Much faster than counting inversions by hand.</p></div></div></li>
+    <li><b>Count inversions</b> — for small \(n\), just list the out-of-order pairs.
+      <div class="ex"><div><p>\((2,3,1)\) has inversions \((1,3)\) and \((2,3)\): two, so even.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The right requirement</span>
+  <h2 class="ltitle">Multilinear Alternating Forms</h2>
+  <p class="ldesc">Three demands that leave exactly one function standing.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Multilinear form</b> — a function of \(k\) vectors, linear in each slot with the others held fixed.
+      <div class="ex"><div><p>Double one edge of a box and the volume doubles — whichever edge you pick.</p></div></div></li>
+    <li><b>Alternating</b> — the value is \(0\) whenever two arguments are equal.
+      <div class="ex"><div><p>A "box" with two identical edges is flat, so it holds nothing.</p></div></div></li>
+    <li><b>Antisymmetric</b> — swapping two arguments flips the sign.
+      <div class="ex"><div><p>Relabel two edges and the volume keeps its size but reverses its handedness.</p></div></div></li>
+    <li><b>Normalisation</b> — the value \(1\) on the standard basis.
+      <div class="ex"><div><p>The unit cube has volume 1. That single choice pins the whole function down.</p></div></div></li>
+    <li><b>Determinant function</b> \(D(v_1,\dots,v_n)\) — the multilinear alternating normalised form on \(\mathbb{R}^{n}\).
+      <div class="ex"><div><p>Feed it \(n\) arrows, get the signed volume of the box they span.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Alternating \(\Rightarrow\) antisymmetric</b> (and conversely, outside characteristic 2).
+      <div class="ex"><div><p>"Flat when repeated" already forces "sign flips on a swap".</p></div></div>
+      <div class="proof"><div><p>Expand \(D(\dots,u+v,\dots,u+v,\dots) = 0\) by multilinearity into \(D(u,u)+D(u,v)+D(v,u)+D(v,v)\) in the two relevant slots. The first and last vanish because the arguments repeat, leaving \(D(u,v) = -D(v,u)\). Conversely, antisymmetry gives \(D(u,u) = -D(u,u)\), so \(2D(u,u)=0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Adding a multiple of one argument to another does not change the value.</b>
+      <div class="ex"><div><p>Shearing a box — sliding the top face sideways — keeps its volume. Exactly why row operations are safe.</p></div></div>
+      <div class="proof"><div><p>\(D(\dots, v_i + cv_j, \dots, v_j,\dots) = D(\dots,v_i,\dots,v_j,\dots) + c\,D(\dots,v_j,\dots,v_j,\dots)\) by linearity in slot \(i\), and the second term vanishes because two arguments coincide. \(\blacksquare\)</p></div></div></li>
+    <li><b>Dependent arguments give zero.</b>
+      <div class="ex"><div><p>If the arrows don't reach into all \(n\) directions, the box is squashed flat.</p></div></div>
+      <div class="proof"><div><p>If \(v_k = \sum_{i\ne k}c_iv_i\), expand slot \(k\) by multilinearity into a sum of terms each having a repeated argument, hence each zero. \(\blacksquare\)</p></div></div></li>
+    <li><b>Uniqueness theorem:</b> there is exactly one multilinear alternating normalised form on \(\mathbb{R}^{n}\), namely \[D(v_1,\dots,v_n) = \sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)\prod_{i=1}^{n} a_{\sigma(i)\,i}.\]
+      <div class="ex"><div><p>Volume isn't chosen — it's forced. Demand those three properties and the formula writes itself.</p></div></div>
+      <div class="proof"><div><p>Write each \(v_i = \sum_j a_{ji}e_j\) and expand by multilinearity into \(n^{n}\) terms \( \bigl(\prod_i a_{j_i i}\bigr) D(e_{j_1},\dots,e_{j_n})\). Every term with a repeated index vanishes (alternating), so only the \(n!\) terms where \(j\) is a permutation \(\sigma\) survive. Antisymmetry sorts \(D(e_{\sigma(1)},\dots,e_{\sigma(n)})\) into \(\operatorname{sgn}(\sigma)D(e_1,\dots,e_n) = \operatorname{sgn}(\sigma)\) by normalisation. This both proves uniqueness and, since the resulting formula is checked to be multilinear and alternating, existence. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> every multilinear alternating form is a scalar multiple of \(\det\).
+      <div class="ex"><div><p>There is only one notion of signed volume up to the choice of unit.</p></div></div>
+      <div class="proof"><div><p>Given such a form \(F\), let \(c = F(e_1,\dots,e_n)\). The expansion above shows \(F = c\,D\), since every step used only multilinearity and the alternating property. \(\blacksquare\)</p></div></div></li>
+    <li><b>The space of alternating \(n\)-forms on \(\mathbb{R}^{n}\) is one-dimensional.</b>
+      <div class="ex"><div><p>One number's worth of freedom — the unit of volume. Chapter 16 calls this line the top exterior power.</p></div></div>
+      <div class="proof"><div><p>Immediate from the corollary: the map \(F \mapsto F(e_1,\dots,e_n)\) is a linear bijection onto \(\mathbb{R}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Verify the three properties</b> — to identify something as "the determinant, up to scale".
+      <div class="ex"><div><p>Multilinear, alternating, and you're done; the value on the unit cube fixes the constant.</p></div></div></li>
+    <li><b>Expand by multilinearity</b> — split each argument into basis pieces and discard repeats.
+      <div class="ex"><div><p>The proof engine of this whole chapter.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · The number</span>
+  <h2 class="ltitle">The Determinant</h2>
+  <p class="ldesc">Computing it, and the identities that make it useful.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Determinant of a matrix</b> \(\det A\) — the determinant form applied to its columns.
+      <div class="ex"><div><p>\(\det\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix} = ad-bc\). Everything else is that pattern in \(n\) dimensions.</p></div></div></li>
+    <li><b>Leibniz formula</b> — the \(n!\)-term sum over permutations.
+      <div class="ex"><div><p>Exact, and hopeless to compute: \(20!\) terms for a \(20\times20\) matrix. Use row reduction instead.</p></div></div></li>
+    <li><b>Minor</b> \(M_{ij}\) — the determinant of \(A\) with row \(i\) and column \(j\) deleted.
+      <div class="ex"><div><p>The volume of what's left after removing one direction and one constraint.</p></div></div></li>
+    <li><b>Cofactor</b> \(C_{ij} = (-1)^{i+j}M_{ij}\).
+      <div class="ex"><div><p>The minor with the checkerboard sign attached.</p></div></div></li>
+    <li><b>Adjugate</b> \(\operatorname{adj}A\) — the transpose of the cofactor matrix.
+      <div class="ex"><div><p>The matrix that multiplies \(A\) to give \(\det(A)\,I\) — an inverse waiting for a division.</p></div></div></li>
+    <li><b>Singular matrix</b> — one with \(\det = 0\).
+      <div class="ex"><div><p>It flattens space, so it cannot be undone. The seventh entry on Chapter 4's invertibility list.</p></div></div></li>
+    <li><b>Triangular matrix</b> — all entries below (or above) the diagonal are zero.
+      <div class="ex"><div><p>Its determinant is just the product of the diagonal — the reason elimination works.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Row operations:</b> swapping rows flips the sign, scaling a row by \(c\) scales \(\det\) by \(c\), adding a multiple of a row to another leaves \(\det\) unchanged.
+      <div class="ex"><div><p>The three rules that make determinants computable in \(n^{3}\) steps rather than \(n!\).</p></div></div>
+      <div class="proof"><div><p>These are exactly antisymmetry, linearity in one slot, and the shear-invariance of Layer 2, applied to rows — legitimate because \(\det A^{\mathsf T} = \det A\) (below), or by running the same argument with rows in place of columns. \(\blacksquare\)</p></div></div></li>
+    <li><b>Triangular determinant:</b> the product of the diagonal entries.
+      <div class="ex"><div><p>Row-reduce to triangular, multiply the diagonal, adjust for the swaps and scalings you performed.</p></div></div>
+      <div class="proof"><div><p>In the Leibniz sum, a term \(\prod_i a_{\sigma(i)i}\) is non-zero only if \(\sigma(i)\le i\) for all \(i\) (upper triangular case). Summing the inequalities forces \(\sigma(i)=i\) for every \(i\), leaving the single term \(a_{11}a_{22}\cdots a_{nn}\) with sign \(+1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\det A \ne 0\) iff \(A\) is invertible.</b>
+      <div class="ex"><div><p>Zero volume means the map collapsed a direction, and collapsing cannot be undone.</p></div></div>
+      <div class="proof"><div><p>If the columns are dependent then \(\det A = 0\) (Layer 2). If they are independent they form a basis, so \(A\) is invertible (Chapter 4, Layer 4), and row reduction takes \(A\) to \(I\) by operations that only multiply the determinant by non-zero factors, so \(\det A \neq 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Multiplicativity:</b> \(\det(AB) = \det A \cdot \det B\).
+      <div class="ex"><div><p>Do one map then the other and the volume factors multiply. Beautiful, and not at all obvious from the formula.</p></div></div>
+      <div class="proof"><div><p>Fix \(A\) and consider \(F(v_1,\dots,v_n) = \det(Av_1,\dots,Av_n)\). It is multilinear (each \(v_i \mapsto Av_i\) is linear) and alternating (equal arguments give equal images). By Layer 2's corollary \(F = c\det\) with \(c = F(e_1,\dots,e_n) = \det A\). Applying this to the columns of \(B\) gives \(\det(AB) = \det A \det B\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(\det(A^{-1}) = 1/\det A\), and similar matrices have equal determinants.
+      <div class="ex"><div><p>Undoing a map divides the volume back. So \(\det\) belongs to the map, not to the coordinates.</p></div></div>
+      <div class="proof"><div><p>\(\det A\det(A^{-1}) = \det(AA^{-1}) = \det I = 1\). Then \(\det(P^{-1}AP) = \det(P^{-1})\det A\det P = \det A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Transpose invariance:</b> \(\det A^{\mathsf T} = \det A\).
+      <div class="ex"><div><p>Rows and columns tell the same volume story — which is why row and column operations are equally valid.</p></div></div>
+      <div class="proof"><div><p>In the Leibniz sum for \(A^{\mathsf T}\), the term for \(\sigma\) is \(\operatorname{sgn}(\sigma)\prod_i a_{i\sigma(i)}\). Re-index by \(j = \sigma(i)\): the product becomes \(\prod_j a_{\sigma^{-1}(j)j}\), and \(\operatorname{sgn}(\sigma^{-1}) = \operatorname{sgn}(\sigma)\) (Layer 1). As \(\sigma\) runs over \(S_n\) so does \(\sigma^{-1}\), so the two sums agree term for term. \(\blacksquare\)</p></div></div></li>
+    <li><b>Laplace (cofactor) expansion:</b> \(\det A = \sum_{j} a_{ij}C_{ij}\) along any row, or any column.
+      <div class="ex"><div><p>Peel off one row and reduce to smaller determinants — the practical hand method for \(3\times3\).</p></div></div>
+      <div class="proof"><div><p>Split row \(i\) as \(\sum_j a_{ij}e_j^{\mathsf T}\) and use linearity in that row: \(\det A = \sum_j a_{ij}\det A^{(j)}\), where \(A^{(j)}\) has row \(i\) replaced by \(e_j^{\mathsf T}\). Moving that row and column into position by \(i-1\) and \(j-1\) adjacent swaps contributes \((-1)^{i+j}\), and the Leibniz sum of what remains is precisely the minor \(M_{ij}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Adjugate identity:</b> \(A\operatorname{adj}A = \operatorname{adj}(A)\,A = (\det A) I\).
+      <div class="ex"><div><p>A closed formula for the inverse: \(A^{-1} = \operatorname{adj}(A)/\det A\). Elegant, and far too slow to use.</p></div></div>
+      <div class="proof"><div><p>The \((i,i)\) entry of \(A\operatorname{adj}A\) is \(\sum_j a_{ij}C_{ij} = \det A\) by Laplace expansion. For \(i \ne k\), the \((i,k)\) entry is \(\sum_j a_{ij}C_{kj}\), which is the Laplace expansion of the matrix obtained by replacing row \(k\) with row \(i\) — a matrix with two equal rows, hence determinant 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cramer's rule:</b> for invertible \(A\), the solution of \(Ax=b\) has \(x_i = \det(A_i)/\det A\), where \(A_i\) is \(A\) with column \(i\) replaced by \(b\).
+      <div class="ex"><div><p>Each unknown is a ratio of volumes. Theoretically perfect, practically hopeless beyond \(3\times3\).</p></div></div>
+      <div class="proof"><div><p>Write \(b = \sum_j x_j a^{(j)}\) with \(a^{(j)}\) the columns. Then by multilinearity and the alternating property, \(\det(A_i) = \det(a^{(1)},\dots,b,\dots,a^{(n)}) = \sum_j x_j\det(a^{(1)},\dots,a^{(j)},\dots,a^{(n)})\), and every term with \(j\ne i\) has a repeated column, leaving \(x_i \det A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Block triangular determinant:</b> \(\det\begin{pmatrix}A&amp;B\\0&amp;D\end{pmatrix} = \det A\cdot\det D\).
+      <div class="ex"><div><p>If the map leaves a subspace alone, its volume factor splits into two independent factors.</p></div></div>
+      <div class="proof"><div><p>In the Leibniz sum, a non-zero term needs \(\sigma\) to map the last block of indices into itself (the lower-left block is zero), hence also the first block into itself. So \(\sigma\) splits as a pair \((\sigma_1,\sigma_2)\) with \(\operatorname{sgn}\sigma = \operatorname{sgn}\sigma_1\operatorname{sgn}\sigma_2\), and the sum factors into the two smaller Leibniz sums. \(\blacksquare\)</p></div></div></li>
+    <li><b>Vandermonde determinant:</b> \(\det(x_i^{\,j-1}) = \prod_{i&lt;j}(x_j-x_i)\).
+      <div class="ex"><div><p>Non-zero exactly when the \(x_i\) are distinct — which is why \(n\) points determine one polynomial of degree \(&lt; n\).</p></div></div>
+      <div class="proof"><div><p>As a polynomial in \(x_n\) the determinant has degree \(n-1\) and vanishes at \(x_1,\dots,x_{n-1}\) (two equal rows), so it equals \(c\prod_{i&lt;n}(x_n-x_i)\). Comparing the coefficient of \(x_n^{n-1}\) identifies \(c\) as the Vandermonde determinant of the first \(n-1\) variables; induction closes the argument. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Row-reduce to triangular</b> — the only sane way to compute a determinant.
+      <div class="ex"><div><p>Track the swaps (sign) and scalings (factors) as you go.</p></div></div></li>
+    <li><b>Cofactor expansion along a sparse row</b> — pick the row or column with the most zeros.
+      <div class="ex"><div><p>One well-chosen row can turn a \(4\times4\) into a single \(3\times3\).</p></div></div></li>
+    <li><b>Exploit block structure</b> — split into blocks whenever a corner is zero.
+      <div class="ex"><div><p>Common for Jacobians of maps that don't mix all the variables.</p></div></div></li>
+    <li><b>Use \(\det \ne 0\) as an invertibility test</b>.
+      <div class="ex"><div><p>One number answers solvability, independence and invertibility at once.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · What it means</span>
+  <h2 class="ltitle">Determinant as Volume</h2>
+  <p class="ldesc">The geometric reading that the rest of the book depends on.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Parallelepiped</b> \(P(v_1,\dots,v_n) = \{\sum t_iv_i : t_i \in [0,1]\}\).
+      <div class="ex"><div><p>The box spanned by \(n\) arrows — a parallelogram in the plane, a slanted brick in space.</p></div></div></li>
+    <li><b>Signed volume</b> — \(\det\) of the matrix whose columns are the edges.
+      <div class="ex"><div><p>Size, plus a sign recording whether the edges are ordered right-handed or left-handed.</p></div></div></li>
+    <li><b>Orientation</b> — the sign of the determinant of a basis, relative to the standard one.
+      <div class="ex"><div><p>Right hand vs left hand. Chapters 15 and 16 need this to integrate over surfaces.</p></div></div></li>
+    <li><b>Volume scaling factor</b> \(|\det T|\).
+      <div class="ex"><div><p>Every region's volume is multiplied by this number, wherever it sits and whatever its shape.</p></div></div></li>
+    <li><b>Orientation-preserving map</b> — \(\det &gt; 0\).
+      <div class="ex"><div><p>Rotations preserve; mirror reflections reverse. You cannot rotate a left glove into a right one.</p></div></div></li>
+    <li><b>Special linear group</b> \(SL_n(\mathbb{R})\) — the maps with \(\det = 1\).
+      <div class="ex"><div><p>Shears and volume-preserving distortions: they can smear a shape beyond recognition without changing its volume.</p></div></div></li>
+    <li><b>Cross product</b> in \(\mathbb{R}^{3}\) — \(u\times v\), the vector whose length is the parallelogram's area.
+      <div class="ex"><div><p>A determinant in disguise: \(u \times v\) is the formal expansion of a \(3\times3\) determinant with \(e_1,e_2,e_3\) in the top row.</p></div></div></li>
+    <li><b>Gram determinant</b> \(\det(G)\) with \(G_{ij} = v_i\cdot v_j\).
+      <div class="ex"><div><p>How to measure a \(k\)-dimensional box sitting inside \(\mathbb{R}^{n}\), where the matrix isn't square. Chapter 14 lives on this.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Volume of a parallelepiped:</b> \(\operatorname{vol}\,P(v_1,\dots,v_n) = |\det(v_1\,\cdots\,v_n)|\).
+      <div class="ex"><div><p>The parallelogram on \((a,b)\) and \((c,d)\) has area \(|ad-bc|\) — the school formula, derived.</p></div></div>
+      <div class="proof"><div><p>Volume is translation-invariant, scales linearly in each edge, and vanishes when two edges coincide (the box is flat) — so as a function of the edges it is multilinear and alternating up to sign, hence a multiple of \(\det\) by Layer 2. Normalising with the unit cube, whose volume is 1, fixes the multiple, and the absolute value removes the sign. (Chapter 11 supplies the rigorous notion of volume this argument names.) \(\blacksquare\)</p></div></div></li>
+    <li><b>Uniform scaling:</b> for measurable \(E\), \(\operatorname{vol}(T(E)) = |\det T|\operatorname{vol}(E)\).
+      <div class="ex"><div><p>Not just boxes — every shape. This is the seed of the change of variables formula in Chapter 12.</p></div></div>
+      <div class="proof"><div><p>Sketch: the identity holds for boxes by the previous theorem. Since \(T\) is linear, the image of a grid of small cubes is a grid of congruent parallelepipeds, so the identity holds for finite unions of cubes; approximating an arbitrary measurable set from outside and inside by such unions (Chapter 11's regularity) transfers it in the limit. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\det(cA) = c^{n}\det A\).</b>
+      <div class="ex"><div><p>Double every edge of a 3-D box and the volume grows eightfold. Dimension appears as an exponent — a theme of Chapters 13 and 18.</p></div></div>
+      <div class="proof"><div><p>Scaling by \(c\) scales each of the \(n\) columns by \(c\); multilinearity pulls one factor of \(c\) out of each. \(\blacksquare\)</p></div></div></li>
+    <li><b>Orientation classes:</b> the ordered bases of \(\mathbb{R}^{n}\) fall into exactly two classes.
+      <div class="ex"><div><p>Right-handed and left-handed. There is no continuous path between them.</p></div></div>
+      <div class="proof"><div><p>Two bases are related by an invertible change matrix, whose determinant is non-zero; declare them equivalent when it is positive. This is an equivalence relation (determinants multiply), with exactly two classes since swapping two basis vectors changes the sign. Continuity of \(\det\) forbids a path from a positive to a negative value without passing through a singular — non-basis — matrix. \(\blacksquare\)</p></div></div></li>
+    <li><b>Cross product identities:</b> \(u\times v\) is orthogonal to both, with \(|u\times v| = |u||v|\sin\theta\), and \(u\cdot(v\times w) = \det(u\,v\,w)\).
+      <div class="ex"><div><p>The scalar triple product <em>is</em> the volume of the box on the three vectors.</p></div></div>
+      <div class="proof"><div><p>Define \(u\times v\) by \(\langle u\times v, w\rangle = \det(w\,u\,v)\) for all \(w\) — legitimate since the right side is a linear functional of \(w\) (Chapter 4, Layer 6). Taking \(w = u\) or \(v\) gives a determinant with a repeated column, hence 0: orthogonality. The length formula follows from \(|u\times v|^{2} = \det\) of the \(2\times2\) Gram matrix \(= |u|^2|v|^2 - (u\cdot v)^2\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gram determinant formula:</b> the \(k\)-volume of \(P(v_1,\dots,v_k)\) in \(\mathbb{R}^{n}\) is \(\sqrt{\det(A^{\mathsf T}A)}\), where \(A\) has the \(v_i\) as columns.
+      <div class="ex"><div><p>A 2-D parallelogram floating in 5-D space still has an area, and this computes it.</p></div></div>
+      <div class="proof"><div><p>Apply Gram–Schmidt (Chapter 6) to get \(A = QR\) with \(Q\) having orthonormal columns and \(R\) upper triangular; then \(A^{\mathsf T}A = R^{\mathsf T}R\), so \(\sqrt{\det(A^{\mathsf T}A)} = |\det R|\). Since \(Q\) is an isometry onto the span, the \(k\)-volume equals that of the box on the columns of \(R\) inside \(\mathbb{R}^{k}\), which is \(|\det R|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(\det(A^{\mathsf T}A) \ge 0\), with equality iff the columns are dependent.
+      <div class="ex"><div><p>Volumes are never negative, and vanish exactly when the box is flat.</p></div></div>
+      <div class="proof"><div><p>\(\det(A^{\mathsf T}A) = (\text{$k$-volume})^{2}\ge0\) by the previous theorem. It is zero exactly when the parallelepiped is degenerate, i.e. when the columns are linearly dependent (Layer 2). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Read \(|\det|\) as a volume factor</b> — the standard way to think about any linear map.
+      <div class="ex"><div><p>\(\det = 3\) means "triples every volume"; \(\det = -1\) means "keeps volume, flips handedness".</p></div></div></li>
+    <li><b>Use the Gram determinant for non-square problems</b>.
+      <div class="ex"><div><p>Whenever \(k &lt; n\): area of a triangle in space, surface area in Chapter 14.</p></div></div></li>
+    <li><b>Track orientation by the sign</b>.
+      <div class="ex"><div><p>Chapters 15–16 need a consistent choice of sign to integrate anything over a surface.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · Preferred directions</span>
+  <h2 class="ltitle">Eigenvalues &amp; Diagonalisation</h2>
+  <p class="ldesc">The directions a map merely stretches — and the determinant that finds them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Eigenvector &amp; eigenvalue</b> — \(Av = \lambda v\) with \(v \ne \mathbf{0}\).
+      <div class="ex"><div><p>A direction the map doesn't turn, only stretches. The axis of a rotation is one.</p></div></div></li>
+    <li><b>Characteristic polynomial</b> \(p(\lambda) = \det(A - \lambda I)\).
+      <div class="ex"><div><p>Its roots are the eigenvalues. This is the determinant's most famous job.</p></div></div></li>
+    <li><b>Eigenspace</b> \(E_\lambda = \ker(A-\lambda I)\).
+      <div class="ex"><div><p>All vectors stretched by the same factor, together with \(\mathbf{0}\).</p></div></div></li>
+    <li><b>Algebraic &amp; geometric multiplicity</b> — order as a root; dimension of the eigenspace.
+      <div class="ex"><div><p>Geometric never exceeds algebraic. When they differ, the matrix cannot be diagonalised.</p></div></div></li>
+    <li><b>Diagonalisable</b> — similar to a diagonal matrix.
+      <div class="ex"><div><p>Choose eigenvector axes and the map becomes "stretch each axis by its own factor".</p></div></div></li>
+    <li><b>Spectrum</b> — the set of eigenvalues.
+      <div class="ex"><div><p>The map's fingerprint. Chapter 6 shows symmetric matrices have an especially clean one.</p></div></div></li>
+    <li><b>Nilpotent matrix</b> — \(N^{k} = 0\) for some \(k\).
+      <div class="ex"><div><p>Every eigenvalue is 0, yet the matrix isn't. The standard obstruction to diagonalising.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\lambda\) is an eigenvalue iff \(\det(A-\lambda I) = 0\).</b>
+      <div class="ex"><div><p>Look for the stretch factors that make the map collapse a direction.</p></div></div>
+      <div class="proof"><div><p>\(Av = \lambda v\) for some \(v \ne \mathbf 0\) means \(\ker(A-\lambda I) \ne \{\mathbf 0\}\), i.e. \(A - \lambda I\) is not invertible, i.e. its determinant is 0 (Layer 3). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(p(\lambda)\) has degree \(n\), with \(\det A = \prod\lambda_i\) and \(\operatorname{tr}A = \sum\lambda_i\) (counted with multiplicity, over \(\mathbb{C}\)).</b>
+      <div class="ex"><div><p>The determinant is the product of the stretch factors — of course it is: volume multiplies.</p></div></div>
+      <div class="proof"><div><p>The Leibniz expansion of \(\det(A-\lambda I)\) has leading term \((-\lambda)^{n}\) from the diagonal product, so the degree is \(n\). Setting \(\lambda = 0\) gives \(p(0) = \det A\), which equals the product of roots up to the sign absorbed by the leading coefficient. Comparing the coefficient of \(\lambda^{n-1}\), which arises only from the diagonal product, identifies the sum of the roots as \(\operatorname{tr}A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Eigenvectors for distinct eigenvalues are independent.</b>
+      <div class="ex"><div><p>Different stretch factors can't secretly be the same direction.</p></div></div>
+      <div class="proof"><div><p>Take a shortest non-trivial dependency \(\sum_{i=1}^{k}c_iv_i = \mathbf 0\) among eigenvectors with distinct \(\lambda_i\). Apply \(A - \lambda_k I\): the last term dies and the rest become \(c_i(\lambda_i - \lambda_k)v_i\), a shorter non-trivial dependency (the factors are non-zero) — contradiction. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> \(n\) distinct eigenvalues \(\Rightarrow\) diagonalisable.
+      <div class="ex"><div><p>The generic case. Repeated eigenvalues are where the trouble hides.</p></div></div>
+      <div class="proof"><div><p>The \(n\) corresponding eigenvectors are independent, hence a basis (Chapter 4, Layer 2). In that basis the matrix acts by scaling each coordinate, so it is diagonal. \(\blacksquare\)</p></div></div></li>
+    <li><b>Diagonalisable iff eigenvectors span:</b> equivalently, every geometric multiplicity equals its algebraic multiplicity.
+      <div class="ex"><div><p>A shear \(\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}\) has one eigenvalue, one eigenvector direction, and cannot be diagonalised.</p></div></div>
+      <div class="proof"><div><p>If a basis of eigenvectors exists, the matrix in that basis is diagonal, and each eigenspace has dimension equal to the number of times its eigenvalue appears — its algebraic multiplicity. Conversely, if the multiplicities all agree, the eigenspaces are independent (previous theorem) and their dimensions sum to \(n\), so together they span. \(\blacksquare\)</p></div></div></li>
+    <li><b>Similar matrices have the same characteristic polynomial</b>, hence the same eigenvalues, trace and determinant.
+      <div class="ex"><div><p>These numbers describe the map itself, not your choice of axes.</p></div></div>
+      <div class="proof"><div><p>\(\det(P^{-1}AP - \lambda I) = \det(P^{-1}(A-\lambda I)P) = \det(P)^{-1}\det(A-\lambda I)\det(P) = \det(A-\lambda I)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Cayley–Hamilton:</b> every matrix satisfies its own characteristic polynomial, \(p(A) = 0\).
+      <div class="ex"><div><p>A matrix obeys the very equation built to find its eigenvalues. (Substituting \(\lambda = A\) into \(\det(A-\lambda I)\) is <em>not</em> a proof.)</p></div></div>
+      <div class="proof"><div><p>Apply the adjugate identity to \(B(\lambda) = A - \lambda I\): \(\operatorname{adj}(B)\,B = p(\lambda)I\). Both sides are matrices whose entries are polynomials in \(\lambda\); write \(\operatorname{adj}(B) = \sum_k \lambda^{k}C_k\) with constant matrices \(C_k\), expand, and compare coefficients of each power of \(\lambda\). Multiplying the \(k\)-th relation by \(A^{k}\) and summing telescopes the left side to 0 and leaves \(p(A)\) on the right. \(\blacksquare\)</p></div></div></li>
+    <li><b>Triangularisation:</b> over \(\mathbb{C}\), every matrix is similar to an upper triangular one.
+      <div class="ex"><div><p>You can't always diagonalise, but you can always get the eigenvalues onto the diagonal.</p></div></div>
+      <div class="proof"><div><p>Induct on \(n\). The characteristic polynomial has a root \(\lambda_1\) over \(\mathbb{C}\) (fundamental theorem of algebra), giving an eigenvector \(v_1\). Extend to a basis; in it the matrix has first column \((\lambda_1,0,\dots,0)^{\mathsf T}\), so it is block triangular with an \((n-1)\times(n-1)\) block, which the induction hypothesis triangularises. \(\blacksquare\)</p></div></div></li>
+    <li><b>Determinant of a diagonalisable map is the product of its stretch factors</b> — and \(|\det|\) is the volume factor.
+      <div class="ex"><div><p>Stretch by 2 along one axis and 3 along another: areas multiply by 6.</p></div></div>
+      <div class="proof"><div><p>If \(A = PDP^{-1}\) with \(D = \operatorname{diag}(\lambda_i)\), then \(\det A = \det D = \prod\lambda_i\) by similarity invariance and the triangular formula. Layer 4 identifies \(|\det A|\) as the volume scaling factor. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Solve \(\det(A-\lambda I) = 0\)</b>, then find each \(\ker(A-\lambda I)\).
+      <div class="ex"><div><p>Eigenvalues first, eigenvectors second. Always in that order.</p></div></div></li>
+    <li><b>Diagonalise to take powers</b> — \(A^{k} = PD^{k}P^{-1}\).
+      <div class="ex"><div><p>Raising a diagonal matrix to a power is done entry by entry; everything hard is in the change of basis.</p></div></div></li>
+    <li><b>Check trace and determinant against the eigenvalues</b> — a free error check.
+      <div class="ex"><div><p>They must sum and multiply correctly, or something went wrong.</p></div></div></li>
+    <li><b>Cayley–Hamilton to reduce powers</b> — express \(A^{n}\) in terms of lower powers.
+      <div class="ex"><div><p>Turns an infinite family of matrices into an \(n\)-dimensional one.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Cycle decomposition</td><td>L1</td><td>Read the sign of a permutation quickly</td></tr>
+    <tr><td>Count inversions</td><td>L1</td><td>Find a sign by hand for small \(n\)</td></tr>
+    <tr><td>Verify multilinear + alternating</td><td>L2</td><td>Identify something as the determinant up to scale</td></tr>
+    <tr><td>Expand by multilinearity</td><td>L2</td><td>Prove a determinant identity from scratch</td></tr>
+    <tr><td>Row-reduce to triangular</td><td>L3</td><td>Compute a determinant efficiently</td></tr>
+    <tr><td>Cofactor expansion on a sparse row</td><td>L3</td><td>Compute a small determinant by hand</td></tr>
+    <tr><td>Block structure</td><td>L3</td><td>Split a determinant into factors</td></tr>
+    <tr><td>\(\det \ne 0\) test</td><td>L3</td><td>Decide invertibility and independence</td></tr>
+    <tr><td>Cramer's rule</td><td>L3</td><td>Write a solution as a ratio of volumes</td></tr>
+    <tr><td>Read \(|\det|\) as a volume factor</td><td>L4</td><td>Predict how a map rescales any region</td></tr>
+    <tr><td>Gram determinant \(\sqrt{\det(A^{\mathsf T}A)}\)</td><td>L4</td><td>Measure a \(k\)-dimensional box inside \(\mathbb{R}^n\)</td></tr>
+    <tr><td>Track the sign</td><td>L4</td><td>Keep orientation consistent</td></tr>
+    <tr><td>Characteristic polynomial</td><td>L5</td><td>Find eigenvalues</td></tr>
+    <tr><td>Diagonalise</td><td>L5</td><td>Take powers, solve recurrences, decouple systems</td></tr>
+    <tr><td>Cayley–Hamilton</td><td>L5</td><td>Reduce high powers of a matrix</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Determinants · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 11 — Measure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Measure</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-10-differentiation-in-rn.html">&#10094; Chapter 10 — Differentiation in \(\mathbb{R}^{n}\)</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>What Volume Actually Is</h2>
+    <p>A box has volume "length \(\times\) width \(\times\) height". This chapter asks the real question: what is the volume of an <b>arbitrary</b> set in \(\mathbb{R}^{n}\)?</p>
+    <p>The answer is Lebesgue measure. It agrees with the obvious answer on boxes, adds up over countably many disjoint pieces, and doesn't move when you move the set.</p>
+    <p>The surprise is that no such notion can measure <em>every</em> set — and the Axiom of Choice is why.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\lambda\bigl(\bigsqcup_k A_k\bigr) = \sum_k \lambda(A_k)\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Boxes</a><a href="#L2">L2 \(\sigma\)-Algebras</a><a href="#L3">L3 Lebesgue Measure</a>
+  <a href="#L4">L4 The Unmeasurable</a><a href="#L5">L5 Measurable Functions</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · The obvious start</span>
+  <h2 class="ltitle">Boxes &amp; Elementary Volume</h2>
+  <p class="ldesc">Where the naive approach gets to, and where it stops.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Box</b> \(Q = I_1\times\cdots\times I_n\) — a product of bounded intervals.
+      <div class="ex"><div><p>A brick with faces parallel to the axes. The only shape whose volume is not in question.</p></div></div></li>
+    <li><b>Volume of a box</b> \(|Q| = \prod_i(b_i-a_i)\).
+      <div class="ex"><div><p>Length \(\times\) width \(\times\) height. Everything else in this chapter is built to extend this one formula.</p></div></div></li>
+    <li><b>Elementary set</b> — a finite union of boxes.
+      <div class="ex"><div><p>Anything you can build out of bricks. Its volume is unambiguous once you cut the bricks apart.</p></div></div></li>
+    <li><b>Jordan inner &amp; outer content</b> — best volume from boxes inside, and from finitely many boxes outside.
+      <div class="ex"><div><p>Fill the shape with bricks; then cover it with bricks. If the two totals meet, you have a volume.</p></div></div></li>
+    <li><b>Jordan measurable</b> — inner and outer content agree.
+      <div class="ex"><div><p>The rigorous version of "the area under a Riemann-integrable function".</p></div></div></li>
+    <li><b>Null set (measure zero)</b> — coverable by countably many boxes of arbitrarily small total volume.
+      <div class="ex"><div><p>A line in the plane, a point, all of \(\mathbb{Q}\). "Countably" is what makes this notion powerful.</p></div></div></li>
+    <li><b>Almost everywhere (a.e.)</b> — except on a null set.
+      <div class="ex"><div><p>Statements in the rest of this book hold a.e. rather than everywhere — and nothing is lost.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Volume of a box is well defined:</b> partitioning a box into sub-boxes adds up correctly.
+      <div class="ex"><div><p>Cut a brick and the pieces still total the brick. Not quite as trivial as it sounds.</p></div></div>
+      <div class="proof"><div><p>For a grid partition, splitting each side interval \(I_i\) into pieces of lengths \(\ell_{i,k}\) gives \(\sum_{k_1,\dots,k_n}\prod_i\ell_{i,k_i} = \prod_i\sum_{k}\ell_{i,k} = \prod_i|I_i|\) by expanding the product. Any partition into boxes can be refined to a common grid, and both sides of the identity are unchanged by refinement. \(\blacksquare\)</p></div></div></li>
+    <li><b>Elementary sets form an algebra:</b> closed under finite unions, intersections and differences.
+      <div class="ex"><div><p>Brickwork stays brickwork under the finite operations — but not under countable ones.</p></div></div>
+      <div class="proof"><div><p>An intersection of two boxes is a box. A difference of boxes is a finite union of boxes (cut along the faces). Unions are by definition. Finite combinations of these operations therefore stay inside the class. \(\blacksquare\)</p></div></div></li>
+    <li><b>Countable unions of null sets are null.</b>
+      <div class="ex"><div><p>Countably many negligible things stay negligible. This is exactly what Jordan content cannot deliver.</p></div></div>
+      <div class="proof"><div><p>Cover the \(k\)-th null set by boxes of total volume \(&lt; \varepsilon2^{-k}\). The combined family is countable and has total volume \(&lt; \sum_k\varepsilon2^{-k} = \varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathbb{Q}^{n}\) is null;</b> so is every countable set, and every hyperplane.
+      <div class="ex"><div><p>The rationals fill the line densely and still have length zero. Density and size are unrelated.</p></div></div>
+      <div class="proof"><div><p>A single point is contained in a box of volume \(&lt;\varepsilon\), so it is null, and a countable union of null sets is null. A hyperplane \(\{x_i = c\}\) meets each bounded region in a slab of thickness \(\delta\) and volume \(\to0\); exhaust \(\mathbb{R}^{n}\) by countably many bounded regions. \(\blacksquare\)</p></div></div></li>
+    <li><b>Jordan content fails on \(\mathbb{Q}\cap[0,1]\):</b> inner content 0, outer content 1.
+      <div class="ex"><div><p>A countable set with "length 1" by the finite theory, and length 0 by the countable one. The finite theory has to go.</p></div></div>
+      <div class="proof"><div><p>The set contains no interval, so any finite union of boxes inside it is degenerate and the inner content is 0. Any finite union of closed boxes covering it covers a dense subset of \([0,1]\), so by connectedness it covers \([0,1]\), forcing outer content 1. \(\blacksquare\)</p></div></div></li>
+    <li><b>The Cantor set is uncountable and null.</b>
+      <div class="ex"><div><p>"Null" is far weaker than "countable" — the two notions of small come apart completely.</p></div></div>
+      <div class="proof"><div><p>At stage \(k\) the set is covered by \(2^{k}\) intervals of length \(3^{-k}\), total \((2/3)^{k}\to0\), so it is null. Uncountability was shown in Chapter 8, Layer 3. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Approximate from outside by boxes</b> — the definition of outer measure to come.
+      <div class="ex"><div><p>Everything in Layer 3 is this idea, with "finitely many" replaced by "countably many".</p></div></div></li>
+    <li><b>Use \(\varepsilon2^{-k}\)</b> — split a tolerance across a countable family.
+      <div class="ex"><div><p>The single most-used trick in measure theory.</p></div></div></li>
+    <li><b>Ignore null sets</b> — prove statements almost everywhere.
+      <div class="ex"><div><p>It costs nothing and removes almost all the pathologies.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The right domain</span>
+  <h2 class="ltitle">\(\sigma\)-Algebras &amp; Measures</h2>
+  <p class="ldesc">Which collections of sets can carry a volume, and what a volume must do.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>\(\sigma\)-algebra</b> \(\mathcal{A}\) — contains \(\varnothing\), closed under complement and <em>countable</em> union.
+      <div class="ex"><div><p>The list of sets you are allowed to measure. Countable operations must not take you off the list.</p></div></div></li>
+    <li><b>Generated \(\sigma\)-algebra</b> \(\sigma(\mathcal{E})\) — the smallest one containing \(\mathcal E\).
+      <div class="ex"><div><p>Start from the sets you care about and close up under the operations.</p></div></div></li>
+    <li><b>Borel \(\sigma\)-algebra</b> \(\mathcal{B}\) — generated by the open sets.
+      <div class="ex"><div><p>Every set you can describe by countably many unions, intersections and complements of open sets. That is a very large class.</p></div></div></li>
+    <li><b>Measure</b> \(\mu\) — \(\mu(\varnothing)=0\), values in \([0,\infty]\), countably additive on disjoint sets.
+      <div class="ex"><div><p>Cut a region into countably many disjoint pieces and the volumes add. Just that.</p></div></div></li>
+    <li><b>Measure space</b> \((X,\mathcal A,\mu)\).
+      <div class="ex"><div><p>A set, a list of measurable subsets, and the volume function.</p></div></div></li>
+    <li><b>Finite / \(\sigma\)-finite measure</b>.
+      <div class="ex"><div><p>\(\mathbb{R}^{n}\) has infinite volume but is a countable union of boxes — \(\sigma\)-finite, which is all most theorems need.</p></div></div></li>
+    <li><b>Complete measure</b> — every subset of a null set is measurable.
+      <div class="ex"><div><p>Lebesgue measure is complete; the Borel measure is not, which is the technical reason Lebesgue's \(\sigma\)-algebra is bigger.</p></div></div></li>
+    <li><b>Counting measure &amp; Dirac measure</b>.
+      <div class="ex"><div><p>"How many points"; "is the point here". Both are measures — the theory is not only about volume.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\sigma\)-algebras are closed under countable intersections and differences.</b>
+      <div class="ex"><div><p>The two axioms already give all the countable set operations.</p></div></div>
+      <div class="proof"><div><p>\(\bigcap_kA_k = \bigl(\bigcup_kA_k^{c}\bigr)^{c}\) by De Morgan (Chapter 2, Layer 3), and \(A\setminus B = A\cap B^{c}\). Both stay in \(\mathcal A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Arbitrary intersections of \(\sigma\)-algebras are \(\sigma\)-algebras</b>, so \(\sigma(\mathcal E)\) exists.
+      <div class="ex"><div><p>The "smallest containing" construction, exactly as for spans and closures.</p></div></div>
+      <div class="proof"><div><p>If each \(\mathcal A_i\) contains \(\varnothing\) and is closed under complements and countable unions, so is \(\bigcap_i\mathcal A_i\), since each operation can be checked inside every \(\mathcal A_i\). The family of \(\sigma\)-algebras containing \(\mathcal E\) is non-empty (it contains \(\mathcal P(X)\)), so their intersection is the smallest. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal B(\mathbb{R}^{n})\) is generated by the open boxes</b>, indeed by the boxes with rational corners.
+      <div class="ex"><div><p>Countably many generators suffice for the entire Borel class.</p></div></div>
+      <div class="proof"><div><p>Every open set is a countable union of rational boxes (Chapter 8, Layer 1), so it lies in the \(\sigma\)-algebra generated by them; hence \(\mathcal B\) is contained in that one. Conversely boxes are open (or countable intersections of open sets), so the containment is an equality. \(\blacksquare\)</p></div></div></li>
+    <li><b>Monotonicity and countable subadditivity:</b> \(A\subseteq B \Rightarrow \mu(A)\le\mu(B)\), and \(\mu(\bigcup_kA_k) \le \sum_k\mu(A_k)\).
+      <div class="ex"><div><p>A part is never bigger than the whole, and overlaps only shrink the total.</p></div></div>
+      <div class="proof"><div><p>\(\mu(B) = \mu(A) + \mu(B\setminus A) \ge \mu(A)\). For subadditivity, disjointify: \(B_k = A_k\setminus\bigcup_{j&lt;k}A_j\) are disjoint with the same union and \(B_k \subseteq A_k\), so \(\mu(\bigcup A_k) = \sum_k\mu(B_k) \le \sum_k\mu(A_k)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuity from below:</b> \(A_k\uparrow A\) implies \(\mu(A_k)\to\mu(A)\).
+      <div class="ex"><div><p>Fill a region with a growing sequence of pieces and the volumes climb to the total.</p></div></div>
+      <div class="proof"><div><p>Set \(B_1 = A_1\) and \(B_k = A_k\setminus A_{k-1}\); these are disjoint with \(\bigcup_{j\le k}B_j = A_k\) and \(\bigcup_jB_j = A\). Countable additivity gives \(\mu(A) = \sum_j\mu(B_j) = \lim_k\sum_{j\le k}\mu(B_j) = \lim_k\mu(A_k)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuity from above:</b> \(A_k\downarrow A\) with \(\mu(A_1)&lt;\infty\) implies \(\mu(A_k)\to\mu(A)\) — the finiteness is necessary.
+      <div class="ex"><div><p>\([k,\infty)\) shrinks to \(\varnothing\), yet every one has infinite measure. Drop the hypothesis and the theorem is false.</p></div></div>
+      <div class="proof"><div><p>Apply continuity from below to \(A_1\setminus A_k \uparrow A_1\setminus A\): \(\mu(A_1)-\mu(A_k)\to\mu(A_1)-\mu(A)\), and finiteness of \(\mu(A_1)\) lets us cancel it. \(\blacksquare\)</p></div></div></li>
+    <li><b>Borel–Cantelli:</b> if \(\sum_k\mu(A_k)&lt;\infty\), then almost every point lies in only finitely many \(A_k\).
+      <div class="ex"><div><p>If the total size of the warnings is finite, almost nothing gets warned infinitely often.</p></div></div>
+      <div class="proof"><div><p>Let \(A = \bigcap_N\bigcup_{k\ge N}A_k\) be the set of points in infinitely many \(A_k\). For every \(N\), \(\mu(A) \le \sum_{k\ge N}\mu(A_k)\), which tends to 0 as \(N\to\infty\) because the series converges. So \(\mu(A)=0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Completion exists:</b> every measure space has a smallest complete extension.
+      <div class="ex"><div><p>Add all the subsets of null sets and declare them null. Lebesgue measure is the completion of Borel measure.</p></div></div>
+      <div class="proof"><div><p>Let \(\overline{\mathcal A} = \{A\cup Z : A\in\mathcal A,\ Z \subseteq N \text{ for some null } N\in\mathcal A\}\), and set \(\overline\mu(A\cup Z) = \mu(A)\). One checks \(\overline{\mathcal A}\) is a \(\sigma\)-algebra and \(\overline\mu\) is well defined (two representations differ by a null set) and countably additive. It is contained in any complete extension. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Disjointify</b> — replace \(A_k\) by \(A_k\setminus\bigcup_{j&lt;k}A_j\).
+      <div class="ex"><div><p>Turns any countable union into a disjoint one, so additivity applies.</p></div></div></li>
+    <li><b>Generate from a convenient family</b> — prove things on boxes, then extend.
+      <div class="ex"><div><p>The standard route: check on a generating class closed under intersections, then invoke uniqueness.</p></div></div></li>
+    <li><b>Monotone limits</b> — use continuity from below to pass to the limit.
+      <div class="ex"><div><p>And always check finiteness before using continuity from above.</p></div></div></li>
+    <li><b>Borel–Cantelli</b> — to prove something happens only finitely often.
+      <div class="ex"><div><p>Sum the measures; if the series converges, you're done.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · The construction</span>
+  <h2 class="ltitle">Lebesgue Measure</h2>
+  <p class="ldesc">Volume in \(\mathbb{R}^{n}\), built and characterised.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Lebesgue outer measure</b> \(\lambda^{*}(A) = \inf\bigl\{\sum_k|Q_k| : A \subseteq \bigcup_kQ_k\bigr\}\) over countable box covers.
+      <div class="ex"><div><p>The cheapest countable brick cover. Defined for <em>every</em> set — but not additive on all of them.</p></div></div></li>
+    <li><b>Carathéodory criterion</b> — \(E\) is measurable if \(\lambda^{*}(A) = \lambda^{*}(A\cap E) + \lambda^{*}(A\setminus E)\) for every \(A\).
+      <div class="ex"><div><p>A set is measurable when it cuts every other set cleanly, with no loss at the seam.</p></div></div></li>
+    <li><b>Lebesgue measurable sets</b> \(\mathcal L\) — those passing the criterion.
+      <div class="ex"><div><p>Contains every Borel set, plus every subset of a null set. Strictly bigger than \(\mathcal B\).</p></div></div></li>
+    <li><b>Lebesgue measure</b> \(\lambda\) — \(\lambda^{*}\) restricted to \(\mathcal L\).
+      <div class="ex"><div><p>The volume this whole book has been building towards.</p></div></div></li>
+    <li><b>Translation invariance</b> — \(\lambda(E+v) = \lambda(E)\).
+      <div class="ex"><div><p>Moving a shape doesn't change its size. Together with normalisation, this pins \(\lambda\) down uniquely.</p></div></div></li>
+    <li><b>Regularity</b> — approximation from outside by open sets and inside by compact ones.
+      <div class="ex"><div><p>Every measurable set is nearly open and nearly compact. This is what makes proofs possible.</p></div></div></li>
+    <li><b>\(G_\delta\) and \(F_\sigma\) sets</b> — countable intersections of open sets; countable unions of closed sets.
+      <div class="ex"><div><p>The first two floors above open and closed. Every measurable set differs from one of these by a null set.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\lambda^{*}\) is an outer measure:</b> monotone, countably subadditive, and zero on \(\varnothing\).
+      <div class="ex"><div><p>These hold for all sets. Additivity is what has to be earned.</p></div></div>
+      <div class="proof"><div><p>Monotonicity: a cover of the bigger set covers the smaller. Subadditivity: cover \(A_k\) with total volume \(&lt;\lambda^{*}(A_k)+\varepsilon2^{-k}\); the combined countable family covers \(\bigcup_kA_k\) with total \(&lt;\sum_k\lambda^{*}(A_k)+\varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\lambda^{*}\) agrees with volume on boxes.</b>
+      <div class="ex"><div><p>The construction doesn't change the answer where the answer was already known. Less obvious than it looks.</p></div></div>
+      <div class="proof"><div><p>\(\le\) is immediate (cover \(Q\) by itself). For \(\ge\), take any countable cover by boxes and enlarge each \(Q_k\) to an open box of volume \(&lt;|Q_k|+\varepsilon2^{-k}\). Compactness of \(\overline Q\) (Heine–Borel) reduces to a finite subcover, and for finitely many boxes the elementary additivity of Layer 1 gives \(|Q|\le\sum|Q_k|+\varepsilon\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Carathéodory's theorem:</b> the measurable sets form a \(\sigma\)-algebra on which \(\lambda^{*}\) is countably additive and complete.
+      <div class="ex"><div><p>One clean criterion manufactures the entire theory.</p></div></div>
+      <div class="proof"><div><p>Sketch. The criterion is symmetric in \(E, E^{c}\), so \(\mathcal L\) is closed under complements. For finite unions, apply the criterion twice and use subadditivity to recombine. For countable unions, apply the finite case to partial unions and pass to the limit using monotonicity and subadditivity; the same computation yields countable additivity on disjoint measurable sets. Completeness: if \(\lambda^{*}(N)=0\) and \(Z \subseteq N\), then \(\lambda^{*}(A\cap Z)=0\) and \(\lambda^{*}(A\setminus Z)\le\lambda^{*}(A)\), so the criterion holds trivially. \(\blacksquare\)</p></div></div></li>
+    <li><b>Every Borel set is Lebesgue measurable;</b> \(\mathcal B \subsetneq \mathcal L\).
+      <div class="ex"><div><p>There are strictly more Lebesgue sets: \(|\mathcal B| = \mathfrak c\) while \(|\mathcal L| = 2^{\mathfrak c}\), since every subset of the Cantor set is measurable.</p></div></div>
+      <div class="proof"><div><p>It suffices that half-spaces \(\{x_i \le c\}\) satisfy the criterion, which follows by covering \(A\) with boxes and splitting each box along the hyperplane, where elementary additivity applies. These generate \(\mathcal B\), and \(\mathcal L\) is a \(\sigma\)-algebra. Strictness: the Cantor set is null, so all \(2^{\mathfrak c}\) of its subsets are in \(\mathcal L\), while \(\mathcal B\) has cardinality \(\mathfrak c\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Regularity:</b> for measurable \(E\), \(\lambda(E) = \inf\{\lambda(U) : U \supseteq E \text{ open}\} = \sup\{\lambda(K) : K \subseteq E \text{ compact}\}\).
+      <div class="ex"><div><p>Any measurable set can be squeezed between an open set and a compact one, to within \(\varepsilon\).</p></div></div>
+      <div class="proof"><div><p>Outer: take a box cover within \(\varepsilon\) of \(\lambda(E)\) and enlarge each box slightly to be open. Inner: for bounded \(E\) inside a box \(Q\), apply the outer result to \(Q\setminus E\) and take complements within \(Q\) to get a closed — hence compact — subset; for unbounded \(E\), exhaust by \(E\cap\overline{B}(0,k)\) and use continuity from below. \(\blacksquare\)</p></div></div></li>
+    <li><b>Structure:</b> \(E\) is measurable iff \(E = G\setminus Z\) with \(G\) a \(G_\delta\) and \(Z\) null, iff \(E = F\cup Z'\) with \(F\) an \(F_\sigma\) and \(Z'\) null.
+      <div class="ex"><div><p>Every measurable set is a Borel set spoiled by something invisible.</p></div></div>
+      <div class="proof"><div><p>Choose open \(U_k \supseteq E\) with \(\lambda(U_k\setminus E)&lt;1/k\) (regularity) and put \(G = \bigcap_kU_k\), a \(G_\delta\) containing \(E\) with \(\lambda(G\setminus E)=0\). The \(F_\sigma\) statement is this applied to \(E^{c}\). Conversely such sets are measurable, being Borel up to a null set and \(\mathcal L\) being complete. \(\blacksquare\)</p></div></div></li>
+    <li><b>Translation invariance and scaling:</b> \(\lambda(E+v) = \lambda(E)\) and \(\lambda(cE) = |c|^{n}\lambda(E)\).
+      <div class="ex"><div><p>Double a solid in every direction and its volume grows \(2^{n}\)-fold. Dimension appears as the exponent.</p></div></div>
+      <div class="proof"><div><p>Both operations map boxes to boxes, multiplying volume by 1 and by \(|c|^{n}\) respectively, and they map covers to covers bijectively. So the infimum defining \(\lambda^{*}\) transforms in the same way, and the Carathéodory criterion is preserved. \(\blacksquare\)</p></div></div></li>
+    <li><b>Linear images:</b> \(\lambda(T(E)) = |\det T|\,\lambda(E)\) for linear \(T\).
+      <div class="ex"><div><p>Chapter 5's determinant, finally proved to be the volume factor for arbitrary sets, not just boxes.</p></div></div>
+      <div class="proof"><div><p>For invertible \(T\), the set function \(E\mapsto\lambda(T(E))\) is a translation-invariant measure (translations commute with \(T\) up to a translation), so by the uniqueness theorem below it equals \(c_T\lambda\) for a constant \(c_T\). Multiplicativity of \(T\mapsto c_T\) plus the values on elementary matrices — shears leave volume alone, scalings multiply by the diagonal product — identify \(c_T = |\det T|\). If \(T\) is singular, the image lies in a hyperplane and both sides are 0. \(\blacksquare\)</p></div></div></li>
+    <li><b>Uniqueness:</b> a translation-invariant measure on \(\mathcal B(\mathbb{R}^{n})\), finite on boxes, is a constant multiple of \(\lambda\).
+      <div class="ex"><div><p>There is essentially only one notion of volume. The unit cube's value picks the units.</p></div></div>
+      <div class="proof"><div><p>Let \(\mu\) be such a measure with \(c = \mu([0,1)^{n})\). Splitting the unit cube into \(k^{n}\) translates of \([0,1/k)^{n}\) and using translation invariance forces \(\mu\) on every dyadic cube to be \(c\lambda\). Dyadic cubes generate \(\mathcal B\) and are closed under intersections, so the two measures agree on a generating \(\pi\)-system and hence everywhere. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Cover with boxes, sum, take the infimum</b> — the definition, used directly.
+      <div class="ex"><div><p>Usually only for showing a set is null; everything else uses the structure theorems.</p></div></div></li>
+    <li><b>Approximate by open or compact sets</b> — regularity turns a measurable set into a manageable one.
+      <div class="ex"><div><p>"Choose \(K\) compact with \(\lambda(E\setminus K)&lt;\varepsilon\)" opens a great many proofs.</p></div></div></li>
+    <li><b>Prove it on boxes, then extend by uniqueness</b>.
+      <div class="ex"><div><p>The standard architecture of every measure-theoretic proof in this chapter.</p></div></div></li>
+    <li><b>Use \(|\det T|\)</b> — for the measure of a linear image.
+      <div class="ex"><div><p>Chapter 12 turns this into the change of variables formula for curved maps.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The price</span>
+  <h2 class="ltitle">Sets That Have No Volume</h2>
+  <p class="ldesc">Why "measurable" cannot be dropped from any statement in this book.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Non-measurable set</b> — one failing the Carathéodory criterion.
+      <div class="ex"><div><p>No number can be its volume without breaking additivity or translation invariance.</p></div></div></li>
+    <li><b>Vitali set</b> — one representative from each coset of \(\mathbb{Q}\) in \(\mathbb{R}\).
+      <div class="ex"><div><p>Built by choosing one point from each of uncountably many buckets. Only the Axiom of Choice can do that.</p></div></div></li>
+    <li><b>Paradoxical decomposition</b> — cutting a set into pieces that reassemble into two copies.
+      <div class="ex"><div><p>Possible only when the pieces have no volume to conserve.</p></div></div></li>
+    <li><b>Solovay's model</b> — a model of ZF + dependent choice in which every set of reals is measurable.
+      <div class="ex"><div><p>The pathology is optional: drop full Choice and it disappears. Ordinary analysis survives.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Vitali's theorem:</b> there is a non-Lebesgue-measurable subset of \([0,1]\).
+      <div class="ex"><div><p>Translate it by every rational in \([-1,1]\): the copies are disjoint and their union is squeezed between two sets of finite positive measure. No value for its size can work.</p></div></div>
+      <div class="proof"><div><p>Define \(x\sim y\) iff \(x - y\in\mathbb{Q}\), an equivalence relation on \([0,1]\), and use the Axiom of Choice to pick a representative from each class, forming \(V\). Let \(q_1,q_2,\dots\) enumerate \(\mathbb{Q}\cap[-1,1]\). The translates \(V + q_k\) are pairwise disjoint (two points of \(V\) never differ by a rational) and satisfy \([0,1]\subseteq\bigcup_k(V+q_k)\subseteq[-1,2]\). If \(V\) were measurable with \(\lambda(V) = c\), countable additivity and translation invariance would give \(1 \le \sum_k c \le 3\). But \(\sum_k c\) is 0 if \(c=0\) and \(\infty\) if \(c &gt; 0\). Contradiction. \(\blacksquare\)</p></div></div></li>
+    <li><b>No translation-invariant, countably additive measure defines a volume for every subset of \(\mathbb{R}^{n}\).</b>
+      <div class="ex"><div><p>You must give up one of: measuring everything, countable additivity, or translation invariance. Lebesgue gives up the first.</p></div></div>
+      <div class="proof"><div><p>The Vitali argument used only those three properties plus normalisation on intervals, and derived a contradiction. In \(\mathbb{R}^{n}\), apply it in the first coordinate. \(\blacksquare\)</p></div></div></li>
+    <li><b>Banach–Tarski paradox:</b> for \(n\ge3\), a ball can be split into finitely many pieces and reassembled by rigid motions into two balls of the same size.
+      <div class="ex"><div><p>Not a statement about oranges. The pieces are non-measurable, so there is no volume being created — there was never any volume to conserve.</p></div></div>
+      <div class="proof"><div><p>Sketch: the rotation group \(SO(3)\) contains a free subgroup on two generators, which admits a paradoxical decomposition of itself. Choice picks one point from each orbit of that group acting on the sphere; transferring the group's decomposition to the orbits decomposes the sphere into finitely many pieces that reassemble into two spheres. Coning to the centre extends this to the solid ball. In \(\mathbb{R}^{1}\) and \(\mathbb{R}^{2}\) it fails: those isometry groups are amenable, and a finitely additive invariant measure on all subsets exists (Banach). \(\blacksquare\)</p></div></div></li>
+    <li><b>Every set of positive outer measure contains a non-measurable subset.</b>
+      <div class="ex"><div><p>The pathology is everywhere, not a single freak example.</p></div></div>
+      <div class="proof"><div><p>Intersect the Vitali construction with the given set: running the same coset argument inside \(E\) produces a subset whose rational translates disjointly cover a portion of \(E\), and measurability would again force the impossible dichotomy \(0\) or \(\infty\) against \(0 &lt; \lambda^{*}(E)&lt;\infty\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Choice is to blame:</b> ZF + dependent choice is consistent with "every set of reals is Lebesgue measurable" (Solovay, assuming an inaccessible cardinal).
+      <div class="ex"><div><p>The Axiom of Choice buys you Zorn's lemma and bases for every vector space — and charges you these sets.</p></div></div>
+      <div class="proof"><div><p>Sketch: Solovay constructs, from a model with an inaccessible cardinal, an inner model of ZF + DC in which every set of reals is Lebesgue measurable, has the Baire property, and is either countable or contains a perfect set. Since all the constructions of this book use at most DC, none of them is lost. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Always state measurability</b> — every theorem from here on carries the hypothesis.
+      <div class="ex"><div><p>Not pedantry: the counterexamples are real.</p></div></div></li>
+    <li><b>Look for the use of Choice</b> — non-constructive pathologies always come from there.
+      <div class="ex"><div><p>Anything you can actually write down is measurable.</p></div></div></li>
+    <li><b>Translate-and-count</b> — the technique of the Vitali argument.
+      <div class="ex"><div><p>Disjoint translates squeezed between two finite bounds force a contradiction.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · What can be integrated</span>
+  <h2 class="ltitle">Measurable Functions</h2>
+  <p class="ldesc">The functions whose graphs the theory can see.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Measurable function</b> — \(f^{-1}(U)\) is measurable for every open \(U\); equivalently \(\{f &gt; c\}\) is measurable for every \(c\).
+      <div class="ex"><div><p>Chapter 8's continuity criterion, with "open" replaced by "measurable" on the left.</p></div></div></li>
+    <li><b>Simple function</b> — a finite combination \(\sum_i c_i\chi_{E_i}\) of indicators of measurable sets.
+      <div class="ex"><div><p>A staircase with measurable steps. Every integral in Chapter 12 is defined on these first.</p></div></div></li>
+    <li><b>Extended-real-valued</b> — allowed the values \(\pm\infty\).
+      <div class="ex"><div><p>Necessary, since limits of measurable functions may blow up on a small set.</p></div></div></li>
+    <li><b>Essential supremum</b> — the smallest bound that holds a.e.
+      <div class="ex"><div><p>Ignores what happens on a null set. A single spike doesn't count.</p></div></div></li>
+    <li><b>Convergence almost everywhere</b>.
+      <div class="ex"><div><p>The natural notion once null sets are declared invisible.</p></div></div></li>
+    <li><b>Convergence in measure</b> — \(\lambda(\{|f_k-f|&gt;\varepsilon\})\to0\).
+      <div class="ex"><div><p>The bad set shrinks, though it may wander. Weaker than a.e. convergence, and it forgets where the trouble was.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Equivalent criteria:</b> \(f\) is measurable iff \(\{f&gt;c\}\) is measurable for all \(c\), iff for all rational \(c\).
+      <div class="ex"><div><p>Countably many conditions suffice — the practical test.</p></div></div>
+      <div class="proof"><div><p>\(\{f&gt;c\} = \bigcup_{q&gt;c, q\in\mathbb{Q}}\{f&gt;q\}\) gives the reduction to rational \(c\). Conversely the sets \(\{f&gt;c\}\) generate the Borel \(\sigma\)-algebra of \(\mathbb{R}\) (they generate the half-lines, hence the open sets), so measurability of their preimages gives measurability of all Borel preimages. \(\blacksquare\)</p></div></div></li>
+    <li><b>Continuous functions are measurable</b>, and measurable \(\circ\) continuous stays measurable.
+      <div class="ex"><div><p>Everything you meet in practice is measurable. Producing a non-measurable function requires Choice.</p></div></div>
+      <div class="proof"><div><p>For continuous \(f\), \(f^{-1}(U)\) is open, hence Borel, hence measurable. If \(g\) is continuous and \(f\) measurable, \((g\circ f)^{-1}(U) = f^{-1}(g^{-1}(U))\) is the preimage of an open set. (The other order can fail, which is why the composition rule is stated this way.) \(\blacksquare\)</p></div></div></li>
+    <li><b>Measurability is preserved by</b> sums, products, scalar multiples, \(\max\), \(\min\), \(|f|\), and countable \(\sup\), \(\inf\), \(\limsup\), \(\liminf\), and a.e. limits.
+      <div class="ex"><div><p>Unlike Riemann integrability, this class is closed under limits — which is the whole reason Lebesgue's theory works.</p></div></div>
+      <div class="proof"><div><p>\(\{f+g &gt; c\} = \bigcup_{q\in\mathbb{Q}}\bigl(\{f&gt;q\}\cap\{g&gt;c-q\}\bigr)\), a countable union of measurable sets. \(\{\sup_kf_k &gt; c\} = \bigcup_k\{f_k&gt;c\}\) and \(\{\inf_kf_k &lt; c\} = \bigcup_k\{f_k&lt;c\}\); then \(\limsup_kf_k = \inf_N\sup_{k\ge N}f_k\) is measurable, and an a.e. limit equals the \(\limsup\) off a null set, which is measurable by completeness. Products follow from \(fg = \tfrac14((f+g)^{2}-(f-g)^{2})\) and measurability of \(t\mapsto t^{2}\) composed with a measurable function. \(\blacksquare\)</p></div></div></li>
+    <li><b>Simple approximation:</b> every non-negative measurable \(f\) is an increasing pointwise limit of simple functions.
+      <div class="ex"><div><p>Chop the <em>range</em> into layers rather than the domain into strips. That one change is the whole of Lebesgue's idea.</p></div></div>
+      <div class="proof"><div><p>Set \(s_k = \sum_{j=0}^{k2^{k}-1}\frac{j}{2^{k}}\chi_{\{j/2^{k}\le f&lt;(j+1)/2^{k}\}} + k\chi_{\{f\ge k\}}\). Each set involved is measurable, so \(s_k\) is simple; refining the range partition makes \(s_k\) increasing; and \(0 \le f - s_k \le 2^{-k}\) wherever \(f &lt; k\), so \(s_k \to f\) pointwise, uniformly where \(f\) is bounded. \(\blacksquare\)</p></div></div></li>
+    <li><b>Egorov's theorem:</b> on a set of finite measure, a.e. convergence is uniform off a set of arbitrarily small measure.
+      <div class="ex"><div><p>"Almost uniform" convergence. Discard a sliver and the convergence becomes as good as you like.</p></div></div>
+      <div class="proof"><div><p>Let \(E_{k,N} = \bigcup_{j\ge N}\{|f_j - f| &gt; 1/k\}\). For fixed \(k\) these decrease in \(N\) with intersection null (a.e. convergence), so by continuity from above — using finite measure — \(\lambda(E_{k,N_k})&lt;\varepsilon2^{-k}\) for some \(N_k\). Remove \(\bigcup_kE_{k,N_k}\), of measure \(&lt;\varepsilon\); on the remainder, \(|f_j-f|\le1/k\) for all \(j \ge N_k\), which is uniform convergence. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lusin's theorem:</b> a measurable function is continuous off a set of arbitrarily small measure.
+      <div class="ex"><div><p>Measurable functions are "almost continuous" — Littlewood's second principle.</p></div></div>
+      <div class="proof"><div><p>Approximate \(f\) by simple functions (above); each simple function is continuous off a small set by regularity of the measure on the finitely many sets involved. Egorov makes the approximation uniform off another small set, and a uniform limit of continuous functions is continuous. Removing the countable union of small exceptional sets leaves a set of measure \(&gt; \lambda(E)-\varepsilon\) on which \(f\) is continuous. \(\blacksquare\)</p></div></div></li>
+    <li><b>a.e. convergence \(\Rightarrow\) convergence in measure</b> on a finite measure space; the converse fails, but a subsequence converges a.e.
+      <div class="ex"><div><p>The "typewriter" sequence of indicators of sliding intervals converges in measure to 0 while converging at no point at all.</p></div></div>
+      <div class="proof"><div><p>The forward implication is immediate from Egorov. For the failure, take \(f_k = \chi_{I_k}\) with \(I_k\) marching across \([0,1]\) in blocks of shrinking length: \(\lambda(\{f_k &gt; \varepsilon\})\to0\) but every point is hit infinitely often. For the subsequence, choose \(k_j\) with \(\lambda(\{|f_{k_j}-f|&gt;2^{-j}\})&lt;2^{-j}\); Borel–Cantelli (Layer 2) says a.e. point lies in only finitely many of those sets, giving a.e. convergence. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check \(\{f &gt; c\}\)</b> — the standard measurability test.
+      <div class="ex"><div><p>Rational \(c\) suffices, so it is a countable check.</p></div></div></li>
+    <li><b>Approximate by simple functions</b> — then prove the theorem for staircases.
+      <div class="ex"><div><p>The architecture of every proof in Chapter 12.</p></div></div></li>
+    <li><b>Discard a small set</b> — Egorov and Lusin trade a sliver of measure for uniformity or continuity.
+      <div class="ex"><div><p>Littlewood's three principles in action.</p></div></div></li>
+    <li><b>Work almost everywhere</b> — modify on a null set whenever it helps.
+      <div class="ex"><div><p>Nothing measurable notices.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Cover with boxes</td><td>L1</td><td>Bound a set's size from above</td></tr>
+    <tr><td>\(\varepsilon 2^{-k}\) splitting</td><td>L1</td><td>Spread a tolerance over a countable family</td></tr>
+    <tr><td>Prove statements a.e.</td><td>L1</td><td>Discard null sets and their pathologies</td></tr>
+    <tr><td>Disjointify a union</td><td>L2</td><td>Apply countable additivity</td></tr>
+    <tr><td>Generate from boxes</td><td>L2</td><td>Reduce a claim to a convenient class</td></tr>
+    <tr><td>Continuity from below / above</td><td>L2</td><td>Pass a measure through a monotone limit</td></tr>
+    <tr><td>Borel–Cantelli</td><td>L2</td><td>Show something happens finitely often</td></tr>
+    <tr><td>Carathéodory criterion</td><td>L3</td><td>Decide measurability</td></tr>
+    <tr><td>Regularity approximation</td><td>L3</td><td>Replace a measurable set by an open or compact one</td></tr>
+    <tr><td>\(\lambda(T(E)) = |\det T|\lambda(E)\)</td><td>L3</td><td>Measure a linear image</td></tr>
+    <tr><td>Uniqueness of translation-invariant measure</td><td>L3</td><td>Identify a measure from its behaviour on boxes</td></tr>
+    <tr><td>Translate-and-count</td><td>L4</td><td>Construct a non-measurable set</td></tr>
+    <tr><td>State measurability hypotheses</td><td>L4</td><td>Keep every later theorem true</td></tr>
+    <tr><td>Test \(\{f&gt;c\}\)</td><td>L5</td><td>Check a function is measurable</td></tr>
+    <tr><td>Simple-function approximation</td><td>L5</td><td>Reduce any theorem to staircases</td></tr>
+    <tr><td>Egorov / Lusin</td><td>L5</td><td>Buy uniformity or continuity for a sliver of measure</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Measure · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

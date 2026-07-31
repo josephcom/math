@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1 — Logic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Logic</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="index.html">&#10094; All Chapters</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>The Rules of the Game</h2>
+    <p>Before there are numbers, or sets, or space, there are <b>statements</b> and the rules for getting from one to the next.</p>
+    <p>Logic is that rulebook. It says what a claim is, when an argument is valid, and exactly which moves count as a proof.</p>
+    <p>Everything later in this book — every theorem about distance, volume and dimension — is assembled with the seven layers below and nothing else.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\forall x\,\bigl(P(x) \to Q(x)\bigr)\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Propositions</a><a href="#L2">L2 Deduction</a><a href="#L3">L3 Quantifiers</a>
+  <a href="#L4">L4 First-Order Logic</a><a href="#L5">L5 Proof Methods</a><a href="#L6">L6 Induction</a>
+  <a href="#L7">L7 Limits</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · Ground floor</span>
+  <h2 class="ltitle">Propositional Logic</h2>
+  <p class="ldesc">Statements, and the rules for combining them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Proposition</b> — a statement that is either true (T) or false (F), never both, never neither.
+      <div class="ex"><div><p>"It is raining" is a proposition. "Close the door!" is not — it can't be true or false.</p></div></div></li>
+    <li><b>Truth value</b> — the T or F carried by a proposition.
+      <div class="ex"><div><p>A light switch has two positions and no third. So does every statement in this book.</p></div></div></li>
+    <li><b>Propositional variable</b> \(p, q, r\) — a letter standing in for any proposition.
+      <div class="ex"><div><p>Like using \(x\) for "some number", \(p\) means "some statement" — the rules work whatever you plug in.</p></div></div></li>
+    <li><b>Negation</b> \(\neg p\) — "not \(p\)"; flips the truth value.
+      <div class="ex"><div><p>\(p\) = "I'm hungry" \(\Rightarrow\) \(\neg p\) = "I'm not hungry."</p></div></div></li>
+    <li><b>Conjunction</b> \(p \land q\) — "\(p\) and \(q\)"; true only when both are.
+      <div class="ex"><div><p>"It's cold and wet" — true only if <em>both</em> parts are true.</p></div></div></li>
+    <li><b>Disjunction</b> \(p \lor q\) — "\(p\) or \(q\)", inclusive; true when at least one is.
+      <div class="ex"><div><p>"I'll have tea or coffee" — true if you have either one, or both.</p></div></div></li>
+    <li><b>Exclusive or</b> \(p \oplus q\) — "one or the other, but not both".
+      <div class="ex"><div><p>"Soup or salad with your meal" — the waiter means one, not both.</p></div></div></li>
+    <li><b>Implication</b> \(p \to q\) — "if \(p\) then \(q\)"; false only when \(p\) is true and \(q\) is false.
+      <div class="ex"><div><p>"If it rains, the ground gets wet." Only one case breaks the promise: it rains, but the ground stays dry.</p></div></div></li>
+    <li><b>Antecedent &amp; consequent</b> — in \(p \to q\), the \(p\) is the antecedent (the "if" part), \(q\) the consequent.
+      <div class="ex"><div><p>"If you're 18, you can vote": being 18 is the antecedent, voting the consequent.</p></div></div></li>
+    <li><b>Biconditional</b> \(p \leftrightarrow q\) — "\(p\) if and only if \(q\)" (<em>iff</em>); true when they match.
+      <div class="ex"><div><p>"You pass iff you score at least 50." Both happen together, or neither does.</p></div></div></li>
+    <li><b>NAND</b> \(p \uparrow q\) — "not both"; \(\neg(p \land q)\).
+      <div class="ex"><div><p>A two-key safe wired so the alarm sounds unless both keys turn together.</p></div></div></li>
+    <li><b>NOR</b> \(p \downarrow q\) — "neither"; \(\neg(p \lor q)\).
+      <div class="ex"><div><p>"Neither raining nor windy" — true only on the calm, dry day.</p></div></div></li>
+    <li><b>Well-formed formula</b> — a string built legally from variables, connectives and brackets.
+      <div class="ex"><div><p>\((p \land q) \to r\) is legal. "\(p \land \to q\)" is gibberish, like "\(2 + \times\; 3\)".</p></div></div></li>
+    <li><b>Precedence</b> — \(\neg\) binds tightest, then \(\land\), then \(\lor\), then \(\to\), then \(\leftrightarrow\).
+      <div class="ex"><div><p>Same idea as \(\times\) before \(+\): \(\neg p \land q\) means \((\neg p) \land q\), not \(\neg(p \land q)\).</p></div></div></li>
+    <li><b>Truth table</b> — a table listing the truth value for every combination of inputs.
+      <div class="ex"><div><p>For \(p \land q\): \(\text{TT}\mapsto\text{T}\), \(\text{TF}\mapsto\text{F}\), \(\text{FT}\mapsto\text{F}\), \(\text{FF}\mapsto\text{F}\). Four rows, no case forgotten.</p></div></div></li>
+    <li><b>Tautology</b> — a formula true in every row.
+      <div class="ex"><div><p>"Tomorrow it will rain or it won't." Guaranteed true — and tells you nothing.</p></div></div></li>
+    <li><b>Contradiction</b> — false in every row.
+      <div class="ex"><div><p>"I'm taller than you and you're taller than me." Can't both hold.</p></div></div></li>
+    <li><b>Contingency</b> — true in some rows, false in others.
+      <div class="ex"><div><p>"It's raining" — depends on the day. Most real statements are like this.</p></div></div></li>
+    <li><b>Satisfiable</b> — true in at least one row.
+      <div class="ex"><div><p>A puzzle with at least one solution. A contradiction is the puzzle with none.</p></div></div></li>
+    <li><b>Logical equivalence</b> \(p \equiv q\) — same truth value in every row.
+      <div class="ex"><div><p>"It's not the case that it's not raining" \(\equiv\) "it's raining". Different words, same claim.</p></div></div></li>
+    <li><b>Converse, inverse, contrapositive</b> — of \(p \to q\): converse \(q \to p\), inverse \(\neg p \to \neg q\), contrapositive \(\neg q \to \neg p\).
+      <div class="ex"><div><p>"If it's a dog, it's an animal." Converse: "if animal, then dog" — false. Contrapositive: "if not an animal, not a dog" — always true.</p></div></div></li>
+    <li><b>Literal, clause</b> — a literal is \(p\) or \(\neg p\); a clause is an \(\lor\) of literals.
+      <div class="ex"><div><p>Ingredients and recipes: \(\neg p\) is an ingredient, \((p \lor \neg q \lor r)\) a small recipe made of three.</p></div></div></li>
+    <li><b>Conjunctive normal form (CNF)</b> — an \(\land\) of clauses.
+      <div class="ex"><div><p>A checklist of requirements: "(coffee or tea) and (cake or pie) and (not shouting)".</p></div></div></li>
+    <li><b>Disjunctive normal form (DNF)</b> — an \(\lor\) of \(\land\)-blocks.
+      <div class="ex"><div><p>A list of acceptable full orders: "coffee-and-cake, or tea-and-pie".</p></div></div></li>
+    <li><b>Dual of a formula</b> — swap \(\land \leftrightarrow \lor\) and T \(\leftrightarrow\) F.
+      <div class="ex"><div><p>Photo negative: every "and" becomes "or", every true becomes false — and the laws still line up.</p></div></div></li>
+    <li><b>Functionally complete set</b> — a set of connectives that can express every truth table.
+      <div class="ex"><div><p>Like a set of Lego bricks that can build any shape. \(\{\neg, \land, \lor\}\) is such a set — and so is \(\{\uparrow\}\) alone.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — The Laws of Logic</h3>
+  <ul>
+    <li><b>Double negation:</b> \(\neg\neg p \equiv p\).
+      <div class="ex"><div><p>"I'm not <em>not</em> going" = "I'm going."</p></div></div>
+      <div class="proof"><div><p>Truth table: if \(p\) is T then \(\neg p\) is F, so \(\neg\neg p\) is T; if \(p\) is F then \(\neg p\) is T and \(\neg\neg p\) is F. The columns for \(p\) and \(\neg\neg p\) agree in both rows. \(\blacksquare\)</p></div></div></li>
+    <li><b>De Morgan's laws:</b> \(\neg(p \land q) \equiv \neg p \lor \neg q\) and \(\neg(p \lor q) \equiv \neg p \land \neg q\).
+      <div class="ex"><div><p>"He's not rich-and-famous" = "he's not rich, <em>or</em> not famous (or neither)."</p></div></div>
+      <div class="proof"><div><p>\(\neg(p \land q)\) is F exactly when \(p \land q\) is T, i.e. when \(p\) and \(q\) are both T. And \(\neg p \lor \neg q\) is F exactly when \(\neg p, \neg q\) are both F — again when \(p, q\) are both T. Same single F-row out of four, so the columns agree. Applying this to \(\neg p, \neg q\) and cancelling double negations gives the second law. \(\blacksquare\)</p></div></div></li>
+    <li><b>Commutativity:</b> \(p \land q \equiv q \land p\); \(p \lor q \equiv q \lor p\).
+      <div class="ex"><div><p>"Cold and wet" = "wet and cold."</p></div></div>
+      <div class="proof"><div><p>\(p \land q\) is T exactly when both letters are T — a condition symmetric in the two letters — so its column equals that of \(q \land p\) row by row. Likewise "at least one is T" is symmetric, giving the \(\lor\) case. \(\blacksquare\)</p></div></div></li>
+    <li><b>Associativity:</b> \((p \land q) \land r \equiv p \land (q \land r)\); same for \(\lor\).
+      <div class="ex"><div><p>"(Cold and wet) and windy" = "cold and (wet and windy)" — grouping doesn't matter.</p></div></div>
+      <div class="proof"><div><p>Each side is T exactly when all three of \(p, q, r\) are T; the brackets never enter that condition. Dually each \(\lor\)-side is T iff at least one is T. All 8 rows agree. \(\blacksquare\)</p></div></div></li>
+    <li><b>Distributivity:</b> \(p \land (q \lor r) \equiv (p \land q) \lor (p \land r)\), and \(\lor\) over \(\land\) likewise.
+      <div class="ex"><div><p>"Coffee, with cake or pie" = "coffee-and-cake, or coffee-and-pie."</p></div></div>
+      <div class="proof"><div><p>The left side is T iff \(p\) is T and at least one of \(q, r\) is T. The right side is T iff (\(p\) and \(q\)) or (\(p\) and \(r\)) — the same condition. The dual law follows by taking duals, or by the same 8-row check. \(\blacksquare\)</p></div></div></li>
+    <li><b>Idempotence:</b> \(p \land p \equiv p \equiv p \lor p\).
+      <div class="ex"><div><p>"It's raining and it's raining" — saying it twice adds nothing.</p></div></div>
+      <div class="proof"><div><p>Two rows only: \(p =\) T gives \(p \land p =\) T and \(p \lor p =\) T; \(p =\) F gives F for both. Identical columns. \(\blacksquare\)</p></div></div></li>
+    <li><b>Absorption:</b> \(p \lor (p \land q) \equiv p\) and \(p \land (p \lor q) \equiv p\).
+      <div class="ex"><div><p>"It's raining, or it's raining-and-cold" boils down to "it's raining."</p></div></div>
+      <div class="proof"><div><p>If \(p\) is T, the first disjunct already makes \(p \lor (p \land q)\) T, matching \(p\). If \(p\) is F then \(p \land q\) is F too, so the whole is F — again matching \(p\). The second law is its dual. \(\blacksquare\)</p></div></div></li>
+    <li><b>Identity &amp; domination:</b> \(p \land \text{T} \equiv p\), \(p \lor \text{F} \equiv p\), \(p \lor \text{T} \equiv \text{T}\), \(p \land \text{F} \equiv \text{F}\).
+      <div class="ex"><div><p>Adding "and the sky exists" changes nothing; adding "or 1=1" makes any claim true.</p></div></div>
+      <div class="proof"><div><p>\(p \land \text{T}\) is T iff \(p\) is T; \(p \lor \text{F}\) is T iff \(p\) is T — both columns are \(p\)'s. \(p \lor \text{T}\) has a T disjunct in every row, so it is T throughout; \(p \land \text{F}\) has an F conjunct in every row, so it is F throughout. \(\blacksquare\)</p></div></div></li>
+    <li><b>Excluded middle:</b> \(p \lor \neg p\) is a tautology.
+      <div class="ex"><div><p>"The light is on, or it isn't." No third option.</p></div></div>
+      <div class="proof"><div><p>Two rows exist. \(p =\) T makes the first disjunct T; \(p =\) F makes \(\neg p\) T. Either way the disjunction is T. \(\blacksquare\)</p></div></div></li>
+    <li><b>Non-contradiction:</b> \(\neg(p \land \neg p)\) is a tautology.
+      <div class="ex"><div><p>The light can't be on and off at the same moment.</p></div></div>
+      <div class="proof"><div><p>In both rows one of \(p, \neg p\) is F, so \(p \land \neg p\) is always F; its negation is therefore always T. \(\blacksquare\)</p></div></div></li>
+    <li><b>Implication as disjunction:</b> \((p \to q) \equiv (\neg p \lor q)\).
+      <div class="ex"><div><p>"If it rains, I stay home" = "it doesn't rain, or I stay home."</p></div></div>
+      <div class="proof"><div><p>\(p \to q\) is F only at \(p =\) T, \(q =\) F. And \(\neg p \lor q\) is F only when \(\neg p\) and \(q\) are both F — the very same row. Columns match. \(\blacksquare\)</p></div></div></li>
+    <li><b>Negated implication:</b> \(\neg(p \to q) \equiv p \land \neg q\).
+      <div class="ex"><div><p>To break "if you pay, you get in", you need exactly this: you paid <em>and</em> you didn't get in.</p></div></div>
+      <div class="proof"><div><p>By the previous law \(p \to q \equiv \neg p \lor q\); negate and apply De Morgan: \(\neg(\neg p \lor q) \equiv \neg\neg p \land \neg q \equiv p \land \neg q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Contrapositive law:</b> \((p \to q) \equiv (\neg q \to \neg p)\).
+      <div class="ex"><div><p>"Dog \(\to\) animal" says exactly the same as "not animal \(\to\) not dog."</p></div></div>
+      <div class="proof"><div><p>\(p \to q \equiv \neg p \lor q\) and \(\neg q \to \neg p \equiv \neg\neg q \lor \neg p \equiv q \lor \neg p\). Commutativity of \(\lor\) makes these the same formula. \(\blacksquare\)</p></div></div></li>
+    <li><b>Exportation:</b> \(\bigl((p \land q) \to r\bigr) \equiv \bigl(p \to (q \to r)\bigr)\).
+      <div class="ex"><div><p>"If you have a ticket and ID, you may board" = "if you have a ticket, then if you have ID, you may board."</p></div></div>
+      <div class="proof"><div><p>Both sides are F exactly when \(p, q\) are T and \(r\) is F: the left fails when \(p \land q\) is T with \(r\) F; the right fails when \(p\) is T and \(q \to r\) is F, i.e. \(q\) T and \(r\) F. Same single failing row. \(\blacksquare\)</p></div></div></li>
+    <li><b>Biconditional split:</b> \((p \leftrightarrow q) \equiv (p \to q) \land (q \to p)\).
+      <div class="ex"><div><p>"Iff" is two promises in one: each side guarantees the other.</p></div></div>
+      <div class="proof"><div><p>\(p \leftrightarrow q\) is T iff \(p, q\) agree. If they agree, neither implication has a T-antecedent-with-F-consequent, so the conjunction is T. If they disagree, exactly one implication fails, so the conjunction is F. \(\blacksquare\)</p></div></div></li>
+    <li><b>Exclusive or:</b> \((p \oplus q) \equiv (p \lor q) \land \neg(p \land q) \equiv \neg(p \leftrightarrow q)\).
+      <div class="ex"><div><p>"Soup or salad, not both" = "at least one, and not both" = "they differ".</p></div></div>
+      <div class="proof"><div><p>All three are T exactly in the two rows where \(p\) and \(q\) differ: at least one T rules out FF, "not both" rules out TT, and "\(\neg(p \leftrightarrow q)\)" says precisely that they disagree. \(\blacksquare\)</p></div></div></li>
+    <li><b>Duality principle:</b> if \(\varphi \equiv \psi\) then their duals are equivalent.
+      <div class="ex"><div><p>Every law comes in a matched pair — prove one, and its mirror image is free.</p></div></div>
+      <div class="proof"><div><p>De Morgan gives \(\neg\varphi(p_1,\dots) \equiv \varphi^{d}(\neg p_1,\dots)\), where \(\varphi^{d}\) is the dual: pushing \(\neg\) inward swaps \(\land\) with \(\lor\) and T with F. If \(\varphi \equiv \psi\) then \(\neg\varphi \equiv \neg\psi\), hence \(\varphi^d(\neg p_i) \equiv \psi^d(\neg p_i)\) for all inputs; since \(p \mapsto \neg p\) is a bijection on truth values, \(\varphi^d \equiv \psi^d\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Normal form theorem:</b> every formula is equivalent to one in CNF and to one in DNF.
+      <div class="ex"><div><p>Any tangle of ands, ors and nots can be flattened into a plain checklist — or a plain menu of allowed cases.</p></div></div>
+      <div class="proof"><div><p>Read the truth table. For DNF: take each T-row and form the \(\land\)-block that pins every variable to its value in that row (\(p\) if T, \(\neg p\) if F); the \(\lor\) of those blocks is T exactly on the T-rows. For CNF: do the same with the F-rows and negate, or dually build one clause per F-row. Either construction matches the original column for column. \(\blacksquare\)</p></div></div></li>
+    <li><b>Functional completeness:</b> \(\{\neg, \land, \lor\}\) expresses every truth table; so do \(\{\neg, \land\}\), \(\{\neg, \to\}\), \(\{\uparrow\}\) and \(\{\downarrow\}\).
+      <div class="ex"><div><p>Every computer chip is built from NAND gates alone — one brick, all of logic.</p></div></div>
+      <div class="proof"><div><p>DNF (previous theorem) already writes any table with \(\neg, \land, \lor\). Then \(p \lor q \equiv \neg(\neg p \land \neg q)\) removes \(\lor\), and \(p \land q \equiv \neg(p \to \neg q)\) converts to \(\{\neg,\to\}\). Finally \(\neg p \equiv p \uparrow p\) and \(p \land q \equiv (p \uparrow q) \uparrow (p \uparrow q)\) reduce everything to NAND; the NOR case is dual. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Truth-table check</b> — verify an equivalence or a tautology by listing all \(2^n\) rows.
+      <div class="ex"><div><p>Two variables: 4 rows. Three: 8. Tedious, but it never lies and never needs cleverness.</p></div></div></li>
+    <li><b>Shortcut refutation</b> — to disprove a tautology claim, try to make the formula false and see if you can.
+      <div class="ex"><div><p>Assume the conclusion is F and work backwards. If you reach a consistent row, that row is your counterexample; if every attempt collapses, it's a tautology.</p></div></div></li>
+    <li><b>Normal-form conversion</b> — push negations inward with De Morgan, then distribute to reach CNF or DNF.
+      <div class="ex"><div><p>The way a solver eats a puzzle: rewrite everything as one long checklist of clauses first.</p></div></div></li>
+    <li><b>Logic gates</b> — read \(\land, \lor, \neg\) as AND, OR, NOT circuits.
+      <div class="ex"><div><p>A doorbell that rings when (button pressed) AND NOT (silent mode) is a two-gate proposition.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · The machinery</span>
+  <h2 class="ltitle">Formal Deduction</h2>
+  <p class="ldesc">Turning "obviously true" into a chain of legal moves.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Formal system</b> — a language, a set of axioms, and rules for producing new formulas from old.
+      <div class="ex"><div><p>Chess: a board, a starting position, and legal moves. Which positions can you reach?</p></div></div></li>
+    <li><b>Axiom schema</b> — a template that becomes an axiom for any formulas substituted in.
+      <div class="ex"><div><p>One rubber stamp, infinitely many stamped documents — substitute anything for \(p\) and \(q\).</p></div></div></li>
+    <li><b>Inference rule</b> — a licence to write a new line given earlier lines.
+      <div class="ex"><div><p>"You may move a pawn forward one square" — a rule about moves, not about the board's truth.</p></div></div></li>
+    <li><b>Derivation (proof)</b> — a finite list of formulas, each an axiom, an assumption, or a rule applied to earlier lines.
+      <div class="ex"><div><p>A recipe you can check step by step without ever tasting the food.</p></div></div></li>
+    <li><b>Syntactic consequence</b> \(\Gamma \vdash \varphi\) — there is a derivation of \(\varphi\) from the assumptions \(\Gamma\).
+      <div class="ex"><div><p>"Reachable by legal moves" — a claim about paper, not about the world.</p></div></div></li>
+    <li><b>Semantic consequence</b> \(\Gamma \models \varphi\) — every row making all of \(\Gamma\) true also makes \(\varphi\) true.
+      <div class="ex"><div><p>"True in every possible world where the assumptions hold" — a claim about meaning.</p></div></div></li>
+    <li><b>Theorem</b> \(\vdash \varphi\) — derivable from the axioms with no extra assumptions.
+      <div class="ex"><div><p>A chess position reachable from the opening with no help from your opponent.</p></div></div></li>
+    <li><b>Consistency</b> — no formula and its negation are both derivable.
+      <div class="ex"><div><p>A rulebook that never lets you prove both "the door is locked" and "the door is unlocked".</p></div></div></li>
+    <li><b>Soundness</b> — everything derivable is true; \(\vdash\) never overreaches \(\models\).
+      <div class="ex"><div><p>The machine never prints a falsehood.</p></div></div></li>
+    <li><b>Completeness</b> — everything true is derivable; \(\models\) never outruns \(\vdash\).
+      <div class="ex"><div><p>The machine eventually prints every truth. Sound + complete = the paper and the world agree exactly.</p></div></div></li>
+    <li><b>Decidability</b> — an algorithm that answers "is this a theorem?" in finite time, always.
+      <div class="ex"><div><p>A vending machine that always returns a yes or no, never spins forever.</p></div></div></li>
+    <li><b>Hilbert system</b> — many axiom schemas, one rule (modus ponens).
+      <div class="ex"><div><p>Long proofs, tiny rulebook — easy to reason <em>about</em>, painful to reason <em>in</em>.</p></div></div></li>
+    <li><b>Natural deduction</b> — no axioms, but introduction and elimination rules for each connective.
+      <div class="ex"><div><p>How people actually argue: "assume this… therefore that… so, discharging the assumption, if-this-then-that."</p></div></div></li>
+    <li><b>Assumption &amp; discharge</b> — temporarily suppose \(p\), derive \(q\), then conclude \(p \to q\) and drop the supposition.
+      <div class="ex"><div><p>"Suppose I miss the train" — you reason inside that world, then step out with a conditional in hand.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms</h3>
+  <ul>
+    <li><b>A1:</b> \(p \to (q \to p)\) — a truth stays true whatever else you assume.
+      <div class="ex"><div><p>"\(2+2=4\)" is true. So "if pigs fly, then \(2+2=4\)" is also true — extra assumptions can't break a truth.</p></div></div></li>
+    <li><b>A2:</b> \(\bigl(p \to (q \to r)\bigr) \to \bigl((p \to q) \to (p \to r)\bigr)\) — lets you re-wire chained if-thens.
+      <div class="ex"><div><p>The bookkeeping rule for nested "if…then"s: it distributes one assumption across a whole chain.</p></div></div></li>
+    <li><b>A3:</b> \((\neg q \to \neg p) \to (p \to q)\) — contrapositive reasoning is legal.
+      <div class="ex"><div><p>Prove "no smoke \(\to\) no fire", and you've proven "fire \(\to\) smoke."</p></div></div></li>
+  </ul>
+
+  <h3>The One Inference Rule</h3>
+  <ul>
+    <li><b>Modus ponens</b> — from \(p\) and \(p \to q\), conclude \(q\).
+      <div class="ex"><div><p>"If it rains, streets get wet. It's raining. Therefore: streets are wet."</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — Derived Rules</h3>
+  <ul>
+    <li><b>Deduction theorem:</b> \(\Gamma \cup \{p\} \vdash q\) if and only if \(\Gamma \vdash p \to q\).
+      <div class="ex"><div><p>Formal permission for "suppose…, therefore…". Every conditional proof you've ever written leans on this.</p></div></div>
+      <div class="proof"><div><p>(\(\Leftarrow\)) From \(\Gamma \vdash p \to q\) and the assumption \(p\), modus ponens gives \(q\). (\(\Rightarrow\)) Induct on the length of the derivation of \(q\). If \(q\) is an axiom or lies in \(\Gamma\), then A1 gives \(q \to (p \to q)\) and modus ponens yields \(p \to q\). If \(q\) is \(p\) itself, \(\vdash p \to p\) is a theorem (below). If \(q\) came by modus ponens from \(r\) and \(r \to q\), the induction hypothesis gives \(\Gamma \vdash p \to r\) and \(\Gamma \vdash p \to (r \to q)\); A2 plus two applications of modus ponens deliver \(\Gamma \vdash p \to q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Identity:</b> \(\vdash p \to p\).
+      <div class="ex"><div><p>The most boring true thing — but it has to be <em>earned</em> from the three axioms, not assumed.</p></div></div>
+      <div class="proof"><div><p>Instantiate A2 with \(q := (p \to p)\) and \(r := p\): \(\bigl(p \to ((p\to p) \to p)\bigr) \to \bigl((p \to (p \to p)) \to (p \to p)\bigr)\). Its antecedent is A1 with \(q := (p\to p)\), so modus ponens leaves \((p \to (p\to p)) \to (p \to p)\). The remaining antecedent is A1 again, so a second modus ponens gives \(p \to p\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Modus tollens:</b> from \(p \to q\) and \(\neg q\), conclude \(\neg p\).
+      <div class="ex"><div><p>"If it rained, the ground would be wet. The ground is dry. So it didn't rain."</p></div></div>
+      <div class="proof"><div><p>By the contrapositive law, \(p \to q \equiv \neg q \to \neg p\). From \(\neg q\) and \(\neg q \to \neg p\), modus ponens gives \(\neg p\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Hypothetical syllogism:</b> from \(p \to q\) and \(q \to r\), conclude \(p \to r\).
+      <div class="ex"><div><p>"Rain \(\to\) wet roads. Wet roads \(\to\) slippery. Therefore rain \(\to\) slippery."</p></div></div>
+      <div class="proof"><div><p>Assume \(p\). Modus ponens with \(p \to q\) gives \(q\); modus ponens with \(q \to r\) gives \(r\). Discharging the assumption by the deduction theorem yields \(p \to r\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Disjunctive syllogism:</b> from \(p \lor q\) and \(\neg p\), conclude \(q\).
+      <div class="ex"><div><p>"The keys are in my coat or on the table. Not in my coat. So: on the table."</p></div></div>
+      <div class="proof"><div><p>\(p \lor q \equiv \neg p \to q\) (implication as disjunction, with \(\neg\neg p \equiv p\)). Modus ponens with \(\neg p\) gives \(q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Constructive dilemma:</b> from \(p \to r\), \(q \to r\) and \(p \lor q\), conclude \(r\).
+      <div class="ex"><div><p>"Rain or shine, the match is on." You needn't know which — the conclusion is the same either way.</p></div></div>
+      <div class="proof"><div><p>Suppose \(\neg r\). Modus tollens on \(p \to r\) gives \(\neg p\); disjunctive syllogism with \(p \lor q\) gives \(q\); modus ponens on \(q \to r\) gives \(r\) — contradicting \(\neg r\). Hence \(r\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Resolution:</b> from \(p \lor q\) and \(\neg p \lor r\), conclude \(q \lor r\).
+      <div class="ex"><div><p>The single rule automated provers run on: cancel a letter against its negation and merge what's left.</p></div></div>
+      <div class="proof"><div><p>Take any row. Either \(p\) is T or F. If T, then \(\neg p\) is F, so \(\neg p \lor r\) forces \(r\); if F, then \(p \lor q\) forces \(q\). Either way \(q \lor r\) is T in every row where both premises are. \(\blacksquare\)</p></div></div></li>
+    <li><b>Simplification &amp; conjunction:</b> from \(p \land q\) conclude \(p\); from \(p\) and \(q\) conclude \(p \land q\).
+      <div class="ex"><div><p>Unpack a pair, or pack two facts into one.</p></div></div>
+      <div class="proof"><div><p>Semantically both are immediate: any row making \(p \land q\) true makes \(p\) true; any row making \(p\) and \(q\) separately true makes \(p \land q\) true. By completeness (below) each is also derivable. \(\blacksquare\)</p></div></div></li>
+    <li><b>Addition:</b> from \(p\) conclude \(p \lor q\), for any \(q\).
+      <div class="ex"><div><p>"I have a cat" \(\Rightarrow\) "I have a cat or a helicopter." Weaker, but true.</p></div></div>
+      <div class="proof"><div><p>\(p \lor q\) is F only when both are F; a row with \(p\) true is never such a row. \(\blacksquare\)</p></div></div></li>
+    <li><b>Ex falso quodlibet:</b> from a contradiction, anything follows: \(p \land \neg p \vdash q\).
+      <div class="ex"><div><p>One inconsistency and the whole rulebook is worthless — it now proves everything, so it proves nothing useful.</p></div></div>
+      <div class="proof"><div><p>From \(p \land \neg p\), simplification gives \(p\) and \(\neg p\). Addition on \(p\) gives \(p \lor q\); disjunctive syllogism with \(\neg p\) gives \(q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Reductio ad absurdum:</b> if \(\Gamma \cup \{\neg p\}\) is inconsistent, then \(\Gamma \vdash p\).
+      <div class="ex"><div><p>Assume the opposite, hit a wall, and the original claim stands.</p></div></div>
+      <div class="proof"><div><p>Inconsistency gives \(\Gamma \cup \{\neg p\} \vdash q\) and \(\vdash \neg q\) for some \(q\). The deduction theorem turns the first into \(\Gamma \vdash \neg p \to q\); contraposition gives \(\Gamma \vdash \neg q \to p\), and modus ponens with \(\neg q\) yields \(p\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Soundness theorem:</b> if \(\Gamma \vdash \varphi\) then \(\Gamma \models \varphi\).
+      <div class="ex"><div><p>The machine never prints a lie: every legal move preserves truth.</p></div></div>
+      <div class="proof"><div><p>Induct on the derivation. Each axiom schema A1–A3 is a tautology (check its truth table), so it is true in every row. Modus ponens preserves truth: in a row where \(p\) and \(p \to q\) are both T, \(q\) must be T, else \(p \to q\) would be F. Every line of the derivation is therefore true in every row satisfying \(\Gamma\) — in particular the last one. \(\blacksquare\)</p></div></div></li>
+    <li><b>Completeness theorem (propositional):</b> if \(\Gamma \models \varphi\) then \(\Gamma \vdash \varphi\).
+      <div class="ex"><div><p>Nothing true is out of reach: if it holds in every possible world, some finite proof gets there.</p></div></div>
+      <div class="proof"><div><p>Sketch: it suffices to show every consistent set \(\Gamma\) has a satisfying row (then \(\Gamma \nvdash \varphi\) gives a consistent \(\Gamma \cup \{\neg\varphi\}\), hence a row where \(\Gamma\) holds and \(\varphi\) fails, i.e. \(\Gamma \nmodels \varphi\)). Extend \(\Gamma\) by Lindenbaum's construction — run through all formulas, adding each one whose addition keeps consistency — to a maximal consistent \(\Gamma^{*}\). Setting each variable T exactly when it lies in \(\Gamma^{*}\) satisfies every member of \(\Gamma^{*}\), by induction over connectives using maximality. \(\blacksquare\)</p></div></div></li>
+    <li><b>Compactness (propositional):</b> a set of formulas is satisfiable iff every finite subset is.
+      <div class="ex"><div><p>If every finite handful of demands can be met, the whole infinite list can be met at once.</p></div></div>
+      <div class="proof"><div><p>One direction is trivial. For the other: if \(\Gamma\) is unsatisfiable then \(\Gamma \models \bot\), so by completeness \(\Gamma \vdash \bot\). A derivation is a <em>finite</em> list, so it uses only finitely many members of \(\Gamma\); that finite subset already proves \(\bot\) and is therefore unsatisfiable by soundness. \(\blacksquare\)</p></div></div></li>
+    <li><b>Decidability (propositional):</b> whether a propositional formula is a tautology is decidable.
+      <div class="ex"><div><p>Just build the table. Finitely many rows, so the answer always arrives — eventually.</p></div></div>
+      <div class="proof"><div><p>A formula with \(n\) variables has exactly \(2^{n}\) rows. Evaluating each row takes finitely many steps, and by soundness plus completeness "tautology" coincides with "theorem". So the table-building algorithm terminates and answers correctly. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Conditional proof</b> — assume the antecedent, derive the consequent, discharge.
+      <div class="ex"><div><p>"Suppose \(n\) is even… then \(n^2\) is even. Hence: if \(n\) is even, \(n^2\) is even."</p></div></div></li>
+    <li><b>Resolution refutation</b> — negate the goal, convert everything to CNF, resolve until the empty clause appears.
+      <div class="ex"><div><p>How a computer proves things: it doesn't find the truth, it shows the opposite explodes.</p></div></div></li>
+    <li><b>Natural-deduction bookkeeping</b> — introduce and eliminate one connective at a time.
+      <div class="ex"><div><p>To prove "A and B", prove A, prove B, staple. To use "A or B", handle both cases.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Reaching inside</span>
+  <h2 class="ltitle">Predicates &amp; Quantifiers</h2>
+  <p class="ldesc">Talking about <em>all</em> and <em>some</em>, not just this and that.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Predicate</b> \(P(x)\) — a statement with a slot; it becomes true or false once the slot is filled.
+      <div class="ex"><div><p>"\(x\) is left-handed" is neither true nor false until you name someone.</p></div></div></li>
+    <li><b>Arity</b> — how many slots a predicate has: \(P(x)\), \(R(x,y)\), \(S(x,y,z)\).
+      <div class="ex"><div><p>"is tall" takes one person; "is taller than" takes two.</p></div></div></li>
+    <li><b>Domain of discourse</b> — the collection the variables range over.
+      <div class="ex"><div><p>"Everyone is asleep" is a claim about this house, not the planet. The domain matters.</p></div></div></li>
+    <li><b>Universal quantifier</b> \(\forall x\,P(x)\) — "\(P\) holds for every \(x\)".
+      <div class="ex"><div><p>"All the mugs are clean" — one dirty mug and the claim dies.</p></div></div></li>
+    <li><b>Existential quantifier</b> \(\exists x\,P(x)\) — "\(P\) holds for at least one \(x\)".
+      <div class="ex"><div><p>"Some mug is clean" — one clean mug is enough to make it true.</p></div></div></li>
+    <li><b>Unique existence</b> \(\exists! x\,P(x)\) — exactly one.
+      <div class="ex"><div><p>"There's exactly one key that opens this door." One, no more.</p></div></div></li>
+    <li><b>Bound and free variables</b> — a quantifier binds its variable; unbound ones are free.
+      <div class="ex"><div><p>In "\(\forall x\,(x &gt; y)\)", the \(x\) is spoken for, but \(y\) is still an open question waiting for a value.</p></div></div></li>
+    <li><b>Scope</b> — the part of the formula a quantifier governs.
+      <div class="ex"><div><p>Brackets matter: "everyone has a seat" and "there's a seat everyone has" differ only in where the scope ends.</p></div></div></li>
+    <li><b>Sentence</b> — a formula with no free variables, so it has a definite truth value.
+      <div class="ex"><div><p>"\(x\) is asleep" isn't news. "Everyone is asleep" is.</p></div></div></li>
+    <li><b>Nested quantifiers</b> — \(\forall x \exists y\) vs \(\exists y \forall x\); the order changes the meaning.
+      <div class="ex"><div><p>"Everyone has a mother" (true) vs "someone is everyone's mother" (false). Same words, swapped order.</p></div></div></li>
+    <li><b>Relativised quantifier</b> — \(\forall x (A(x) \to P(x))\) and \(\exists x (A(x) \land P(x))\).
+      <div class="ex"><div><p>"All dogs bark" is really "for every thing: if it's a dog, it barks". Note \(\to\) for "all", \(\land\) for "some" — swapping them is the classic blunder.</p></div></div></li>
+    <li><b>Vacuous truth</b> — \(\forall x \in \varnothing\, P(x)\) is true, whatever \(P\) says.
+      <div class="ex"><div><p>"Every unicorn in my kitchen is purple" — true, because there are none to check.</p></div></div></li>
+    <li><b>Counterexample</b> — one \(x\) with \(\neg P(x)\), which kills \(\forall x\,P(x)\).
+      <div class="ex"><div><p>"All swans are white" needed exactly one black swan.</p></div></div></li>
+    <li><b>Witness</b> — one \(x\) with \(P(x)\), which establishes \(\exists x\, P(x)\).
+      <div class="ex"><div><p>To prove "some student passed", produce one passing student.</p></div></div></li>
+    <li><b>Substitution</b> \(\varphi[t/x]\) — replace free \(x\) by the term \(t\), avoiding capture.
+      <div class="ex"><div><p>Rename first if the new name is already taken — otherwise your \(y\) gets swallowed by someone else's \(\forall y\).</p></div></div></li>
+  </ul>
+
+  <h3>Inference Rules for Quantifiers</h3>
+  <ul>
+    <li><b>Universal instantiation</b> — from \(\forall x\, P(x)\), conclude \(P(c)\) for any \(c\) in the domain.
+      <div class="ex"><div><p>"All mugs are clean. This is a mug. So this mug is clean."</p></div></div></li>
+    <li><b>Universal generalisation</b> — if \(P(c)\) is proved for an arbitrary \(c\), conclude \(\forall x\, P(x)\).
+      <div class="ex"><div><p>"Take any triangle — call it \(T\)…" and if you never used anything special about \(T\), you've proved it for all.</p></div></div></li>
+    <li><b>Existential generalisation</b> — from \(P(c)\), conclude \(\exists x\, P(x)\).
+      <div class="ex"><div><p>You found one clean mug, so "some mug is clean" is settled.</p></div></div></li>
+    <li><b>Existential instantiation</b> — from \(\exists x\, P(x)\), name a fresh \(c\) with \(P(c)\).
+      <div class="ex"><div><p>"Someone left this note — call them \(c\)." The name must be brand new, or you'd smuggle in facts about a known person.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — Quantifier Laws</h3>
+  <ul>
+    <li><b>Quantifier negation:</b> \(\neg\forall x\, P(x) \equiv \exists x\, \neg P(x)\) and \(\neg \exists x\, P(x) \equiv \forall x\, \neg P(x)\).
+      <div class="ex"><div><p>"Not everyone came" = "someone didn't". "Nobody came" = "everyone didn't".</p></div></div>
+      <div class="proof"><div><p>\(\forall x\,P(x)\) is false in a structure exactly when some element fails \(P\), i.e. exactly when \(\exists x\,\neg P(x)\) holds — so the two formulas have the same truth value in every structure. The second law is the first applied to \(\neg P\), with double negation cancelled. (For finite domains it is literally De Morgan: \(\forall\) is a long \(\land\), \(\exists\) a long \(\lor\).) \(\blacksquare\)</p></div></div></li>
+    <li><b>Distribution over \(\land\) and \(\lor\):</b> \(\forall x (P \land Q) \equiv \forall x P \land \forall x Q\); \(\exists x (P \lor Q) \equiv \exists x P \lor \exists x Q\).
+      <div class="ex"><div><p>"All the mugs are clean and dry" = "all are clean, and all are dry."</p></div></div>
+      <div class="proof"><div><p>If every element satisfies both \(P\) and \(Q\), then every element satisfies \(P\) and every element satisfies \(Q\), and conversely — so the \(\forall\) law holds. Dually, a witness for \(P \lor Q\) is a witness for \(P\) or a witness for \(Q\), and either kind of witness gives one for \(P \lor Q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>One-way distribution:</b> \(\forall x P \lor \forall x Q \models \forall x (P \lor Q)\), and \(\exists x (P \land Q) \models \exists x P \land \exists x Q\) — the converses fail.
+      <div class="ex"><div><p>Every number is even or odd \(\checkmark\), but it is not the case that all are even or all are odd \(\times\).</p></div></div>
+      <div class="proof"><div><p>If all elements satisfy \(P\) (or all satisfy \(Q\)) then certainly each satisfies \(P \lor Q\). A single witness of \(P \land Q\) witnesses \(P\) and witnesses \(Q\). For the failures: on the domain \(\{1,2\}\) with \(P = \)"is 1", \(Q = \)"is 2", \(\forall x (P \lor Q)\) is true while neither \(\forall x P\) nor \(\forall x Q\) is; and \(\exists x P \land \exists x Q\) is true while \(\exists x (P \land Q)\) is false. \(\blacksquare\)</p></div></div></li>
+    <li><b>Quantifier commutation:</b> like quantifiers commute; \(\exists x \forall y\, R \models \forall y \exists x\, R\), never the reverse.
+      <div class="ex"><div><p>"Someone loves everyone" \(\Rightarrow\) "everyone is loved by someone". The reverse would make one person love the world.</p></div></div>
+      <div class="proof"><div><p>Suppose \(\exists x \forall y\, R(x,y)\) and fix such an \(a\), so \(R(a,y)\) holds for every \(y\). Given any \(y\), the element \(a\) witnesses \(\exists x\, R(x,y)\); hence \(\forall y \exists x\, R(x,y)\). For the failure of the converse take the domain \(\mathbb{N}\) with \(R(x,y) := (x &gt; y)\): every \(y\) has some larger \(x\), but no single \(x\) exceeds every \(y\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Vacuous quantification:</b> if \(x\) is not free in \(\varphi\), then \(\forall x\, \varphi \equiv \varphi \equiv \exists x\, \varphi\) (non-empty domain).
+      <div class="ex"><div><p>"For every person, the sky is blue" says only that the sky is blue.</p></div></div>
+      <div class="proof"><div><p>The truth of \(\varphi\) does not depend on the value assigned to \(x\), so either \(\varphi\) holds for every assignment or for none. In the first case both quantified forms are true, in the second both are false — provided the domain is non-empty, so that "every" and "some" have something to range over. \(\blacksquare\)</p></div></div></li>
+    <li><b>Renaming bound variables (\(\alpha\)-equivalence):</b> \(\forall x\, P(x) \equiv \forall y\, P(y)\) for a fresh \(y\).
+      <div class="ex"><div><p>"Every \(x\) is mortal" and "every \(y\) is mortal" say the same thing — the letter is scaffolding.</p></div></div>
+      <div class="proof"><div><p>Satisfaction of \(\forall x\,P(x)\) is defined by ranging over all values assigned to the bound slot, and the name of that slot is never consulted. Since \(y\) is fresh, no free occurrence is captured by the rename, so the two formulas are satisfied by exactly the same structures and assignments. \(\blacksquare\)</p></div></div></li>
+    <li><b>Unique existence unpacked:</b> \(\exists! x\, P(x) \equiv \exists x\bigl(P(x) \land \forall y\,(P(y) \to y = x)\bigr)\).
+      <div class="ex"><div><p>"Exactly one key fits" = "this key fits, and any key that fits is this one."</p></div></div>
+      <div class="proof"><div><p>If exactly one element satisfies \(P\), call it \(a\): then \(P(a)\) holds, and any \(y\) with \(P(y)\) must equal \(a\) — giving the right-hand side. Conversely, the right-hand side supplies an \(a\) with \(P(a)\) (existence) and forces every \(P\)-element to equal \(a\) (uniqueness). \(\blacksquare\)</p></div></div></li>
+    <li><b>Prenex normal form:</b> every formula is equivalent to one with all quantifiers in front.
+      <div class="ex"><div><p>Tidy the sentence so every "for all" and "there exists" lines up at the door, and the plain formula follows behind.</p></div></div>
+      <div class="proof"><div><p>Rename bound variables so all are distinct (\(\alpha\)-equivalence). Then push quantifiers outward with the equivalences above: \(\neg\forall x\,\varphi \equiv \exists x\,\neg\varphi\), and — when \(x\) is not free in \(\psi\) — \((\forall x\,\varphi) \land \psi \equiv \forall x(\varphi \land \psi)\), \((\forall x \varphi) \to \psi \equiv \exists x(\varphi \to \psi)\), and their duals. Each step strictly reduces the number of connectives sitting above a quantifier, so the process terminates in prenex form. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Prove \(\forall\) by arbitrary element</b> — "let \(x\) be arbitrary" and never use anything special about it.
+      <div class="ex"><div><p>Pick <em>any</em> mug, show it's clean using nothing but "it's a mug".</p></div></div></li>
+    <li><b>Prove \(\exists\) by exhibiting a witness</b> — hand over one example.
+      <div class="ex"><div><p>"There's an even prime." Here: 2. Done.</p></div></div></li>
+    <li><b>Disprove \(\forall\) by counterexample</b> — one failure is enough.
+      <div class="ex"><div><p>"Every prime is odd" dies at 2.</p></div></div></li>
+    <li><b>Disprove \(\exists\) by proving \(\forall \neg\)</b> — show every candidate fails.
+      <div class="ex"><div><p>"No even number above 2 is prime" — because every one has 2 as a factor.</p></div></div></li>
+    <li><b>Negate a statement mechanically</b> — walk left to right, flipping \(\forall \leftrightarrow \exists\) and negating the tail.
+      <div class="ex"><div><p>Negating "\(\forall \varepsilon \exists N \forall n &gt; N: |a_n - L| &lt; \varepsilon\)" gives "\(\exists \varepsilon \forall N \exists n &gt; N: |a_n - L| \ge \varepsilon\)". Pure bookkeeping — and the whole of Chapter 3 runs on it.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Meaning</span>
+  <h2 class="ltitle">First-Order Logic &amp; Models</h2>
+  <p class="ldesc">A language, the worlds it can describe, and the gap between them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Signature (language)</b> — the chosen constant, function and relation symbols.
+      <div class="ex"><div><p>For arithmetic: \(0, 1, +, \times, &lt;\). Nothing else is allowed to appear.</p></div></div></li>
+    <li><b>Term</b> — a name built from variables, constants and function symbols.
+      <div class="ex"><div><p>\(x + (1 \times y)\) is a term. It names something; it doesn't claim anything.</p></div></div></li>
+    <li><b>Atomic formula</b> — a relation symbol applied to terms, e.g. \(t_1 &lt; t_2\) or \(t_1 = t_2\).
+      <div class="ex"><div><p>The smallest complete sentence: "\(2 &lt; 3\)". Everything else is built from these.</p></div></div></li>
+    <li><b>Structure (model)</b> — a non-empty set plus an actual meaning for every symbol.
+      <div class="ex"><div><p>The symbols are a script; a structure is a cast that performs it. \(+\) could mean addition here, and "mix paint" there.</p></div></div></li>
+    <li><b>Assignment &amp; satisfaction</b> \(\mathcal{M} \models \varphi[a]\) — the structure makes \(\varphi\) true when \(x\) is given the value \(a\).
+      <div class="ex"><div><p>Fill in the blanks with real objects, then read the sentence and see if it's true.</p></div></div></li>
+    <li><b>Theory</b> — a set of sentences, usually the axioms of some subject.
+      <div class="ex"><div><p>Group theory is three sentences. Anything satisfying them is a group.</p></div></div></li>
+    <li><b>Model of a theory</b> — a structure making every sentence of the theory true.
+      <div class="ex"><div><p>The integers under \(+\) are a model of the group axioms; the integers under \(\times\) are not.</p></div></div></li>
+    <li><b>Validity</b> \(\models \varphi\) — true in every structure.
+      <div class="ex"><div><p>"Everything equals itself." No cast can perform that badly.</p></div></div></li>
+    <li><b>Logical consequence</b> \(\Gamma \models \varphi\) — every model of \(\Gamma\) is a model of \(\varphi\).
+      <div class="ex"><div><p>If the axioms hold, this holds — in every world, without exception.</p></div></div></li>
+    <li><b>Elementary equivalence</b> — two structures satisfying exactly the same sentences.
+      <div class="ex"><div><p>Two casts giving indistinguishable performances: no line of the script can tell them apart.</p></div></div></li>
+    <li><b>Isomorphism</b> — a relabelling that matches structures symbol for symbol.
+      <div class="ex"><div><p>Same building, different language on the signs. Isomorphic \(\Rightarrow\) elementarily equivalent; not conversely.</p></div></div></li>
+    <li><b>Cardinality of a model</b> — how many elements the underlying set has.
+      <div class="ex"><div><p>A theory can't always control this — as the theorems below show, embarrassingly so.</p></div></div></li>
+    <li><b>Complete theory</b> — for every sentence, the theory proves it or proves its negation.
+      <div class="ex"><div><p>A rulebook with an opinion about everything sayable in its own language.</p></div></div></li>
+    <li><b>Axiomatisable theory</b> — the axioms form a list a machine can recognise.
+      <div class="ex"><div><p>You can hand the axioms to a computer. "All true statements about \(\mathbb{N}\)" is not such a list.</p></div></div></li>
+    <li><b>Second-order logic</b> — quantifying over <em>properties</em>, not just elements.
+      <div class="ex"><div><p>"Every property that holds at 0 and passes from \(n\) to \(n+1\) holds everywhere" — induction, said in one sentence. Powerful, but it loses completeness.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms — Equality</h3>
+  <ul>
+    <li><b>Reflexivity:</b> \(\forall x\, (x = x)\).
+      <div class="ex"><div><p>Every mug is the same mug as itself. Boring, and required.</p></div></div></li>
+    <li><b>Substitution (Leibniz):</b> if \(x = y\) then \(\varphi(x) \leftrightarrow \varphi(y)\).
+      <div class="ex"><div><p>If Clark Kent <em>is</em> Superman, anything true of one is true of the other.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — What Models Can and Cannot Do</h3>
+  <ul>
+    <li><b>Symmetry &amp; transitivity of equality:</b> \(x = y \to y = x\), and \(x=y \land y=z \to x=z\).
+      <div class="ex"><div><p>If the keys are the ones on the table, the ones on the table are the keys.</p></div></div>
+      <div class="proof"><div><p>For symmetry, apply substitution to \(\varphi(z) := (z = x)\): from \(x=y\) and \(\varphi(x)\) (which is \(x=x\), reflexivity) we get \(\varphi(y)\), i.e. \(y = x\). For transitivity, apply substitution to \(\varphi(z) := (z = w)\) — from \(x=y\) and \(y=z\) rewriting \(y\) as \(x\) inside \(y = z\) gives \(x = z\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gödel's completeness theorem:</b> \(\Gamma \models \varphi\) if and only if \(\Gamma \vdash \varphi\), for first-order logic.
+      <div class="ex"><div><p>Anything true in every world has a finite, checkable proof. Logic itself is not the bottleneck.</p></div></div>
+      <div class="proof"><div><p>Sketch: soundness is the easy direction (induct on derivations, as in Layer 2). For the converse it suffices to show every consistent theory has a model. Extend the language with infinitely many new constants and add a <em>Henkin witness</em> \(\exists x\,\varphi(x) \to \varphi(c_\varphi)\) for each existential sentence, keeping consistency; extend to a maximal consistent set. Build a structure whose elements are the closed terms modulo provable equality, interpreting each symbol by itself. Induction on formula complexity shows this structure satisfies exactly the sentences in the maximal set — in particular all of \(\Gamma\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Compactness theorem:</b> if every finite subset of \(\Gamma\) has a model, so does \(\Gamma\).
+      <div class="ex"><div><p>Satisfy every finite handful of demands and you can satisfy them all at once — which is how "infinitely large" objects get conjured up.</p></div></div>
+      <div class="proof"><div><p>If \(\Gamma\) had no model, then \(\Gamma \models \bot\), so by completeness \(\Gamma \vdash \bot\). A derivation is a finite object and uses only finitely many premises, so some finite \(\Gamma_0 \subseteq \Gamma\) already has \(\Gamma_0 \vdash \bot\); by soundness \(\Gamma_0\) has no model — contradicting the hypothesis. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — non-standard models:</b> any theory with arbitrarily large finite models has an infinite model.
+      <div class="ex"><div><p>Arithmetic cannot rule out extra "infinitely large" numbers hiding beyond every ordinary one.</p></div></div>
+      <div class="proof"><div><p>Add sentences \(\lambda_n\) saying "there exist at least \(n\) distinct elements", for every \(n\). Any finite subset of \(\Gamma \cup \{\lambda_n\}\) mentions only finitely many \(\lambda_n\), so a sufficiently large finite model of \(\Gamma\) satisfies it. Compactness then gives a model of the whole set, which must be infinite. \(\blacksquare\)</p></div></div></li>
+    <li><b>Löwenheim–Skolem (downward):</b> a theory with an infinite model has a countable model.
+      <div class="ex"><div><p>Set theory itself has a countable model — even though it proves uncountable sets exist. (Skolem's paradox: "uncountable" is judged from inside.)</p></div></div>
+      <div class="proof"><div><p>Sketch: the Henkin construction in the completeness proof builds its model out of closed terms of a language enlarged by countably many constants; there are only countably many such terms, so the resulting model is countable. Alternatively, take an elementary substructure generated by countably many elements using Skolem functions. \(\blacksquare\)</p></div></div></li>
+    <li><b>Löwenheim–Skolem (upward):</b> a theory with an infinite model has models of every larger cardinality.
+      <div class="ex"><div><p>No first-order theory can pin down "how many things there are", once there are infinitely many.</p></div></div>
+      <div class="proof"><div><p>Add a fresh constant \(c_i\) for each \(i\) in a set of the desired size, plus the sentences \(c_i \neq c_j\) for \(i \neq j\). Every finite subset mentions finitely many constants and can be satisfied inside the given infinite model by interpreting them as distinct elements. Compactness yields a model of the whole set, which therefore has at least that many elements. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — no categorical first-order theory of \(\mathbb{N}\):</b> arithmetic has models not isomorphic to \(\mathbb{N}\).
+      <div class="ex"><div><p>You can write down the rules of counting, but not a description that only the real counting numbers fit.</p></div></div>
+      <div class="proof"><div><p>By upward Löwenheim–Skolem the theory of \(\mathbb{N}\) has uncountable models, and \(\mathbb{N}\) is countable, so those cannot be isomorphic to it. (Even countably, compactness applied to \(\{c &gt; \underline{n} : n \in \mathbb{N}\}\) produces a model with an element exceeding every numeral.) \(\blacksquare\)</p></div></div></li>
+    <li><b>Undecidability of first-order validity (Church–Turing):</b> no algorithm decides whether an arbitrary first-order sentence is valid.
+      <div class="ex"><div><p>Proofs can always be <em>checked</em> mechanically. Finding them cannot always be mechanised.</p></div></div>
+      <div class="proof"><div><p>Sketch: encode the run of a Turing machine as a first-order sentence \(\sigma_M\) whose validity is equivalent to "\(M\) halts on empty input". A decision procedure for validity would then decide the halting problem, which is impossible (Layer 7). Validity is however <em>semi</em>-decidable: by completeness, enumerate all derivations and you will eventually find one if it exists. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Build a counter-model</b> — to show \(\varphi\) is not a consequence, exhibit one structure where the premises hold and \(\varphi\) fails.
+      <div class="ex"><div><p>Two elements and a well-chosen relation usually suffice to kill a false-looking claim.</p></div></div></li>
+    <li><b>Compactness argument</b> — describe the impossible object with finitely-satisfiable sentences, then let compactness deliver it.
+      <div class="ex"><div><p>The standard trick for producing infinite or non-standard objects out of thin air.</p></div></div></li>
+    <li><b>Formalise, then check</b> — write the claim in symbols before arguing about it.
+      <div class="ex"><div><p>"Everyone loves someone" is ambiguous in English and razor-sharp in \(\forall x \exists y\, L(x,y)\).</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · The craft</span>
+  <h2 class="ltitle">Methods of Proof</h2>
+  <p class="ldesc">Every standard way a mathematician actually gets from assumption to conclusion.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Theorem</b> — a proved statement of importance.
+      <div class="ex"><div><p>The headline result. Pythagoras gets one; "2 is even" doesn't.</p></div></div></li>
+    <li><b>Proposition</b> — a proved statement of ordinary importance.
+      <div class="ex"><div><p>Useful, true, not famous. Most of a textbook is propositions.</p></div></div></li>
+    <li><b>Lemma</b> — a small result proved to serve a larger one.
+      <div class="ex"><div><p>The stepladder you build to reach the shelf; sometimes (Zorn's lemma) the ladder outlives the shelf.</p></div></div></li>
+    <li><b>Corollary</b> — a result that falls out of a theorem with little extra work.
+      <div class="ex"><div><p>The change left on the counter after the big purchase.</p></div></div></li>
+    <li><b>Conjecture</b> — believed but unproved; not a takeaway.
+      <div class="ex"><div><p>Goldbach's: every even number above 2 is a sum of two primes. Checked past \(4 \times 10^{18}\), still not proved.</p></div></div></li>
+    <li><b>Axiom</b> — assumed without proof, the starting point.
+      <div class="ex"><div><p>The rules of the game. You may change them, but not skip them.</p></div></div></li>
+    <li><b>Hypothesis &amp; conclusion</b> — the "if" and the "then" of the statement being proved.
+      <div class="ex"><div><p>Always write both down before starting. Half of all stuck proofs are proofs of the wrong statement.</p></div></div></li>
+    <li><b>Converse error</b> — proving \(q \to p\) when \(p \to q\) was asked.
+      <div class="ex"><div><p>"All dogs are animals" doesn't give "all animals are dogs" — and it's the most common slip in a hurry.</p></div></div></li>
+    <li><b>Circular reasoning</b> — using the conclusion, or something equivalent to it, as a step.
+      <div class="ex"><div><p>"The bus is late because it hasn't arrived." True, useless.</p></div></div></li>
+  </ul>
+
+  <h3>Methods — Direct Approaches</h3>
+  <ul>
+    <li><b>Direct proof</b> — assume the hypothesis, deduce the conclusion by legal steps.
+      <div class="ex"><div><p>\(n\) even means \(n = 2k\), so \(n^2 = 4k^2 = 2(2k^2)\) — even. Straight line, no tricks.</p></div></div></li>
+    <li><b>Proof by contraposition</b> — prove \(\neg q \to \neg p\) instead of \(p \to q\).
+      <div class="ex"><div><p>To show "\(n^2\) even \(\Rightarrow\) \(n\) even", show instead "\(n\) odd \(\Rightarrow\) \(n^2\) odd". Far easier, and logically identical.</p></div></div></li>
+    <li><b>Proof by contradiction (reductio)</b> — assume \(\neg p\), derive an absurdity, conclude \(p\).
+      <div class="ex"><div><p>Suppose \(\sqrt{2} = a/b\) in lowest terms; you find \(a\) and \(b\) are both even. Lowest terms broken — so no such fraction exists.</p></div></div></li>
+    <li><b>Proof by cases (exhaustion)</b> — split into finitely many possibilities and settle each.
+      <div class="ex"><div><p>Every integer is even or odd. Prove it for both, and you've proved it for all.</p></div></div></li>
+    <li><b>Trivial proof</b> — the conclusion is true regardless of the hypothesis.
+      <div class="ex"><div><p>"If it rains, \(1 = 1\)." No work needed on the "if".</p></div></div></li>
+    <li><b>Vacuous proof</b> — the hypothesis is never satisfied, so the implication holds.
+      <div class="ex"><div><p>"Every element of the empty set is purple." Nothing to check, nothing to fail.</p></div></div></li>
+    <li><b>Biconditional proof</b> — prove both directions of an "iff" separately.
+      <div class="ex"><div><p>Two one-way streets make a two-way street. Skip one and you've proved half a theorem.</p></div></div></li>
+    <li><b>Chain of equivalences</b> — transform the statement by reversible steps until it is obviously true.
+      <div class="ex"><div><p>Every step must be an \(\iff\), not a \(\Rightarrow\) — squaring both sides is the classic way to break the chain.</p></div></div></li>
+    <li><b>Cyclic proof of equivalences</b> — for "(i), (ii), (iii) are equivalent", prove (i)\(\Rightarrow\)(ii)\(\Rightarrow\)(iii)\(\Rightarrow\)(i).
+      <div class="ex"><div><p>Three implications instead of six. Chapter 2's Choice–Zorn–Well-ordering cycle is exactly this.</p></div></div></li>
+    <li><b>Forward–backward method</b> — work forward from the hypothesis and backward from the goal until the two meet.
+      <div class="ex"><div><p>Digging a tunnel from both ends. Most real proofs are found this way and written up as if they were found forward.</p></div></div></li>
+    <li><b>Reduction to a known theorem</b> — massage the problem until an existing result applies.
+      <div class="ex"><div><p>Most of mathematics is recognising an old friend wearing a new hat.</p></div></div></li>
+  </ul>
+
+  <h3>Methods — Existence &amp; Uniqueness</h3>
+  <ul>
+    <li><b>Constructive existence proof</b> — build the object, or give an algorithm that does.
+      <div class="ex"><div><p>"There's a number whose square is 16." Here: 4.</p></div></div></li>
+    <li><b>Non-constructive existence proof</b> — show that "no such object" leads to absurdity, without producing one.
+      <div class="ex"><div><p>Proving somebody in the room shares your birthday, without ever finding out who.</p></div></div></li>
+    <li><b>Proof by construction</b> — define the object explicitly and verify it has the required properties.
+      <div class="ex"><div><p>Chapter 2 builds \(\mathbb{Z}\) out of pairs of naturals and then checks the arithmetic works.</p></div></div></li>
+    <li><b>Uniqueness proof</b> — assume two objects \(a, b\) both work, then show \(a = b\).
+      <div class="ex"><div><p>"Suppose two keys open the door…" and grind until they turn out to be the same key.</p></div></div></li>
+    <li><b>Counterexample</b> — one instance that kills a universal claim.
+      <div class="ex"><div><p>"All primes are odd" — 2. Nothing more is required.</p></div></div></li>
+    <li><b>Probabilistic method</b> — show a random choice succeeds with positive probability, so a successful one exists.
+      <div class="ex"><div><p>If more than zero percent of lottery tickets win, a winning ticket exists — even if you never find it.</p></div></div></li>
+    <li><b>Averaging argument</b> — some element is at least as good as the average.
+      <div class="ex"><div><p>If the class average is 60, somebody scored 60 or more. Guaranteed.</p></div></div></li>
+  </ul>
+
+  <h3>Methods — Counting &amp; Structure</h3>
+  <ul>
+    <li><b>Pigeonhole principle</b> — \(n+1\) objects in \(n\) boxes force a shared box.
+      <div class="ex"><div><p>13 people, 12 months: two share a birth month. No cleverness, no exceptions.</p></div></div></li>
+    <li><b>Generalised pigeonhole</b> — \(N\) objects in \(k\) boxes force a box with at least \(\lceil N/k \rceil\).
+      <div class="ex"><div><p>100 socks, 3 drawers: one drawer holds at least 34.</p></div></div></li>
+    <li><b>Double counting</b> — count one set two ways and equate the answers.
+      <div class="ex"><div><p>Count handshakes per person, then per handshake: the totals must agree, and an identity pops out.</p></div></div></li>
+    <li><b>Bijective proof</b> — exhibit a one-to-one pairing to prove two counts are equal.
+      <div class="ex"><div><p>Every chair taken, nobody standing: the crowd and the chairs match without counting either.</p></div></div></li>
+    <li><b>Diagonalisation</b> — build an object differing from every item on a supposed complete list.
+      <div class="ex"><div><p>Take everyone's list and answer differently from the \(n\)-th person on the \(n\)-th question. Your answers are on nobody's list.</p></div></div></li>
+    <li><b>Extremal principle</b> — take the largest, smallest or first object with a property and squeeze it.
+      <div class="ex"><div><p>"Take the shortest path…" — if it could be shortened, it wasn't the shortest.</p></div></div></li>
+    <li><b>Invariant argument</b> — find a quantity no legal move changes, then show the target differs.
+      <div class="ex"><div><p>A move always flips two lights at once, so the parity of "lights on" never changes — an odd target is unreachable.</p></div></div></li>
+    <li><b>Monovariant argument</b> — find a quantity that only ever decreases, so the process must stop.
+      <div class="ex"><div><p>Every swap moves the biggest book one shelf left; there are finitely many shelves, so the shuffling ends.</p></div></div></li>
+    <li><b>Parity argument</b> — track odd/even.
+      <div class="ex"><div><p>A knight always moves from a white square to a black one, so it can't return home in an odd number of moves.</p></div></div></li>
+    <li><b>Symmetry &amp; "without loss of generality"</b> — treat one case, noting the others are relabellings.
+      <div class="ex"><div><p>"WLOG \(a \le b\)" — legitimate only when swapping the names really does leave the problem unchanged.</p></div></div></li>
+    <li><b>Duality</b> — prove one statement, get its mirror image free.
+      <div class="ex"><div><p>Layer 1's duality principle: every \(\land\)-law comes with an \(\lor\)-law you never had to prove.</p></div></div></li>
+    <li><b>Generalisation &amp; specialisation</b> — prove a stronger, cleaner statement, then read off the case you wanted.
+      <div class="ex"><div><p>Often the general theorem is easier: the extra letters stop you leaning on accidental features of one case.</p></div></div></li>
+    <li><b>Computer-assisted exhaustion</b> — reduce to finitely many cases and check them mechanically.
+      <div class="ex"><div><p>The four-colour theorem: 1,834 configurations, checked by machine. Still a proof — just not one you can read over coffee.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — Two Method Guarantees</h3>
+  <ul>
+    <li><b>Pigeonhole principle:</b> if \(f : A \to B\) with \(|A| &gt; |B|\) finite, then \(f\) is not injective.
+      <div class="ex"><div><p>Ten letters, nine pigeonholes: some hole has two letters. The whole content is that you can't fit ten into nine.</p></div></div>
+      <div class="proof"><div><p>Suppose \(f\) were injective. Then \(f\) is a bijection from \(A\) onto \(f(A) \subseteq B\), so \(|A| = |f(A)| \le |B|\), contradicting \(|A| &gt; |B|\). Hence some \(b \in B\) has two distinct preimages. For the generalised form: if every one of the \(k\) boxes held fewer than \(\lceil N/k\rceil\) items, the total would be at most \(k(\lceil N/k \rceil - 1) &lt; N\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Validity of contradiction and contraposition:</b> both methods are logically legitimate.
+      <div class="ex"><div><p>Reassurance that the two most-used tricks in the book aren't cheating.</p></div></div>
+      <div class="proof"><div><p>Contraposition: \((p \to q) \equiv (\neg q \to \neg p)\) by Layer 1, so a proof of one <em>is</em> a proof of the other. Contradiction: if \(\Gamma \cup \{\neg p\}\) proves some \(q\) and \(\neg q\), then by Layer 2's reductio \(\Gamma \vdash p\); semantically, no row satisfies \(\Gamma\) and \(\neg p\) at once, so every row satisfying \(\Gamma\) satisfies \(p\), i.e. \(\Gamma \models p\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 6 ============ -->
+<section class="layer" id="L6">
+  <span class="chapter">Layer 6 · Infinitely many cases</span>
+  <h2 class="ltitle">Induction &amp; Recursion</h2>
+  <p class="ldesc">Proving and defining over an endless list — one domino at a time. (\(\mathbb{N}\) itself is built in Chapter 2; here we record the shape of the argument.)</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Base case</b> — the statement checked at the starting value.
+      <div class="ex"><div><p>Tipping the first domino. Skip it and the whole line just stands there.</p></div></div></li>
+    <li><b>Inductive step</b> — the proof that each case forces the next.
+      <div class="ex"><div><p>"Every domino is close enough to knock over the one after it."</p></div></div></li>
+    <li><b>Inductive hypothesis</b> — the assumed case \(P(n)\) inside the step.
+      <div class="ex"><div><p>You're allowed to assume it — that's not circular, because you only use it to reach the <em>next</em> case.</p></div></div></li>
+    <li><b>Well-ordering</b> — every non-empty set of naturals has a least element.
+      <div class="ex"><div><p>Any pile of whole numbers has a smallest one. There's no infinite staircase going down.</p></div></div></li>
+    <li><b>Recursive definition</b> — define \(f(0)\) outright and \(f(n+1)\) in terms of \(f(n)\).
+      <div class="ex"><div><p>\(0! = 1\) and \((n+1)! = (n+1)\cdot n!\). Two lines define infinitely many values.</p></div></div></li>
+    <li><b>Structural induction</b> — induction over how an object was built rather than over a number.
+      <div class="ex"><div><p>Prove something about every legal formula by checking the atoms and each way of gluing formulas together.</p></div></div></li>
+    <li><b>Infinite descent</b> — no strictly decreasing infinite sequence of naturals exists.
+      <div class="ex"><div><p>You can't keep taking a smaller whole number forever — the floor at 0 stops you.</p></div></div></li>
+    <li><b>Transfinite induction</b> — the same idea run along the ordinals, with an extra limit case.
+      <div class="ex"><div><p>Dominoes past the end of the line: at each "after all of these" point you must start the chain again. Chapter 2 has the details.</p></div></div></li>
+  </ul>
+
+  <h3>Axiom</h3>
+  <ul>
+    <li><b>Principle of mathematical induction</b> — if \(P(0)\) and \(\forall n\,(P(n) \to P(n+1))\), then \(\forall n\, P(n)\).
+      <div class="ex"><div><p>First domino falls, each knocks the next — so they all fall. This is an axiom of \(\mathbb{N}\), not a trick.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Induction \(\iff\) well-ordering:</b> the two principles are equivalent over the other axioms of \(\mathbb{N}\).
+      <div class="ex"><div><p>"Dominoes all fall" and "every pile has a smallest" are the same fact wearing two hats.</p></div></div>
+      <div class="proof"><div><p>(WO \(\Rightarrow\) Ind) Suppose \(P(0)\) and \(P(n) \to P(n+1)\), but the set \(S\) of counterexamples is non-empty. By well-ordering it has a least element \(m\). Since \(P(0)\) holds, \(m \neq 0\), so \(m = k+1\) for some \(k &lt; m\); by minimality \(P(k)\) holds, and the step gives \(P(k+1) = P(m)\) — contradiction. (Ind \(\Rightarrow\) WO) Let \(S\) be non-empty with no least element, and let \(Q(n)\) say "no element of \(S\) is \(\le n\)". \(Q(0)\) holds (else 0 would be least), and \(Q(n) \Rightarrow Q(n+1)\) (else \(n+1\) would be least). Induction gives \(Q\) everywhere, so \(S\) is empty. \(\blacksquare\)</p></div></div></li>
+    <li><b>Strong induction:</b> if \(\bigl(\forall k &lt; n\, P(k)\bigr) \to P(n)\) for every \(n\), then \(\forall n\, P(n)\).
+      <div class="ex"><div><p>Every domino is knocked over by <em>all</em> the ones before it, not just its neighbour — handy when a case depends on a much earlier one.</p></div></div>
+      <div class="proof"><div><p>Apply ordinary induction to \(Q(n) := \forall k \le n\, P(k)\). \(Q(0)\) is \(P(0)\), which the hypothesis gives (vacuously, as there is no \(k &lt; 0\)). If \(Q(n)\) holds then \(P(k)\) holds for all \(k \le n\), so the hypothesis applied at \(n+1\) yields \(P(n+1)\), hence \(Q(n+1)\). Ordinary induction gives \(Q(n)\) for all \(n\), and \(P(n)\) follows. \(\blacksquare\)</p></div></div></li>
+    <li><b>Induction from any base:</b> if \(P(b)\) and \(P(n) \to P(n+1)\) for \(n \ge b\), then \(P(n)\) for all \(n \ge b\).
+      <div class="ex"><div><p>"\(2^n &gt; n^2\) for \(n \ge 5\)" — start the dominoes at 5 and ignore the earlier ones, which are false anyway.</p></div></div>
+      <div class="proof"><div><p>Define \(Q(m) := P(b+m)\). Then \(Q(0) = P(b)\) holds, and \(Q(m) \to Q(m+1)\) is exactly the given step at \(n = b+m \ge b\). Ordinary induction gives \(Q(m)\) for all \(m\), i.e. \(P(n)\) for every \(n \ge b\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Recursion theorem:</b> given \(a\) and a function \(g\), there is exactly one \(f\) with \(f(0)=a\) and \(f(n+1) = g(n, f(n))\).
+      <div class="ex"><div><p>The licence to write "define \(f\) by recursion" — someone had to prove such an \(f\) exists and is unique.</p></div></div>
+      <div class="proof"><div><p>Existence: call a finite function \(t\) an <em>attempt</em> if its domain is \(\{0,\dots,k\}\), \(t(0)=a\), and \(t(i+1)=g(i,t(i))\) throughout. Induction on \(k\) shows an attempt of each length exists, and induction shows any two attempts agree wherever both are defined. Let \(f\) be the union of all attempts; it is a function, satisfies both clauses, and is defined at every \(n\). Uniqueness: if \(f, f'\) both satisfy the clauses, then \(f(0)=a=f'(0)\), and \(f(n)=f'(n)\) forces \(f(n+1)=g(n,f(n))=g(n,f'(n))=f'(n+1)\); induction gives \(f=f'\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Structural induction is valid:</b> a property holding of the atoms and preserved by each construction rule holds of every object built.
+      <div class="ex"><div><p>How you prove anything about "all formulas" — including the theorems of Layer 1.</p></div></div>
+      <div class="proof"><div><p>Every constructed object has a finite build history; let \(n\) be its number of construction steps. Strong induction on \(n\): if \(n = 0\) the object is an atom and the base case applies; otherwise it is produced by a rule from objects with fewer steps, which satisfy the property by the inductive hypothesis, so the preservation clause transfers it. \(\blacksquare\)</p></div></div></li>
+    <li><b>Infinite descent:</b> if every solution yields a strictly smaller one, there are no solutions.
+      <div class="ex"><div><p>Fermat's trick: any counterexample would spawn a smaller counterexample forever — impossible among whole numbers.</p></div></div>
+      <div class="proof"><div><p>Suppose a solution exists. The set of natural numbers arising as "sizes" of solutions is non-empty, so by well-ordering it has a least element \(m\) with a corresponding solution. The hypothesis produces a solution of size strictly less than \(m\), contradicting minimality. Hence no solution exists. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Ordinary induction</b> — check the base, assume \(P(n)\), prove \(P(n+1)\).
+      <div class="ex"><div><p>\(1+2+\cdots+n = \tfrac{n(n+1)}{2}\): true at \(n=1\), and adding \(n+1\) to both sides carries it forward.</p></div></div></li>
+    <li><b>Strong induction</b> — assume all smaller cases at once.
+      <div class="ex"><div><p>"Every \(n \ge 2\) is a product of primes": either \(n\) is prime, or \(n = ab\) with both factors smaller — and you already have them.</p></div></div></li>
+    <li><b>Minimal counterexample ("minimal criminal")</b> — assume a smallest failure exists and derive an absurdity.
+      <div class="ex"><div><p>Well-ordering wearing a disguise; often the shortest way to write an induction.</p></div></div></li>
+    <li><b>Double induction</b> — induct on two variables, or on their sum.
+      <div class="ex"><div><p>For a claim about \(m\) and \(n\), run the argument on \(m+n\) so every step lands in an already-proved case.</p></div></div></li>
+    <li><b>Definition by recursion</b> — define the first value, then each from the last.
+      <div class="ex"><div><p>Fibonacci: \(F_0 = 0\), \(F_1 = 1\), \(F_{n+2} = F_{n+1} + F_n\).</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 7 ============ -->
+<section class="layer" id="L7">
+  <span class="chapter">Layer 7 · The ceiling</span>
+  <h2 class="ltitle">The Limits of Logic</h2>
+  <p class="ldesc">What no rulebook — however clever — can do.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Effective (computable) procedure</b> — a finite set of instructions a machine can follow without insight.
+      <div class="ex"><div><p>A recipe with no step reading "and here, be clever".</p></div></div></li>
+    <li><b>Turing machine</b> — the standard formal model of such a procedure.
+      <div class="ex"><div><p>An endless paper tape, one symbol read at a time, a tiny table of rules. Everything a computer can do, it can do.</p></div></div></li>
+    <li><b>Church–Turing thesis</b> — "computable" means exactly "computable by a Turing machine". A definition, not a theorem.
+      <div class="ex"><div><p>Every honest attempt to define "mechanical" landed on the same class. So the name was settled by agreement.</p></div></div></li>
+    <li><b>Gödel numbering</b> — coding formulas and proofs as numbers, so a system can talk about itself.
+      <div class="ex"><div><p>Number every sentence in the library. Now "sentence 4711 is provable" is a fact about numbers.</p></div></div></li>
+    <li><b>Recursively enumerable</b> — a set whose members can be listed by a machine, possibly forever.
+      <div class="ex"><div><p>You'll eventually see every member on the list — but if something's absent you'll wait forever to find out.</p></div></div></li>
+    <li><b>\(\omega\)-consistency</b> — a technical strengthening of consistency used in Gödel's original argument.
+      <div class="ex"><div><p>The system never proves "something has property \(P\)" while also proving "0 doesn't, 1 doesn't, 2 doesn't…" for every numeral. Rosser later weakened this to plain consistency.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems — Metamathematics</h3>
+  <ul>
+    <li><b>Halting problem is undecidable:</b> no program decides whether an arbitrary program halts.
+      <div class="ex"><div><p>Ask a "will it finish?" oracle about a program built to do the opposite of whatever the oracle says. The oracle can't exist.</p></div></div>
+      <div class="proof"><div><p>Suppose \(H(P, x)\) decides whether program \(P\) halts on input \(x\). Define \(D(P)\): if \(H(P,P)\) says "halts", loop forever; otherwise halt. Now run \(D\) on itself. If \(D(D)\) halts, then \(H(D,D)\) said "halts", so \(D\) loops — contradiction. If \(D(D)\) loops, then \(H(D,D)\) said "loops", so \(D\) halts — contradiction. So \(H\) does not exist. \(\blacksquare\)</p></div></div></li>
+    <li><b>Diagonal (fixed-point) lemma:</b> for any property \(\Phi\) of formulas there is a sentence \(G\) with \(\vdash G \leftrightarrow \Phi(\ulcorner G \urcorner)\).
+      <div class="ex"><div><p>Any sentence can be made to talk about itself — the engine behind everything below.</p></div></div>
+      <div class="proof"><div><p>Sketch: substitution of a numeral into a formula is itself a computable operation on Gödel numbers, so it is representable in arithmetic by some formula \(\mathrm{sub}\). Let \(\theta(x) := \exists y\,(\mathrm{sub}(x,x,y) \land \Phi(y))\) and let \(G := \theta(\ulcorner \theta \urcorner)\). Unwinding the definition, \(G\) is provably equivalent to \(\Phi\) applied to its own Gödel number. \(\blacksquare\)</p></div></div></li>
+    <li><b>Gödel's first incompleteness theorem:</b> any consistent, effectively axiomatised system containing arithmetic has true statements it cannot prove.
+      <div class="ex"><div><p>A sentence engineered to say "I am not provable in this system." If it were provable it would be false; so it is true — and unprovable.</p></div></div>
+      <div class="proof"><div><p>Sketch: Gödel-number the syntax so that "\(y\) is a proof of \(x\)" is a computable — hence representable — relation, giving a formula \(\mathrm{Prov}(x)\). By the fixed-point lemma choose \(G\) with \(\vdash G \leftrightarrow \neg\mathrm{Prov}(\ulcorner G\urcorner)\). If the system proved \(G\), a proof would exist, so \(\mathrm{Prov}(\ulcorner G \urcorner)\) would be provable, hence \(\neg G\) too — inconsistency. If it proved \(\neg G\), it would prove \(\mathrm{Prov}(\ulcorner G\urcorner)\) while no actual proof exists, contradicting consistency (Rosser's refinement removes the need for \(\omega\)-consistency). So \(G\) is undecided — and, read in the standard model, true. \(\blacksquare\)</p></div></div></li>
+    <li><b>Gödel's second incompleteness theorem:</b> such a system cannot prove its own consistency.
+      <div class="ex"><div><p>A witness vouching "I never lie" proves nothing. Mathematics can't certify its own sanity from the inside.</p></div></div>
+      <div class="proof"><div><p>Sketch: the whole first-theorem argument can be formalised <em>inside</em> the system, yielding \(\vdash \mathrm{Con} \to G\), where \(\mathrm{Con}\) says "\(0=1\) is not provable". If the system also proved \(\mathrm{Con}\), modus ponens would give \(\vdash G\) — which the first theorem forbids for a consistent system. Hence \(\mathrm{Con}\) is unprovable. \(\blacksquare\)</p></div></div></li>
+    <li><b>Tarski's undefinability theorem:</b> arithmetical truth cannot be defined inside arithmetic.
+      <div class="ex"><div><p>"This sentence is false" isn't just a puzzle — it's a proof that no language can contain its own notion of truth.</p></div></div>
+      <div class="proof"><div><p>Suppose a formula \(\mathrm{True}(x)\) satisfied \(\mathcal{N} \models \varphi \leftrightarrow \mathrm{True}(\ulcorner\varphi\urcorner)\) for every sentence \(\varphi\). The fixed-point lemma applied to \(\neg\mathrm{True}\) produces \(L\) with \(L \leftrightarrow \neg\mathrm{True}(\ulcorner L \urcorner)\) — the liar sentence. Combining the two equivalences gives \(L \leftrightarrow \neg L\), which is false in \(\mathcal{N}\). So no such formula exists, although "provable" <em>is</em> definable — truth and provability come apart. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — provability is weaker than truth:</b> no effective list of axioms captures all truths of arithmetic.
+      <div class="ex"><div><p>Add the missing sentence as a new axiom and the same argument immediately produces another one. The gap never closes.</p></div></div>
+      <div class="proof"><div><p>If an effectively axiomatised consistent theory \(T\) proved exactly the true sentences of arithmetic, it would be complete — contradicting the first incompleteness theorem. Adding \(G\) as an axiom yields a new effective, consistent theory, to which the theorem applies again, producing a fresh undecided sentence. \(\blacksquare\)</p></div></div></li>
+    <li><b>Compactness has a price:</b> no first-order theory has exactly the finite models, nor pins down \(\mathbb{N}\) up to isomorphism.
+      <div class="ex"><div><p>First-order logic is complete and provable-in-practice, but it cannot see the difference between the counting numbers and a stretched imitation. You get one or the other, never both.</p></div></div>
+      <div class="proof"><div><p>If a theory had exactly the finite models, it would have arbitrarily large finite models, so by Layer 4's corollary it would have an infinite model — a contradiction. The \(\mathbb{N}\) claim is Layer 4's non-categoricity corollary. The trade-off is genuine: second-order logic <em>can</em> pin down \(\mathbb{N}\), and correspondingly has no sound, complete, effective proof system. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Self-reference by diagonalisation</b> — feed a machine or formula its own description.
+      <div class="ex"><div><p>One trick, three theorems: Cantor's uncountability, the halting problem, and Gödel's sentence.</p></div></div></li>
+    <li><b>Reduction</b> — show a new problem is undecidable by turning the halting problem into it.
+      <div class="ex"><div><p>"If I could solve yours, I could solve halting. Halting is unsolvable, so yours is too."</p></div></div></li>
+    <li><b>Arithmetisation</b> — encode syntax as numbers so a theory can reason about its own proofs.
+      <div class="ex"><div><p>Turn the rulebook into a number and hand it to the rulebook.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Truth tables</td><td>L1</td><td>Settle an equivalence or a tautology mechanically</td></tr>
+    <tr><td>CNF / DNF conversion</td><td>L1</td><td>Flatten any formula into a checklist or a menu</td></tr>
+    <tr><td>Conditional proof (assume &amp; discharge)</td><td>L2</td><td>Prove an "if…then" statement</td></tr>
+    <tr><td>Resolution refutation</td><td>L2</td><td>Automate a proof by exploding the negation</td></tr>
+    <tr><td>Arbitrary element</td><td>L3</td><td>Prove a "for all" claim</td></tr>
+    <tr><td>Exhibit a witness</td><td>L3</td><td>Prove a "there exists" claim</td></tr>
+    <tr><td>Mechanical negation of quantifiers</td><td>L3</td><td>Turn a definition into its denial — the engine of all \(\varepsilon\)-\(\delta\) work</td></tr>
+    <tr><td>Counter-model</td><td>L4</td><td>Show something does <em>not</em> follow</td></tr>
+    <tr><td>Compactness argument</td><td>L4</td><td>Conjure infinite or non-standard objects</td></tr>
+    <tr><td>Direct proof</td><td>L5</td><td>Walk from hypothesis to conclusion</td></tr>
+    <tr><td>Contraposition</td><td>L5</td><td>Flip a hard implication into an easy one</td></tr>
+    <tr><td>Contradiction (reductio)</td><td>L5</td><td>Assume the opposite and break it</td></tr>
+    <tr><td>Cases / exhaustion</td><td>L5</td><td>Split into finitely many settled possibilities</td></tr>
+    <tr><td>Biconditional &amp; cyclic proofs</td><td>L5</td><td>Prove "iff", or that a list of statements is equivalent</td></tr>
+    <tr><td>Construction</td><td>L5</td><td>Prove existence by building the thing</td></tr>
+    <tr><td>Non-constructive / probabilistic existence</td><td>L5</td><td>Prove something exists without finding it</td></tr>
+    <tr><td>Uniqueness (assume two, show equal)</td><td>L5</td><td>Prove "exactly one"</td></tr>
+    <tr><td>Counterexample</td><td>L5</td><td>Kill a "for all" claim with one failure</td></tr>
+    <tr><td>Pigeonhole</td><td>L5</td><td>Force a collision by counting</td></tr>
+    <tr><td>Double counting &amp; bijections</td><td>L5</td><td>Prove two quantities are equal</td></tr>
+    <tr><td>Extremal, invariant, monovariant, parity</td><td>L5</td><td>Squeeze structure out of a process</td></tr>
+    <tr><td>WLOG &amp; duality</td><td>L5</td><td>Halve the work using symmetry</td></tr>
+    <tr><td>Induction (ordinary, strong, structural)</td><td>L6</td><td>Prove infinitely many cases at once</td></tr>
+    <tr><td>Minimal counterexample / infinite descent</td><td>L6</td><td>Induction, written as a contradiction</td></tr>
+    <tr><td>Definition by recursion</td><td>L6</td><td>Define a function on all of \(\mathbb{N}\)</td></tr>
+    <tr><td>Diagonalisation</td><td>L7</td><td>Escape any proposed complete list</td></tr>
+    <tr><td>Reduction</td><td>L7</td><td>Transfer undecidability to a new problem</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Logic · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

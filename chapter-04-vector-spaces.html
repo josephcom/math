@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4 — Vector Spaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Vector Spaces</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-03-the-real-line.html">&#10094; Chapter 3 — The Real Line</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Where \(n\) Dimensions Begin</h2>
+    <p>\(\mathbb{R}^{n}\) is Chapter 2's Cartesian product with Chapter 3's arithmetic applied coordinate by coordinate. That is all a dimension is, to start with.</p>
+    <p>This layer supplies <b>direction and scale</b> — but not yet length, angle or volume. Those arrive in Chapters 5 and 6.</p>
+    <p>Prerequisites: Chapters 1–3. Fields and induction are used freely; the Axiom of Choice appears once, for infinite bases.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(\mathbb{R}^{n} = \{(x_1,\dots,x_n) : x_i \in \mathbb{R}\}\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Spaces</a><a href="#L2">L2 Basis &amp; Dimension</a><a href="#L3">L3 Linear Maps</a>
+  <a href="#L4">L4 Matrices</a><a href="#L5">L5 Change of Basis</a><a href="#L6">L6 Duality</a>
+  <a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · The object</span>
+  <h2 class="ltitle">Vector Spaces &amp; Subspaces</h2>
+  <p class="ldesc">Things you can add together and scale — and nothing more.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Vector space over \(\mathbb{R}\)</b> — a set \(V\) with addition and scalar multiplication obeying eight axioms.
+      <div class="ex"><div><p>Arrows you can lay end to end and stretch. Nothing about length or angle is assumed yet.</p></div></div></li>
+    <li><b>\(\mathbb{R}^{n}\)</b> — ordered \(n\)-tuples, added and scaled coordinate by coordinate.
+      <div class="ex"><div><p>\((1,2,3) + (4,0,1) = (5,2,4)\). The whole of multi-dimensional space, defined in one line.</p></div></div></li>
+    <li><b>Vector &amp; scalar</b> — an element of \(V\); an element of the field.
+      <div class="ex"><div><p>A displacement, and a number that stretches it.</p></div></div></li>
+    <li><b>Zero vector</b> \(\mathbf{0}\) — the additive identity.
+      <div class="ex"><div><p>Standing still. Every subspace must contain it — the fastest test for "not a subspace".</p></div></div></li>
+    <li><b>Subspace</b> — a non-empty subset closed under addition and scalar multiplication.
+      <div class="ex"><div><p>A line or plane through the origin inside \(\mathbb{R}^3\). Not through the origin? Not a subspace.</p></div></div></li>
+    <li><b>Linear combination</b> \(c_1v_1 + \cdots + c_kv_k\).
+      <div class="ex"><div><p>A recipe: two parts east, three parts north.</p></div></div></li>
+    <li><b>Affine subspace</b> — a subspace shifted by a fixed vector.
+      <div class="ex"><div><p>A road that doesn't pass through town centre. Solutions of \(Ax=b\) with \(b \ne 0\) look like this.</p></div></div></li>
+    <li><b>Function spaces</b> — \(C[a,b]\), polynomials, sequences: all vector spaces.
+      <div class="ex"><div><p>Add two temperature curves and you get a curve. The theory doesn't care that the "vectors" are functions.</p></div></div></li>
+    <li><b>Sum of subspaces</b> \(U + W = \{u + w\}\).
+      <div class="ex"><div><p>Two lines through the origin sum to the plane they span.</p></div></div></li>
+    <li><b>Direct sum</b> \(U \oplus W\) — a sum in which \(U \cap W = \{\mathbf{0}\}\).
+      <div class="ex"><div><p>Every vector splits into a horizontal and a vertical piece, in exactly one way.</p></div></div></li>
+  </ul>
+
+  <h3>Axioms — A Vector Space</h3>
+  <ul>
+    <li><b>Additive group</b> — \(+\) is associative and commutative, with a zero and negatives.
+      <div class="ex"><div><p>Walk the displacements in any order and you end up at the same place.</p></div></div></li>
+    <li><b>Compatibility of scalars</b> — \(a(bv) = (ab)v\) and \(1v = v\).
+      <div class="ex"><div><p>Doubling then tripling is sextupling; scaling by 1 does nothing.</p></div></div></li>
+    <li><b>Two distributive laws</b> — \(a(u+v) = au+av\) and \((a+b)v = av+bv\).
+      <div class="ex"><div><p>Scaling a whole journey scales each leg; adding two stretches is one bigger stretch.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(0v = \mathbf{0}\) and \((-1)v = -v\), and \(a\mathbf{0} = \mathbf{0}\).</b>
+      <div class="ex"><div><p>The obvious facts are consequences, not extra axioms.</p></div></div>
+      <div class="proof"><div><p>\(0v = (0+0)v = 0v + 0v\); adding \(-(0v)\) gives \(\mathbf{0} = 0v\). Then \(v + (-1)v = (1 + (-1))v = 0v = \mathbf{0}\), so \((-1)v\) is the additive inverse of \(v\). Likewise \(a\mathbf{0} = a(\mathbf{0}+\mathbf{0}) = a\mathbf{0} + a\mathbf{0}\) forces \(a\mathbf{0}=\mathbf{0}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Subspace test:</b> a non-empty \(U \subseteq V\) is a subspace iff \(au + bw \in U\) for all \(a,b\in\mathbb{R}\), \(u,w\in U\).
+      <div class="ex"><div><p>One line to check instead of eight axioms — they're inherited from \(V\).</p></div></div>
+      <div class="proof"><div><p>A subspace clearly satisfies the condition. Conversely, taking \(a=b=0\) gives \(\mathbf{0}\in U\) (using non-emptiness), \(b=0\) gives closure under scaling, and \(a=b=1\) gives closure under addition. All other axioms hold in \(U\) because they hold in \(V\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Intersections of subspaces are subspaces</b> — unions generally are not.
+      <div class="ex"><div><p>Two lines through the origin: their union is not closed under addition, since a sum leaves both lines.</p></div></div>
+      <div class="proof"><div><p>If \(u, w \in \bigcap_i U_i\) then \(au+bw \in U_i\) for each \(i\), hence in the intersection, and \(\mathbf{0}\) lies in every \(U_i\). For unions, take \(u \in U_1\setminus U_2\) and \(w \in U_2 \setminus U_1\): if \(u + w\) lay in \(U_1\) then \(w = (u+w)-u \in U_1\), and symmetrically — so \(u+w\) is in neither. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(U + W\) is the smallest subspace containing both.</b>
+      <div class="ex"><div><p>The union isn't a subspace, so you take the smallest one that repairs it.</p></div></div>
+      <div class="proof"><div><p>\(U+W\) is closed under linear combinations, since \(a(u_1+w_1)+b(u_2+w_2) = (au_1+bu_2)+(aw_1+bw_2)\), and it contains \(U\) (take \(w=\mathbf{0}\)) and \(W\). Any subspace containing both must contain every \(u+w\), hence contains \(U+W\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Direct sum criterion:</b> \(V = U \oplus W\) iff every \(v\) is uniquely \(u + w\).
+      <div class="ex"><div><p>Unique decomposition is exactly what "the two pieces don't overlap" means.</p></div></div>
+      <div class="proof"><div><p>If \(U\cap W = \{\mathbf{0}\}\) and \(u_1+w_1 = u_2+w_2\), then \(u_1 - u_2 = w_2 - w_1 \in U \cap W = \{\mathbf{0}\}\), forcing equality. Conversely, if some \(x \ne \mathbf{0}\) lay in \(U\cap W\), then \(\mathbf{0} = x + (-x)\) would give two different decompositions of \(\mathbf{0}\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Check \(\mathbf{0}\) first</b> — the quickest way to rule out a subspace.
+      <div class="ex"><div><p>"Vectors whose coordinates sum to 1" fails immediately.</p></div></div></li>
+    <li><b>One-line closure test</b> — verify \(au + bw \in U\).
+      <div class="ex"><div><p>Do this instead of listing axioms; it is a complete proof.</p></div></div></li>
+    <li><b>Recognise the space</b> — polynomials, matrices and functions are vector spaces too.
+      <div class="ex"><div><p>Everything proved here applies to them verbatim.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Counting directions</span>
+  <h2 class="ltitle">Span, Independence &amp; Dimension</h2>
+  <p class="ldesc">What "\(n\)-dimensional" actually means.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Span</b> \(\operatorname{span}(S)\) — all linear combinations of vectors in \(S\).
+      <div class="ex"><div><p>Two non-parallel arrows in the plane span the whole plane: any point is some mix of them.</p></div></div></li>
+    <li><b>Spanning set</b> — a set whose span is all of \(V\).
+      <div class="ex"><div><p>Enough directions to reach everywhere. Possibly with waste.</p></div></div></li>
+    <li><b>Linear independence</b> — \(c_1v_1+\cdots+c_kv_k = \mathbf{0}\) forces every \(c_i = 0\).
+      <div class="ex"><div><p>No arrow is a mix of the others; nothing is redundant.</p></div></div></li>
+    <li><b>Basis</b> — an independent spanning set.
+      <div class="ex"><div><p>Exactly enough directions: no gaps, no duplicates.</p></div></div></li>
+    <li><b>Standard basis</b> \(e_1,\dots,e_n\) of \(\mathbb{R}^{n}\).
+      <div class="ex"><div><p>East, north, up. \(e_i\) is 1 in slot \(i\) and 0 elsewhere.</p></div></div></li>
+    <li><b>Coordinates</b> \([v]_B\) — the unique coefficient list of \(v\) in a basis \(B\).
+      <div class="ex"><div><p>"3 east, 2 north" — the vector is the place, the coordinates are the description.</p></div></div></li>
+    <li><b>Dimension</b> \(\dim V\) — the number of vectors in any basis.
+      <div class="ex"><div><p>The number of independent choices you can make. This is the first honest definition of "\(n\)-dimensional".</p></div></div></li>
+    <li><b>Finite- vs infinite-dimensional</b>.
+      <div class="ex"><div><p>\(\mathbb{R}^{n}\) is finite-dimensional; the space of all polynomials is not. Chapter 13 shows how differently the two behave.</p></div></div></li>
+    <li><b>Codimension</b> \(\dim V - \dim U\).
+      <div class="ex"><div><p>A plane in \(\mathbb{R}^3\) has codimension 1 — one constraint. Hyperplanes are the codimension-1 subspaces.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Span is the smallest subspace containing \(S\).</b>
+      <div class="ex"><div><p>Take your arrows and close up under mixing — you get exactly the span.</p></div></div>
+      <div class="proof"><div><p>A linear combination of linear combinations of \(S\) is again one, so \(\operatorname{span}(S)\) is a subspace containing \(S\). Any subspace containing \(S\) is closed under linear combinations, so it contains \(\operatorname{span}(S)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Unique representation:</b> \(B\) is a basis iff every \(v\) is a linear combination of \(B\) in exactly one way.
+      <div class="ex"><div><p>Coordinates are well defined precisely because the basis is independent.</p></div></div>
+      <div class="proof"><div><p>Spanning gives at least one representation. If \(\sum c_iv_i = \sum d_iv_i\), subtracting gives \(\sum(c_i-d_i)v_i = \mathbf{0}\), and independence forces \(c_i = d_i\). Conversely, uniqueness applied to \(\mathbf{0}\) — which is the trivial combination — rules out any non-trivial dependency. \(\blacksquare\)</p></div></div></li>
+    <li><b>Steinitz exchange lemma:</b> an independent set is never larger than a spanning set.
+      <div class="ex"><div><p>You can't have more independent directions than you have directions in total. Everything about dimension follows from this.</p></div></div>
+      <div class="proof"><div><p>Let \(u_1,\dots,u_m\) be independent and \(w_1,\dots,w_n\) spanning. Write \(u_1\) in terms of the \(w\)'s; some coefficient is non-zero, so that \(w\) can be swapped out for \(u_1\) and the set still spans. Repeat: at step \(k\), \(u_k\) is a combination of \(u_1,\dots,u_{k-1}\) and the remaining \(w\)'s, and independence forbids all the \(w\)-coefficients vanishing, so another exchange is possible. If \(m &gt; n\) the \(w\)'s run out, and then \(u_{n+1}\) would be a combination of \(u_1,\dots,u_n\) — contradicting independence. Hence \(m \le n\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Dimension is well defined:</b> any two bases of \(V\) have the same size.
+      <div class="ex"><div><p>The plane is 2-dimensional however you choose your axes.</p></div></div>
+      <div class="proof"><div><p>Let \(B, B'\) be bases. \(B\) is independent and \(B'\) spans, so \(|B| \le |B'|\) by exchange; swapping the roles gives \(|B'|\le|B|\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Extension and reduction:</b> every independent set extends to a basis; every spanning set contains one.
+      <div class="ex"><div><p>Add missing directions, or throw away redundant ones — either route reaches a basis.</p></div></div>
+      <div class="proof"><div><p>(Finite case.) If an independent set doesn't span, some \(v\) lies outside its span; adding \(v\) keeps independence, and dimension bounds the process, so it terminates at a basis. If a spanning set is dependent, some vector is a combination of the others and can be deleted without changing the span; repeat until independent. \(\blacksquare\)</p></div></div></li>
+    <li><b>In an \(n\)-dimensional space:</b> any \(n\) independent vectors form a basis, and so do any \(n\) spanning vectors.
+      <div class="ex"><div><p>With the right count, you only have to check one of the two conditions.</p></div></div>
+      <div class="proof"><div><p>If \(n\) independent vectors failed to span, they could be extended to a basis of size \(&gt; n\), contradicting well-definedness of dimension. If \(n\) spanning vectors were dependent, one could be deleted, giving a spanning set of size \(n-1\) and hence — by exchange against a basis — \(n \le n-1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Subspace dimension:</b> \(U \subseteq V\) gives \(\dim U \le \dim V\), with equality iff \(U = V\).
+      <div class="ex"><div><p>A plane inside 3-space is smaller in the only sense that matters here.</p></div></div>
+      <div class="proof"><div><p>A basis of \(U\) is an independent subset of \(V\), so exchange bounds its size by \(\dim V\). If the sizes agree, that basis of \(U\) is an independent set of full size in \(V\), hence a basis of \(V\), so \(U = \operatorname{span} = V\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Dimension formula:</b> \(\dim(U+W) = \dim U + \dim W - \dim(U\cap W)\).
+      <div class="ex"><div><p>Two planes in \(\mathbb{R}^3\) meeting in a line: \(2+2-1 = 3\), the whole space. Inclusion–exclusion for dimensions.</p></div></div>
+      <div class="proof"><div><p>Take a basis \(C\) of \(U\cap W\), extend it to a basis \(C\cup A\) of \(U\) and to \(C \cup B\) of \(W\). Then \(C\cup A\cup B\) spans \(U+W\). It is independent: a dependency puts a vector of \(\operatorname{span}(A)\) inside \(W\), hence inside \(U\cap W = \operatorname{span}(C)\), forcing the \(A\)-coefficients to vanish, and similarly for \(B\). Counting gives the formula. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\dim(U\oplus W) = \dim U + \dim W\).</b>
+      <div class="ex"><div><p>Independent pieces simply add their dimensions — the source of \(\dim \mathbb{R}^{n} = n\).</p></div></div>
+      <div class="proof"><div><p>Immediate from the dimension formula with \(\dim(U\cap W) = 0\). Concretely, the union of bases of \(U\) and \(W\) is a basis of the direct sum. \(\blacksquare\)</p></div></div></li>
+    <li><b>Every vector space has a basis</b> (with the Axiom of Choice).
+      <div class="ex"><div><p>Even \(\mathbb{R}\) as a \(\mathbb{Q}\)-vector space. No one has ever written such a basis down.</p></div></div>
+      <div class="proof"><div><p>Order the independent subsets of \(V\) by inclusion. The union of a chain of independent sets is independent, since any dependency involves finitely many vectors, all lying in a single link. Zorn's lemma (Chapter 2, Layer 9) supplies a maximal independent set \(B\); if some \(v \notin \operatorname{span}(B)\), then \(B\cup\{v\}\) would be independent and larger. So \(B\) spans. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Test independence by solving \(\sum c_iv_i = \mathbf{0}\)</b>.
+      <div class="ex"><div><p>Only the all-zeros solution means independent. This is a linear system — Layer 4 solves it mechanically.</p></div></div></li>
+    <li><b>Count first</b> — compare the number of vectors with the dimension before working.
+      <div class="ex"><div><p>Three vectors in \(\mathbb{R}^2\) are dependent, no calculation needed.</p></div></div></li>
+    <li><b>Extend or trim</b> — build a basis by adding missing directions or deleting redundant ones.
+      <div class="ex"><div><p>Both routes are legitimate; pick whichever end you're nearer.</p></div></div></li>
+    <li><b>Use the dimension formula</b> — to find the size of an intersection you can't see.
+      <div class="ex"><div><p>Rearranged, it computes \(\dim(U\cap W)\) from three easier numbers.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · Maps that respect the structure</span>
+  <h2 class="ltitle">Linear Maps</h2>
+  <p class="ldesc">The only functions that see a vector space as a vector space.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Linear map</b> \(T(au+bv) = aT(u)+bT(v)\).
+      <div class="ex"><div><p>Rotation, projection, scaling. Not translation — that moves the origin.</p></div></div></li>
+    <li><b>Kernel</b> \(\ker T = \{v : T(v) = \mathbf{0}\}\).
+      <div class="ex"><div><p>What gets crushed to nothing. A projection onto the floor has the vertical axis as kernel.</p></div></div></li>
+    <li><b>Image (range)</b> \(\operatorname{im} T = \{T(v)\}\).
+      <div class="ex"><div><p>Where the map can actually land.</p></div></div></li>
+    <li><b>Rank &amp; nullity</b> — \(\dim \operatorname{im} T\) and \(\dim\ker T\).
+      <div class="ex"><div><p>How much survives, and how much is lost. They always add to the starting dimension.</p></div></div></li>
+    <li><b>Isomorphism</b> — a bijective linear map.
+      <div class="ex"><div><p>A perfect renaming: the two spaces are the same object in different clothes.</p></div></div></li>
+    <li><b>Endomorphism &amp; automorphism</b> — a linear map from \(V\) to itself; an invertible one.
+      <div class="ex"><div><p>Rotating the room. Chapter 5's determinant measures what such a map does to volume.</p></div></div></li>
+    <li><b>Projection</b> — \(P\) with \(P^{2} = P\).
+      <div class="ex"><div><p>Shadow on the floor: casting it twice changes nothing.</p></div></div></li>
+    <li><b>Space of linear maps</b> \(\mathcal{L}(V,W)\) — itself a vector space.
+      <div class="ex"><div><p>You can add two rotations pointwise and get a linear map. Its dimension is \(\dim V \cdot \dim W\).</p></div></div></li>
+    <li><b>Linear functional</b> — a linear map \(V \to \mathbb{R}\).
+      <div class="ex"><div><p>"Total cost" as a function of quantities. Layer 6 is devoted to these.</p></div></div></li>
+    <li><b>Invariant subspace</b> — \(U\) with \(T(U)\subseteq U\).
+      <div class="ex"><div><p>A direction the map keeps to itself; the seed of eigenvector theory in Chapter 5.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(T(\mathbf{0}) = \mathbf{0}\), and kernel and image are subspaces.</b>
+      <div class="ex"><div><p>Linear maps always fix the origin — which is why translation isn't linear.</p></div></div>
+      <div class="proof"><div><p>\(T(\mathbf{0}) = T(0\cdot\mathbf{0}) = 0\,T(\mathbf{0}) = \mathbf{0}\). If \(u,v \in \ker T\) then \(T(au+bv) = aT(u)+bT(v) = \mathbf{0}\); if \(T(u), T(v)\in\operatorname{im}T\) then \(aT(u)+bT(v) = T(au+bv)\) is in the image. \(\blacksquare\)</p></div></div></li>
+    <li><b>A linear map is determined by its values on a basis</b>, and those may be assigned freely.
+      <div class="ex"><div><p>Say where east and north go, and the whole plane's fate is sealed.</p></div></div>
+      <div class="proof"><div><p>If \(v = \sum c_ib_i\) then linearity forces \(T(v) = \sum c_iT(b_i)\), so the values on \(B\) determine \(T\). Conversely, given arbitrary targets \(w_i\), define \(T(\sum c_ib_i) := \sum c_iw_i\); this is well defined because coordinates are unique, and it is linear by inspection. \(\blacksquare\)</p></div></div></li>
+    <li><b>Injective \(\iff\) trivial kernel.</b>
+      <div class="ex"><div><p>Nothing is lost exactly when nothing is crushed to zero.</p></div></div>
+      <div class="proof"><div><p>If \(T\) is injective and \(T(v) = \mathbf{0} = T(\mathbf{0})\), then \(v = \mathbf{0}\). Conversely, if \(\ker T = \{\mathbf{0}\}\) and \(T(u)=T(v)\), then \(T(u-v)=\mathbf{0}\), so \(u - v = \mathbf{0}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rank–nullity theorem:</b> \(\dim V = \dim\ker T + \dim\operatorname{im}T\).
+      <div class="ex"><div><p>Whatever a map crushes, it loses from its output. The single most used theorem in linear algebra.</p></div></div>
+      <div class="proof"><div><p>Take a basis \(k_1,\dots,k_p\) of \(\ker T\) and extend it to a basis \(k_1,\dots,k_p,u_1,\dots,u_q\) of \(V\). The vectors \(T(u_1),\dots,T(u_q)\) span \(\operatorname{im}T\), since the \(k_i\) contribute nothing. They are independent: \(\sum c_jT(u_j) = \mathbf{0}\) puts \(\sum c_ju_j\) in \(\ker T\), so it is a combination of the \(k_i\), and independence of the full basis forces all \(c_j = 0\). Hence \(\dim\operatorname{im}T = q\) and \(\dim V = p + q\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary:</b> for \(T : V \to V\) with \(V\) finite-dimensional, injective \(\iff\) surjective \(\iff\) bijective.
+      <div class="ex"><div><p>In finite dimensions there is no room to lose or gain. In infinite dimensions this fails badly.</p></div></div>
+      <div class="proof"><div><p>Injective means nullity 0, so rank \(= \dim V\) by rank–nullity, so the image is a subspace of full dimension, i.e. all of \(V\). Conversely surjective gives rank \(=\dim V\), hence nullity 0. (The shift map on infinite sequences is injective but not surjective.) \(\blacksquare\)</p></div></div></li>
+    <li><b>Two spaces are isomorphic iff they have the same dimension.</b>
+      <div class="ex"><div><p>Every real \(n\)-dimensional space <em>is</em> \(\mathbb{R}^{n}\) once you choose a basis.</p></div></div>
+      <div class="proof"><div><p>An isomorphism carries a basis to a basis, so dimensions agree. Conversely, if \(\dim V = \dim W = n\), pick bases \((b_i)\) and \((c_i)\) and let \(T(b_i) = c_i\); by the determination theorem this defines a linear map, which is surjective (it hits a spanning set) and injective (rank–nullity), hence an isomorphism. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\mathcal{L}(V,W)\) has dimension \(\dim V\cdot\dim W\).</b>
+      <div class="ex"><div><p>Which is exactly the number of entries in an \(m\times n\) matrix — no coincidence.</p></div></div>
+      <div class="proof"><div><p>Fix bases \((b_j)\) of \(V\) and \((c_i)\) of \(W\), and let \(E_{ij}\) be the map sending \(b_j \mapsto c_i\) and every other basis vector to \(\mathbf{0}\). These span, since any \(T\) equals \(\sum_{i,j}a_{ij}E_{ij}\) where \(T(b_j) = \sum_i a_{ij}c_i\); and they are independent, since such a combination applied to \(b_j\) returns the \(j\)-th column of coefficients. \(\blacksquare\)</p></div></div></li>
+    <li><b>Solutions of \(T(x)=b\)</b> form the affine set \(x_0 + \ker T\), when non-empty.
+      <div class="ex"><div><p>One particular solution plus every way of going nowhere. This is "particular + homogeneous", proved.</p></div></div>
+      <div class="proof"><div><p>If \(T(x_0)=b\), then \(T(x) = b \iff T(x - x_0) = \mathbf{0} \iff x - x_0 \in \ker T\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Define a map on a basis</b> — the cleanest way to build a linear map.
+      <div class="ex"><div><p>Choose where the basis goes; linearity does the rest.</p></div></div></li>
+    <li><b>Compute the kernel by solving \(T(x)=\mathbf{0}\)</b>.
+      <div class="ex"><div><p>Then rank–nullity gives the image dimension for free.</p></div></div></li>
+    <li><b>Rank–nullity as a counting argument</b>.
+      <div class="ex"><div><p>Two of the three numbers always determine the third — often the fastest route to an answer.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · The calculation</span>
+  <h2 class="ltitle">Matrices &amp; Linear Systems</h2>
+  <p class="ldesc">Linear maps in coordinates, and how to actually solve them.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Matrix</b> — an \(m\times n\) array of scalars; the coordinate form of a map \(\mathbb{R}^{n}\to\mathbb{R}^{m}\).
+      <div class="ex"><div><p>Column \(j\) is where the \(j\)-th basis vector lands. That single sentence explains matrices.</p></div></div></li>
+    <li><b>Matrix–vector product</b> \(Ax = \sum_j x_j (\text{column } j)\).
+      <div class="ex"><div><p>A recipe applied to the columns: \(x\) says how much of each column to take.</p></div></div></li>
+    <li><b>Matrix product</b> \(AB\) — the matrix of the composition \(T_A \circ T_B\).
+      <div class="ex"><div><p>Do \(B\) then \(A\). The strange row-times-column rule is forced by that requirement.</p></div></div></li>
+    <li><b>Transpose</b> \(A^{\mathsf T}\) — rows and columns swapped.
+      <div class="ex"><div><p>Reflect across the diagonal. In Chapter 6 it becomes the adjoint.</p></div></div></li>
+    <li><b>Identity &amp; inverse</b> \(I\), \(A^{-1}\).
+      <div class="ex"><div><p>Do nothing; undo. Only square matrices of full rank have inverses.</p></div></div></li>
+    <li><b>Row space, column space, null space</b>.
+      <div class="ex"><div><p>Column space = image; null space = kernel. The row space is the column space of the transpose.</p></div></div></li>
+    <li><b>Rank of a matrix</b> — the dimension of its column space.
+      <div class="ex"><div><p>How many genuinely different directions the columns point in.</p></div></div></li>
+    <li><b>Elementary row operations</b> — swap, scale, add a multiple of one row to another.
+      <div class="ex"><div><p>The three legal moves. Each is invertible, which is why they preserve the solution set.</p></div></div></li>
+    <li><b>Row echelon &amp; reduced row echelon form</b>.
+      <div class="ex"><div><p>A staircase of leading entries. RREF is unique, so it is a genuine canonical form.</p></div></div></li>
+    <li><b>Pivot &amp; free variables</b>.
+      <div class="ex"><div><p>Pivots are determined; free variables are the dials you may still turn — one per dimension of the kernel.</p></div></div></li>
+    <li><b>Homogeneous system</b> \(Ax=\mathbf{0}\).
+      <div class="ex"><div><p>Always has the zero solution. The question is only whether it has others.</p></div></div></li>
+    <li><b>Augmented matrix</b> \([A\mid b]\).
+      <div class="ex"><div><p>Carry the right-hand side along for the ride while you row-reduce.</p></div></div></li>
+    <li><b>Trace</b> \(\operatorname{tr}A = \sum a_{ii}\).
+      <div class="ex"><div><p>Sum of the diagonal. Basis-independent, and in Chapter 5 it turns out to measure infinitesimal volume change.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Matrices \(\leftrightarrow\) linear maps:</b> the correspondence is an isomorphism of vector spaces, turning composition into matrix product.
+      <div class="ex"><div><p>Matrices aren't a separate subject — they're linear maps written in coordinates.</p></div></div>
+      <div class="proof"><div><p>Fix bases. Sending \(T\) to the matrix whose \(j\)-th column is \([T(b_j)]\) is linear and bijective (Layer 3's determination theorem). For composition, \([S\circ T](b_j) = S(\sum_i a_{ij}c_i) = \sum_k(\sum_i s_{ki}a_{ij})d_k\), whose coefficient is exactly the \((k,j)\) entry of the product \(SA\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Matrix multiplication is associative but not commutative.</b>
+      <div class="ex"><div><p>Rotate then reflect \(\ne\) reflect then rotate — as anyone who has assembled furniture knows.</p></div></div>
+      <div class="proof"><div><p>Associativity is inherited from composition of functions (Chapter 2, Layer 5), which is associative. Non-commutativity is shown by one example: a \(90^\circ\) rotation and a reflection in the \(x\)-axis compose differently in the two orders. \(\blacksquare\)</p></div></div></li>
+    <li><b>Row operations preserve the solution set</b> and the row space.
+      <div class="ex"><div><p>Why Gaussian elimination is legal rather than merely convenient.</p></div></div>
+      <div class="proof"><div><p>Each elementary operation is left multiplication by an invertible elementary matrix \(E\); then \(Ax = b \iff EAx = Eb\), because \(E\) can be undone. Each operation replaces rows by linear combinations of rows and is reversible, so the span of the rows is unchanged. \(\blacksquare\)</p></div></div></li>
+    <li><b>Every matrix has a unique reduced row echelon form.</b>
+      <div class="ex"><div><p>A canonical answer — so two matrices are row-equivalent exactly when their RREFs agree.</p></div></div>
+      <div class="proof"><div><p>Existence is the Gaussian elimination algorithm. Uniqueness: the pivot columns are exactly those not in the span of the earlier columns, a property of the column relations, which row operations preserve; and once the pivot positions are fixed, the reduced entries are the unique coordinates of the non-pivot columns in terms of the pivot ones. \(\blacksquare\)</p></div></div></li>
+    <li><b>Row rank = column rank.</b>
+      <div class="ex"><div><p>The rows and the columns of any matrix carry the same amount of independence, however lopsided the shape.</p></div></div>
+      <div class="proof"><div><p>Row-reduce to echelon form \(R\). The non-zero rows of \(R\) are independent and span the row space, so the row rank is the number of pivots. The pivot columns of the original \(A\) are independent, and every non-pivot column is a combination of earlier pivot columns (read off from \(R\)), so the column rank is also the number of pivots. \(\blacksquare\)</p></div></div></li>
+    <li><b>Rouché–Capelli:</b> \(Ax = b\) is solvable iff \(\operatorname{rank}A = \operatorname{rank}[A\mid b]\), and then the solutions form an affine space of dimension \(n - \operatorname{rank}A\).
+      <div class="ex"><div><p>The system is consistent exactly when \(b\) adds no new direction to the columns.</p></div></div>
+      <div class="proof"><div><p>\(Ax=b\) is solvable iff \(b\) lies in the column space, i.e. iff appending \(b\) doesn't increase the rank. Given one solution \(x_0\), the solution set is \(x_0 + \ker A\) (Layer 3), and rank–nullity gives \(\dim\ker A = n - \operatorname{rank}A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Invertibility criteria:</b> for a square \(A\), the following are equivalent — invertible; \(\operatorname{rank} = n\); \(\ker = \{\mathbf 0\}\); RREF is \(I\); columns form a basis; \(Ax = b\) is uniquely solvable for every \(b\).
+      <div class="ex"><div><p>Six ways of saying one thing. Chapter 5 adds a seventh: \(\det A \neq 0\).</p></div></div>
+      <div class="proof"><div><p>A cyclic argument. Invertible \(\Rightarrow\) \(\ker = \{\mathbf 0\}\) (apply \(A^{-1}\)); trivial kernel \(\Rightarrow\) rank \(n\) by rank–nullity \(\Rightarrow\) the columns are \(n\) independent vectors in \(\mathbb{R}^n\), hence a basis (Layer 2) \(\Rightarrow\) every \(b\) is uniquely a combination of columns, i.e. unique solvability \(\Rightarrow\) the RREF has a pivot in every column and every row, so it is \(I\) \(\Rightarrow\) the product of the elementary matrices used is an inverse of \(A\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Inverse facts:</b> \((AB)^{-1} = B^{-1}A^{-1}\), \((A^{\mathsf T})^{-1} = (A^{-1})^{\mathsf T}\), \((AB)^{\mathsf T} = B^{\mathsf T}A^{\mathsf T}\).
+      <div class="ex"><div><p>Socks and shoes: to undo, reverse the order.</p></div></div>
+      <div class="proof"><div><p>\((AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = AA^{-1} = I\), and similarly on the other side. For the transpose product, compare entries: \(((AB)^{\mathsf T})_{ij} = (AB)_{ji} = \sum_k a_{jk}b_{ki} = \sum_k (B^{\mathsf T})_{ik}(A^{\mathsf T})_{kj}\). Transposing \(AA^{-1}=I\) then gives the middle identity. \(\blacksquare\)</p></div></div></li>
+    <li><b>Trace is linear and \(\operatorname{tr}(AB) = \operatorname{tr}(BA)\)</b>, hence basis-independent.
+      <div class="ex"><div><p>A number attached to the map itself, not to your choice of axes.</p></div></div>
+      <div class="proof"><div><p>\(\operatorname{tr}(AB) = \sum_i\sum_k a_{ik}b_{ki} = \sum_k\sum_i b_{ki}a_{ik} = \operatorname{tr}(BA)\). Hence \(\operatorname{tr}(P^{-1}AP) = \operatorname{tr}(APP^{-1}) = \operatorname{tr}(A)\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Gaussian elimination</b> — row-reduce \([A\mid b]\) to echelon form and back-substitute.
+      <div class="ex"><div><p>One algorithm answers solvability, uniqueness, rank, kernel and inverse.</p></div></div></li>
+    <li><b>Gauss–Jordan for the inverse</b> — row-reduce \([A \mid I]\) to \([I \mid A^{-1}]\).
+      <div class="ex"><div><p>The same moves that clean up \(A\) build its undo.</p></div></div></li>
+    <li><b>Read the kernel off the RREF</b> — one basis vector per free variable.
+      <div class="ex"><div><p>Set one free variable to 1 and the rest to 0; repeat.</p></div></div></li>
+    <li><b>Block multiplication</b> — multiply matrices in chunks when the structure is clear.
+      <div class="ex"><div><p>Saves work and reveals structure — used heavily for Jacobians in Chapter 10.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 5 ============ -->
+<section class="layer" id="L5">
+  <span class="chapter">Layer 5 · Same map, new clothes</span>
+  <h2 class="ltitle">Change of Basis &amp; Quotients</h2>
+  <p class="ldesc">Telling the map apart from the coordinates you happened to choose.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Change of basis matrix</b> \(P\) — columns are the new basis vectors in old coordinates.
+      <div class="ex"><div><p>A dictionary between two descriptions of the same room.</p></div></div></li>
+    <li><b>Coordinate change</b> \([v]_{B'} = P^{-1}[v]_B\).
+      <div class="ex"><div><p>The vector never moves; only its description does. The inverse is the classic trap.</p></div></div></li>
+    <li><b>Similar matrices</b> \(A' = P^{-1}AP\).
+      <div class="ex"><div><p>Two matrices for the same map, seen from different axes.</p></div></div></li>
+    <li><b>Equivalent matrices</b> \(A' = QAP\) — allowing different bases at each end.
+      <div class="ex"><div><p>With that much freedom, rank is the only thing that survives.</p></div></div></li>
+    <li><b>Invariant</b> — a quantity unchanged by a change of basis.
+      <div class="ex"><div><p>Rank, trace, and (Chapter 5) the determinant. These describe the map, not the notation.</p></div></div></li>
+    <li><b>Quotient space</b> \(V/U\) — vectors modulo a subspace.
+      <div class="ex"><div><p>Ignore height: two points are "the same" if they differ only vertically. What remains is the floor plan.</p></div></div></li>
+    <li><b>Complement</b> — \(W\) with \(V = U \oplus W\).
+      <div class="ex"><div><p>Always exists, never unique: many different planes complement the same line.</p></div></div></li>
+    <li><b>Canonical form</b> — a preferred representative of each equivalence class of matrices.
+      <div class="ex"><div><p>RREF for row-equivalence; the rank normal form for full equivalence.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Change of basis formula:</b> if \(A\) represents \(T\) in \(B\), then \(P^{-1}AP\) represents it in \(B'\).
+      <div class="ex"><div><p>Translate into the old language, act, translate back.</p></div></div>
+      <div class="proof"><div><p>Let \(P\) send \(B'\)-coordinates to \(B\)-coordinates, i.e. \([v]_B = P[v]_{B'}\). Then \([T(v)]_{B'} = P^{-1}[T(v)]_B = P^{-1}A[v]_B = P^{-1}AP[v]_{B'}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Similarity is an equivalence relation</b>, and rank and trace are similarity invariants.
+      <div class="ex"><div><p>Whatever axes you choose, the map's rank and trace read the same.</p></div></div>
+      <div class="proof"><div><p>Reflexivity via \(P = I\); symmetry by inverting \(P\); transitivity by multiplying the two change matrices. Rank is invariant because \(P\) is invertible, so \(P^{-1}AP\) and \(A\) have images of the same dimension. Trace is invariant by \(\operatorname{tr}(AB)=\operatorname{tr}(BA)\) (Layer 4). \(\blacksquare\)</p></div></div></li>
+    <li><b>Rank normal form:</b> every \(m\times n\) matrix of rank \(r\) is equivalent to \(\begin{pmatrix} I_r & 0\\ 0&0\end{pmatrix}\).
+      <div class="ex"><div><p>Choose good bases at both ends and every linear map looks like "keep \(r\) coordinates, delete the rest".</p></div></div>
+      <div class="proof"><div><p>Take a basis \(k_1,\dots,k_{n-r}\) of \(\ker T\) and extend by \(u_1,\dots,u_r\) to a basis of \(V\). Then \(T(u_1),\dots,T(u_r)\) is a basis of the image (rank–nullity proof, Layer 3); extend it to a basis of \(W\). In these bases \(T(u_i)\) is the \(i\)-th basis vector and \(T(k_j)=\mathbf 0\), which is exactly the stated matrix. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(V/U\) is a vector space</b> with \(\dim(V/U) = \dim V - \dim U\).
+      <div class="ex"><div><p>Forgetting a subspace costs exactly its dimension.</p></div></div>
+      <div class="proof"><div><p>Cosets \(v + U\) partition \(V\) (Chapter 2, Layer 4), and \((v+U)+(w+U) := (v+w)+U\), \(a(v+U) := av+U\) are well defined because \(U\) is closed under the operations. If \(u_1,\dots,u_k\) is a basis of \(U\), extend to \(u_1,\dots,u_k,v_1,\dots,v_m\) of \(V\); the classes \(v_j + U\) span \(V/U\) and are independent, since a vanishing combination puts \(\sum c_jv_j\) in \(U\), forcing all \(c_j = 0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>First isomorphism theorem:</b> \(V/\ker T \cong \operatorname{im}T\).
+      <div class="ex"><div><p>Crush what the map crushes, and what remains is exactly the image. Rank–nullity, restated.</p></div></div>
+      <div class="proof"><div><p>Define \(\bar T(v + \ker T) = T(v)\). It is well defined (two representatives differ by a kernel element), linear, surjective onto \(\operatorname{im}T\), and injective: \(\bar T(v+\ker T) = \mathbf 0\) means \(v \in \ker T\), i.e. the class is zero. \(\blacksquare\)</p></div></div></li>
+    <li><b>Complements exist</b> (finite dimensions; with AC in general) but are not unique.
+      <div class="ex"><div><p>Any plane not containing the line will do — and there are infinitely many.</p></div></div>
+      <div class="proof"><div><p>Extend a basis of \(U\) to one of \(V\); the span of the added vectors is a complement, since together they span \(V\) and independence forces the intersection to be trivial. Non-uniqueness: in \(\mathbb{R}^2\) with \(U\) the \(x\)-axis, both the \(y\)-axis and the line \(y=x\) are complements. \(\blacksquare\)</p></div></div></li>
+    <li><b>Projections split the space:</b> \(P^{2}=P\) gives \(V = \operatorname{im}P \oplus \ker P\).
+      <div class="ex"><div><p>Shadow plus what was lost casting it — and each vector splits exactly one way.</p></div></div>
+      <div class="proof"><div><p>Write \(v = Pv + (v - Pv)\); the first term is in the image, and \(P(v-Pv) = Pv - P^2v = \mathbf 0\), so the second is in the kernel. If \(x\) lies in both, \(x = Py\) gives \(x = Py = P^{2}y = Px = \mathbf 0\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Choose a basis that suits the map</b> — half of linear algebra is picking coordinates.
+      <div class="ex"><div><p>Diagonalisation (Chapter 5) is exactly this idea taken to its conclusion.</p></div></div></li>
+    <li><b>Sandwich with \(P^{-1}\ldots P\)</b> — translate, act, translate back.
+      <div class="ex"><div><p>Get the direction of \(P\) right: columns are the <em>new</em> basis in <em>old</em> coordinates.</p></div></div></li>
+    <li><b>Quotient to forget</b> — factor out what you don't want to see.
+      <div class="ex"><div><p>The standard move for reducing a problem to its essential dimensions.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 6 ============ -->
+<section class="layer" id="L6">
+  <span class="chapter">Layer 6 · The shadow space</span>
+  <h2 class="ltitle">Duality</h2>
+  <p class="ldesc">Measuring devices instead of arrows — the language forms and integration will need.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Dual space</b> \(V^{*} = \mathcal{L}(V,\mathbb{R})\) — all linear functionals on \(V\).
+      <div class="ex"><div><p>Vectors are things; functionals are meters that read them. Chapter 16's differential forms are built from these.</p></div></div></li>
+    <li><b>Dual basis</b> \(b^{*}_i\) with \(b_i^{*}(b_j) = \delta_{ij}\).
+      <div class="ex"><div><p>The \(i\)-th meter reads off the \(i\)-th coordinate and ignores the rest.</p></div></div></li>
+    <li><b>Annihilator</b> \(U^{0} = \{f \in V^{*} : f|_U = 0\}\).
+      <div class="ex"><div><p>All the meters blind to a given subspace. It becomes the orthogonal complement once Chapter 6 supplies an inner product.</p></div></div></li>
+    <li><b>Transpose (dual) map</b> \(T^{*}(f) = f\circ T\).
+      <div class="ex"><div><p>Push the meter backwards through the map. Its matrix is the transpose — that's where the name comes from.</p></div></div></li>
+    <li><b>Double dual</b> \(V^{**}\) — the dual of the dual.
+      <div class="ex"><div><p>In finite dimensions it is \(V\) again, and canonically so: a vector is what a meter reads.</p></div></div></li>
+    <li><b>Hyperplane</b> — the kernel of a non-zero functional.
+      <div class="ex"><div><p>One linear equation, one dimension lost. Chapter 19's separating hyperplanes are exactly these.</p></div></div></li>
+    <li><b>Bilinear form</b> — linear in each argument separately.
+      <div class="ex"><div><p>The dot product is one. Chapter 5's determinant is multilinear in \(n\) arguments.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>The dual basis is a basis:</b> \(\dim V^{*} = \dim V\) in finite dimensions.
+      <div class="ex"><div><p>As many independent meters as there are independent directions.</p></div></div>
+      <div class="proof"><div><p>Independence: applying \(\sum_i c_ib^{*}_i = 0\) to \(b_j\) gives \(c_j = 0\). Spanning: for any \(f\), the functional \(\sum_i f(b_i)b^{*}_i\) agrees with \(f\) on every basis vector, hence equals \(f\) by Layer 3's determination theorem. \(\blacksquare\)</p></div></div></li>
+    <li><b>Separation by functionals:</b> if \(v \ne \mathbf{0}\), some \(f \in V^{*}\) has \(f(v) \ne 0\).
+      <div class="ex"><div><p>No non-zero vector is invisible to every meter.</p></div></div>
+      <div class="proof"><div><p>Extend \(\{v\}\) to a basis (Layer 2) and take the dual basis functional corresponding to \(v\); it sends \(v\) to 1. \(\blacksquare\)</p></div></div></li>
+    <li><b>\(\dim U^{0} = \dim V - \dim U\).</b>
+      <div class="ex"><div><p>Every dimension you ignore is a dimension of meters that ignore it.</p></div></div>
+      <div class="proof"><div><p>Extend a basis \(u_1,\dots,u_k\) of \(U\) to \(u_1,\dots,u_k,w_1,\dots,w_m\) of \(V\). A functional annihilates \(U\) exactly when its first \(k\) dual coordinates vanish, so \(U^{0} = \operatorname{span}(w_1^{*},\dots,w_m^{*})\), of dimension \(m = \dim V - \dim U\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Canonical embedding:</b> \(V \to V^{**}\), \(v \mapsto (f \mapsto f(v))\), is an isomorphism in finite dimensions.
+      <div class="ex"><div><p>No choice of basis is needed — unlike the isomorphism \(V \cong V^{*}\), which always requires one.</p></div></div>
+      <div class="proof"><div><p>The map is linear, and injective by the separation result. Since \(\dim V^{**} = \dim V^{*} = \dim V\), injectivity forces surjectivity (Layer 3's corollary). \(\blacksquare\)</p></div></div></li>
+    <li><b>Matrix of the dual map is the transpose</b>, and \(\operatorname{rank}T^{*} = \operatorname{rank}T\).
+      <div class="ex"><div><p>Row rank equals column rank, seen structurally rather than computationally.</p></div></div>
+      <div class="proof"><div><p>With \(T(b_j) = \sum_i a_{ij}c_i\), we get \(T^{*}(c^{*}_i)(b_j) = c^{*}_i(T(b_j)) = a_{ij}\), so \(T^{*}(c^{*}_i) = \sum_j a_{ij}b^{*}_j\) — the transpose. For rank, \(\ker T^{*} = (\operatorname{im}T)^{0}\), so \(\dim\ker T^{*} = \dim W - \operatorname{rank}T\), and rank–nullity in \(W^{*}\) gives \(\operatorname{rank}T^{*} = \operatorname{rank}T\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Hyperplanes are exactly the codimension-1 subspaces.</b>
+      <div class="ex"><div><p>"One linear equation" and "one dimension less" say the same thing.</p></div></div>
+      <div class="proof"><div><p>If \(f \ne 0\) then \(\operatorname{im}f = \mathbb{R}\), so rank–nullity gives \(\dim\ker f = \dim V - 1\). Conversely, if \(\dim U = \dim V - 1\), then \(\dim U^{0} = 1\), and any non-zero \(f \in U^{0}\) has \(\ker f \supseteq U\) of the same dimension, hence \(\ker f = U\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Describe a subspace by equations</b> — list the functionals that kill it.
+      <div class="ex"><div><p>Span form for building, equation form for testing membership. Both are useful; convert freely.</p></div></div></li>
+    <li><b>Dualise a statement</b> — swap subspaces for annihilators and maps for their transposes.
+      <div class="ex"><div><p>Half the theorems in this chapter come in matched pairs this way.</p></div></div></li>
+    <li><b>Evaluate on a basis</b> — a functional is determined by \(n\) numbers.
+      <div class="ex"><div><p>That's all a row vector ever was.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Check \(\mathbf 0\), then closure</td><td>L1</td><td>Prove or disprove "is a subspace"</td></tr>
+    <tr><td>Direct sum decomposition</td><td>L1</td><td>Split a space into independent pieces</td></tr>
+    <tr><td>Solve \(\sum c_iv_i = \mathbf 0\)</td><td>L2</td><td>Test linear independence</td></tr>
+    <tr><td>Count against the dimension</td><td>L2</td><td>Settle independence or spanning instantly</td></tr>
+    <tr><td>Extend or trim to a basis</td><td>L2</td><td>Construct a basis</td></tr>
+    <tr><td>Dimension formula</td><td>L2</td><td>Find \(\dim(U\cap W)\)</td></tr>
+    <tr><td>Zorn's lemma</td><td>L2</td><td>Get a basis in infinite dimensions</td></tr>
+    <tr><td>Define a map on a basis</td><td>L3</td><td>Build a linear map</td></tr>
+    <tr><td>Rank–nullity</td><td>L3</td><td>Trade kernel size against image size</td></tr>
+    <tr><td>Particular + homogeneous</td><td>L3</td><td>Describe all solutions of \(T(x)=b\)</td></tr>
+    <tr><td>Gaussian elimination</td><td>L4</td><td>Solve systems, find rank, kernel and inverse</td></tr>
+    <tr><td>Gauss–Jordan on \([A\mid I]\)</td><td>L4</td><td>Invert a matrix</td></tr>
+    <tr><td>Read the kernel off the RREF</td><td>L4</td><td>Get a basis of the null space</td></tr>
+    <tr><td>Block multiplication</td><td>L4</td><td>Exploit structure in a big matrix</td></tr>
+    <tr><td>Change of basis \(P^{-1}AP\)</td><td>L5</td><td>Simplify a map by choosing coordinates</td></tr>
+    <tr><td>Rank normal form</td><td>L5</td><td>Classify a map up to change of basis at both ends</td></tr>
+    <tr><td>Quotient by a subspace</td><td>L5</td><td>Forget a direction on purpose</td></tr>
+    <tr><td>Describe by equations vs by span</td><td>L6</td><td>Choose the convenient description of a subspace</td></tr>
+    <tr><td>Dualise</td><td>L6</td><td>Turn a statement into its mirror image</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Vector Spaces · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>

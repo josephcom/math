@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 14 — Curves &amp; Surfaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- KaTeX: professional math rendering (book-ready) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<!-- Shared book styles & behavior -->
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+<script defer src="notes.js"></script>
+<script defer src="bookmark.js"></script>
+<script defer src="sync.js"></script>
+<script defer src="totop.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Curves &amp; Surfaces</h1>
+  <div class="topnav">
+    <a class="btn btn-outline" href="chapter-13-balls-and-spheres.html">&#10094; Chapter 13 — Balls &amp; Spheres</a>
+    <a class="btn btn-green" href="#L1">Start Learning &#10095;</a>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="pane">
+    <h2>Measuring the Skin</h2>
+    <p>Chapter 11 measured \(n\)-dimensional sets in \(n\)-dimensional space. But a surface in \(\mathbb{R}^{3}\) has volume <b>zero</b> — and yet obviously has an area.</p>
+    <p>The fix is to measure a \(k\)-dimensional object with a \(k\)-dimensional ruler, carried in from a flat parameter domain. The exchange rate is the <b>Gram determinant</b>, straight from Chapter 5.</p>
+    <p>Along the way: arc length, curvature, the first and second fundamental forms, and Gauss's <em>Theorema Egregium</em>.</p>
+    <a class="btn btn-green" href="#L1">Start at Layer 1 &#10095;</a>
+  </div>
+  <div class="pane mint">
+    <h2>How to Use This Page</h2>
+    <p>Every list item hides a short, plain-language example.</p>
+    <p><b>Tap any item</b> to slide its example open. Tap another item to switch. Tap anywhere else to close.</p>
+    <p>Results that need justification — theorems, propositions, lemmas — also reveal a <b>formal proof</b>, right under the example.</p>
+    <p>Every heading and every item also carries a <b>&#9998; note box</b> of your own, sliding open with the others. Click the pencil to write, paste, edit or delete — Markdown and LaTeX both render, and notes are saved in this browser.</p>
+    <p>The <b>&#9873; flag</b> beside it marks <b>where you left off</b> — one per page. Flag a new spot and the old one clears itself; the red <b>Resume</b> pill above the layers takes you straight back.</p>
+    <p>Math is rendered in proper book notation, e.g. \(L = \int_a^b\|\gamma'(t)\|\,dt\).</p>
+  </div>
+</div>
+
+<nav class="chips">
+  <a href="#L1">L1 Curves</a><a href="#L2">L2 Surfaces</a><a href="#L3">L3 Curvature</a>
+  <a href="#L4">L4 \(k\)-Dimensional Area</a><a href="#SUM">Toolbox</a>
+</nav>
+
+<!-- ============ LAYER 1 ============ -->
+<section class="layer" id="L1">
+  <span class="chapter">Layer 1 · One dimension, curved</span>
+  <h2 class="ltitle">Curves &amp; Arc Length</h2>
+  <p class="ldesc">Length as the limit of straight-line approximations.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Parametrised curve</b> \(\gamma : [a,b]\to\mathbb{R}^{n}\), continuous.
+      <div class="ex"><div><p>A walk described by where you are at each moment.</p></div></div></li>
+    <li><b>Regular curve</b> — \(\gamma\) is \(C^{1}\) with \(\gamma'(t)\ne\mathbf 0\).
+      <div class="ex"><div><p>Never stop. Stopping lets the trace form a corner even though the formula is smooth.</p></div></div></li>
+    <li><b>Trace</b> — the image \(\gamma([a,b])\), as opposed to the parametrisation.
+      <div class="ex"><div><p>The path on the ground, not the schedule of the walk. Different walks, same path.</p></div></div></li>
+    <li><b>Arc length</b> \(L(\gamma) = \int_a^b\|\gamma'(t)\|\,dt\).
+      <div class="ex"><div><p>Speed integrated over time is distance travelled. Exactly as in Chapter 3, now with a vector speed.</p></div></div></li>
+    <li><b>Rectifiable curve</b> — finite supremum of inscribed polygon lengths.
+      <div class="ex"><div><p>Some continuous curves have infinite length. Chapter 18 measures those instead.</p></div></div></li>
+    <li><b>Arc-length parametrisation</b> — \(\|\gamma'(s)\|\equiv1\).
+      <div class="ex"><div><p>Walk at unit speed. Then time and distance are the same number, and every formula simplifies.</p></div></div></li>
+    <li><b>Curvature</b> \(\kappa = \|T'(s)\|\), with \(T = \gamma'\) the unit tangent.
+      <div class="ex"><div><p>How fast you turn the steering wheel. A straight line has \(\kappa=0\); a circle of radius \(r\) has \(\kappa = 1/r\).</p></div></div></li>
+    <li><b>Frenet frame</b> \((T,N,B)\) — tangent, normal, binormal.
+      <div class="ex"><div><p>Forward, sideways, up — carried along by the curve itself.</p></div></div></li>
+    <li><b>Torsion</b> \(\tau\) — the rate at which the curve leaves its own plane.
+      <div class="ex"><div><p>A helix twists out of every plane; a circle never does.</p></div></div></li>
+    <li><b>Line integral</b> \(\int_\gamma f\,ds = \int_a^bf(\gamma(t))\|\gamma'(t)\|dt\).
+      <div class="ex"><div><p>Total mass of a wire from its density. The \(\|\gamma'\|\) is the exchange rate between parameter and length.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Arc length is the supremum of inscribed polygon lengths.</b>
+      <div class="ex"><div><p>The definition everyone starts with, and the integral formula agrees with it.</p></div></div>
+      <div class="proof"><div><p>For a partition \(a=t_0&lt;\cdots&lt;t_N=b\), the mean value inequality (Chapter 10, Layer 2) bounds \(\|\gamma(t_i)-\gamma(t_{i-1})\|\) above by \(\int_{t_{i-1}}^{t_i}\|\gamma'\|\), so every inscribed polygon is at most the integral. Conversely, uniform continuity of \(\gamma'\) makes \(\|\gamma(t_i)-\gamma(t_{i-1})\| \ge (\|\gamma'(t_i)\|-\varepsilon)\Delta t_i\) for fine partitions, so the supremum is at least the integral minus \(\varepsilon(b-a)\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Arc length is invariant under reparametrisation.</b>
+      <div class="ex"><div><p>Walk faster and the path is no shorter. Length belongs to the trace, not the schedule.</p></div></div>
+      <div class="proof"><div><p>Let \(\varphi\) be a \(C^{1}\) bijection with \(\varphi' &gt; 0\) and \(\tilde\gamma = \gamma\circ\varphi\). The chain rule gives \(\|\tilde\gamma'(u)\| = \|\gamma'(\varphi(u))\|\varphi'(u)\), and the substitution rule (Chapter 12, Layer 4) turns \(\int\|\tilde\gamma'\|du\) into \(\int\|\gamma'\|dt\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Every regular curve can be parametrised by arc length.</b>
+      <div class="ex"><div><p>You may always assume unit speed — and doing so removes most of the algebra.</p></div></div>
+      <div class="proof"><div><p>Let \(s(t) = \int_a^t\|\gamma'\|\), which is \(C^{1}\) with \(s'(t) = \|\gamma'(t)\| &gt; 0\), hence strictly increasing with a \(C^{1}\) inverse (Chapter 10's inverse function theorem). Setting \(\tilde\gamma = \gamma\circ s^{-1}\) gives \(\|\tilde\gamma'\| = \|\gamma'\|/s' = 1\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Straight lines are shortest.</b>
+      <div class="ex"><div><p>The triangle inequality, integrated. Chapter 17 asks the same question on curved spaces and gets geodesics.</p></div></div>
+      <div class="proof"><div><p>For any curve from \(p\) to \(q\), and \(u\) the unit vector along \(q-p\): \(\|q-p\| = \langle q-p,u\rangle = \int_a^b\langle\gamma'(t),u\rangle dt \le \int_a^b\|\gamma'(t)\|dt = L(\gamma)\), by Cauchy–Schwarz. Equality forces \(\gamma'\) parallel to \(u\) throughout, i.e. a straight path. \(\blacksquare\)</p></div></div></li>
+    <li><b>Frenet–Serret formulas:</b> \(T' = \kappa N\), \(N' = -\kappa T + \tau B\), \(B' = -\tau N\) (unit speed).
+      <div class="ex"><div><p>Three equations describing how the frame tumbles along the curve — the complete local description.</p></div></div>
+      <div class="proof"><div><p>Differentiating \(\langle T,T\rangle = 1\) gives \(T'\perp T\), so \(T' = \kappa N\) defines \(\kappa\ge0\) and the unit normal \(N\). With \(B = T\times N\), differentiating the three orthonormality relations shows the derivative matrix of \((T,N,B)\) is antisymmetric; the entries not yet named are \(\langle N',B\rangle =: \tau\) and its negative, which gives the stated system. \(\blacksquare\)</p></div></div></li>
+    <li><b>Fundamental theorem of curves:</b> \(\kappa &gt; 0\) and \(\tau\) determine a space curve up to rigid motion.
+      <div class="ex"><div><p>Two numbers at each point fix the shape completely. Where it sits and which way it faces is the only freedom left.</p></div></div>
+      <div class="proof"><div><p>The Frenet system is a linear ODE for the frame with continuous coefficients, so by Picard–Lindelöf (Chapter 7, Layer 4) it has a unique solution given an initial orthonormal frame; integrating \(T\) recovers \(\gamma\) up to a translation. Different initial frames differ by a rotation, so the curves differ by a rigid motion. \(\blacksquare\)</p></div></div></li>
+    <li><b>Curvature of a plane curve:</b> \(\kappa = \dfrac{|x'y''-y'x''|}{\bigl((x')^{2}+(y')^{2}\bigr)^{3/2}}\).
+      <div class="ex"><div><p>The formula you actually compute with, since the curve is rarely given at unit speed.</p></div></div>
+      <div class="proof"><div><p>Reparametrise by arc length: \(\frac{d}{dt} = \|\gamma'\|\frac{d}{ds}\). Expressing \(T' \) in terms of \(t\)-derivatives and taking the norm gives \(\kappa = \|\gamma'\times\gamma''\|/\|\gamma'\|^{3}\), whose planar case is the stated determinant expression. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Parametrise, then integrate \(\|\gamma'\|\)</b>.
+      <div class="ex"><div><p>Almost all of the work is choosing a parametrisation whose speed is easy to integrate.</p></div></div></li>
+    <li><b>Switch to arc length</b> before doing theory.
+      <div class="ex"><div><p>Unit speed kills every \(\|\gamma'\|\) factor in sight.</p></div></div></li>
+    <li><b>Use the cross-product formula for curvature</b> when unit speed is inconvenient.
+      <div class="ex"><div><p>\(\kappa = \|\gamma'\times\gamma''\|/\|\gamma'\|^{3}\) works with any parametrisation.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 2 ============ -->
+<section class="layer" id="L2">
+  <span class="chapter">Layer 2 · Two dimensions, curved</span>
+  <h2 class="ltitle">Surfaces &amp; Area</h2>
+  <p class="ldesc">The first fundamental form, and what it measures.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Parametrised surface</b> \(\Phi : U\subseteq\mathbb{R}^{2}\to\mathbb{R}^{3}\).
+      <div class="ex"><div><p>A flat map sheet bent into space. Latitude and longitude are exactly this for the globe.</p></div></div></li>
+    <li><b>Regular surface</b> — \(\Phi_u\times\Phi_v \ne \mathbf 0\).
+      <div class="ex"><div><p>The two parameter directions must span a genuine plane, or the "surface" collapses.</p></div></div></li>
+    <li><b>Tangent plane</b> \(T_pS = \operatorname{span}(\Phi_u,\Phi_v)\).
+      <div class="ex"><div><p>The flat sheet touching the surface at \(p\). Chapter 15 makes this the definition of a tangent space.</p></div></div></li>
+    <li><b>Unit normal</b> \(N = \dfrac{\Phi_u\times\Phi_v}{\|\Phi_u\times\Phi_v\|}\).
+      <div class="ex"><div><p>Straight up out of the surface. Choosing it consistently is what "orientable" means.</p></div></div></li>
+    <li><b>First fundamental form</b> \(I = \begin{pmatrix}E&amp;F\\F&amp;G\end{pmatrix}\), with \(E = \langle\Phi_u,\Phi_u\rangle\), \(F = \langle\Phi_u,\Phi_v\rangle\), \(G = \langle\Phi_v,\Phi_v\rangle\).
+      <div class="ex"><div><p>The dictionary that converts parameter distances into real distances. This is the Gram matrix of Chapter 5.</p></div></div></li>
+    <li><b>Surface area</b> \(A = \displaystyle\iint_U\|\Phi_u\times\Phi_v\|\,du\,dv = \iint_U\sqrt{EG-F^{2}}\,du\,dv\).
+      <div class="ex"><div><p>The area of the little parallelogram spanned by the two parameter directions, added up.</p></div></div></li>
+    <li><b>Surface integral</b> \(\iint_Sf\,dA\).
+      <div class="ex"><div><p>Total mass of a curved sheet from its density.</p></div></div></li>
+    <li><b>Intrinsic geometry</b> — everything computable from \(I\) alone.
+      <div class="ex"><div><p>What an ant confined to the surface could measure, with no view of the surrounding space.</p></div></div></li>
+    <li><b>Isometry of surfaces</b> — a map preserving the first fundamental form.
+      <div class="ex"><div><p>Rolling a flat sheet into a cylinder is an isometry. Flattening a sphere is not — hence every world map lies.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\|\Phi_u\times\Phi_v\|^{2} = EG - F^{2}\), and it is positive for a regular surface.</b>
+      <div class="ex"><div><p>Two ways of writing the same area element; the second generalises to any dimension.</p></div></div>
+      <div class="proof"><div><p>Lagrange's identity: \(\|a\times b\|^{2} = \|a\|^{2}\|b\|^{2}-\langle a,b\rangle^{2}\), which is exactly \(EG-F^{2}\) — the determinant of the Gram matrix (Chapter 5, Layer 4). Positivity is the independence of \(\Phi_u,\Phi_v\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Surface area is independent of the parametrisation.</b>
+      <div class="ex"><div><p>Area belongs to the surface, not to the map projection used to describe it.</p></div></div>
+      <div class="proof"><div><p>If \(\tilde\Phi = \Phi\circ\psi\) for a diffeomorphism \(\psi\) of parameter domains, the chain rule gives \(\tilde\Phi_u\times\tilde\Phi_v = (\det D\psi)\,(\Phi_u\times\Phi_v)\circ\psi\). Taking norms and applying the change of variables formula (Chapter 12, Layer 4), the factor \(|\det D\psi|\) cancels exactly. \(\blacksquare\)</p></div></div></li>
+    <li><b>Area of a graph:</b> for \(z = f(x,y)\), \(A = \iint\sqrt{1+f_x^{2}+f_y^{2}}\,dx\,dy\).
+      <div class="ex"><div><p>The steeper the sheet, the more area it hides above a given footprint.</p></div></div>
+      <div class="proof"><div><p>Parametrise by \(\Phi(x,y) = (x,y,f(x,y))\). Then \(\Phi_x = (1,0,f_x)\), \(\Phi_y = (0,1,f_y)\), so \(E = 1+f_x^{2}\), \(G = 1+f_y^{2}\), \(F = f_xf_y\), and \(EG-F^{2} = 1+f_x^{2}+f_y^{2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Area of a surface of revolution:</b> \(A = 2\pi\displaystyle\int_a^b r(t)\sqrt{r'(t)^{2}+z'(t)^{2}}\,dt\).
+      <div class="ex"><div><p>Pappus's rule: length of the generating curve times the distance travelled by its centroid.</p></div></div>
+      <div class="proof"><div><p>Parametrise by \(\Phi(t,\theta) = (r(t)\cos\theta, r(t)\sin\theta, z(t))\). Then \(E = r'^{2}+z'^{2}\), \(F=0\), \(G = r^{2}\), so \(\sqrt{EG-F^{2}} = r\sqrt{r'^{2}+z'^{2}}\). Integrating \(\theta\) over \([0,2\pi]\) gives the factor \(2\pi\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Area of the sphere of radius \(R\) is \(4\pi R^{2}\).</b>
+      <div class="ex"><div><p>Chapter 13 got this from \(dV/dr\); here it comes straight from the definition of area.</p></div></div>
+      <div class="proof"><div><p>With \(\Phi(\varphi,\theta) = R(\sin\varphi\cos\theta,\sin\varphi\sin\theta,\cos\varphi)\), we get \(E = R^{2}\), \(F = 0\), \(G = R^{2}\sin^{2}\varphi\), so \(\sqrt{EG-F^{2}} = R^{2}\sin\varphi\). Then \(A = \int_0^{2\pi}\!\!\int_0^{\pi}R^{2}\sin\varphi\,d\varphi\,d\theta = 4\pi R^{2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Archimedes' hat-box theorem:</b> the sphere's area between two parallel planes equals that of the enclosing cylinder's band.
+      <div class="ex"><div><p>Every horizontal slice of the globe has area proportional to its thickness alone — latitude doesn't matter.</p></div></div>
+      <div class="proof"><div><p>From the computation above, the area between heights \(z = R\cos\varphi\) is \(\int 2\pi R^{2}\sin\varphi\,d\varphi = -2\pi R\int dz\), i.e. \(2\pi R\,\Delta z\), which is exactly the lateral area of the cylinder band of the same height. \(\blacksquare\)</p></div></div></li>
+    <li><b>Lengths and angles on the surface are determined by \(I\).</b>
+      <div class="ex"><div><p>An ant with a tape measure can compute everything intrinsic without ever leaving the surface.</p></div></div>
+      <div class="proof"><div><p>A curve on the surface is \(\Phi(u(t),v(t))\), and the chain rule gives \(\|\gamma'\|^{2} = Eu'^{2}+2Fu'v'+Gv'^{2}\) — a formula involving only \(I\). Angles come from the same expression via polarisation, and area from \(\sqrt{\det I}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Schwarz's lantern:</b> inscribed triangulations of a cylinder can have area tending to \(\infty\).
+      <div class="ex"><div><p>The naive analogue of "inscribed polygons" fails for area. This is why surface area needs the derivative, not just the points.</p></div></div>
+      <div class="proof"><div><p>Divide a unit cylinder into \(m\) rings and \(k\) sectors, and inscribe the standard zig-zag triangulation. The triangles' total area is \(\approx 2\pi\sqrt{1+\frac{\pi^{4}m^{2}}{4k^{4}}}\). Letting \(m\) grow much faster than \(k^{2}\) sends this to infinity even though the vertices converge to the cylinder. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compute \(E, F, G\), then integrate \(\sqrt{EG-F^{2}}\)</b>.
+      <div class="ex"><div><p>The whole of surface-area calculation, in one line.</p></div></div></li>
+    <li><b>Choose a parametrisation with \(F = 0\)</b> — orthogonal coordinates.
+      <div class="ex"><div><p>Then \(\sqrt{EG-F^{2}} = \sqrt{EG}\), and everything simplifies.</p></div></div></li>
+    <li><b>Use symmetry</b> — revolution, spheres, graphs each have a standard form.
+      <div class="ex"><div><p>Recognising the type saves recomputing the fundamental form.</p></div></div></li>
+    <li><b>Never approximate area by inscribed polygons</b>.
+      <div class="ex"><div><p>Schwarz's lantern is the standing warning.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 3 ============ -->
+<section class="layer" id="L3">
+  <span class="chapter">Layer 3 · How it bends</span>
+  <h2 class="ltitle">Curvature of Surfaces</h2>
+  <p class="ldesc">The second fundamental form, and Gauss's remarkable theorem.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Second fundamental form</b> \(II = \begin{pmatrix}L&amp;M\\M&amp;N\end{pmatrix}\), with \(L = \langle\Phi_{uu},N\rangle\) and so on.
+      <div class="ex"><div><p>How fast the surface pulls away from its own tangent plane.</p></div></div></li>
+    <li><b>Shape (Weingarten) operator</b> \(S = I^{-1}II\).
+      <div class="ex"><div><p>The derivative of the unit normal. Its eigenvalues are the principal curvatures.</p></div></div></li>
+    <li><b>Normal curvature</b> — the curvature of the curve cut by a normal plane.
+      <div class="ex"><div><p>Slice the surface vertically and measure how the cross-section bends.</p></div></div></li>
+    <li><b>Principal curvatures</b> \(\kappa_1,\kappa_2\) — the extreme normal curvatures.
+      <div class="ex"><div><p>On a cylinder: \(1/r\) around, and 0 along. Two very different directions.</p></div></div></li>
+    <li><b>Gaussian curvature</b> \(K = \kappa_1\kappa_2 = \dfrac{LN-M^{2}}{EG-F^{2}}\).
+      <div class="ex"><div><p>Sphere: \(K = 1/R^{2} &gt; 0\). Plane and cylinder: \(K=0\). Saddle: \(K &lt; 0\).</p></div></div></li>
+    <li><b>Mean curvature</b> \(H = \tfrac12(\kappa_1+\kappa_2)\).
+      <div class="ex"><div><p>Soap films minimise area, and they are exactly the surfaces with \(H = 0\).</p></div></div></li>
+    <li><b>Elliptic, parabolic, hyperbolic points</b> — \(K&gt;0\), \(K=0\), \(K&lt;0\).
+      <div class="ex"><div><p>Dome, cylinder, saddle. The three local shapes a surface can have.</p></div></div></li>
+    <li><b>Geodesic</b> — a curve with zero tangential acceleration.
+      <div class="ex"><div><p>Walk without steering. On a sphere these are the great circles — the flight paths airlines use.</p></div></div></li>
+    <li><b>Minimal surface</b> — \(H\equiv0\).
+      <div class="ex"><div><p>The catenoid and the helicoid. Dip a wire loop in soapy water and you get one.</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>Euler's formula:</b> the normal curvature in the direction at angle \(\theta\) to the first principal direction is \(\kappa_1\cos^{2}\theta+\kappa_2\sin^{2}\theta\).
+      <div class="ex"><div><p>All the bending in every direction is determined by two numbers.</p></div></div>
+      <div class="proof"><div><p>The normal curvature in a unit tangent direction \(w\) equals \(II(w,w) = \langle Sw,w\rangle\). The shape operator is self-adjoint with respect to \(I\), so by the spectral theorem (Chapter 6, Layer 3) it has an orthonormal eigenbasis with eigenvalues \(\kappa_1,\kappa_2\); expanding \(w = \cos\theta\,e_1+\sin\theta\,e_2\) gives the formula. \(\blacksquare\)</p></div></div></li>
+    <li><b>Principal directions are orthogonal</b>, and \(\kappa_1,\kappa_2\) are the extreme normal curvatures.
+      <div class="ex"><div><p>The steepest and flattest slices meet at right angles — always.</p></div></div>
+      <div class="proof"><div><p>Self-adjointness of \(S\) gives orthogonal eigenvectors (Chapter 6, Layer 3), and the Rayleigh quotient identifies the eigenvalues as the extreme values of \(\langle Sw,w\rangle\) over unit \(w\). \(\blacksquare\)</p></div></div></li>
+    <li><b>\(K = \det S\) and \(H = \tfrac12\operatorname{tr}S\).</b>
+      <div class="ex"><div><p>The determinant and trace of Chapter 5, doing geometry.</p></div></div>
+      <div class="proof"><div><p>The eigenvalues of \(S\) are \(\kappa_1,\kappa_2\); the determinant is their product and half the trace their average. In coordinates, \(\det S = \det(I^{-1}II) = \frac{LN-M^{2}}{EG-F^{2}}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Theorema Egregium:</b> \(K\) depends only on the first fundamental form.
+      <div class="ex"><div><p>Gauss's "remarkable theorem". The ant on the surface can measure \(K\) without ever leaving it — and that is why no flat map of the Earth can be accurate.</p></div></div>
+      <div class="proof"><div><p>Sketch: express the second derivatives \(\Phi_{uu},\Phi_{uv},\Phi_{vv}\) in the frame \((\Phi_u,\Phi_v,N)\); the tangential coefficients are the Christoffel symbols, computable from \(E,F,G\) and their derivatives alone. Equating the mixed third derivatives \(\Phi_{uuv} = \Phi_{uvu}\) (Clairaut, Chapter 10) yields the Gauss equation, whose normal component reads \(LN - M^{2} = (EG-F^{2})\times(\text{an expression in }E,F,G\text{ and derivatives})\). Dividing gives \(K\) intrinsically. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — no isometric flat map of the sphere.</b>
+      <div class="ex"><div><p>Every world map distorts distance, area or angle. The sphere has \(K = 1/R^{2}\); the plane has \(K = 0\); an isometry would have to match them.</p></div></div>
+      <div class="proof"><div><p>An isometry preserves the first fundamental form, hence — by the Theorema Egregium — preserves \(K\). Since \(K\) is \(1/R^{2}\) on the sphere and 0 on the plane, no such map exists, even locally. \(\blacksquare\)</p></div></div></li>
+    <li><b>Corollary — the cylinder is intrinsically flat.</b>
+      <div class="ex"><div><p>Roll a sheet of paper into a tube and nothing measured on the paper changes. It bends in space but not intrinsically.</p></div></div>
+      <div class="proof"><div><p>For the cylinder, \(\kappa_1 = 1/r\) and \(\kappa_2 = 0\), so \(K = 0\) — the same as the plane. The explicit isometry \((u,v)\mapsto(r\cos(u/r), r\sin(u/r), v)\) preserves \(E=G=1\), \(F=0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Minimal surfaces are area-critical:</b> \(H \equiv 0\) iff the surface is a critical point of area under compactly supported normal variations.
+      <div class="ex"><div><p>Soap films solve a calculus of variations problem — physically, by minimising energy.</p></div></div>
+      <div class="proof"><div><p>Vary the surface by \(\Phi_t = \Phi + t\varphi N\) with \(\varphi\) compactly supported. Differentiating the area integral \(\iint\sqrt{\det I_t}\) at \(t=0\) gives the first variation \(-2\iint\varphi H\,dA\). This vanishes for every \(\varphi\) exactly when \(H\equiv0\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Gauss–Bonnet theorem:</b> \(\displaystyle\iint_S K\,dA + \oint_{\partial S}\kappa_g\,ds = 2\pi\chi(S)\).
+      <div class="ex"><div><p>Total curvature is a topological invariant. Deform a sphere however you like — the integral is always \(4\pi\).</p></div></div>
+      <div class="proof"><div><p>Sketch: for a geodesic triangle, the angle excess equals \(\iint K\,dA\) (proved by comparing the frame's rotation with the boundary's turning). Triangulate \(S\), sum the excesses over all triangles, and collect terms: the interior angles at each vertex sum to \(2\pi\), and the count of faces, edges and vertices assembles into \(2\pi(V-E+F) = 2\pi\chi(S)\). \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Compute \(I\) and \(II\), then \(S = I^{-1}II\)</b>.
+      <div class="ex"><div><p>Eigenvalues give the principal curvatures; determinant and trace give \(K\) and \(H\).</p></div></div></li>
+    <li><b>Use \(K\) as an isometry invariant</b>.
+      <div class="ex"><div><p>Two surfaces with different Gaussian curvature can never be isometric.</p></div></div></li>
+    <li><b>Recognise the sign of \(K\)</b> from the local shape.
+      <div class="ex"><div><p>Dome, tube, saddle — positive, zero, negative.</p></div></div></li>
+    <li><b>Vary and differentiate</b> — the calculus-of-variations route to minimal surfaces and geodesics.
+      <div class="ex"><div><p>Set the first variation to zero and read off the equation.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ LAYER 4 ============ -->
+<section class="layer" id="L4">
+  <span class="chapter">Layer 4 · Any dimension, any codimension</span>
+  <h2 class="ltitle">\(k\)-Dimensional Area in \(\mathbb{R}^{n}\)</h2>
+  <p class="ldesc">The general formula, and why \(\sqrt{\det(A^{\mathsf T}A)}\) is the only possible answer.</p>
+
+  <h3>Concepts &amp; Definitions</h3>
+  <ul>
+    <li><b>Parametrised \(k\)-patch</b> \(\Phi : U\subseteq\mathbb{R}^{k}\to\mathbb{R}^{n}\), with \(D\Phi\) of rank \(k\).
+      <div class="ex"><div><p>A curved \(k\)-dimensional sheet in \(n\)-dimensional space. \(k=1\) is a curve, \(k=2\) a surface.</p></div></div></li>
+    <li><b>Gram matrix</b> \(G = D\Phi^{\mathsf T}D\Phi\), with entries \(\langle\partial_i\Phi,\partial_j\Phi\rangle\).
+      <div class="ex"><div><p>The first fundamental form, in general. It is \(k\times k\) whatever \(n\) is.</p></div></div></li>
+    <li><b>\(k\)-dimensional area</b> \(\displaystyle\int_U\sqrt{\det G}\,du\).
+      <div class="ex"><div><p>The volume of the little \(k\)-box spanned by the parameter directions, added up.</p></div></div></li>
+    <li><b>Jacobian of a non-square map</b> \(J\Phi = \sqrt{\det(D\Phi^{\mathsf T}D\Phi)}\).
+      <div class="ex"><div><p>The right replacement for \(|\det|\) when the matrix isn't square.</p></div></div></li>
+    <li><b>Atlas of patches</b> — covering a surface by overlapping parametrisations.
+      <div class="ex"><div><p>No single flat map covers a sphere, so you use several. Chapter 15 makes this the definition.</p></div></div></li>
+    <li><b>Coarea factor</b> \(\sqrt{\det(DF\,DF^{\mathsf T})}\) for a map \(F : \mathbb{R}^{n}\to\mathbb{R}^{m}\), \(m\le n\).
+      <div class="ex"><div><p>The other non-square Jacobian: it appears when you slice a region by the level sets of \(F\).</p></div></div></li>
+  </ul>
+
+  <h3>Theorems</h3>
+  <ul>
+    <li><b>\(\sqrt{\det G}\) is the \(k\)-volume of the parallelepiped spanned by \(\partial_1\Phi,\dots,\partial_k\Phi\).</b>
+      <div class="ex"><div><p>The same Gram determinant Chapter 5 derived. Nothing new is being assumed.</p></div></div>
+      <div class="proof"><div><p>Chapter 5, Layer 4: for a matrix \(A\) with independent columns, the \(k\)-volume of the box on its columns is \(\sqrt{\det(A^{\mathsf T}A)}\), proved via the \(QR\) factorisation. Apply this to \(A = D\Phi\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Consistency:</b> for \(k = n\) the formula reduces to \(|\det D\Phi|\), and for \(k=1\) to \(\|\gamma'\|\).
+      <div class="ex"><div><p>Chapters 12 and this chapter's Layer 1 are both special cases.</p></div></div>
+      <div class="proof"><div><p>For \(k = n\), \(\det(D\Phi^{\mathsf T}D\Phi) = (\det D\Phi)^{2}\) by multiplicativity, so the square root is \(|\det D\Phi|\). For \(k=1\), \(G\) is the \(1\times1\) matrix \(\|\gamma'\|^{2}\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Reparametrisation invariance:</b> the \(k\)-area does not depend on the chosen parametrisation.
+      <div class="ex"><div><p>Area is a property of the set, not of the coordinates used to describe it.</p></div></div>
+      <div class="proof"><div><p>If \(\tilde\Phi = \Phi\circ\psi\), then \(D\tilde\Phi = (D\Phi\circ\psi)D\psi\), so \(\tilde G = D\psi^{\mathsf T}(G\circ\psi)D\psi\) and \(\sqrt{\det\tilde G} = |\det D\psi|\sqrt{\det G\circ\psi}\). The change of variables formula (Chapter 12, Layer 4) absorbs the factor \(|\det D\psi|\) exactly. \(\blacksquare\)</p></div></div></li>
+    <li><b>Well defined on overlaps:</b> areas computed in different patches agree, so the total area of a surface is unambiguous.
+      <div class="ex"><div><p>Chart the globe with two maps and the total surface area comes out the same.</p></div></div>
+      <div class="proof"><div><p>On an overlap the two parametrisations differ by a diffeomorphism of parameter domains (their composition is smooth by the inverse function theorem), so the previous theorem applies. Summing over a partition of unity subordinate to the atlas (Chapter 15) gives a well-defined total. \(\blacksquare\)</p></div></div></li>
+    <li><b>Graphs:</b> the \(k\)-area of the graph of \(f : U\subseteq\mathbb{R}^{k}\to\mathbb{R}^{n-k}\) is \(\int_U\sqrt{\det(I + Df^{\mathsf T}Df)}\).
+      <div class="ex"><div><p>Generalises \(\sqrt{1+f_x^{2}+f_y^{2}}\) to any dimension and codimension.</p></div></div>
+      <div class="proof"><div><p>Parametrise by \(\Phi(x) = (x,f(x))\), so \(D\Phi = \binom{I}{Df}\) and \(G = D\Phi^{\mathsf T}D\Phi = I + Df^{\mathsf T}Df\). \(\blacksquare\)</p></div></div></li>
+    <li><b>Area of a linear image:</b> for a linear \(A\) of rank \(k\) and \(E\subseteq\mathbb{R}^{k}\), the \(k\)-area of \(A(E)\) is \(\sqrt{\det(A^{\mathsf T}A)}\,\lambda_k(E)\).
+      <div class="ex"><div><p>Chapter 11's \(|\det T|\) law, in the non-square case.</p></div></div>
+      <div class="proof"><div><p>\(A\) maps \(\mathbb{R}^{k}\) isometrically onto its image after composing with a suitable orthogonal map, and the \(QR\) factorisation identifies the stretching factor as \(\sqrt{\det(A^{\mathsf T}A)}\). Chapter 11's scaling law then transfers to the image. \(\blacksquare\)</p></div></div></li>
+    <li><b>Surface measure of the sphere:</b> \(\sigma(S^{n-1}) = nV_n = \frac{2\pi^{n/2}}{\Gamma(n/2)}\), recovered from the general formula.
+      <div class="ex"><div><p>Chapter 13's answer, now derived from a definition of area rather than by differentiating volume.</p></div></div>
+      <div class="proof"><div><p>Parametrise the upper hemisphere as the graph of \(f(x) = \sqrt{1-\|x\|^{2}}\) over the unit ball of \(\mathbb{R}^{n-1}\). Then \(\sqrt{\det(I+\nabla f\nabla f^{\mathsf T})} = \sqrt{1+\|\nabla f\|^{2}} = (1-\|x\|^{2})^{-1/2}\), and integrating in polar coordinates gives \(\tfrac12 nV_n\); doubling covers both hemispheres. \(\blacksquare\)</p></div></div></li>
+    <li><b>Coarea formula</b> (stated): \(\displaystyle\int_{\mathbb{R}^{n}} g\,\sqrt{\det(DF\,DF^{\mathsf T})}\;dx = \int_{\mathbb{R}^{m}}\!\!\left(\int_{F^{-1}(y)}g\,d\mathcal{H}^{n-m}\right)dy\).
+      <div class="ex"><div><p>Fubini for curved slices: integrate over the level sets, then over the levels. Chapter 18 supplies the measure \(\mathcal H\).</p></div></div>
+      <div class="proof"><div><p>Sketch: for a linear \(F\) the identity is the linear change of variables plus Fubini. In general, the rank theorem (Chapter 10, Layer 4) makes \(F\) locally a projection in suitable coordinates, and the Jacobian factor \(\sqrt{\det(DF\,DF^{\mathsf T})}\) records the discrepancy. Patching with a partition of unity and passing to the limit over finer decompositions gives the general case. Taking \(F(x)=\|x\|\) recovers spherical coordinates. \(\blacksquare\)</p></div></div></li>
+  </ul>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>Build the Gram matrix, take \(\sqrt{\det}\)</b>.
+      <div class="ex"><div><p>One recipe for length, area and every higher-dimensional volume.</p></div></div></li>
+    <li><b>Parametrise as a graph</b> when possible.
+      <div class="ex"><div><p>The Gram determinant becomes \(\det(I+Df^{\mathsf T}Df)\), which is often easy.</p></div></div></li>
+    <li><b>Split into patches</b> — no single chart need cover everything.
+      <div class="ex"><div><p>Overlaps are harmless: reparametrisation invariance guarantees agreement.</p></div></div></li>
+    <li><b>Slice with the coarea formula</b> — integrate over level sets.
+      <div class="ex"><div><p>The curved generalisation of Fubini, and the tool behind spherical coordinates.</p></div></div></li>
+  </ul>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="layer" id="SUM">
+  <span class="chapter">Recap</span>
+  <h2 class="ltitle">The Methods Toolbox</h2>
+  <p class="ldesc">What you actually <em>do</em> with all of the above.</p>
+  <table>
+    <tr><th>Method</th><th>Layer</th><th>Use</th></tr>
+    <tr><td>Integrate \(\|\gamma'\|\)</td><td>L1</td><td>Compute arc length</td></tr>
+    <tr><td>Reparametrise by arc length</td><td>L1</td><td>Simplify every curvature formula</td></tr>
+    <tr><td>Frenet–Serret</td><td>L1</td><td>Describe a space curve completely</td></tr>
+    <tr><td>Compute \(E,F,G\)</td><td>L2</td><td>Get lengths, angles and area on a surface</td></tr>
+    <tr><td>Integrate \(\sqrt{EG-F^{2}}\)</td><td>L2</td><td>Compute surface area</td></tr>
+    <tr><td>Choose orthogonal coordinates (\(F=0\))</td><td>L2</td><td>Simplify the area element</td></tr>
+    <tr><td>Shape operator \(S = I^{-1}II\)</td><td>L3</td><td>Find principal curvatures, \(K\) and \(H\)</td></tr>
+    <tr><td>Theorema Egregium</td><td>L3</td><td>Prove two surfaces are not isometric</td></tr>
+    <tr><td>First variation of area</td><td>L3</td><td>Derive minimal surfaces and geodesics</td></tr>
+    <tr><td>Gram determinant \(\sqrt{\det(D\Phi^{\mathsf T}D\Phi)}\)</td><td>L4</td><td>Measure a \(k\)-dimensional patch in \(\mathbb{R}^{n}\)</td></tr>
+    <tr><td>Parametrise as a graph</td><td>L4</td><td>Turn the Gram determinant into \(\det(I+Df^{\mathsf T}Df)\)</td></tr>
+    <tr><td>Split into patches</td><td>L4</td><td>Cover a surface no single chart can</td></tr>
+    <tr><td>Coarea formula</td><td>L4</td><td>Integrate by slicing along level sets</td></tr>
+  </table>
+</section>
+
+<footer>
+  <a class="btn btn-green" href="#L1">&#8679; Back to Top</a>
+  <p>Curves &amp; Surfaces · The Dependency Tower · Built from \(\varnothing\) up</p>
+</footer>
+</div>
+</body>
+</html>
